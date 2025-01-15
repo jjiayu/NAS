@@ -1,0 +1,3 @@
+/home/jiayu/Desktop/NAS/build/CMakeFiles/nas_plan.dir
+/home/jiayu/Desktop/NAS/build/CMakeFiles/edit_cache.dir
+/home/jiayu/Desktop/NAS/build/CMakeFiles/rebuild_cache.dir
