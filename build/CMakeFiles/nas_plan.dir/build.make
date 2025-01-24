@@ -95,6 +95,7 @@ nas_plan_EXTERNAL_OBJECTS =
 
 nas_plan: CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o
 nas_plan: CMakeFiles/nas_plan.dir/build.make
+nas_plan: libnode_lib.a
 nas_plan: CMakeFiles/nas_plan.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/jiayu/Desktop/NAS_ws/NAS/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable nas_plan"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/nas_plan.dir/link.txt --verbose=$(VERBOSE)
