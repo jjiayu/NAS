@@ -117,6 +117,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named node_lib
+
+# Build rule for target.
+node_lib: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 node_lib
+.PHONY : node_lib
+
+# fast build rule for target.
+node_lib/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/node_lib.dir/build.make CMakeFiles/node_lib.dir/build
+.PHONY : node_lib/fast
+
+#=============================================================================
 # Target rules for targets named nas_plan
 
 # Build rule for target.
@@ -153,6 +166,30 @@ src/nas_plan.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/nas_plan.dir/build.make CMakeFiles/nas_plan.dir/src/nas_plan.cpp.s
 .PHONY : src/nas_plan.cpp.s
 
+src/node.o: src/node.cpp.o
+.PHONY : src/node.o
+
+# target to build an object file
+src/node.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/node_lib.dir/build.make CMakeFiles/node_lib.dir/src/node.cpp.o
+.PHONY : src/node.cpp.o
+
+src/node.i: src/node.cpp.i
+.PHONY : src/node.i
+
+# target to preprocess a source file
+src/node.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/node_lib.dir/build.make CMakeFiles/node_lib.dir/src/node.cpp.i
+.PHONY : src/node.cpp.i
+
+src/node.s: src/node.cpp.s
+.PHONY : src/node.s
+
+# target to generate assembly for a file
+src/node.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/node_lib.dir/build.make CMakeFiles/node_lib.dir/src/node.cpp.s
+.PHONY : src/node.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -162,9 +199,13 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... nas_plan"
+	@echo "... node_lib"
 	@echo "... src/nas_plan.o"
 	@echo "... src/nas_plan.i"
 	@echo "... src/nas_plan.s"
+	@echo "... src/node.o"
+	@echo "... src/node.i"
+	@echo "... src/node.s"
 .PHONY : help
 
 
