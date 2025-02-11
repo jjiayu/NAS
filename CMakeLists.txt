@@ -6,7 +6,9 @@ project(
   LANGUAGES CXX
 )
 
-# add_library(MyLibExample simple_lib.cpp simple_lib.hpp)
+# Find required packages
+find_package(CGAL REQUIRED)
+find_package(Matplot++ REQUIRED)
 
 # Add the include directory
 include_directories(include)
@@ -14,6 +16,12 @@ include_directories(include)
 add_library(node_lib src/node.cpp)
 
 add_executable(nas_plan src/nas_plan.cpp)
-target_link_libraries(nas_plan PRIVATE node_lib)
+target_link_libraries(nas_plan PRIVATE 
+    node_lib
+    CGAL::CGAL
+    Matplot++::matplot
+)
 
-# target_link_libraries(nas_plan PRIVATE MyLibExample)
+# Set C++ standard (Matplot++ requires C++17)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
