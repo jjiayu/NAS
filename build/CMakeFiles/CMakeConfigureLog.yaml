@@ -286,3 +286,53 @@ events:
         
       exitCode: 0
 ...
+
+---
+events:
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/Applications/CMake.app/Contents/share/cmake-3.31/Modules/Internal/CheckSourceCompiles.cmake:108 (try_compile)"
+      - "/Applications/CMake.app/Contents/share/cmake-3.31/Modules/CheckCXXSourceCompiles.cmake:58 (cmake_check_source_compiles)"
+      - "/opt/homebrew/Cellar/qt/6.8.2/lib/cmake/Qt6/FindWrapAtomic.cmake:36 (check_cxx_source_compiles)"
+      - "/Applications/CMake.app/Contents/share/cmake-3.31/Modules/CMakeFindDependencyMacro.cmake:76 (find_package)"
+      - "/opt/homebrew/Cellar/qt/6.8.2/lib/cmake/Qt6/QtPublicDependencyHelpers.cmake:36 (find_dependency)"
+      - "/opt/homebrew/lib/cmake/Qt6Core/Qt6CoreDependencies.cmake:35 (_qt_internal_find_third_party_dependencies)"
+      - "/opt/homebrew/lib/cmake/Qt6Core/Qt6CoreConfig.cmake:45 (include)"
+      - "/Applications/CMake.app/Contents/share/cmake-3.31/Modules/CMakeFindDependencyMacro.cmake:76 (find_package)"
+      - "/opt/homebrew/Cellar/qt/6.8.2/lib/cmake/Qt6/QtPublicDependencyHelpers.cmake:145 (find_dependency)"
+      - "/opt/homebrew/lib/cmake/Qt6Widgets/Qt6WidgetsDependencies.cmake:45 (_qt_internal_find_qt_dependencies)"
+      - "/opt/homebrew/lib/cmake/Qt6Widgets/Qt6WidgetsConfig.cmake:43 (include)"
+      - "/opt/homebrew/lib/cmake/Qt6/Qt6Config.cmake:190 (find_package)"
+      - "/opt/homebrew/lib/cmake/vtk-9.4/VTK-vtk-module-find-packages.cmake:215 (find_package)"
+      - "/opt/homebrew/lib/cmake/vtk-9.4/vtk-config.cmake:170 (include)"
+      - "CMakeLists.txt:11 (find_package)"
+    checks:
+      - "Performing Test HAVE_STDATOMIC"
+    directories:
+      source: "/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles/CMakeScratch/TryCompile-WoLGy6"
+      binary: "/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles/CMakeScratch/TryCompile-WoLGy6"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: "-L/opt/homebrew/opt/qt/lib"
+      CMAKE_MODULE_PATH: "/opt/homebrew/lib/cmake/vtk-9.4/patches/99;/opt/homebrew/lib/cmake/vtk-9.4;/opt/homebrew/lib/cmake/CGAL;/opt/homebrew/Cellar/qt/6.8.2/lib/cmake/Qt6;/opt/homebrew/Cellar/qt/6.8.2/lib/cmake/Qt6/3rdparty/extra-cmake-modules/find-modules;/opt/homebrew/Cellar/qt/6.8.2/lib/cmake/Qt6/3rdparty/kwin"
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: ""
+      CMAKE_OSX_SYSROOT: "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk"
+    buildResult:
+      variable: "HAVE_STDATOMIC"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles/CMakeScratch/TryCompile-WoLGy6'
+        
+        Run Build Command(s): /Applications/CMake.app/Contents/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_9f404/fast
+        /Applications/Xcode.app/Contents/Developer/usr/bin/make  -f CMakeFiles/cmTC_9f404.dir/build.make CMakeFiles/cmTC_9f404.dir/build
+        Building CXX object CMakeFiles/cmTC_9f404.dir/src.cxx.o
+        /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ -DHAVE_STDATOMIC  -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk -MD -MT CMakeFiles/cmTC_9f404.dir/src.cxx.o -MF CMakeFiles/cmTC_9f404.dir/src.cxx.o.d -o CMakeFiles/cmTC_9f404.dir/src.cxx.o -c /Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles/CMakeScratch/TryCompile-WoLGy6/src.cxx
+        Linking CXX executable cmTC_9f404
+        /Applications/CMake.app/Contents/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9f404.dir/link.txt --verbose=1
+        /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names -L/opt/homebrew/opt/qt/lib  CMakeFiles/cmTC_9f404.dir/src.cxx.o -o cmTC_9f404
+        
+      exitCode: 0
+...

@@ -9,24 +9,12 @@ using namespace nas;
 using namespace std;
 
 int main() {
-    // Create a mesh
-    Mesh mesh;
+    // Create a plane (ax + by + cz + d = 0)
+    // This creates a plane z = 1
+    Plane plane(0, 0, 1, -1);
     
-    // Add vertices
-    Point p1(0,0,0);
-    Point p2(1,0,0);
-    Point p3(0,1,0);
-    
-    // Add vertices to mesh
-    Mesh::Vertex_index v1 = mesh.add_vertex(p1);
-    Mesh::Vertex_index v2 = mesh.add_vertex(p2);
-    Mesh::Vertex_index v3 = mesh.add_vertex(p3);
-    
-    // Add face (triangle)
-    mesh.add_face(v1, v2, v3);
-    
-    // Visualize the mesh
-    Visualizer::show_mesh(mesh);
+    // Visualize the plane
+    Visualizer::show_plane(plane);
     
     return 0;
 }

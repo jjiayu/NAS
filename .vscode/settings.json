@@ -1,0 +1,14 @@
+{
+    "C_Cpp.intelliSenseEngine": "Default",
+    "C_Cpp.errorSquiggles": "Enabled",
+    "C_Cpp.formatting": "Default",
+    "C_Cpp.default.compilerPath": "/usr/bin/g++",
+    "C_Cpp.default.includePath": [
+        "${workspaceFolder}/**",
+        "/usr/local/include",  // For Intel Macs
+        "/opt/homebrew/include",  // For Apple Silicon Macs
+        "/usr/include/c++/v1",  // If using libc++
+        "/usr/local/include/cgal",  // CGAL headers
+        "/usr/local/include/eigen3"  // If you are using Eigen with CGAL
+    ],
+}
