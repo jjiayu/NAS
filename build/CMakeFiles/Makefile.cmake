@@ -137,5 +137,6 @@ set(CMAKE_MAKEFILE_PRODUCTS
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/node_lib.dir/DependInfo.cmake"
+  "CMakeFiles/tree_lib.dir/DependInfo.cmake"
   "CMakeFiles/nas_plan.dir/DependInfo.cmake"
   )

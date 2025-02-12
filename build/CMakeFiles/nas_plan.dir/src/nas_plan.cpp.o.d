@@ -2928,7 +2928,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: \
   /opt/homebrew/include/vtk-9.4/vtkCommonMathModule.h \
   /opt/homebrew/include/vtk-9.4/vtkTransformPolyDataFilter.h \
   /opt/homebrew/include/vtk-9.4/vtkFiltersGeneralModule.h \
-  /Users/jiayu/Desktop/nas_ws/NAS/include/constants.hpp \
   /opt/homebrew/include/CGAL/Polyhedron_3.h \
   /opt/homebrew/include/CGAL/license/Polyhedron.h \
   /opt/homebrew/include/CGAL/Polyhedron_3_fwd.h \
@@ -2972,4 +2971,67 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: \
   /opt/homebrew/include/CGAL/Homogeneous_converter.h \
   /opt/homebrew/include/CGAL/IO/Polyhedron_VRML_1_ostream.h \
   /opt/homebrew/include/CGAL/IO/Polyhedron_inventor_ostream.h \
-  /opt/homebrew/include/CGAL/IO/Polyhedron_VRML_2_ostream.h
+  /opt/homebrew/include/CGAL/IO/Polyhedron_VRML_2_ostream.h \
+  /Users/jiayu/Desktop/nas_ws/NAS/include/constants.hpp \
+  /Users/jiayu/Desktop/nas_ws/NAS/include/tree.hpp \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/Dense \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/LU \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/misc/Kernel.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/misc/Image.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/LU/FullPivLU.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/LU/PartialPivLU.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/LU/Determinant.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/LU/InverseImpl.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/LU/arch/InverseSize4.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/Cholesky \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Jacobi/Jacobi.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Cholesky/LLT.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Cholesky/LDLT.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/QR \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/Householder \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Householder/Householder.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Householder/HouseholderSequence.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Householder/BlockHouseholder.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/QR/HouseholderQR.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/QR/FullPivHouseholderQR.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/QR/ColPivHouseholderQR.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/QR/CompleteOrthogonalDecomposition.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/SVD \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/misc/RealSvd2x2.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/SVD/UpperBidiagonalization.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/SVD/SVDBase.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/SVD/JacobiSVD.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/SVD/BDCSVD.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/Geometry \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Geometry/OrthoMethods.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Geometry/EulerAngles.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Geometry/Homogeneous.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Geometry/RotationBase.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Geometry/Rotation2D.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Geometry/Quaternion.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Geometry/AngleAxis.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Geometry/Transform.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Geometry/Translation.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Geometry/Scaling.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Geometry/Hyperplane.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Geometry/ParametrizedLine.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Geometry/AlignedBox.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Geometry/Umeyama.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Geometry/arch/Geometry_SIMD.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/Eigenvalues \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/Tridiagonalization.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/RealSchur.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/./HessenbergDecomposition.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/EigenSolver.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/./RealSchur.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/SelfAdjointEigenSolver.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/./Tridiagonalization.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/GeneralizedSelfAdjointEigenSolver.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/HessenbergDecomposition.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/ComplexSchur.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/ComplexEigenSolver.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/./ComplexSchur.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/RealQZ.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/GeneralizedEigenSolver.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/./RealQZ.h \
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/MatrixBaseEigenvalues.h

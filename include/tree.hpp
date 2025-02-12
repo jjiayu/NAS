@@ -21,7 +21,9 @@ namespace nas {
 class Tree {
 public:
 
-    // Environment model
+    // Reachability Polytope
+    Polyhedron rf_in_lf_polytope;
+    Polyhedron lf_in_rf_polytope;
 
     //Constructor
     Tree();

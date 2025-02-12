@@ -35,14 +35,15 @@ include_directories(${EIGEN3_INCLUDE_DIR})
 include_directories("/opt/homebrew/include")  # For CGAL headers
 
 # Add library with source files
-add_library(node_lib src/node.cpp )
-
+add_library(node_lib src/node.cpp)
+add_library(tree_lib src/tree.cpp)
 # Add executable
 add_executable(nas_plan src/nas_plan.cpp)
 
 # Link libraries
 target_link_libraries(nas_plan PRIVATE 
     node_lib
+    tree_lib
     CGAL::CGAL
     ${VTK_LIBRARIES}
     Eigen3::Eigen

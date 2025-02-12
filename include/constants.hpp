@@ -16,8 +16,8 @@ const int LEFT_FOOT = 0;   // Represents the left foot in stance
 const int RIGHT_FOOT = 1;  // Represents the right foot in stance
 
 // Define Kinematics Reachability Path
-const std::string rf_in_lf_path = "data/constants_files/RF_constraints_in_LF.obj";
-const std::string lf_in_rf_path = "data/constants_files/LF_constraints_in_RF.obj";
+const std::string rf_in_lf_path = "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/RF_constraints_in_LF.obj";
+const std::string lf_in_rf_path = "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/LF_constraints_in_RF.obj";
 
 // Define Goal Specificaitons
 const int goal_stance_foot = LEFT_FOOT;

@@ -130,6 +130,19 @@ node_lib/fast:
 .PHONY : node_lib/fast
 
 #=============================================================================
+# Target rules for targets named tree_lib
+
+# Build rule for target.
+tree_lib: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tree_lib
+.PHONY : tree_lib
+
+# fast build rule for target.
+tree_lib/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tree_lib.dir/build.make CMakeFiles/tree_lib.dir/build
+.PHONY : tree_lib/fast
+
+#=============================================================================
 # Target rules for targets named nas_plan
 
 # Build rule for target.
@@ -190,6 +203,30 @@ src/node.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/node_lib.dir/build.make CMakeFiles/node_lib.dir/src/node.cpp.s
 .PHONY : src/node.cpp.s
 
+src/tree.o: src/tree.cpp.o
+.PHONY : src/tree.o
+
+# target to build an object file
+src/tree.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tree_lib.dir/build.make CMakeFiles/tree_lib.dir/src/tree.cpp.o
+.PHONY : src/tree.cpp.o
+
+src/tree.i: src/tree.cpp.i
+.PHONY : src/tree.i
+
+# target to preprocess a source file
+src/tree.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tree_lib.dir/build.make CMakeFiles/tree_lib.dir/src/tree.cpp.i
+.PHONY : src/tree.cpp.i
+
+src/tree.s: src/tree.cpp.s
+.PHONY : src/tree.s
+
+# target to generate assembly for a file
+src/tree.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tree_lib.dir/build.make CMakeFiles/tree_lib.dir/src/tree.cpp.s
+.PHONY : src/tree.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -200,12 +237,16 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... nas_plan"
 	@echo "... node_lib"
+	@echo "... tree_lib"
 	@echo "... src/nas_plan.o"
 	@echo "... src/nas_plan.i"
 	@echo "... src/nas_plan.s"
 	@echo "... src/node.o"
 	@echo "... src/node.i"
 	@echo "... src/node.s"
+	@echo "... src/tree.o"
+	@echo "... src/tree.i"
+	@echo "... src/tree.s"
 .PHONY : help
 
 
