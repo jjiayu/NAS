@@ -3,8 +3,7 @@
 
 using namespace nas;
 
-Node::Node() {
-    surface_id = 0;
+Node::Node() {    // surface_id = 0;
     node_id = 0;
-    parent_node = nullptr;
+    parent_ptr = nullptr;
 }

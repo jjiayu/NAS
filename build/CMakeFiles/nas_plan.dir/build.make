@@ -95,10 +95,11 @@ nas_plan_EXTERNAL_OBJECTS =
 
 nas_plan: CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o
 nas_plan: CMakeFiles/nas_plan.dir/build.make
-nas_plan: libnode_lib.dylib
 nas_plan: libtree_lib.dylib
+nas_plan: libutils_lib.dylib
 nas_plan: /opt/homebrew/lib/libvtkInteractionStyle-9.4.9.4.dylib
 nas_plan: /opt/homebrew/lib/libvtkRenderingOpenGL2-9.4.9.4.dylib
+nas_plan: libnode_lib.dylib
 nas_plan: /opt/homebrew/lib/libgmpxx.dylib
 nas_plan: /opt/homebrew/lib/libmpfr.dylib
 nas_plan: /opt/homebrew/lib/libgmp.dylib

@@ -958,7 +958,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/unistd.h \
   /Users/jiayu/Desktop/nas_ws/NAS/include/nas_plan.hpp \
   /Users/jiayu/Desktop/nas_ws/NAS/include/node.hpp \
-  /Users/jiayu/Desktop/nas_ws/NAS/include/visualizer.hpp \
   /opt/homebrew/include/CGAL/Simple_cartesian.h \
   /opt/homebrew/include/CGAL/Cartesian/Cartesian_base.h \
   /opt/homebrew/include/CGAL/basic.h /opt/homebrew/include/CGAL/config.h \
@@ -2446,21 +2445,46 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: \
   /opt/homebrew/include/boost/intrusive/detail/minimal_less_equal_header.hpp \
   /opt/homebrew/include/CGAL/Kernel/Type_equality_wrapper.h \
   /opt/homebrew/include/CGAL/Kernel/interface_macros.h \
-  /opt/homebrew/include/CGAL/Surface_mesh.h \
-  /opt/homebrew/include/CGAL/license/Surface_mesh.h \
-  /opt/homebrew/include/CGAL/Surface_mesh/Surface_mesh_fwd.h \
-  /opt/homebrew/include/CGAL/Surface_mesh/Surface_mesh.h \
-  /opt/homebrew/include/CGAL/Surface_mesh/IO.h \
-  /opt/homebrew/include/CGAL/Surface_mesh/IO/3MF.h \
-  /opt/homebrew/include/CGAL/IO/3MF.h \
-  /opt/homebrew/include/CGAL/IO/3MF/read_3mf.h \
-  /opt/homebrew/include/CGAL/IO/3MF/write_3mf.h \
-  /opt/homebrew/include/CGAL/IO/helpers.h \
-  /opt/homebrew/include/CGAL/Container_helper.h \
-  /opt/homebrew/include/CGAL/Has_member.h \
+  /opt/homebrew/include/CGAL/Polyhedron_3.h \
+  /opt/homebrew/include/CGAL/license/Polyhedron.h \
+  /opt/homebrew/include/CGAL/Polyhedron_3_fwd.h \
+  /opt/homebrew/include/CGAL/HalfedgeDS_iterator.h \
+  /opt/homebrew/include/CGAL/circulator.h \
+  /opt/homebrew/include/CGAL/circulator_bases.h \
+  /opt/homebrew/include/CGAL/Iterator_project.h \
+  /opt/homebrew/include/CGAL/function_objects.h \
+  /opt/homebrew/include/CGAL/N_step_adaptor_derived.h \
+  /opt/homebrew/include/CGAL/iterator.h \
+  /opt/homebrew/include/CGAL/Iterator_range.h \
+  /opt/homebrew/include/CGAL/tuple.h \
+  /opt/homebrew/include/boost/foreach.hpp \
   /opt/homebrew/include/boost/mpl/logical.hpp \
-  /opt/homebrew/include/CGAL/type_traits/is_iterator.h \
-  /opt/homebrew/include/CGAL/boost/graph/iterator.h \
+  /opt/homebrew/include/boost/noncopyable.hpp \
+  /opt/homebrew/include/boost/range/rend.hpp \
+  /opt/homebrew/include/boost/range/reverse_iterator.hpp \
+  /opt/homebrew/include/boost/range/rbegin.hpp \
+  /opt/homebrew/include/boost/type_traits/is_abstract.hpp \
+  /opt/homebrew/include/boost/utility/addressof.hpp \
+  /opt/homebrew/include/boost/foreach_fwd.hpp \
+  /opt/homebrew/include/CGAL/Polyhedron_items_3.h \
+  /opt/homebrew/include/CGAL/HalfedgeDS_vertex_base.h \
+  /opt/homebrew/include/CGAL/HalfedgeDS_halfedge_base.h \
+  /opt/homebrew/include/CGAL/HalfedgeDS_face_base.h \
+  /opt/homebrew/include/CGAL/HalfedgeDS_default.h \
+  /opt/homebrew/include/CGAL/HalfedgeDS_items_2.h \
+  /opt/homebrew/include/CGAL/HalfedgeDS_list.h \
+  /opt/homebrew/include/CGAL/In_place_list.h \
+  /opt/homebrew/include/CGAL/HalfedgeDS_items_decorator.h \
+  /opt/homebrew/include/CGAL/Unique_hash_map.h \
+  /opt/homebrew/include/CGAL/Handle_hash_function.h \
+  /opt/homebrew/include/CGAL/Hash_map/internal/chained_map.h \
+  /opt/homebrew/include/CGAL/boost/graph/graph_traits_HalfedgeDS_default.h \
+  /opt/homebrew/include/CGAL/boost/graph/graph_traits_HalfedgeDS.h \
+  /opt/homebrew/include/CGAL/Named_function_parameters.h \
+  /opt/homebrew/include/CGAL/STL_Extension/internal/mesh_option_classes.h \
+  /opt/homebrew/include/CGAL/STL_Extension/internal/Has_features.h \
+  /opt/homebrew/include/CGAL/STL_Extension/internal/parameters_interface.h \
+  /opt/homebrew/include/CGAL/STL_Extension/internal/mesh_parameters_interface.h \
   /opt/homebrew/include/boost/graph/graph_traits.hpp \
   /opt/homebrew/include/boost/pending/property.hpp \
   /opt/homebrew/include/boost/type_traits.hpp \
@@ -2530,7 +2554,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: \
   /opt/homebrew/include/boost/type_traits/has_unary_minus.hpp \
   /opt/homebrew/include/boost/type_traits/has_unary_plus.hpp \
   /opt/homebrew/include/boost/type_traits/has_virtual_destructor.hpp \
-  /opt/homebrew/include/boost/type_traits/is_abstract.hpp \
   /opt/homebrew/include/boost/type_traits/is_base_of.hpp \
   /opt/homebrew/include/boost/type_traits/is_complex.hpp \
   /opt/homebrew/include/boost/type_traits/is_compound.hpp \
@@ -2562,21 +2585,7 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: \
   /opt/homebrew/include/boost/type_traits/promote.hpp \
   /opt/homebrew/include/boost/pending/detail/property.hpp \
   /opt/homebrew/include/boost/type_traits/same_traits.hpp \
-  /opt/homebrew/include/CGAL/Iterator_range.h \
-  /opt/homebrew/include/CGAL/tuple.h \
-  /opt/homebrew/include/boost/foreach.hpp \
-  /opt/homebrew/include/boost/noncopyable.hpp \
-  /opt/homebrew/include/boost/range/rend.hpp \
-  /opt/homebrew/include/boost/range/reverse_iterator.hpp \
-  /opt/homebrew/include/boost/range/rbegin.hpp \
-  /opt/homebrew/include/boost/utility/addressof.hpp \
-  /opt/homebrew/include/boost/foreach_fwd.hpp \
-  /opt/homebrew/include/CGAL/circulator_bases.h \
-  /opt/homebrew/include/CGAL/boost/graph/internal/helpers.h \
-  /opt/homebrew/include/CGAL/iterator.h \
-  /opt/homebrew/include/CGAL/circulator.h \
-  /opt/homebrew/include/CGAL/property_map.h \
-  /opt/homebrew/include/CGAL/value_type_traits.h \
+  /opt/homebrew/include/boost/graph/properties.hpp \
   /opt/homebrew/include/boost/property_map/property_map.hpp \
   /opt/homebrew/include/boost/concept_archetype.hpp \
   /opt/homebrew/include/boost/property_map/vector_property_map.hpp \
@@ -2603,19 +2612,37 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: \
   /opt/homebrew/include/boost/core/detail/sp_thread_sleep.hpp \
   /opt/homebrew/include/boost/smart_ptr/detail/local_sp_deleter.hpp \
   /opt/homebrew/include/boost/smart_ptr/detail/local_counted_base.hpp \
+  /opt/homebrew/include/boost/graph/property_maps/constant_property_map.hpp \
+  /opt/homebrew/include/boost/graph/property_maps/null_property_map.hpp \
+  /opt/homebrew/include/CGAL/boost/graph/iterator.h \
+  /opt/homebrew/include/CGAL/boost/graph/internal/helpers.h \
+  /opt/homebrew/include/CGAL/property_map.h \
+  /opt/homebrew/include/CGAL/value_type_traits.h \
   /opt/homebrew/include/CGAL/boost/iterator/counting_iterator.hpp \
   /opt/homebrew/include/boost/iterator/counting_iterator.hpp \
   /opt/homebrew/include/boost/detail/numeric_traits.hpp \
   /opt/homebrew/include/CGAL/Cartesian_converter_fwd.h \
   /opt/homebrew/include/CGAL/Default.h \
-  /opt/homebrew/include/CGAL/Named_function_parameters.h \
-  /opt/homebrew/include/CGAL/STL_Extension/internal/mesh_option_classes.h \
-  /opt/homebrew/include/CGAL/STL_Extension/internal/Has_features.h \
-  /opt/homebrew/include/CGAL/STL_Extension/internal/parameters_interface.h \
-  /opt/homebrew/include/CGAL/STL_Extension/internal/mesh_parameters_interface.h \
   /opt/homebrew/include/boost/iterator/function_output_iterator.hpp \
-  /opt/homebrew/include/CGAL/Surface_mesh/IO/OFF.h \
-  /opt/homebrew/include/CGAL/boost/graph/IO/OFF.h \
+  /opt/homebrew/include/CGAL/boost/graph/halfedge_graph_traits.h \
+  /opt/homebrew/include/CGAL/boost/graph/properties.h \
+  /opt/homebrew/include/CGAL/Dynamic_property_map.h \
+  /opt/homebrew/include/CGAL/HalfedgeDS_decorator.h \
+  /opt/homebrew/include/CGAL/HalfedgeDS_const_decorator.h \
+  /opt/homebrew/include/CGAL/IO/Verbose_ostream.h \
+  /opt/homebrew/include/CGAL/boost/graph/properties_HalfedgeDS_default.h \
+  /opt/homebrew/include/CGAL/boost/graph/properties_HalfedgeDS_base.h \
+  /opt/homebrew/include/CGAL/boost/graph/internal/Has_member_id.h \
+  /opt/homebrew/include/CGAL/Modifier_base.h \
+  /opt/homebrew/include/CGAL/Polyhedron_traits_3.h \
+  /opt/homebrew/include/CGAL/boost/graph/graph_traits_Polyhedron_3.h \
+  /opt/homebrew/include/CGAL/boost/graph/backward_compatibility_functions.h \
+  /opt/homebrew/include/CGAL/boost/graph/properties_Polyhedron_3.h \
+  /opt/homebrew/include/CGAL/boost/graph/properties_Polyhedron_3_time_stamp.h \
+  /opt/homebrew/include/CGAL/boost/graph/properties_Polyhedron_3_features.h \
+  /opt/homebrew/include/CGAL/IO/Polyhedron_iostream.h \
+  /opt/homebrew/include/CGAL/IO/Polyhedron_OFF_iostream.h \
+  /opt/homebrew/include/CGAL/IO/print_OFF.h \
   /opt/homebrew/include/CGAL/IO/OFF.h \
   /opt/homebrew/include/CGAL/IO/OFF/Scanner_OFF.h \
   /opt/homebrew/include/CGAL/IO/OFF/File_scanner_OFF.h \
@@ -2626,59 +2653,30 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: \
   /opt/homebrew/include/CGAL/IO/OFF/File_header_OFF_impl.h \
   /opt/homebrew/include/CGAL/IO/OFF/File_writer_OFF.h \
   /opt/homebrew/include/CGAL/IO/OFF/generic_copy_OFF.h \
+  /opt/homebrew/include/CGAL/IO/helpers.h \
+  /opt/homebrew/include/CGAL/Container_helper.h \
+  /opt/homebrew/include/CGAL/Has_member.h \
+  /opt/homebrew/include/CGAL/type_traits/is_iterator.h \
   /opt/homebrew/include/CGAL/IO/Generic_writer.h \
   /opt/homebrew/include/CGAL/boost/graph/named_params_helper.h \
   /opt/homebrew/include/CGAL/boost/graph/internal/initialized_index_maps_helpers.h \
-  /opt/homebrew/include/CGAL/boost/graph/properties.h \
-  /opt/homebrew/include/CGAL/Dynamic_property_map.h \
-  /opt/homebrew/include/boost/graph/properties.hpp \
-  /opt/homebrew/include/boost/graph/property_maps/constant_property_map.hpp \
-  /opt/homebrew/include/boost/graph/property_maps/null_property_map.hpp \
-  /opt/homebrew/include/CGAL/boost/graph/IO/Generic_facegraph_builder.h \
-  /opt/homebrew/include/CGAL/boost/graph/Euler_operations.h \
-  /opt/homebrew/include/CGAL/boost/graph/helpers.h \
-  /opt/homebrew/include/CGAL/boost/graph/internal/Has_member_clear.h \
-  /opt/homebrew/include/CGAL/function_objects.h \
-  /opt/homebrew/include/CGAL/IO/Verbose_ostream.h \
-  /opt/homebrew/include/boost/range/empty.hpp \
-  /opt/homebrew/include/boost/container/small_vector.hpp \
   /opt/homebrew/include/CGAL/boost/graph/IO/Generic_facegraph_printer.h \
   /opt/homebrew/include/boost/container/flat_map.hpp \
   /opt/homebrew/include/boost/container/detail/container_or_allocator_rebind.hpp \
   /opt/homebrew/include/boost/container/detail/container_rebind.hpp \
   /opt/homebrew/include/boost/container/detail/pair.hpp \
-  /opt/homebrew/include/CGAL/Surface_mesh/IO/PLY.h \
-  /opt/homebrew/include/CGAL/IO/PLY.h \
-  /opt/homebrew/include/CGAL/IO/PLY/PLY_reader.h \
-  /opt/homebrew/include/CGAL/IO/PLY/PLY_writer.h \
-  /opt/homebrew/include/CGAL/boost/graph/io.h \
-  /opt/homebrew/include/CGAL/boost/graph/IO/3MF.h \
-  /opt/homebrew/include/CGAL/boost/graph/IO/GOCAD.h \
-  /opt/homebrew/include/CGAL/IO/GOCAD.h \
-  /opt/homebrew/include/CGAL/boost/graph/IO/INP.h \
-  /opt/homebrew/include/CGAL/boost/graph/IO/OBJ.h \
-  /opt/homebrew/include/CGAL/IO/OBJ.h \
-  /opt/homebrew/include/CGAL/IO/OBJ/File_writer_wavefront.h \
-  /opt/homebrew/include/CGAL/boost/graph/IO/PLY.h \
-  /opt/homebrew/include/CGAL/boost/graph/IO/STL.h \
-  /opt/homebrew/include/CGAL/IO/STL.h \
-  /opt/homebrew/include/CGAL/IO/STL/STL_reader.h \
-  /opt/homebrew/include/CGAL/boost/graph/IO/VTK.h \
-  /opt/homebrew/include/CGAL/IO/VTK.h \
-  /opt/homebrew/include/CGAL/IO/VTK/VTK_reader.h \
-  /opt/homebrew/include/CGAL/IO/VTK/VTK_writer.h \
-  /opt/homebrew/include/CGAL/boost/graph/IO/WRL.h \
-  /opt/homebrew/include/CGAL/IO/VRML.h \
-  /opt/homebrew/include/CGAL/IO/VRML/File_writer_VRML_2.h \
-  /opt/homebrew/include/CGAL/IO/VRML/VRML_2_ostream.h \
-  /opt/homebrew/include/CGAL/IO/VRML/VRML_1_ostream.h \
-  /opt/homebrew/include/CGAL/IO/OI.h \
-  /opt/homebrew/include/CGAL/IO/OI/File_writer_inventor.h \
-  /opt/homebrew/include/CGAL/IO/OI/Inventor_ostream.h \
-  /opt/homebrew/include/CGAL/boost/graph/IO/polygon_mesh_io.h \
-  /opt/homebrew/include/CGAL/IO/polygon_mesh_io.h \
-  /opt/homebrew/include/CGAL/Surface_mesh/Properties.h \
-  /opt/homebrew/include/CGAL/boost/graph/copy_face_graph.h \
+  /opt/homebrew/include/CGAL/IO/scan_OFF.h \
+  /opt/homebrew/include/CGAL/IO/Polyhedron_scan_OFF.h \
+  /opt/homebrew/include/CGAL/Polyhedron_incremental_builder_3.h \
+  /opt/homebrew/include/CGAL/Random_access_adaptor.h \
+  /opt/homebrew/include/CGAL/boost/graph/IO/OFF.h \
+  /opt/homebrew/include/CGAL/boost/graph/IO/Generic_facegraph_builder.h \
+  /opt/homebrew/include/CGAL/boost/graph/Euler_operations.h \
+  /opt/homebrew/include/CGAL/boost/graph/helpers.h \
+  /opt/homebrew/include/CGAL/boost/graph/internal/Has_member_clear.h \
+  /opt/homebrew/include/boost/range/empty.hpp \
+  /opt/homebrew/include/boost/container/small_vector.hpp \
+  /opt/homebrew/include/CGAL/Has_conversion.h \
   /opt/homebrew/include/CGAL/Cartesian_converter.h \
   /opt/homebrew/include/CGAL/NT_converter.h \
   /opt/homebrew/include/CGAL/Enum_converter.h \
@@ -2784,11 +2782,57 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: \
   /opt/homebrew/include/boost/mpl/vector/aux_/preprocessed/typeof_based/vector10.hpp \
   /opt/homebrew/include/boost/mpl/vector/aux_/preprocessed/typeof_based/vector20.hpp \
   /opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/vector.hpp \
+  /opt/homebrew/include/CGAL/Homogeneous_converter.h \
+  /opt/homebrew/include/CGAL/IO/Polyhedron_VRML_1_ostream.h \
+  /opt/homebrew/include/CGAL/IO/Polyhedron_inventor_ostream.h \
+  /opt/homebrew/include/CGAL/IO/OI.h \
+  /opt/homebrew/include/CGAL/IO/OI/File_writer_inventor.h \
+  /opt/homebrew/include/CGAL/IO/OI/Inventor_ostream.h \
+  /opt/homebrew/include/CGAL/IO/Polyhedron_VRML_2_ostream.h \
+  /opt/homebrew/include/CGAL/IO/VRML.h \
+  /opt/homebrew/include/CGAL/IO/VRML/File_writer_VRML_2.h \
+  /opt/homebrew/include/CGAL/IO/VRML/VRML_2_ostream.h \
+  /opt/homebrew/include/CGAL/IO/VRML/VRML_1_ostream.h \
+  /Users/jiayu/Desktop/nas_ws/NAS/include/visualizer.hpp \
+  /opt/homebrew/include/CGAL/Surface_mesh.h \
+  /opt/homebrew/include/CGAL/license/Surface_mesh.h \
+  /opt/homebrew/include/CGAL/Surface_mesh/Surface_mesh_fwd.h \
+  /opt/homebrew/include/CGAL/Surface_mesh/Surface_mesh.h \
+  /opt/homebrew/include/CGAL/Surface_mesh/IO.h \
+  /opt/homebrew/include/CGAL/Surface_mesh/IO/3MF.h \
+  /opt/homebrew/include/CGAL/IO/3MF.h \
+  /opt/homebrew/include/CGAL/IO/3MF/read_3mf.h \
+  /opt/homebrew/include/CGAL/IO/3MF/write_3mf.h \
+  /opt/homebrew/include/CGAL/Surface_mesh/IO/OFF.h \
+  /opt/homebrew/include/CGAL/Surface_mesh/IO/PLY.h \
+  /opt/homebrew/include/CGAL/IO/PLY.h \
+  /opt/homebrew/include/CGAL/IO/PLY/PLY_reader.h \
+  /opt/homebrew/include/CGAL/IO/PLY/PLY_writer.h \
+  /opt/homebrew/include/CGAL/boost/graph/io.h \
+  /opt/homebrew/include/CGAL/boost/graph/IO/3MF.h \
+  /opt/homebrew/include/CGAL/boost/graph/IO/GOCAD.h \
+  /opt/homebrew/include/CGAL/IO/GOCAD.h \
+  /opt/homebrew/include/CGAL/boost/graph/IO/INP.h \
+  /opt/homebrew/include/CGAL/boost/graph/IO/OBJ.h \
+  /opt/homebrew/include/CGAL/IO/OBJ.h \
+  /opt/homebrew/include/CGAL/IO/OBJ/File_writer_wavefront.h \
+  /opt/homebrew/include/CGAL/boost/graph/IO/PLY.h \
+  /opt/homebrew/include/CGAL/boost/graph/IO/STL.h \
+  /opt/homebrew/include/CGAL/IO/STL.h \
+  /opt/homebrew/include/CGAL/IO/STL/STL_reader.h \
+  /opt/homebrew/include/CGAL/boost/graph/IO/VTK.h \
+  /opt/homebrew/include/CGAL/IO/VTK.h \
+  /opt/homebrew/include/CGAL/IO/VTK/VTK_reader.h \
+  /opt/homebrew/include/CGAL/IO/VTK/VTK_writer.h \
+  /opt/homebrew/include/CGAL/boost/graph/IO/WRL.h \
+  /opt/homebrew/include/CGAL/boost/graph/IO/polygon_mesh_io.h \
+  /opt/homebrew/include/CGAL/IO/polygon_mesh_io.h \
+  /opt/homebrew/include/CGAL/Surface_mesh/Properties.h \
+  /opt/homebrew/include/CGAL/boost/graph/copy_face_graph.h \
   /opt/homebrew/include/CGAL/boost/graph/graph_traits_Surface_mesh.h \
   /opt/homebrew/include/CGAL/boost/graph/properties_Surface_mesh.h \
   /opt/homebrew/include/CGAL/boost/graph/properties_Surface_mesh_time_stamp.h \
   /opt/homebrew/include/CGAL/boost/graph/properties_Surface_mesh_features.h \
-  /opt/homebrew/include/CGAL/Handle_hash_function.h \
   /opt/homebrew/include/vtk-9.4/vtkSmartPointer.h \
   /opt/homebrew/include/vtk-9.4/vtkSmartPointerBase.h \
   /opt/homebrew/include/vtk-9.4/vtkCommonCoreModule.h \
@@ -2928,50 +2972,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: \
   /opt/homebrew/include/vtk-9.4/vtkCommonMathModule.h \
   /opt/homebrew/include/vtk-9.4/vtkTransformPolyDataFilter.h \
   /opt/homebrew/include/vtk-9.4/vtkFiltersGeneralModule.h \
-  /opt/homebrew/include/CGAL/Polyhedron_3.h \
-  /opt/homebrew/include/CGAL/license/Polyhedron.h \
-  /opt/homebrew/include/CGAL/Polyhedron_3_fwd.h \
-  /opt/homebrew/include/CGAL/HalfedgeDS_iterator.h \
-  /opt/homebrew/include/CGAL/Iterator_project.h \
-  /opt/homebrew/include/CGAL/N_step_adaptor_derived.h \
-  /opt/homebrew/include/CGAL/Polyhedron_items_3.h \
-  /opt/homebrew/include/CGAL/HalfedgeDS_vertex_base.h \
-  /opt/homebrew/include/CGAL/HalfedgeDS_halfedge_base.h \
-  /opt/homebrew/include/CGAL/HalfedgeDS_face_base.h \
-  /opt/homebrew/include/CGAL/HalfedgeDS_default.h \
-  /opt/homebrew/include/CGAL/HalfedgeDS_items_2.h \
-  /opt/homebrew/include/CGAL/HalfedgeDS_list.h \
-  /opt/homebrew/include/CGAL/In_place_list.h \
-  /opt/homebrew/include/CGAL/HalfedgeDS_items_decorator.h \
-  /opt/homebrew/include/CGAL/Unique_hash_map.h \
-  /opt/homebrew/include/CGAL/Hash_map/internal/chained_map.h \
-  /opt/homebrew/include/CGAL/boost/graph/graph_traits_HalfedgeDS_default.h \
-  /opt/homebrew/include/CGAL/boost/graph/graph_traits_HalfedgeDS.h \
-  /opt/homebrew/include/CGAL/boost/graph/halfedge_graph_traits.h \
-  /opt/homebrew/include/CGAL/HalfedgeDS_decorator.h \
-  /opt/homebrew/include/CGAL/HalfedgeDS_const_decorator.h \
-  /opt/homebrew/include/CGAL/boost/graph/properties_HalfedgeDS_default.h \
-  /opt/homebrew/include/CGAL/boost/graph/properties_HalfedgeDS_base.h \
-  /opt/homebrew/include/CGAL/boost/graph/internal/Has_member_id.h \
-  /opt/homebrew/include/CGAL/Modifier_base.h \
-  /opt/homebrew/include/CGAL/Polyhedron_traits_3.h \
-  /opt/homebrew/include/CGAL/boost/graph/graph_traits_Polyhedron_3.h \
-  /opt/homebrew/include/CGAL/boost/graph/backward_compatibility_functions.h \
-  /opt/homebrew/include/CGAL/boost/graph/properties_Polyhedron_3.h \
-  /opt/homebrew/include/CGAL/boost/graph/properties_Polyhedron_3_time_stamp.h \
-  /opt/homebrew/include/CGAL/boost/graph/properties_Polyhedron_3_features.h \
-  /opt/homebrew/include/CGAL/IO/Polyhedron_iostream.h \
-  /opt/homebrew/include/CGAL/IO/Polyhedron_OFF_iostream.h \
-  /opt/homebrew/include/CGAL/IO/print_OFF.h \
-  /opt/homebrew/include/CGAL/IO/scan_OFF.h \
-  /opt/homebrew/include/CGAL/IO/Polyhedron_scan_OFF.h \
-  /opt/homebrew/include/CGAL/Polyhedron_incremental_builder_3.h \
-  /opt/homebrew/include/CGAL/Random_access_adaptor.h \
-  /opt/homebrew/include/CGAL/Has_conversion.h \
-  /opt/homebrew/include/CGAL/Homogeneous_converter.h \
-  /opt/homebrew/include/CGAL/IO/Polyhedron_VRML_1_ostream.h \
-  /opt/homebrew/include/CGAL/IO/Polyhedron_inventor_ostream.h \
-  /opt/homebrew/include/CGAL/IO/Polyhedron_VRML_2_ostream.h \
   /Users/jiayu/Desktop/nas_ws/NAS/include/constants.hpp \
   /Users/jiayu/Desktop/nas_ws/NAS/include/tree.hpp \
   /opt/homebrew/opt/eigen/include/eigen3/Eigen/Dense \
@@ -3034,4 +3034,5 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: \
   /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/RealQZ.h \
   /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/GeneralizedEigenSolver.h \
   /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/./RealQZ.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/MatrixBaseEigenvalues.h
+  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/MatrixBaseEigenvalues.h \
+  /Users/jiayu/Desktop/nas_ws/NAS/include/utils.hpp

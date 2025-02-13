@@ -117,6 +117,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named utils_lib
+
+# Build rule for target.
+utils_lib: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 utils_lib
+.PHONY : utils_lib
+
+# fast build rule for target.
+utils_lib/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/utils_lib.dir/build.make CMakeFiles/utils_lib.dir/build
+.PHONY : utils_lib/fast
+
+#=============================================================================
 # Target rules for targets named node_lib
 
 # Build rule for target.
@@ -227,6 +240,30 @@ src/tree.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/tree_lib.dir/build.make CMakeFiles/tree_lib.dir/src/tree.cpp.s
 .PHONY : src/tree.cpp.s
 
+src/utils.o: src/utils.cpp.o
+.PHONY : src/utils.o
+
+# target to build an object file
+src/utils.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/utils_lib.dir/build.make CMakeFiles/utils_lib.dir/src/utils.cpp.o
+.PHONY : src/utils.cpp.o
+
+src/utils.i: src/utils.cpp.i
+.PHONY : src/utils.i
+
+# target to preprocess a source file
+src/utils.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/utils_lib.dir/build.make CMakeFiles/utils_lib.dir/src/utils.cpp.i
+.PHONY : src/utils.cpp.i
+
+src/utils.s: src/utils.cpp.s
+.PHONY : src/utils.s
+
+# target to generate assembly for a file
+src/utils.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/utils_lib.dir/build.make CMakeFiles/utils_lib.dir/src/utils.cpp.s
+.PHONY : src/utils.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -238,6 +275,7 @@ help:
 	@echo "... nas_plan"
 	@echo "... node_lib"
 	@echo "... tree_lib"
+	@echo "... utils_lib"
 	@echo "... src/nas_plan.o"
 	@echo "... src/nas_plan.i"
 	@echo "... src/nas_plan.s"
@@ -247,6 +285,9 @@ help:
 	@echo "... src/tree.o"
 	@echo "... src/tree.i"
 	@echo "... src/tree.s"
+	@echo "... src/utils.o"
+	@echo "... src/utils.i"
+	@echo "... src/utils.s"
 .PHONY : help
 
 

@@ -1066,6 +1066,7 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /Users/jiayu/Desktop/nas_ws/NAS/include/nas_plan.hpp \
   /Users/jiayu/Desktop/nas_ws/NAS/include/node.hpp \
   /Users/jiayu/Desktop/nas_ws/NAS/include/tree.hpp \
+  /Users/jiayu/Desktop/nas_ws/NAS/include/utils.hpp \
   /Users/jiayu/Desktop/nas_ws/NAS/include/visualizer.hpp \
   /opt/homebrew/include/CGAL/Aff_transformation_2.h \
   /opt/homebrew/include/CGAL/Aff_transformation_3.h \
@@ -4791,6 +4792,10 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/mpz_class.h:
 
+/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/util/Macros.h:
+
+/opt/homebrew/include/CGAL/long_double.h:
+
 /opt/homebrew/include/boost/type_traits/same_traits.hpp:
 
 /opt/homebrew/include/boost/mpl/vector/vector20.hpp:
@@ -7163,6 +7168,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__exception/exception_ptr.h:
 
+/Users/jiayu/Desktop/nas_ws/NAS/include/utils.hpp:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__numeric/inner_product.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__math/rounding_functions.h:
@@ -8984,10 +8991,6 @@ CMakeFiles/vtkModuleAutoInit_be7301261a49b13d6a9b1d9e110eacd8.h:
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_ino_t.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__charconv/to_chars_integral.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/util/Macros.h:
-
-/opt/homebrew/include/CGAL/long_double.h:
 
 /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/Array.h:
 
