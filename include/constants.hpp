@@ -24,7 +24,7 @@ const int goal_stance_foot = LEFT_FOOT;
 const Vector_3 goal_offset(0.0, 0.0, 0.0); // goal offset applied to move in the local frame of the goal surface (last surface)
 
 // Define Number of Steps
-const int num_steps = 10;
+const int total_num_steps = 3;
 
 // Define Surfaces lists
 // Define the list of surfaces as a vector of vectors of Point_3

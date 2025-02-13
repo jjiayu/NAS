@@ -13,16 +13,18 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Set Homebrew paths for Apple Silicon
 set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "/opt/homebrew/opt/cgal")
 set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "/opt/homebrew/opt/eigen")
+set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "/opt/homebrew/opt/vtk@9.2")
 
 # Find required packages
 find_package(CGAL REQUIRED)
-find_package(VTK REQUIRED COMPONENTS 
+find_package(VTK 9.2 REQUIRED COMPONENTS 
   CommonCore
   CommonDataModel
   FiltersSources
   InteractionStyle
   RenderingCore
   RenderingOpenGL2
+  RenderingFreeType
 )
 
 # Find Eigen3 (Mac Silicon specific)
@@ -40,7 +42,7 @@ add_library(node_lib src/node.cpp)
 add_library(tree_lib src/tree.cpp)
 
 # Set library dependencies
-target_link_libraries(tree_lib PRIVATE utils_lib node_lib)
+target_link_libraries(tree_lib PRIVATE utils_lib node_lib ${VTK_LIBRARIES})
 
 # Add executable
 add_executable(nas_plan src/nas_plan.cpp)
@@ -57,6 +59,6 @@ target_link_libraries(nas_plan PRIVATE
 
 # Enable VTK modules
 vtk_module_autoinit(
-  TARGETS nas_plan
+  TARGETS nas_plan tree_lib
   MODULES ${VTK_LIBRARIES}
 )

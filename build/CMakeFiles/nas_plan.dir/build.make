@@ -99,20 +99,18 @@ nas_plan: libtree_lib.dylib
 nas_plan: libutils_lib.dylib
 nas_plan: /opt/homebrew/lib/libvtkInteractionStyle-9.4.9.4.dylib
 nas_plan: /opt/homebrew/lib/libvtkRenderingOpenGL2-9.4.9.4.dylib
+nas_plan: /opt/homebrew/lib/libvtkRenderingFreeType-9.4.9.4.dylib
 nas_plan: libnode_lib.dylib
-nas_plan: /opt/homebrew/lib/libgmpxx.dylib
-nas_plan: /opt/homebrew/lib/libmpfr.dylib
-nas_plan: /opt/homebrew/lib/libgmp.dylib
 nas_plan: /opt/homebrew/lib/libvtkIOImage-9.4.9.4.dylib
 nas_plan: /opt/homebrew/lib/libvtkRenderingHyperTreeGrid-9.4.9.4.dylib
 nas_plan: /opt/homebrew/lib/libvtkImagingCore-9.4.9.4.dylib
 nas_plan: /opt/homebrew/lib/libvtkRenderingUI-9.4.9.4.dylib
+nas_plan: /opt/homebrew/lib/libvtkglad-9.4.9.4.dylib
 nas_plan: /opt/homebrew/lib/libvtkRenderingCore-9.4.9.4.dylib
 nas_plan: /opt/homebrew/lib/libvtkFiltersSources-9.4.9.4.dylib
 nas_plan: /opt/homebrew/lib/libvtkFiltersGeneral-9.4.9.4.dylib
 nas_plan: /opt/homebrew/lib/libvtkFiltersCore-9.4.9.4.dylib
 nas_plan: /opt/homebrew/lib/libvtkCommonExecutionModel-9.4.9.4.dylib
-nas_plan: /opt/homebrew/lib/libvtkglad-9.4.9.4.dylib
 nas_plan: /opt/homebrew/lib/libvtkCommonDataModel-9.4.9.4.dylib
 nas_plan: /opt/homebrew/lib/libvtkCommonTransforms-9.4.9.4.dylib
 nas_plan: /opt/homebrew/lib/libvtkCommonMisc-9.4.9.4.dylib
@@ -121,6 +119,10 @@ nas_plan: /opt/homebrew/lib/libvtkkissfft-9.4.9.4.dylib
 nas_plan: /opt/homebrew/lib/libvtkCommonCore-9.4.9.4.dylib
 nas_plan: /opt/homebrew/lib/libvtktoken-9.4.9.4.dylib
 nas_plan: /opt/homebrew/lib/libvtksys-9.4.9.4.dylib
+nas_plan: /opt/homebrew/lib/libfreetype.dylib
+nas_plan: /opt/homebrew/lib/libgmpxx.dylib
+nas_plan: /opt/homebrew/lib/libmpfr.dylib
+nas_plan: /opt/homebrew/lib/libgmp.dylib
 nas_plan: CMakeFiles/nas_plan.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable nas_plan"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/nas_plan.dir/link.txt --verbose=$(VERBOSE)

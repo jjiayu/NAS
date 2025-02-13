@@ -262,6 +262,18 @@ Eigen3_DIR:PATH=/opt/homebrew/opt/eigen/share/eigen3/cmake
 //Eigen include directory
 Eigen3_INCLUDE_DIR:PATH=/opt/homebrew/include/eigen3
 
+//Path to a file.
+FREETYPE_INCLUDE_DIR_freetype2:PATH=/opt/homebrew/include/freetype2
+
+//Path to a file.
+FREETYPE_INCLUDE_DIR_ft2build:PATH=/opt/homebrew/include/freetype2
+
+//Path to a library.
+FREETYPE_LIBRARY_DEBUG:FILEPATH=FREETYPE_LIBRARY_DEBUG-NOTFOUND
+
+//Path to a library.
+FREETYPE_LIBRARY_RELEASE:FILEPATH=/opt/homebrew/lib/libfreetype.dylib
+
 //git command line client
 GIT_EXECUTABLE:FILEPATH=/usr/bin/git
 
@@ -356,6 +368,9 @@ double-conversion_INCLUDE_DIR:PATH=/opt/homebrew/include/double-conversion
 
 //double-conversion library
 double-conversion_LIBRARY:FILEPATH=/opt/homebrew/lib/libdouble-conversion.dylib
+
+//The directory containing a CMake configuration file for freetype.
+freetype_DIR:PATH=freetype_DIR-NOTFOUND
 
 //Value Computed by CMake
 nas_BINARY_DIR:STATIC=/Users/jiayu/Desktop/nas_ws/NAS/build
@@ -536,6 +551,8 @@ FIND_PACKAGE_MESSAGE_DETAILS_Boost:INTERNAL=[/opt/homebrew/lib/cmake/Boost-1.87.
 FIND_PACKAGE_MESSAGE_DETAILS_EXPAT:INTERNAL=[/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/lib/libexpat.tbd][/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include][v2.6.3()]
 //Details about finding Eigen3
 FIND_PACKAGE_MESSAGE_DETAILS_Eigen3:INTERNAL=[/opt/homebrew/include/eigen3][v3.4.0(3.1.0)]
+//Details about finding Freetype
+FIND_PACKAGE_MESSAGE_DETAILS_Freetype:INTERNAL=[/opt/homebrew/lib/libfreetype.dylib][/opt/homebrew/include/freetype2][v2.13.3()]
 //Details about finding GMP
 FIND_PACKAGE_MESSAGE_DETAILS_GMP:INTERNAL=[/opt/homebrew/lib/libgmp.dylib][/opt/homebrew/include][v()]
 //Details about finding JPEG
@@ -560,6 +577,14 @@ FIND_PACKAGE_MESSAGE_DETAILS_double-conversion:INTERNAL=[/opt/homebrew/lib/libdo
 FIND_PACKAGE_MESSAGE_DETAILS_nlohmann_json:INTERNAL=[/opt/homebrew/share/cmake/nlohmann_json/nlohmann_jsonConfig.cmake][v3.11.3()]
 //Details about finding utf8cpp
 FIND_PACKAGE_MESSAGE_DETAILS_utf8cpp:INTERNAL=[/opt/homebrew/include/utf8cpp][v()]
+//ADVANCED property for variable: FREETYPE_INCLUDE_DIR_freetype2
+FREETYPE_INCLUDE_DIR_freetype2-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: FREETYPE_INCLUDE_DIR_ft2build
+FREETYPE_INCLUDE_DIR_ft2build-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: FREETYPE_LIBRARY_DEBUG
+FREETYPE_LIBRARY_DEBUG-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: FREETYPE_LIBRARY_RELEASE
+FREETYPE_LIBRARY_RELEASE-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: JPEG_INCLUDE_DIR
 JPEG_INCLUDE_DIR-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: JPEG_LIBRARY_DEBUG

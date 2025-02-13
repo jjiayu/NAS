@@ -68,6 +68,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/opt/homebrew/lib/cmake/pugixml/pugixml-targets.cmake"
   "/opt/homebrew/lib/cmake/vtk-9.4/FindEXPAT.cmake"
   "/opt/homebrew/lib/cmake/vtk-9.4/FindEigen3.cmake"
+  "/opt/homebrew/lib/cmake/vtk-9.4/FindFreetype.cmake"
   "/opt/homebrew/lib/cmake/vtk-9.4/FindLZ4.cmake"
   "/opt/homebrew/lib/cmake/vtk-9.4/FindLZMA.cmake"
   "/opt/homebrew/lib/cmake/vtk-9.4/Finddouble-conversion.cmake"
@@ -130,7 +131,7 @@ set(CMAKE_MAKEFILE_OUTPUTS
 
 # Byproducts of CMake generate step:
 set(CMAKE_MAKEFILE_PRODUCTS
-  "CMakeFiles/vtkModuleAutoInit_be7301261a49b13d6a9b1d9e110eacd8.h"
+  "CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h"
   "CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 
