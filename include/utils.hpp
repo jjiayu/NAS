@@ -18,6 +18,9 @@ std::vector<Polyhedron> convert_surfaces_to_planes(std::vector<std::vector<Point
 
 Vector_3 get_centroid(const Polyhedron& polyhedron);
 
+Polyhedron minkowski_sum(const std::vector<Vector_3>& patch_vertices, 
+                         const Polyhedron& polytope);
+
 } // namespace nas
 
 #endif

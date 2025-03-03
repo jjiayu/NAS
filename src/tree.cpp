@@ -124,26 +124,10 @@ void Tree::expand_to_depth(int target_depth) {
 std::vector<Node*> Tree::get_children(Node* parent) {
     std::vector<Node*> children;
 
-    // Store all vertices of the transformed polytopes
-    std::vector<Point_3> all_vertices;
-
-    // Build the list of all transformed polytopes and collect vertices
-    for (size_t i = 0; i < parent->patch_vertices.size(); ++i) {
-        Polyhedron P_tmp = parent->stance_foot == 0 ? rf_in_lf_polytope : lf_in_rf_polytope;
-        Transformation translation(CGAL::TRANSLATION, parent->patch_vertices[i]);
-        
-        // Transform each vertex of the polytope and collect them
-        for (auto v = P_tmp.vertices_begin(); v != P_tmp.vertices_end(); ++v) {
-            Point_3 transformed_point = translation(v->point());
-            all_vertices.push_back(transformed_point);
-        }
-    }
-
-    // Compute convex hull of all vertices
-    Polyhedron P_union;
-    CGAL::convex_hull_3(all_vertices.begin(), all_vertices.end(), P_union);
-    // Visualizer::show_polyhedron(P_union); //Visaulze the union of all transformed polytopes
-
+    // Compute minkowski sum
+    Polyhedron base_polytope = parent->stance_foot == 0 ? rf_in_lf_polytope : lf_in_rf_polytope;
+    Polyhedron P_union = minkowski_sum(parent->patch_vertices, base_polytope);
+    // Visualizer::show_polyhedron(P_union); //Visualize the union of all transformed polytopes
 
     // Example: create two children for each node
     for (int i = 0; i < 2; ++i) {

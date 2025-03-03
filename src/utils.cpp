@@ -7,12 +7,16 @@
 #include <CGAL/IO/polygon_mesh_io.h>
 #include <fstream>
 #include <iostream>
+#include <CGAL/Aff_transformation_3.h>
+#include <CGAL/aff_transformation_tags.h>  // For TRANSLATION tag
+#include <CGAL/convex_hull_3.h>  // Add this instead of minkowski_sum_3
 
 
 typedef CGAL::Simple_cartesian<double> Kernel; // Using Simple Geometry Kernel
 typedef CGAL::Polyhedron_3<Kernel> Polyhedron;
 typedef CGAL::Vector_3<Kernel> Vector_3;
 typedef CGAL::Point_3<Kernel> Point_3;
+typedef CGAL::Aff_transformation_3<Kernel> Transformation;
 
 namespace nas {
 
@@ -62,6 +66,29 @@ Vector_3 get_centroid(const Polyhedron& polyhedron) {
         // Handle the case where there are no vertices
         return Vector_3(0.0, 0.0, 0.0); // Or throw an exception, or handle as needed
     }
+}
+
+Polyhedron minkowski_sum(const std::vector<Vector_3>& patch_vertices, 
+                         const Polyhedron& polytope) {
+    // Store all vertices of the transformed polytopes
+    std::vector<Point_3> all_vertices;
+
+    // Build the list of all transformed polytopes and collect vertices
+    for (size_t i = 0; i < patch_vertices.size(); ++i) {
+        Transformation translation(CGAL::TRANSLATION, patch_vertices[i]);
+        
+        // Transform each vertex of the polytope and collect them
+        for (auto v = polytope.vertices_begin(); v != polytope.vertices_end(); ++v) {
+            Point_3 transformed_point = translation(v->point());
+            all_vertices.push_back(transformed_point);
+        }
+    }
+
+    // Compute convex hull of all vertices
+    Polyhedron P_union;
+    CGAL::convex_hull_3(all_vertices.begin(), all_vertices.end(), P_union);
+    
+    return P_union;
 }
 
 } // namespace nas  
