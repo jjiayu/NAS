@@ -43,6 +43,7 @@ add_library(tree_lib src/tree.cpp)
 
 # Set library dependencies
 target_link_libraries(tree_lib PRIVATE utils_lib node_lib ${VTK_LIBRARIES})
+target_link_libraries(utils_lib PRIVATE ${VTK_LIBRARIES})
 
 # Add executable
 add_executable(nas_plan src/nas_plan.cpp)
@@ -59,6 +60,6 @@ target_link_libraries(nas_plan PRIVATE
 
 # Enable VTK modules
 vtk_module_autoinit(
-  TARGETS nas_plan tree_lib
+  TARGETS nas_plan tree_lib utils_lib
   MODULES ${VTK_LIBRARIES}
 )

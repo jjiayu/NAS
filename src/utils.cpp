@@ -1,6 +1,7 @@
 #include "utils.hpp"
 #include "tree.hpp"
 #include "constants.hpp"
+#include "visualizer.hpp"
 #include <CGAL/Simple_cartesian.h>
 #include <CGAL/Polyhedron_3.h>
 #include <CGAL/IO/Polyhedron_iostream.h>
@@ -142,8 +143,6 @@ void polytope_surf_intersection(const std::vector<Point_3>& surf_pts, const Poly
                 intersection_points.push_back(intersection_point);
             }
         }
-
-
     }
 
     // Output results
@@ -152,6 +151,114 @@ void polytope_surf_intersection(const std::vector<Point_3>& surf_pts, const Poly
         std::cout << "Intersection point: " << point << std::endl;
     }
 
+    if (!intersection_points.empty()) {
+        // Find centroid of intersection points
+        Point_3 centroid(0, 0, 0);
+        for (const auto& p : intersection_points) {
+            centroid = Point_3(centroid.x() + p.x(), 
+                             centroid.y() + p.y(), 
+                             centroid.z() + p.z());
+        }
+        centroid = Point_3(centroid.x() / intersection_points.size(),
+                          centroid.y() / intersection_points.size(),
+                          centroid.z() / intersection_points.size());
+
+        // Create a coordinate system in the plane
+        Vector_3 v1 = plane.base1();
+        Vector_3 v2 = plane.base2();
+        
+        // Ensure v1 and v2 are normalized
+        double v1_length = std::sqrt(v1.squared_length());
+        double v2_length = std::sqrt(v2.squared_length());
+        v1 = v1 / v1_length;
+        v2 = v2 / v2_length;
+        
+        // Make sure v1 and v2 are perpendicular to the normal
+        normal = plane.orthogonal_vector();
+        normal = normal / std::sqrt(normal.squared_length());
+        v2 = CGAL::cross_product(normal, v1); // Ensure perpendicular basis
+        
+        // Sort points based on their polar angle
+        std::sort(intersection_points.begin(), intersection_points.end(),
+            [&](const Point_3& p1, const Point_3& p2) {
+                // Get vectors from centroid to points
+                Vector_3 vec1(centroid, p1);
+                Vector_3 vec2(centroid, p2);
+                
+                // Project vectors onto the plane
+                double x1 = vec1 * v1;
+                double y1 = vec1 * v2;
+                double x2 = vec2 * v1;
+                double y2 = vec2 * v2;
+                
+                // Compare polar angles using atan2
+                double angle1 = std::atan2(y1, x1);
+                double angle2 = std::atan2(y2, x2);
+                
+                // Handle the -π to π transition
+                if (angle1 - angle2 > M_PI)
+                    angle2 += 2 * M_PI;
+                else if (angle2 - angle1 > M_PI)
+                    angle1 += 2 * M_PI;
+                    
+                return angle1 < angle2;
+            });
+
+        // Verify the orientation
+        double total_angle = 0.0;
+        for (size_t i = 0; i < intersection_points.size(); ++i) {
+            size_t j = (i + 1) % intersection_points.size();
+            Vector_3 vec1(centroid, intersection_points[i]);
+            Vector_3 vec2(centroid, intersection_points[j]);
+            
+            double x1 = vec1 * v1;
+            double y1 = vec1 * v2;
+            double x2 = vec2 * v1;
+            double y2 = vec2 * v2;
+            
+            double angle = std::atan2(y2, x2) - std::atan2(y1, x1);
+            if (angle < -M_PI) angle += 2 * M_PI;
+            if (angle > M_PI) angle -= 2 * M_PI;
+            total_angle += angle;
+        }
+
+        // If total angle is negative, reverse the order
+        if (total_angle < 0) {
+            std::reverse(intersection_points.begin() + 1, intersection_points.end());
+        }
+    }
+
+    // Create a polygon from the sorted intersection points
+    if (intersection_points.size() >= 3) {
+        Polyhedron intersection_polygon;
+        CGAL::Polyhedron_incremental_builder_3<Polyhedron::HalfedgeDS> builder(intersection_polygon.hds());
+        
+        // Start building with one face, n vertices
+        builder.begin_surface(intersection_points.size(), 1);
+        
+        // Add vertices
+        for (const auto& p : intersection_points) {
+            builder.add_vertex(p);
+        }
+        
+        // Add the face (one polygon using all vertices)
+        builder.begin_facet();
+        for (size_t i = 0; i < intersection_points.size(); ++i) {
+            builder.add_vertex_to_facet(i);
+        }
+        builder.end_facet();
+        
+        // Finish building
+        builder.end_surface();
+
+        // Show the visualizations
+        Visualizer::show_plane(plane);
+        Visualizer::show_polyhedron(polytope);
+        Visualizer::show_polyhedron(intersection_polygon);
+    }
+
+    // Output results
+    std::cout << "Created polygon from " << intersection_points.size() << " intersection points" << std::endl;
 }
 
 } // namespace nas  
