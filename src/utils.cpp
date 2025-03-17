@@ -14,6 +14,8 @@
 #include <CGAL/linear_least_squares_fitting_3.h> // This wasn't enough
 #include <CGAL/Linear_algebraCd.h>              // Need this
 #include <CGAL/linear_least_squares_fitting_points_3.h> // And this specific header
+#include <CGAL/Polygon_2.h>
+#include <CGAL/Boolean_set_operations_2.h>
 
 
 typedef CGAL::Simple_cartesian<double> Kernel; // Using Simple Geometry Kernel
@@ -22,6 +24,8 @@ typedef CGAL::Vector_3<Kernel> Vector_3;
 typedef CGAL::Point_3<Kernel> Point_3;
 typedef Kernel::Plane_3 Plane_3;
 typedef CGAL::Aff_transformation_3<Kernel> Transformation;
+typedef CGAL::Polygon_2<Kernel> Polygon_2;
+typedef Kernel::Point_2 Point_2;
 
 namespace nas {
 
@@ -145,120 +149,75 @@ void polytope_surf_intersection(const std::vector<Point_3>& surf_pts, const Poly
         }
     }
 
-    // Output results
-    std::cout << "Found " << intersection_points.size() << " intersection points:" << std::endl;
+    // Sort the intersection points using the Cross Product method
+    if (!intersection_points.empty()) {
+        // Find the reference point (e.g., the leftmost point)
+        auto reference = *std::min_element(intersection_points.begin(), intersection_points.end(), [](const Point_3& a, const Point_3& b) {
+            return a.x() < b.x() || (a.x() == b.x() && a.y() < b.y());
+        });
+
+        // Sort points based on cross product
+        std::sort(intersection_points.begin(), intersection_points.end(), [&](const Point_3& p1, const Point_3& p2) {
+            Vector_3 v1 = p1 - reference;
+            Vector_3 v2 = p2 - reference;
+            return CGAL::cross_product(v1, v2).z() > 0; // Use the z-component for 2D cross product
+        });
+    }
+
+    std::cout << "(After sorting) Found " << intersection_points.size() << " intersection points:" << std::endl;
     for (const auto& point : intersection_points) {
         std::cout << "Intersection point: " << point << std::endl;
     }
 
-    if (!intersection_points.empty()) {
-        // Find centroid of intersection points
-        Point_3 centroid(0, 0, 0);
-        for (const auto& p : intersection_points) {
-            centroid = Point_3(centroid.x() + p.x(), 
-                             centroid.y() + p.y(), 
-                             centroid.z() + p.z());
-        }
-        centroid = Point_3(centroid.x() / intersection_points.size(),
-                          centroid.y() / intersection_points.size(),
-                          centroid.z() / intersection_points.size());
+    // // Clean intersection points
+    // std::vector<Point_3> cleaned_points;
+    // double threshold = 0.03; // Set an appropriate threshold
 
-        // Create a coordinate system in the plane
-        Vector_3 v1 = plane.base1();
-        Vector_3 v2 = plane.base2();
-        
-        // Ensure v1 and v2 are normalized
-        double v1_length = std::sqrt(v1.squared_length());
-        double v2_length = std::sqrt(v2.squared_length());
-        v1 = v1 / v1_length;
-        v2 = v2 / v2_length;
-        
-        // Make sure v1 and v2 are perpendicular to the normal
-        normal = plane.orthogonal_vector();
-        normal = normal / std::sqrt(normal.squared_length());
-        v2 = CGAL::cross_product(normal, v1); // Ensure perpendicular basis
-        
-        // Sort points based on their polar angle
-        std::sort(intersection_points.begin(), intersection_points.end(),
-            [&](const Point_3& p1, const Point_3& p2) {
-                // Get vectors from centroid to points
-                Vector_3 vec1(centroid, p1);
-                Vector_3 vec2(centroid, p2);
-                
-                // Project vectors onto the plane
-                double x1 = vec1 * v1;
-                double y1 = vec1 * v2;
-                double x2 = vec2 * v1;
-                double y2 = vec2 * v2;
-                
-                // Compare polar angles using atan2
-                double angle1 = std::atan2(y1, x1);
-                double angle2 = std::atan2(y2, x2);
-                
-                // Handle the -π to π transition
-                if (angle1 - angle2 > M_PI)
-                    angle2 += 2 * M_PI;
-                else if (angle2 - angle1 > M_PI)
-                    angle1 += 2 * M_PI;
-                    
-                return angle1 < angle2;
-            });
+    // for (size_t i = 0; i < intersection_points.size(); ++i) {
+    //     const Point_3& prev = intersection_points[(i + intersection_points.size() - 1) % intersection_points.size()];
+    //     const Point_3& curr = intersection_points[i];
+    //     const Point_3& next = intersection_points[(i + 1) % intersection_points.size()];
 
-        // Verify the orientation
-        double total_angle = 0.0;
-        for (size_t i = 0; i < intersection_points.size(); ++i) {
-            size_t j = (i + 1) % intersection_points.size();
-            Vector_3 vec1(centroid, intersection_points[i]);
-            Vector_3 vec2(centroid, intersection_points[j]);
-            
-            double x1 = vec1 * v1;
-            double y1 = vec1 * v2;
-            double x2 = vec2 * v1;
-            double y2 = vec2 * v2;
-            
-            double angle = std::atan2(y2, x2) - std::atan2(y1, x1);
-            if (angle < -M_PI) angle += 2 * M_PI;
-            if (angle > M_PI) angle -= 2 * M_PI;
-            total_angle += angle;
-        }
+    //     if (!CGAL::collinear(prev, curr, next) && 
+    //         (cleaned_points.empty() || std::sqrt(CGAL::squared_distance(cleaned_points.back(), curr)) >= threshold)) {
+    //         cleaned_points.push_back(curr);
+    //     }
+    // }
 
-        // If total angle is negative, reverse the order
-        if (total_angle < 0) {
-            std::reverse(intersection_points.begin() + 1, intersection_points.end());
-        }
+    // intersection_points = cleaned_points;
+
+    Polygon_2 polygon;
+
+    // Project 3D points onto 2D plane
+    for (const auto& point : intersection_points) {
+        // Assuming projection onto the XY plane
+        polygon.push_back(Point_2(point.x(), point.y()));
     }
 
-    // Create a polygon from the sorted intersection points
-    if (intersection_points.size() >= 3) {
-        Polyhedron intersection_polygon;
-        CGAL::Polyhedron_incremental_builder_3<Polyhedron::HalfedgeDS> builder(intersection_polygon.hds());
-        
-        // Start building with one face, n vertices
-        builder.begin_surface(intersection_points.size(), 1);
-        
-        // Add vertices
-        for (const auto& p : intersection_points) {
-            builder.add_vertex(p);
-        }
-        
-        // Add the face (one polygon using all vertices)
-        builder.begin_facet();
-        for (size_t i = 0; i < intersection_points.size(); ++i) {
-            builder.add_vertex_to_facet(i);
-        }
-        builder.end_facet();
-        
-        // Finish building
-        builder.end_surface();
+    // Check if the polygon is simple
+    if (polygon.is_simple()) {
+        std::cout << "The 2D polygon is simple." << std::endl;
+    } else {
+        std::cout << "The 2D polygon is not simple." << std::endl;
+    }
 
-        // Show the visualizations
-        Visualizer::show_plane(plane);
-        Visualizer::show_polyhedron(polytope);
+
+    std::cout << "(After cleaning) Found " << intersection_points.size() << " intersection points:" << std::endl;
+    for (const auto& point : intersection_points) {
+        std::cout << "Intersection point: " << point << std::endl;
+    }
+
+    if (intersection_points.size() >= 3) {
+            // Create the intersection polygon by computing its convex hull
+        Polyhedron intersection_polygon;
+        CGAL::convex_hull_3(intersection_points.begin(), intersection_points.end(), intersection_polygon);
+
+        std::cout <<  intersection_polygon.is_valid() << std::endl;
+
+        Visualizer::show_scene(plane, polytope, intersection_polygon);
         Visualizer::show_polyhedron(intersection_polygon);
     }
 
-    // Output results
-    std::cout << "Created polygon from " << intersection_points.size() << " intersection points" << std::endl;
 }
 
-} // namespace nas  
+} // namespace nas

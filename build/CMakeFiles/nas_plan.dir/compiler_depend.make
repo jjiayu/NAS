@@ -2735,10 +2735,10 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /opt/homebrew/include/vtk-9.4/vtkAbstractCellLinks.h \
   /opt/homebrew/include/vtk-9.4/vtkAbstractMapper.h \
   /opt/homebrew/include/vtk-9.4/vtkAbstractMapper3D.h \
-  /opt/homebrew/include/vtk-9.4/vtkAbstractTransform.h \
   /opt/homebrew/include/vtk-9.4/vtkActor.h \
   /opt/homebrew/include/vtk-9.4/vtkActorCollection.h \
   /opt/homebrew/include/vtk-9.4/vtkAlgorithm.h \
+  /opt/homebrew/include/vtk-9.4/vtkAppendPolyData.h \
   /opt/homebrew/include/vtk-9.4/vtkAssume.h \
   /opt/homebrew/include/vtk-9.4/vtkAutoInit.h \
   /opt/homebrew/include/vtk-9.4/vtkBoundingBox.h \
@@ -2754,8 +2754,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /opt/homebrew/include/vtk-9.4/vtkCommonCoreModule.h \
   /opt/homebrew/include/vtk-9.4/vtkCommonDataModelModule.h \
   /opt/homebrew/include/vtk-9.4/vtkCommonExecutionModelModule.h \
-  /opt/homebrew/include/vtk-9.4/vtkCommonMathModule.h \
-  /opt/homebrew/include/vtk-9.4/vtkCommonTransformsModule.h \
   /opt/homebrew/include/vtk-9.4/vtkCompiler.h \
   /opt/homebrew/include/vtk-9.4/vtkDataArray.h \
   /opt/homebrew/include/vtk-9.4/vtkDataArrayAccessor.h \
@@ -2773,25 +2771,21 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /opt/homebrew/include/vtk-9.4/vtkEventData.h \
   /opt/homebrew/include/vtk-9.4/vtkFeatures.h \
   /opt/homebrew/include/vtk-9.4/vtkFiltersCoreModule.h \
-  /opt/homebrew/include/vtk-9.4/vtkFiltersGeneralModule.h \
   /opt/homebrew/include/vtk-9.4/vtkFiltersSourcesModule.h \
   /opt/homebrew/include/vtk-9.4/vtkGenericCell.h \
   /opt/homebrew/include/vtk-9.4/vtkGenericDataArray.h \
   /opt/homebrew/include/vtk-9.4/vtkGenericDataArray.txx \
   /opt/homebrew/include/vtk-9.4/vtkGenericDataArrayLookupHelper.h \
-  /opt/homebrew/include/vtk-9.4/vtkHomogeneousTransform.h \
   /opt/homebrew/include/vtk-9.4/vtkIOStream.h \
   /opt/homebrew/include/vtk-9.4/vtkIdList.h \
   /opt/homebrew/include/vtk-9.4/vtkIdTypeArray.h \
   /opt/homebrew/include/vtk-9.4/vtkIndent.h \
   /opt/homebrew/include/vtk-9.4/vtkIntArray.h \
-  /opt/homebrew/include/vtk-9.4/vtkLinearTransform.h \
   /opt/homebrew/include/vtk-9.4/vtkLongLongArray.h \
   /opt/homebrew/include/vtk-9.4/vtkMapper.h \
   /opt/homebrew/include/vtk-9.4/vtkMath.h \
   /opt/homebrew/include/vtk-9.4/vtkMathConfigure.h \
   /opt/homebrew/include/vtk-9.4/vtkMathPrivate.hxx \
-  /opt/homebrew/include/vtk-9.4/vtkMatrix4x4.h \
   /opt/homebrew/include/vtk-9.4/vtkMatrixUtilities.h \
   /opt/homebrew/include/vtk-9.4/vtkMeta.h \
   /opt/homebrew/include/vtk-9.4/vtkNew.h \
@@ -2821,11 +2815,10 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /opt/homebrew/include/vtk-9.4/vtkSetGet.h \
   /opt/homebrew/include/vtk-9.4/vtkSmartPointer.h \
   /opt/homebrew/include/vtk-9.4/vtkSmartPointerBase.h \
+  /opt/homebrew/include/vtk-9.4/vtkSphereSource.h \
   /opt/homebrew/include/vtk-9.4/vtkStdString.h \
   /opt/homebrew/include/vtk-9.4/vtkSystemIncludes.h \
   /opt/homebrew/include/vtk-9.4/vtkTimeStamp.h \
-  /opt/homebrew/include/vtk-9.4/vtkTransform.h \
-  /opt/homebrew/include/vtk-9.4/vtkTransformPolyDataFilter.h \
   /opt/homebrew/include/vtk-9.4/vtkType.h \
   /opt/homebrew/include/vtk-9.4/vtkTypeInt32Array.h \
   /opt/homebrew/include/vtk-9.4/vtkTypeInt64Array.h \
@@ -3202,8 +3195,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/vtk-9.4/vtkType.h:
 
-/opt/homebrew/include/vtk-9.4/vtkTransform.h:
-
 /opt/homebrew/include/vtk-9.4/vtkTimeStamp.h:
 
 /opt/homebrew/include/vtk-9.4/vtkStdString.h:
@@ -3240,8 +3231,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/vtk-9.4/vtkIdList.h:
 
-/opt/homebrew/include/vtk-9.4/vtkHomogeneousTransform.h:
-
 /opt/homebrew/include/vtk-9.4/vtkGenericDataArrayLookupHelper.h:
 
 /opt/homebrew/include/vtk-9.4/vtkGenericCell.h:
@@ -3258,10 +3247,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/vtk-9.4/vtkDataArrayTupleRange_AOS.h:
 
-/opt/homebrew/include/vtk-9.4/vtkCommonTransformsModule.h:
-
-/opt/homebrew/include/vtk-9.4/vtkCommonMathModule.h:
-
 /opt/homebrew/include/vtk-9.4/vtkCommonDataModelModule.h:
 
 /opt/homebrew/include/vtk-9.4/vtkCollection.h:
@@ -3274,13 +3259,13 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/vtk-9.4/vtkAssume.h:
 
+/opt/homebrew/include/vtk-9.4/vtkAppendPolyData.h:
+
 /opt/homebrew/include/vtk-9.4/vtkAlgorithm.h:
 
 /opt/homebrew/include/vtk-9.4/vtkActorCollection.h:
 
 /opt/homebrew/include/vtk-9.4/vtkActor.h:
-
-/opt/homebrew/include/vtk-9.4/vtkAbstractTransform.h:
 
 /opt/homebrew/include/vtk-9.4/vtkAbstractMapper3D.h:
 
@@ -3805,8 +3790,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/type_traits/add_lvalue_reference.hpp:
 
 /opt/homebrew/include/boost/predef/detail/_cassert.h:
-
-/opt/homebrew/include/vtk-9.4/vtkLinearTransform.h:
 
 /opt/homebrew/include/vtk-9.4/vtkCompiler.h:
 
@@ -5548,8 +5531,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/IO/OFF/File_scanner_OFF.h:
 
-/opt/homebrew/include/vtk-9.4/vtkTransformPolyDataFilter.h:
-
 /opt/homebrew/include/CGAL/IO/OFF/File_header_extended_OFF.h:
 
 /opt/homebrew/include/CGAL/int.h:
@@ -6930,8 +6911,6 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /opt/homebrew/include/vtk-9.4/vtkGenericDataArray.h:
 
-/opt/homebrew/include/vtk-9.4/vtkFiltersGeneralModule.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/add_pointer.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/pstl_move.h:
@@ -7089,6 +7068,8 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__functional/compose.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__stop_token/stop_source.h:
+
+/opt/homebrew/include/vtk-9.4/vtkSphereSource.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__stop_token/atomic_unique_lock.h:
 
@@ -8173,8 +8154,6 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 /opt/homebrew/include/CGAL/Intersections_3/internal/Line_3_Plane_3_do_intersect.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/fill.h:
-
-/opt/homebrew/include/vtk-9.4/vtkMatrix4x4.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/remove_reference.h:
 

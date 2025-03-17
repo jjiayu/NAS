@@ -2963,15 +2963,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: \
   /opt/homebrew/include/vtk-9.4/vtkAbstractMapper3D.h \
   /opt/homebrew/include/vtk-9.4/vtkAbstractMapper.h \
   /opt/homebrew/include/vtk-9.4/vtkProperty.h \
-  /opt/homebrew/include/vtk-9.4/vtkTransform.h \
-  /opt/homebrew/include/vtk-9.4/vtkCommonTransformsModule.h \
-  /opt/homebrew/include/vtk-9.4/vtkLinearTransform.h \
-  /opt/homebrew/include/vtk-9.4/vtkHomogeneousTransform.h \
-  /opt/homebrew/include/vtk-9.4/vtkAbstractTransform.h \
-  /opt/homebrew/include/vtk-9.4/vtkMatrix4x4.h \
-  /opt/homebrew/include/vtk-9.4/vtkCommonMathModule.h \
-  /opt/homebrew/include/vtk-9.4/vtkTransformPolyDataFilter.h \
-  /opt/homebrew/include/vtk-9.4/vtkFiltersGeneralModule.h \
+  /opt/homebrew/include/vtk-9.4/vtkSphereSource.h \
+  /opt/homebrew/include/vtk-9.4/vtkAppendPolyData.h \
   /Users/jiayu/Desktop/nas_ws/NAS/include/constants.hpp \
   /Users/jiayu/Desktop/nas_ws/NAS/include/tree.hpp \
   /opt/homebrew/opt/eigen/include/eigen3/Eigen/Dense \
