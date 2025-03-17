@@ -14,12 +14,14 @@ namespace nas {
 
 bool load_obj(const std::string& filename, Polyhedron& polyhedron);
 
-std::vector<Polyhedron> convert_surfaces_to_planes(std::vector<std::vector<Point_3>> surface_list);
+std::vector<Polyhedron> convert_surf_pts_to_polyhedron(std::vector<std::vector<Point_3>> surface_list);
 
 Vector_3 get_centroid(const Polyhedron& polyhedron);
 
 Polyhedron minkowski_sum(const std::vector<Vector_3>& patch_vertices, 
                          const Polyhedron& polytope);
+
+void polytope_surf_intersection(const std::vector<Point_3>& surf_pts, const Polyhedron& polytope);
 
 } // namespace nas
 

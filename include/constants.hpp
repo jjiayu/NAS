@@ -33,7 +33,7 @@ const int total_num_steps = 3;
 // 1) bottom left, 2) bottom right, 3) top right, 4) top left
 
 // Flat Terrain for testing
-const std::vector<std::vector<Point_3>> surf_list = {
+const std::vector<std::vector<Point_3>> surf_pts_list = {
     // Surface 1
     {
         Point_3(0.0, 0.0, 0.0),  // bottom left

@@ -9,7 +9,8 @@
         "/opt/homebrew/include/vtk-9.4",
         "/usr/include/c++/v1",  // If using libc++
         "/opt/homebrew/include/CGAL",  // CGAL headers
-        "/opt/homebrew/opt/eigen/include/eigen3"
+        "/opt/homebrew/opt/eigen/include/eigen3",
+        "/usr/local/include"
     ],
     "C_Cpp.default.cppStandard": "c++17",
     "files.associations": {
@@ -94,6 +95,9 @@
         "type_traits": "cpp",
         "utility": "cpp",
         "format": "cpp",
-        "thread": "cpp"
+        "thread": "cpp",
+        "bit": "cpp",
+        "chrono": "cpp",
+        "stdfloat": "cpp"
     }
 }

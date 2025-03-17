@@ -20,7 +20,6 @@ typedef CGAL::Simple_cartesian<double> Kernel;
 typedef CGAL::Polyhedron_3<Kernel> Polyhedron;
 typedef CGAL::Aff_transformation_3<Kernel> Transformation;
 typedef Kernel::Plane_3 Plane_3;
-typedef Kernel::Segment_3 Segment_3;
 
 namespace nas {
 
@@ -49,8 +48,10 @@ Tree::Tree() {
         std::cerr << "Failed to load the OBJ file." << std::endl;
     }
 
+    polytope_surf_intersection(surf_pts_list[0], rf_in_lf_polytope);
+    
     // Create the Environment
-    env_model = convert_surfaces_to_planes(surf_list);
+    env_model = convert_surf_pts_to_polyhedron(surf_pts_list);
 
     // Set up Goal
     std::cout << std::endl;

@@ -43,7 +43,7 @@ int main() {
     // Visualizer::show_polyhedron(tree.rf_in_lf_polytope);
     // Visualizer::show_polyhedron(tree.lf_in_rf_polytope);
 
-    std::cout << surf_list.size() << std::endl;
+    std::cout << surf_pts_list.size() << std::endl;
 
     return 0;
 }
