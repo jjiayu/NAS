@@ -15,6 +15,7 @@
 #include <vtkCellArray.h>
 #include <vtkSphereSource.h>
 #include <vtkAppendPolyData.h>
+#include <CGAL/Polygon_2.h>
 
 typedef CGAL::Simple_cartesian<double> Kernel;
 typedef Kernel::Point_3 Point;
@@ -22,6 +23,7 @@ typedef CGAL::Surface_mesh<Point> Mesh;
 typedef Kernel::Plane_3 Plane;
 typedef Kernel::Vector_3 Vector;
 typedef CGAL::Polyhedron_3<Kernel> Polyhedron;
+typedef CGAL::Polygon_2<Kernel> Polygon_2;
 
 class Visualizer {
 public:
@@ -277,6 +279,183 @@ public:
         interactor->Initialize();
         renderWindow->Render();
         interactor->Start();
+    }
+
+    static void show_2d_polygon(const Polygon_2& polygon) {
+        // Create renderer and window
+        auto renderer = vtkSmartPointer<vtkRenderer>::New();
+        renderer->SetBackground(1.0, 1.0, 1.0);  // White background
+
+        // Create points and lines for the polygon
+        auto points = vtkSmartPointer<vtkPoints>::New();
+        auto lines = vtkSmartPointer<vtkCellArray>::New();
+
+        // Add points and create lines
+        vtkIdType prevId = -1;
+        vtkIdType firstId = -1;
+        for (auto vertex_it = polygon.vertices_begin(); vertex_it != polygon.vertices_end(); ++vertex_it) {
+            // Add point
+            vtkIdType currentId = points->InsertNextPoint(vertex_it->x(), vertex_it->y(), 0.0);
+            
+            // Create sphere for vertex
+            auto sphereSource = vtkSmartPointer<vtkSphereSource>::New();
+            sphereSource->SetCenter(vertex_it->x(), vertex_it->y(), 0.0);
+            sphereSource->SetRadius(0.02);
+            sphereSource->Update();
+
+            auto sphereMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+            sphereMapper->SetInputConnection(sphereSource->GetOutputPort());
+
+            auto sphereActor = vtkSmartPointer<vtkActor>::New();
+            sphereActor->SetMapper(sphereMapper);
+            sphereActor->GetProperty()->SetColor(1.0, 0.0, 0.0);  // Red vertices
+            renderer->AddActor(sphereActor);
+
+            // Create line
+            if (prevId != -1) {
+                auto line = vtkSmartPointer<vtkIdList>::New();
+                line->InsertNextId(prevId);
+                line->InsertNextId(currentId);
+                lines->InsertNextCell(line);
+            }
+            if (firstId == -1) firstId = currentId;
+            prevId = currentId;
+        }
+
+        // Close the polygon
+        if (prevId != -1 && firstId != -1) {
+            auto line = vtkSmartPointer<vtkIdList>::New();
+            line->InsertNextId(prevId);
+            line->InsertNextId(firstId);
+            lines->InsertNextCell(line);
+        }
+
+        // Create polydata
+        auto polyData = vtkSmartPointer<vtkPolyData>::New();
+        polyData->SetPoints(points);
+        polyData->SetLines(lines);
+
+        // Create mapper and actor
+        auto mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+        mapper->SetInputData(polyData);
+
+        auto actor = vtkSmartPointer<vtkActor>::New();
+        actor->SetMapper(mapper);
+        actor->GetProperty()->SetColor(0.0, 0.0, 1.0);  // Blue lines
+        actor->GetProperty()->SetLineWidth(2);
+        renderer->AddActor(actor);
+
+        // Create window
+        auto renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+        renderWindow->AddRenderer(renderer);
+        renderWindow->SetSize(800, 600);
+
+        // Create interactor
+        auto renderWindowInteractor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+        renderWindowInteractor->SetRenderWindow(renderWindow);
+
+        // Initialize and start
+        renderer->ResetCamera();
+        renderWindowInteractor->Initialize();
+        renderWindow->Render();
+        renderWindowInteractor->Start();
+    }
+
+    static void show_2d_polygons(const Polygon_2& polygon1, const Polygon_2& polygon2) {
+        // Create renderer and window
+        auto renderer = vtkSmartPointer<vtkRenderer>::New();
+        renderer->SetBackground(1.0, 1.0, 1.0);  // White background
+
+        // Function to add polygon with color gradient
+        auto addPolygonToRenderer = [&](const Polygon_2& poly, bool isFirst) {
+            auto points = vtkSmartPointer<vtkPoints>::New();
+            auto lines = vtkSmartPointer<vtkCellArray>::New();
+            size_t numPoints = std::distance(poly.vertices_begin(), poly.vertices_end());
+            
+            // Add points and create lines
+            vtkIdType prevId = -1;
+            vtkIdType firstId = -1;
+            size_t pointIndex = 0;
+            
+            for (auto vertex_it = poly.vertices_begin(); vertex_it != poly.vertices_end(); ++vertex_it, ++pointIndex) {
+                // Add point
+                vtkIdType currentId = points->InsertNextPoint(vertex_it->x(), vertex_it->y(), 0.0);
+                
+                // Create sphere for vertex with color gradient
+                auto sphereSource = vtkSmartPointer<vtkSphereSource>::New();
+                sphereSource->SetCenter(vertex_it->x(), vertex_it->y(), 0.0);
+                sphereSource->SetRadius(0.02);
+                sphereSource->Update();
+
+                auto sphereMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+                sphereMapper->SetInputConnection(sphereSource->GetOutputPort());
+
+                auto sphereActor = vtkSmartPointer<vtkActor>::New();
+                sphereActor->SetMapper(sphereMapper);
+                
+                // Create color gradient (red->yellow->green for first polygon, blue->purple->red for second)
+                double ratio = static_cast<double>(pointIndex) / (numPoints - 1);
+                if (isFirst) {
+                    sphereActor->GetProperty()->SetColor(1.0 - ratio, ratio, 0.0);  // Red to Green
+                } else {
+                    sphereActor->GetProperty()->SetColor(0.0, ratio, 1.0 - ratio);  // Blue to Green
+                }
+                
+                renderer->AddActor(sphereActor);
+
+                // Create line
+                if (prevId != -1) {
+                    auto line = vtkSmartPointer<vtkIdList>::New();
+                    line->InsertNextId(prevId);
+                    line->InsertNextId(currentId);
+                    lines->InsertNextCell(line);
+                }
+                if (firstId == -1) firstId = currentId;
+                prevId = currentId;
+            }
+
+            // Close the polygon
+            if (prevId != -1 && firstId != -1) {
+                auto line = vtkSmartPointer<vtkIdList>::New();
+                line->InsertNextId(prevId);
+                line->InsertNextId(firstId);
+                lines->InsertNextCell(line);
+            }
+
+            // Create polydata
+            auto polyData = vtkSmartPointer<vtkPolyData>::New();
+            polyData->SetPoints(points);
+            polyData->SetLines(lines);
+
+            // Create mapper and actor
+            auto mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+            mapper->SetInputData(polyData);
+
+            auto actor = vtkSmartPointer<vtkActor>::New();
+            actor->SetMapper(mapper);
+            actor->GetProperty()->SetColor(isFirst ? 1.0 : 0.0, 0.0, isFirst ? 0.0 : 1.0);  // Red for first, Blue for second
+            actor->GetProperty()->SetLineWidth(2);
+            renderer->AddActor(actor);
+        };
+
+        // Add both polygons to the renderer
+        addPolygonToRenderer(polygon1, true);   // First polygon in red gradient
+        addPolygonToRenderer(polygon2, false);  // Second polygon in blue gradient
+
+        // Create window
+        auto renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+        renderWindow->AddRenderer(renderer);
+        renderWindow->SetSize(800, 600);
+
+        // Create interactor
+        auto renderWindowInteractor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+        renderWindowInteractor->SetRenderWindow(renderWindow);
+
+        // Initialize and start
+        renderer->ResetCamera();
+        renderWindowInteractor->Initialize();
+        renderWindow->Render();
+        renderWindowInteractor->Start();
     }
 };
 

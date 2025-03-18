@@ -2965,6 +2965,14 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: \
   /opt/homebrew/include/vtk-9.4/vtkProperty.h \
   /opt/homebrew/include/vtk-9.4/vtkSphereSource.h \
   /opt/homebrew/include/vtk-9.4/vtkAppendPolyData.h \
+  /opt/homebrew/include/CGAL/Polygon_2.h \
+  /opt/homebrew/include/CGAL/Polygon_2_algorithms.h \
+  /opt/homebrew/include/CGAL/Polygon_2/Polygon_2_algorithms_impl.h \
+  /opt/homebrew/include/CGAL/Polygon_2/Polygon_2_simplicity.h \
+  /opt/homebrew/include/CGAL/Polygon_2/Polygon_2_vertex_circulator.h \
+  /opt/homebrew/include/CGAL/Polygon_2/Polygon_2_edge_iterator.h \
+  /opt/homebrew/include/CGAL/Polygon_2/Polygon_2_edge_circulator.h \
+  /opt/homebrew/include/CGAL/Polygon_2/Polygon_2_impl.h \
   /Users/jiayu/Desktop/nas_ws/NAS/include/constants.hpp \
   /Users/jiayu/Desktop/nas_ws/NAS/include/tree.hpp \
   /opt/homebrew/opt/eigen/include/eigen3/Eigen/Dense \

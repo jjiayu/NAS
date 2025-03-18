@@ -16,7 +16,10 @@
 #include <CGAL/linear_least_squares_fitting_points_3.h> // And this specific header
 #include <CGAL/Polygon_2.h>
 #include <CGAL/Boolean_set_operations_2.h>
-
+#include <boost/variant.hpp>
+#include <CGAL/Gps_segment_traits_2.h>
+#include <CGAL/General_polygon_set_2.h>
+#include <libqhull_r/qhull_ra.h>  // Add QHULL header
 
 typedef CGAL::Simple_cartesian<double> Kernel; // Using Simple Geometry Kernel
 typedef CGAL::Polyhedron_3<Kernel> Polyhedron;
@@ -26,6 +29,10 @@ typedef Kernel::Plane_3 Plane_3;
 typedef CGAL::Aff_transformation_3<Kernel> Transformation;
 typedef CGAL::Polygon_2<Kernel> Polygon_2;
 typedef Kernel::Point_2 Point_2;
+typedef CGAL::Gps_segment_traits_2<Kernel> Traits_2;
+typedef CGAL::General_polygon_set_2<Traits_2> Polygon_set_2;
+typedef Traits_2::Polygon_2 General_polygon_2;
+typedef CGAL::Polygon_with_holes_2<Kernel> Polygon_with_holes_2;  // Add this line
 
 namespace nas {
 
@@ -100,6 +107,75 @@ Polyhedron minkowski_sum(const std::vector<Vector_3>& patch_vertices,
     return P_union;
 }
 
+// Add helper function for QHULL intersection
+std::vector<Point_2> compute_intersection_qhull(const std::vector<Point_2>& points1, 
+                                              const std::vector<Point_2>& points2) {
+    std::vector<Point_2> result;
+    
+    // Combine points from both polygons
+    std::vector<double> points;
+    // First add points from the intersection polygon
+    for (const auto& p : points1) {
+        points.push_back(CGAL::to_double(p.x()));
+        points.push_back(CGAL::to_double(p.y()));
+    }
+    // Then add points from the surface polygon
+    for (const auto& p : points2) {
+        points.push_back(CGAL::to_double(p.x()));
+        points.push_back(CGAL::to_double(p.y()));
+    }
+
+    if (points.empty() || points.size() < 4) return result;  // Need at least 2 points
+
+    // Initialize QHULL
+    qhT qh_qh;
+    qhT* qh = &qh_qh;
+    
+    // Initialize qhull with stdout/stderr redirected to nullptr to suppress output
+    qh_init_A(qh, nullptr, nullptr, nullptr, 0, nullptr);
+    
+    // Set QHULL options:
+    // v - Voronoi diagram (not used, but needed for 2D)
+    // Qt - triangulate output
+    // Qbb - scale input to unit cube
+    // Qc - keep coplanar points
+    char* options = const_cast<char*>("qhull v Qt Qbb Qc");
+    int exitcode = qh_new_qhull(qh, 2, points.size()/2, points.data(), false,
+                               options, nullptr, nullptr);
+    
+    if (!exitcode) {
+        // Get vertices from QHULL
+        vertexT* vertex = qh->vertex_list;
+        while (vertex) {  // Changed condition to catch all vertices
+            double* point = vertex->point;
+            result.push_back(Point_2(point[0], point[1]));
+            vertex = vertex->next;
+        }
+        
+        // Sort points in counter-clockwise order
+        if (result.size() >= 3) {
+            Point_2 centroid(0, 0);
+            for (const auto& p : result) {
+                centroid = Point_2(centroid.x() + p.x(), centroid.y() + p.y());
+            }
+            centroid = Point_2(centroid.x() / result.size(), centroid.y() / result.size());
+            
+            std::sort(result.begin(), result.end(),
+                [&centroid](const Point_2& a, const Point_2& b) {
+                    return std::atan2(a.y() - centroid.y(), a.x() - centroid.x()) <
+                           std::atan2(b.y() - centroid.y(), b.x() - centroid.x());
+                });
+        }
+    }
+    
+    // Clean up QHULL
+    qh_freeqhull(qh, !qh_ALL);
+    int curlong, totlong;
+    qh_memfreeshort(qh, &curlong, &totlong);
+    
+    return result;
+}
+
 void polytope_surf_intersection(const std::vector<Point_3>& surf_pts, const Polyhedron& polytope) {
     // Get Plane Parameters
     // Fit plane to all vertices
@@ -149,75 +225,95 @@ void polytope_surf_intersection(const std::vector<Point_3>& surf_pts, const Poly
         }
     }
 
-    // Sort the intersection points using the Cross Product method
-    if (!intersection_points.empty()) {
-        // Find the reference point (e.g., the leftmost point)
-        auto reference = *std::min_element(intersection_points.begin(), intersection_points.end(), [](const Point_3& a, const Point_3& b) {
-            return a.x() < b.x() || (a.x() == b.x() && a.y() < b.y());
-        });
+    // Sort Vertices and clean up points
 
-        // Sort points based on cross product
-        std::sort(intersection_points.begin(), intersection_points.end(), [&](const Point_3& p1, const Point_3& p2) {
-            Vector_3 v1 = p1 - reference;
-            Vector_3 v2 = p2 - reference;
-            return CGAL::cross_product(v1, v2).z() > 0; // Use the z-component for 2D cross product
-        });
+    // Get and normalize the basis vectors from the plane
+    Vector_3 basis1 = plane.base1();
+    Vector_3 basis2 = plane.base2();
+    
+    // Calculate scale factors based on the original surface points
+    double max_x = 0, max_y = 0;
+    for (const auto& point : surf_pts) {
+        double proj_x = basis1 * (point - CGAL::ORIGIN);
+        double proj_y = basis2 * (point - CGAL::ORIGIN);
+        max_x = std::max(max_x, std::abs(proj_x));
+        max_y = std::max(max_y, std::abs(proj_y));
+    }
+    
+    // Project 3D points onto 2D plane using basis vectors
+    std::vector<Point_2> intersection_points_2d;
+    for (const auto& point3d : intersection_points) {
+        double x = basis1 * (point3d - CGAL::ORIGIN);
+        double y = basis2 * (point3d - CGAL::ORIGIN);
+        intersection_points_2d.push_back(Point_2(x, y));
     }
 
-    std::cout << "(After sorting) Found " << intersection_points.size() << " intersection points:" << std::endl;
-    for (const auto& point : intersection_points) {
-        std::cout << "Intersection point: " << point << std::endl;
+    // Clean up points that are too close to each other
+    std::vector<Point_2> cleaned_points;
+    double threshold = max_x * 0.01;  // Adjust threshold based on scale
+    
+    for (size_t i = 0; i < intersection_points_2d.size(); ++i) {
+        bool is_unique = true;
+        for (const auto& existing_point : cleaned_points) {
+            double dx = intersection_points_2d[i].x() - existing_point.x();
+            double dy = intersection_points_2d[i].y() - existing_point.y();
+            if (dx*dx + dy*dy < threshold*threshold) {
+                is_unique = false;
+                break;
+            }
+        }
+        if (is_unique) {
+            cleaned_points.push_back(intersection_points_2d[i]);
+        }
     }
 
-    // // Clean intersection points
-    // std::vector<Point_3> cleaned_points;
-    // double threshold = 0.03; // Set an appropriate threshold
-
-    // for (size_t i = 0; i < intersection_points.size(); ++i) {
-    //     const Point_3& prev = intersection_points[(i + intersection_points.size() - 1) % intersection_points.size()];
-    //     const Point_3& curr = intersection_points[i];
-    //     const Point_3& next = intersection_points[(i + 1) % intersection_points.size()];
-
-    //     if (!CGAL::collinear(prev, curr, next) && 
-    //         (cleaned_points.empty() || std::sqrt(CGAL::squared_distance(cleaned_points.back(), curr)) >= threshold)) {
-    //         cleaned_points.push_back(curr);
-    //     }
-    // }
-
-    // intersection_points = cleaned_points;
-
-    Polygon_2 polygon;
-
-    // Project 3D points onto 2D plane
-    for (const auto& point : intersection_points) {
-        // Assuming projection onto the XY plane
-        polygon.push_back(Point_2(point.x(), point.y()));
+    // Sort cleaned points into counter-clockwise order using convex hull
+    std::vector<Point_2> intersection_hull_points;
+    CGAL::convex_hull_2(cleaned_points.begin(), cleaned_points.end(), 
+                        std::back_inserter(intersection_hull_points));
+    
+    // Create polygon from sorted points
+    Polygon_2 intersection_polygon_2d;
+    intersection_polygon_2d.clear();
+    for (const auto& point : intersection_hull_points) {
+        intersection_polygon_2d.push_back(point);
     }
 
-    // Check if the polygon is simple
-    if (polygon.is_simple()) {
-        std::cout << "The 2D polygon is simple." << std::endl;
-    } else {
-        std::cout << "The 2D polygon is not simple." << std::endl;
+    // Do the same for surface points
+    std::vector<Point_2> surface_points_2d;
+    for (const auto& point3d : surf_pts) {
+        double x = basis1 * (point3d - CGAL::ORIGIN);
+        double y = basis2 * (point3d - CGAL::ORIGIN);
+        surface_points_2d.push_back(Point_2(x, y));
     }
 
-
-    std::cout << "(After cleaning) Found " << intersection_points.size() << " intersection points:" << std::endl;
-    for (const auto& point : intersection_points) {
-        std::cout << "Intersection point: " << point << std::endl;
+    // Sort surface points into counter-clockwise order using convex hull
+    std::vector<Point_2> surface_hull_points;
+    CGAL::convex_hull_2(surface_points_2d.begin(), surface_points_2d.end(), 
+                        std::back_inserter(surface_hull_points));
+    
+    // Create polygon from sorted points
+    Polygon_2 surface_polygon_2d;
+    for (const auto& point : surface_hull_points) {
+        surface_polygon_2d.push_back(point);
     }
 
-    if (intersection_points.size() >= 3) {
-            // Create the intersection polygon by computing its convex hull
-        Polyhedron intersection_polygon;
-        CGAL::convex_hull_3(intersection_points.begin(), intersection_points.end(), intersection_polygon);
-
-        std::cout <<  intersection_polygon.is_valid() << std::endl;
-
-        Visualizer::show_scene(plane, polytope, intersection_polygon);
-        Visualizer::show_polyhedron(intersection_polygon);
+    // Print the intersection polygon vertices
+    std::cout << "\n2D Intersection Polygon Vertices (Counter-clockwise):" << std::endl;
+    for (auto vertex_it = intersection_polygon_2d.vertices_begin(); 
+         vertex_it != intersection_polygon_2d.vertices_end(); ++vertex_it) {
+        std::cout << "(" << vertex_it->x() << ", " << vertex_it->y() << ")" << std::endl;
     }
 
+    // Print the surface polygon vertices
+    std::cout << "\n2D Surface Polygon Vertices (Counter-clockwise):" << std::endl;
+    for (auto vertex_it = surface_polygon_2d.vertices_begin(); 
+         vertex_it != surface_polygon_2d.vertices_end(); ++vertex_it) {
+        std::cout << "(" << vertex_it->x() << ", " << vertex_it->y() << ")" << std::endl;
+    }
+
+    // Visualize both polygons in the same window with color gradients
+    Visualizer::show_2d_polygons(intersection_polygon_2d, surface_polygon_2d);
 }
 
 } // namespace nas

@@ -1476,6 +1476,14 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /opt/homebrew/include/CGAL/Plane_3.h \
   /opt/homebrew/include/CGAL/Point_2.h \
   /opt/homebrew/include/CGAL/Point_3.h \
+  /opt/homebrew/include/CGAL/Polygon_2.h \
+  /opt/homebrew/include/CGAL/Polygon_2/Polygon_2_algorithms_impl.h \
+  /opt/homebrew/include/CGAL/Polygon_2/Polygon_2_edge_circulator.h \
+  /opt/homebrew/include/CGAL/Polygon_2/Polygon_2_edge_iterator.h \
+  /opt/homebrew/include/CGAL/Polygon_2/Polygon_2_impl.h \
+  /opt/homebrew/include/CGAL/Polygon_2/Polygon_2_simplicity.h \
+  /opt/homebrew/include/CGAL/Polygon_2/Polygon_2_vertex_circulator.h \
+  /opt/homebrew/include/CGAL/Polygon_2_algorithms.h \
   /opt/homebrew/include/CGAL/Polyhedron_3.h \
   /opt/homebrew/include/CGAL/Polyhedron_3_fwd.h \
   /opt/homebrew/include/CGAL/Polyhedron_incremental_builder_3.h \
@@ -3177,8 +3185,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/vtk-9.4/vtkViewport.h:
 
-/opt/homebrew/include/vtk-9.4/vtkVariantInlineOperators.h:
-
 /opt/homebrew/include/vtk-9.4/vtkVariantCast.h:
 
 /opt/homebrew/include/vtk-9.4/vtkVariant.h:
@@ -4015,10 +4021,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/mpl/push_front_fwd.hpp:
 
-/opt/homebrew/include/boost/multiprecision/cpp_int/comparison.hpp:
-
-/opt/homebrew/include/boost/mpl/push_front.hpp:
-
 /opt/homebrew/include/boost/mpl/protect.hpp:
 
 /opt/homebrew/include/boost/mpl/prior.hpp:
@@ -4783,11 +4785,15 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/long_double.h:
 
+/opt/homebrew/include/CGAL/license/lgpl.h:
+
 /opt/homebrew/include/boost/type_traits/same_traits.hpp:
 
 /opt/homebrew/include/boost/mpl/vector/vector20.hpp:
 
 /opt/homebrew/include/CGAL/license/Polyhedron.h:
+
+/opt/homebrew/include/CGAL/kernel_config.h:
 
 /opt/homebrew/include/boost/type_traits/has_modulus_assign.hpp:
 
@@ -4797,11 +4803,7 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/kernel_basic.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/remove_const_ref.h:
-
-/Users/jiayu/Desktop/nas_ws/NAS/include/tree.hpp:
-
-/opt/homebrew/include/CGAL/iterator.h:
+/opt/homebrew/include/CGAL/kernel_assertions.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/cwchar:
 
@@ -4976,6 +4978,22 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/CGAL/Polyhedron_incremental_builder_3.h:
 
 /opt/homebrew/include/CGAL/Polyhedron_3_fwd.h:
+
+/opt/homebrew/include/vtk-9.4/vtkVariantInlineOperators.h:
+
+/opt/homebrew/include/CGAL/Polygon_2/Polygon_2_vertex_circulator.h:
+
+/opt/homebrew/include/boost/multiprecision/cpp_int/comparison.hpp:
+
+/opt/homebrew/include/boost/mpl/push_front.hpp:
+
+/opt/homebrew/include/CGAL/Polygon_2/Polygon_2_impl.h:
+
+/opt/homebrew/include/CGAL/Polygon_2/Polygon_2_edge_iterator.h:
+
+/opt/homebrew/include/CGAL/Polygon_2/Polygon_2_algorithms_impl.h:
+
+/opt/homebrew/include/CGAL/Polygon_2.h:
 
 /opt/homebrew/include/boost/mpl/aux_/yes_no.hpp:
 
@@ -5311,6 +5329,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Intersections_3/Iso_cuboid_3_Point_3.h:
 
+/opt/homebrew/include/CGAL/Polygon_2/Polygon_2_simplicity.h:
+
 /opt/homebrew/include/CGAL/property_map.h:
 
 /opt/homebrew/include/CGAL/Intersections_3/Iso_cuboid_3_Line_3.h:
@@ -5319,9 +5339,9 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Intersections_3/Ray_3_Ray_3.h:
 
-/opt/homebrew/include/CGAL/Intersections_3/Bbox_3_Sphere_3.h:
+/opt/homebrew/include/CGAL/Polygon_2_algorithms.h:
 
-/opt/homebrew/include/CGAL/kernel_config.h:
+/opt/homebrew/include/CGAL/Intersections_3/Bbox_3_Sphere_3.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_unique.h:
 
@@ -5885,6 +5905,12 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Users/jiayu/Desktop/nas_ws/NAS/include/visualizer.hpp:
 
+/opt/homebrew/include/CGAL/iterator.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/remove_const_ref.h:
+
+/Users/jiayu/Desktop/nas_ws/NAS/include/tree.hpp:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__iterator/back_insert_iterator.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__memory/ranges_construct_at.h:
@@ -6000,8 +6026,6 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__system_error/error_condition.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/qos.h:
-
-/opt/homebrew/include/CGAL/license/lgpl.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_va_list.h:
 
@@ -6328,6 +6352,8 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/stdio.h:
 
 /opt/homebrew/include/boost/mpl/logical.hpp:
+
+/opt/homebrew/include/CGAL/Polygon_2/Polygon_2_edge_circulator.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/queue:
 
@@ -7912,8 +7938,6 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 /opt/homebrew/include/vtk-9.4/vtkCellTypes.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__memory/voidify.h:
-
-/opt/homebrew/include/CGAL/kernel_assertions.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__atomic/atomic_lock_free.h:
 

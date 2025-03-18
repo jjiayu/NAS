@@ -48,7 +48,7 @@ Tree::Tree() {
         std::cerr << "Failed to load the OBJ file." << std::endl;
     }
 
-    polytope_surf_intersection(surf_pts_list[0], rf_in_lf_polytope);
+    polytope_surf_intersection(surf_pts_list[0], lf_in_rf_polytope);
     
     // Create the Environment
     env_model = convert_surf_pts_to_polyhedron(surf_pts_list);
