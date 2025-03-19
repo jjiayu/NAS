@@ -1,4 +1,17 @@
 #include "visualizer.hpp"
+#include <vtkSmartPointer.h>
+#include <vtkRenderer.h>
+#include <vtkRenderWindow.h>
+#include <vtkPolyLine.h>
+#include <vtkCellArray.h>
+#include <vtkPolyData.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkActor.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkCamera.h>
+#include <vtkVertexGlyphFilter.h>
+
+namespace nas {
 
 void Visualizer::show_plane(const Plane& plane, double size) {
     // Create plane source
@@ -101,4 +114,6 @@ void Visualizer::show_polyhedron(const Polyhedron& P) {
     renderer->ResetCamera();
     renderWindow->Render();
     renderWindowInteractor->Start();
-} 
+}
+
+} // namespace nas 

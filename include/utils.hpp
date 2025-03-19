@@ -9,6 +9,8 @@ typedef CGAL::Simple_cartesian<double> Kernel;
 typedef CGAL::Polyhedron_3<Kernel> Polyhedron;
 typedef Kernel::Point_3 Point_3;
 typedef Kernel::Vector_3 Vector_3;
+typedef Kernel::Plane_3 Plane_3;
+typedef CGAL::Aff_transformation_3<Kernel> Transformation;
 
 namespace nas {
 
@@ -22,6 +24,9 @@ Polyhedron minkowski_sum(const std::vector<Vector_3>& patch_vertices,
                          const Polyhedron& polytope);
 
 void polytope_surf_intersection(const std::vector<Point_3>& surf_pts, const Polyhedron& polytope);
+
+// Transformation function
+Transformation create_transfomation_to_surface_center(const std::vector<Point_3>& surf_pts, const Plane_3& plane);
 
 } // namespace nas
 

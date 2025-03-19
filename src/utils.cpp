@@ -176,9 +176,45 @@ std::vector<Point_2> compute_intersection_qhull(const std::vector<Point_2>& poin
     return result;
 }
 
+Transformation create_transfomation_to_surface_center(const std::vector<Point_3>& surf_pts, const Plane_3& plane) {
+    // Get the normal vector and normalize it
+    Vector_3 normal = plane.orthogonal_vector();
+    normal = normal / std::sqrt(normal.squared_length());
+    
+    // Calculate centroid of surface points to use as origin
+    Point_3 centroid(0, 0, 0);
+    for (const auto& point : surf_pts) {
+        centroid = Point_3(centroid.x() + point.x(),
+                          centroid.y() + point.y(),
+                          centroid.z() + point.z());
+    }
+    centroid = Point_3(centroid.x() / surf_pts.size(),
+                      centroid.y() / surf_pts.size(),
+                      centroid.z() / surf_pts.size());
+    
+    // Create basis vectors for the plane coordinate system
+    // Use the first surface point to create x-axis (projected onto plane)
+    Vector_3 first_point_vec = Vector_3(surf_pts[0].x() - centroid.x(),
+                                      surf_pts[0].y() - centroid.y(),
+                                      surf_pts[0].z() - centroid.z());
+    // Project first point vector onto plane
+    first_point_vec = first_point_vec - (first_point_vec * normal) * normal;
+    first_point_vec = first_point_vec / std::sqrt(first_point_vec.squared_length());
+    
+    // Create y-axis using cross product
+    Vector_3 y_axis = CGAL::cross_product(normal, first_point_vec);
+    y_axis = y_axis / std::sqrt(y_axis.squared_length());
+    
+    // Create and return transformation matrix from world to plane coordinates
+    return Transformation(
+        first_point_vec.x(), y_axis.x(), normal.x(), centroid.x(),
+        first_point_vec.y(), y_axis.y(), normal.y(), centroid.y(),
+        first_point_vec.z(), y_axis.z(), normal.z(), centroid.z()
+    );
+}
+
 void polytope_surf_intersection(const std::vector<Point_3>& surf_pts, const Polyhedron& polytope) {
-    // Get Plane Parameters
-    // Fit plane to all vertices
+    // Fit plane to surface points
     Plane_3 plane;
     CGAL::linear_least_squares_fitting_3(
         surf_pts.begin(),
@@ -187,36 +223,14 @@ void polytope_surf_intersection(const std::vector<Point_3>& surf_pts, const Poly
         CGAL::Dimension_tag<0>() // 0 for points
     );
     
-    // Get the normal vector
-    Vector_3 normal = plane.orthogonal_vector();
-    
-    // Normalize the normal vector
-    double length = std::sqrt(normal.squared_length());
-    normal = normal / length;
-    
-    // Calculate d (converting from ax + by + cz + d = 0 to n⋅p = d form)
-    double d = -plane.d() / length;
-
-    std::cout << "Plane Equation: " << plane << std::endl;
-    std::cout << "Normal vector (n): " << normal << std::endl;
-    std::cout << "d value: " << d << std::endl;
-
-    // Store intersection points
+    // Find intersection points
     std::vector<Point_3> intersection_points;
-
-    // Iterate through all edges of the polytope (using edges instead of halfedges)
     for (auto edge = polytope.edges_begin(); edge != polytope.edges_end(); ++edge) {
-        // Get the vertices of the edge
         Point_3 p1 = edge->vertex()->point();
         Point_3 p2 = edge->opposite()->vertex()->point();
-
-        // Create a segment from the edge
         Kernel::Segment_3 segment(p1, p2);
 
-        // Compute intersection
         auto intersection = CGAL::intersection(plane, segment);
-        
-        // Check if intersection exists and is a point
         if (intersection) {
             Point_3 intersection_point;
             if (CGAL::assign(intersection_point, *intersection)) {
@@ -224,96 +238,61 @@ void polytope_surf_intersection(const std::vector<Point_3>& surf_pts, const Poly
             }
         }
     }
-
-    // Sort Vertices and clean up points
-
-    // Get and normalize the basis vectors from the plane
-    Vector_3 basis1 = plane.base1();
-    Vector_3 basis2 = plane.base2();
     
-    // Calculate scale factors based on the original surface points
-    double max_x = 0, max_y = 0;
+    // Visualize results
+    if (intersection_points.size() >= 3) {
+        Polyhedron intersection_polygon;
+        CGAL::convex_hull_3(intersection_points.begin(), intersection_points.end(), intersection_polygon);
+
+        std::cout << intersection_polygon.is_valid() << std::endl;
+
+        Visualizer::show_scene(plane, polytope, intersection_polygon);
+        Visualizer::show_polyhedron(intersection_polygon);
+    }
+
+    // Create transformation matrix to transform points to surface plane
+    Transformation transform = create_transfomation_to_surface_center(surf_pts, plane);
+
+    // Transform surface points to plane coordinates
+    std::vector<Point_2> transformed_surf_pts_2d;
     for (const auto& point : surf_pts) {
-        double proj_x = basis1 * (point - CGAL::ORIGIN);
-        double proj_y = basis2 * (point - CGAL::ORIGIN);
-        max_x = std::max(max_x, std::abs(proj_x));
-        max_y = std::max(max_y, std::abs(proj_y));
-    }
-    
-    // Project 3D points onto 2D plane using basis vectors
-    std::vector<Point_2> intersection_points_2d;
-    for (const auto& point3d : intersection_points) {
-        double x = basis1 * (point3d - CGAL::ORIGIN);
-        double y = basis2 * (point3d - CGAL::ORIGIN);
-        intersection_points_2d.push_back(Point_2(x, y));
+        Point_3 transformed = transform(point);
+        transformed_surf_pts_2d.push_back(Point_2(transformed.x(), transformed.y()));
     }
 
-    // Clean up points that are too close to each other
-    std::vector<Point_2> cleaned_points;
-    double threshold = max_x * 0.01;  // Adjust threshold based on scale
-    
-    for (size_t i = 0; i < intersection_points_2d.size(); ++i) {
-        bool is_unique = true;
-        for (const auto& existing_point : cleaned_points) {
-            double dx = intersection_points_2d[i].x() - existing_point.x();
-            double dy = intersection_points_2d[i].y() - existing_point.y();
-            if (dx*dx + dy*dy < threshold*threshold) {
-                is_unique = false;
-                break;
-            }
-        }
-        if (is_unique) {
-            cleaned_points.push_back(intersection_points_2d[i]);
-        }
+    // Transform intersection points to plane coordinates
+    std::vector<Point_2> transformed_intersection_pts_2d;
+    for (const auto& point : intersection_points) {
+        Point_3 transformed = transform(point);
+        transformed_intersection_pts_2d.push_back(Point_2(transformed.x(), transformed.y()));
     }
 
-    // Sort cleaned points into counter-clockwise order using convex hull
-    std::vector<Point_2> intersection_hull_points;
-    CGAL::convex_hull_2(cleaned_points.begin(), cleaned_points.end(), 
-                        std::back_inserter(intersection_hull_points));
-    
-    // Create polygon from sorted points
-    Polygon_2 intersection_polygon_2d;
-    intersection_polygon_2d.clear();
-    for (const auto& point : intersection_hull_points) {
-        intersection_polygon_2d.push_back(point);
+    // Create 2D polygons from the points
+    Polygon_2 surf_polygon(transformed_surf_pts_2d.begin(), transformed_surf_pts_2d.end());
+    Polygon_2 intersection_polygon(transformed_intersection_pts_2d.begin(), transformed_intersection_pts_2d.end());
+
+    // Print points for visualization
+    std::cout << "\nSurface Points (2D):" << std::endl;
+    for (const auto& p : transformed_surf_pts_2d) {
+        std::cout << "(" << p.x() << ", " << p.y() << ")" << std::endl;
     }
 
-    // Do the same for surface points
-    std::vector<Point_2> surface_points_2d;
-    for (const auto& point3d : surf_pts) {
-        double x = basis1 * (point3d - CGAL::ORIGIN);
-        double y = basis2 * (point3d - CGAL::ORIGIN);
-        surface_points_2d.push_back(Point_2(x, y));
+    std::cout << "\nIntersection Points (2D):" << std::endl;
+    for (const auto& p : transformed_intersection_pts_2d) {
+        std::cout << "(" << p.x() << ", " << p.y() << ")" << std::endl;
     }
 
-    // Sort surface points into counter-clockwise order using convex hull
-    std::vector<Point_2> surface_hull_points;
-    CGAL::convex_hull_2(surface_points_2d.begin(), surface_points_2d.end(), 
-                        std::back_inserter(surface_hull_points));
-    
-    // Create polygon from sorted points
-    Polygon_2 surface_polygon_2d;
-    for (const auto& point : surface_hull_points) {
-        surface_polygon_2d.push_back(point);
-    }
+    // Visualize 2D polygons
+    std::cout << "\nSurface Polygon:" << std::endl;
+    std::cout << "Is simple: " << surf_polygon.is_simple() << std::endl;
+    std::cout << "Is convex: " << surf_polygon.is_convex() << std::endl;
+    std::cout << "Area: " << surf_polygon.area() << std::endl;
 
-    // Print the intersection polygon vertices
-    std::cout << "\n2D Intersection Polygon Vertices (Counter-clockwise):" << std::endl;
-    for (auto vertex_it = intersection_polygon_2d.vertices_begin(); 
-         vertex_it != intersection_polygon_2d.vertices_end(); ++vertex_it) {
-        std::cout << "(" << vertex_it->x() << ", " << vertex_it->y() << ")" << std::endl;
-    }
+    std::cout << "\nIntersection Polygon:" << std::endl;
+    std::cout << "Is simple: " << intersection_polygon.is_simple() << std::endl;
+    std::cout << "Is convex: " << intersection_polygon.is_convex() << std::endl;
+    std::cout << "Area: " << intersection_polygon.area() << std::endl;
 
-    // Print the surface polygon vertices
-    std::cout << "\n2D Surface Polygon Vertices (Counter-clockwise):" << std::endl;
-    for (auto vertex_it = surface_polygon_2d.vertices_begin(); 
-         vertex_it != surface_polygon_2d.vertices_end(); ++vertex_it) {
-        std::cout << "(" << vertex_it->x() << ", " << vertex_it->y() << ")" << std::endl;
-    }
-
-    // Visualize both polygons in the same window with color gradients
-    Visualizer::show_2d_polygons(intersection_polygon_2d, surface_polygon_2d);
 }
 
 } // namespace nas

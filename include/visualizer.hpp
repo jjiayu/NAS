@@ -16,6 +16,15 @@
 #include <vtkSphereSource.h>
 #include <vtkAppendPolyData.h>
 #include <CGAL/Polygon_2.h>
+#include <CGAL/Polyhedron_3.h>
+#include <CGAL/Point_3.h>
+#include <CGAL/Plane_3.h>
+#include <vector>
+
+// VTK headers
+#include <vtkPolyLine.h>
+#include <vtkCamera.h>
+#include <vtkVertexGlyphFilter.h>
 
 typedef CGAL::Simple_cartesian<double> Kernel;
 typedef Kernel::Point_3 Point;
@@ -24,6 +33,11 @@ typedef Kernel::Plane_3 Plane;
 typedef Kernel::Vector_3 Vector;
 typedef CGAL::Polyhedron_3<Kernel> Polyhedron;
 typedef CGAL::Polygon_2<Kernel> Polygon_2;
+typedef CGAL::Point_3<Kernel> Point_3;
+typedef CGAL::Plane_3<Kernel> Plane_3;
+typedef Kernel::Point_2 Point_2;
+
+namespace nas {
 
 class Visualizer {
 public:
@@ -152,7 +166,7 @@ public:
         renderWindowInteractor->Start();
     }
 
-    static void show_scene(const Plane& plane, const Polyhedron& polytope, const Polyhedron& intersection) {
+    static void show_scene(const Plane_3& plane, const Polyhedron& polytope, const Polyhedron& intersection_polygon) {
         // Create renderer and window
         auto renderer = vtkSmartPointer<vtkRenderer>::New();
         renderer->SetBackground(1.0, 1.0, 1.0);  // White background
@@ -215,14 +229,14 @@ public:
         vertex_id_map.clear();
         idx = 0;
 
-        for (auto v = intersection.vertices_begin(); v != intersection.vertices_end(); ++v) {
+        for (auto v = intersection_polygon.vertices_begin(); v != intersection_polygon.vertices_end(); ++v) {
             intersectionPoints->InsertNextPoint(CGAL::to_double(v->point().x()),
                                              CGAL::to_double(v->point().y()),
                                              CGAL::to_double(v->point().z()));
             vertex_id_map[v] = idx++;
         }
 
-        for (auto f = intersection.facets_begin(); f != intersection.facets_end(); ++f) {
+        for (auto f = intersection_polygon.facets_begin(); f != intersection_polygon.facets_end(); ++f) {
             auto face = vtkSmartPointer<vtkIdList>::New();
             auto he = f->facet_begin();
             do {
@@ -245,7 +259,7 @@ public:
         renderer->AddActor(intersectionActor);
 
         // Add spheres at vertices
-        for (auto v = intersection.vertices_begin(); v != intersection.vertices_end(); ++v) {
+        for (auto v = intersection_polygon.vertices_begin(); v != intersection_polygon.vertices_end(); ++v) {
             auto sphereSource = vtkSmartPointer<vtkSphereSource>::New();
             sphereSource->SetCenter(CGAL::to_double(v->point().x()),
                                   CGAL::to_double(v->point().y()),
@@ -457,6 +471,9 @@ public:
         renderWindow->Render();
         renderWindowInteractor->Start();
     }
+
 };
+
+} // namespace nas
 
 #endif
