@@ -18,6 +18,8 @@
 #include <vtkVertexGlyphFilter.h>
 #include <vtkLine.h>
 #include <vtkIdList.h>
+#include <vtkTextActor.h>
+#include <vtkTextProperty.h>
 #include <map>
 #include <iostream>
 
@@ -111,6 +113,94 @@ void Visualizer::show_polyhedron(const Polyhedron& P) {
     renderer->AddActor(actor);
     renderer->SetBackground(0.1, 0.1, 0.1);
 
+    // Add coordinate axes
+    vtkSmartPointer<vtkPoints> axisPoints = vtkSmartPointer<vtkPoints>::New();
+    
+    // X-axis (red)
+    vtkSmartPointer<vtkPoints> xAxisPoints = vtkSmartPointer<vtkPoints>::New();
+    vtkIdType xStart = xAxisPoints->InsertNextPoint(0.0, 0.0, 0.0);
+    vtkIdType xEnd = xAxisPoints->InsertNextPoint(5.0, 0.0, 0.0);
+    vtkSmartPointer<vtkCellArray> xAxisLines = vtkSmartPointer<vtkCellArray>::New();
+    vtkSmartPointer<vtkLine> xLine = vtkSmartPointer<vtkLine>::New();
+    xLine->GetPointIds()->SetId(0, 0);
+    xLine->GetPointIds()->SetId(1, 1);
+    xAxisLines->InsertNextCell(xLine);
+    vtkSmartPointer<vtkPolyData> xAxisPolyData = vtkSmartPointer<vtkPolyData>::New();
+    xAxisPolyData->SetPoints(xAxisPoints);
+    xAxisPolyData->SetLines(xAxisLines);
+    vtkSmartPointer<vtkPolyDataMapper> xAxisMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+    xAxisMapper->SetInputData(xAxisPolyData);
+    vtkSmartPointer<vtkActor> xAxisActor = vtkSmartPointer<vtkActor>::New();
+    xAxisActor->SetMapper(xAxisMapper);
+    xAxisActor->GetProperty()->SetColor(1.0, 0.0, 0.0);  // Red for X-axis
+    xAxisActor->GetProperty()->SetLineWidth(2);
+    renderer->AddActor(xAxisActor);
+
+    // Y-axis (green)
+    vtkSmartPointer<vtkPoints> yAxisPoints = vtkSmartPointer<vtkPoints>::New();
+    vtkIdType yStart = yAxisPoints->InsertNextPoint(0.0, 0.0, 0.0);
+    vtkIdType yEnd = yAxisPoints->InsertNextPoint(0.0, 5.0, 0.0);
+    vtkSmartPointer<vtkCellArray> yAxisLines = vtkSmartPointer<vtkCellArray>::New();
+    vtkSmartPointer<vtkLine> yLine = vtkSmartPointer<vtkLine>::New();
+    yLine->GetPointIds()->SetId(0, 0);
+    yLine->GetPointIds()->SetId(1, 1);
+    yAxisLines->InsertNextCell(yLine);
+    vtkSmartPointer<vtkPolyData> yAxisPolyData = vtkSmartPointer<vtkPolyData>::New();
+    yAxisPolyData->SetPoints(yAxisPoints);
+    yAxisPolyData->SetLines(yAxisLines);
+    vtkSmartPointer<vtkPolyDataMapper> yAxisMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+    yAxisMapper->SetInputData(yAxisPolyData);
+    vtkSmartPointer<vtkActor> yAxisActor = vtkSmartPointer<vtkActor>::New();
+    yAxisActor->SetMapper(yAxisMapper);
+    yAxisActor->GetProperty()->SetColor(0.0, 1.0, 0.0);  // Green for Y-axis
+    yAxisActor->GetProperty()->SetLineWidth(2);
+    renderer->AddActor(yAxisActor);
+
+    // Z-axis (blue)
+    vtkSmartPointer<vtkPoints> zAxisPoints = vtkSmartPointer<vtkPoints>::New();
+    vtkIdType zStart = zAxisPoints->InsertNextPoint(0.0, 0.0, 0.0);
+    vtkIdType zEnd = zAxisPoints->InsertNextPoint(0.0, 0.0, 5.0);
+    vtkSmartPointer<vtkCellArray> zAxisLines = vtkSmartPointer<vtkCellArray>::New();
+    vtkSmartPointer<vtkLine> zLine = vtkSmartPointer<vtkLine>::New();
+    zLine->GetPointIds()->SetId(0, 0);
+    zLine->GetPointIds()->SetId(1, 1);
+    zAxisLines->InsertNextCell(zLine);
+    vtkSmartPointer<vtkPolyData> zAxisPolyData = vtkSmartPointer<vtkPolyData>::New();
+    zAxisPolyData->SetPoints(zAxisPoints);
+    zAxisPolyData->SetLines(zAxisLines);
+    vtkSmartPointer<vtkPolyDataMapper> zAxisMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+    zAxisMapper->SetInputData(zAxisPolyData);
+    vtkSmartPointer<vtkActor> zAxisActor = vtkSmartPointer<vtkActor>::New();
+    zAxisActor->SetMapper(zAxisMapper);
+    zAxisActor->GetProperty()->SetColor(0.0, 0.0, 1.0);  // Blue for Z-axis
+    zAxisActor->GetProperty()->SetLineWidth(2);
+    renderer->AddActor(zAxisActor);
+
+    // Add axis labels
+    vtkSmartPointer<vtkTextActor> xLabel = vtkSmartPointer<vtkTextActor>::New();
+    xLabel->SetInput("X");
+    xLabel->SetPosition(5.5, -5.2);
+    xLabel->GetTextProperty()->SetColor(1.0, 0.0, 0.0);  // Red
+    xLabel->GetTextProperty()->SetFontSize(14);
+    xLabel->GetTextProperty()->SetBold(1);
+    renderer->AddActor2D(xLabel);
+
+    vtkSmartPointer<vtkTextActor> yLabel = vtkSmartPointer<vtkTextActor>::New();
+    yLabel->SetInput("Y");
+    yLabel->SetPosition(-5.2, 5.5);
+    yLabel->GetTextProperty()->SetColor(0.0, 1.0, 0.0);  // Green
+    yLabel->GetTextProperty()->SetFontSize(14);
+    yLabel->GetTextProperty()->SetBold(1);
+    renderer->AddActor2D(yLabel);
+
+    vtkSmartPointer<vtkTextActor> zLabel = vtkSmartPointer<vtkTextActor>::New();
+    zLabel->SetInput("Z");
+    zLabel->SetPosition(-5.2, -5.2);
+    zLabel->GetTextProperty()->SetColor(0.0, 0.0, 1.0);  // Blue
+    zLabel->GetTextProperty()->SetFontSize(14);
+    zLabel->GetTextProperty()->SetBold(1);
+    renderer->AddActor2D(zLabel);
+
     // Add spheres at vertices
     for (auto v = P.vertices_begin(); v != P.vertices_end(); ++v) {
         auto sphereSource = vtkSmartPointer<vtkSphereSource>::New();
@@ -142,6 +232,14 @@ void Visualizer::show_polyhedron(const Polyhedron& P) {
     auto renderWindowInteractor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
     renderWindowInteractor->SetRenderWindow(renderWindow);
 
+    // Set up camera for better 3D view
+    vtkCamera* camera = renderer->GetActiveCamera();
+    camera->SetPosition(2, -4, 8);  // Position camera at an angle
+    camera->SetFocalPoint(0, 0, 0);  // Look at the origin
+    camera->SetViewUp(0, 0, 1);  // Set Z-axis as up direction
+    camera->ParallelProjectionOn();
+    camera->SetParallelScale(5.0);
+
     // Render
     renderer->ResetCamera();
     renderWindow->Render();
@@ -153,6 +251,94 @@ void Visualizer::show_scene(const Plane_3& plane, const Polyhedron& polytope, co
     auto renderer = vtkSmartPointer<vtkRenderer>::New();
     renderer->SetBackground(1.0, 1.0, 1.0);  // White background
     
+    // Add coordinate axes
+    vtkSmartPointer<vtkPoints> axisPoints = vtkSmartPointer<vtkPoints>::New();
+    
+    // X-axis (red)
+    vtkSmartPointer<vtkPoints> xAxisPoints = vtkSmartPointer<vtkPoints>::New();
+    vtkIdType xStart = xAxisPoints->InsertNextPoint(0.0, 0.0, 0.0);
+    vtkIdType xEnd = xAxisPoints->InsertNextPoint(5.0, 0.0, 0.0);
+    vtkSmartPointer<vtkCellArray> xAxisLines = vtkSmartPointer<vtkCellArray>::New();
+    vtkSmartPointer<vtkLine> xLine = vtkSmartPointer<vtkLine>::New();
+    xLine->GetPointIds()->SetId(0, 0);
+    xLine->GetPointIds()->SetId(1, 1);
+    xAxisLines->InsertNextCell(xLine);
+    vtkSmartPointer<vtkPolyData> xAxisPolyData = vtkSmartPointer<vtkPolyData>::New();
+    xAxisPolyData->SetPoints(xAxisPoints);
+    xAxisPolyData->SetLines(xAxisLines);
+    vtkSmartPointer<vtkPolyDataMapper> xAxisMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+    xAxisMapper->SetInputData(xAxisPolyData);
+    vtkSmartPointer<vtkActor> xAxisActor = vtkSmartPointer<vtkActor>::New();
+    xAxisActor->SetMapper(xAxisMapper);
+    xAxisActor->GetProperty()->SetColor(1.0, 0.0, 0.0);  // Red for X-axis
+    xAxisActor->GetProperty()->SetLineWidth(2);
+    renderer->AddActor(xAxisActor);
+
+    // Y-axis (green)
+    vtkSmartPointer<vtkPoints> yAxisPoints = vtkSmartPointer<vtkPoints>::New();
+    vtkIdType yStart = yAxisPoints->InsertNextPoint(0.0, 0.0, 0.0);
+    vtkIdType yEnd = yAxisPoints->InsertNextPoint(0.0, 5.0, 0.0);
+    vtkSmartPointer<vtkCellArray> yAxisLines = vtkSmartPointer<vtkCellArray>::New();
+    vtkSmartPointer<vtkLine> yLine = vtkSmartPointer<vtkLine>::New();
+    yLine->GetPointIds()->SetId(0, 0);
+    yLine->GetPointIds()->SetId(1, 1);
+    yAxisLines->InsertNextCell(yLine);
+    vtkSmartPointer<vtkPolyData> yAxisPolyData = vtkSmartPointer<vtkPolyData>::New();
+    yAxisPolyData->SetPoints(yAxisPoints);
+    yAxisPolyData->SetLines(yAxisLines);
+    vtkSmartPointer<vtkPolyDataMapper> yAxisMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+    yAxisMapper->SetInputData(yAxisPolyData);
+    vtkSmartPointer<vtkActor> yAxisActor = vtkSmartPointer<vtkActor>::New();
+    yAxisActor->SetMapper(yAxisMapper);
+    yAxisActor->GetProperty()->SetColor(0.0, 1.0, 0.0);  // Green for Y-axis
+    yAxisActor->GetProperty()->SetLineWidth(2);
+    renderer->AddActor(yAxisActor);
+
+    // Z-axis (blue)
+    vtkSmartPointer<vtkPoints> zAxisPoints = vtkSmartPointer<vtkPoints>::New();
+    vtkIdType zStart = zAxisPoints->InsertNextPoint(0.0, 0.0, 0.0);
+    vtkIdType zEnd = zAxisPoints->InsertNextPoint(0.0, 0.0, 5.0);
+    vtkSmartPointer<vtkCellArray> zAxisLines = vtkSmartPointer<vtkCellArray>::New();
+    vtkSmartPointer<vtkLine> zLine = vtkSmartPointer<vtkLine>::New();
+    zLine->GetPointIds()->SetId(0, 0);
+    zLine->GetPointIds()->SetId(1, 1);
+    zAxisLines->InsertNextCell(zLine);
+    vtkSmartPointer<vtkPolyData> zAxisPolyData = vtkSmartPointer<vtkPolyData>::New();
+    zAxisPolyData->SetPoints(zAxisPoints);
+    zAxisPolyData->SetLines(zAxisLines);
+    vtkSmartPointer<vtkPolyDataMapper> zAxisMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+    zAxisMapper->SetInputData(zAxisPolyData);
+    vtkSmartPointer<vtkActor> zAxisActor = vtkSmartPointer<vtkActor>::New();
+    zAxisActor->SetMapper(zAxisMapper);
+    zAxisActor->GetProperty()->SetColor(0.0, 0.0, 1.0);  // Blue for Z-axis
+    zAxisActor->GetProperty()->SetLineWidth(2);
+    renderer->AddActor(zAxisActor);
+
+    // Add axis labels
+    vtkSmartPointer<vtkTextActor> xLabel = vtkSmartPointer<vtkTextActor>::New();
+    xLabel->SetInput("X");
+    xLabel->SetPosition(5.5, -5.2);
+    xLabel->GetTextProperty()->SetColor(1.0, 0.0, 0.0);  // Red
+    xLabel->GetTextProperty()->SetFontSize(14);
+    xLabel->GetTextProperty()->SetBold(1);
+    renderer->AddActor2D(xLabel);
+
+    vtkSmartPointer<vtkTextActor> yLabel = vtkSmartPointer<vtkTextActor>::New();
+    yLabel->SetInput("Y");
+    yLabel->SetPosition(-5.2, 5.5);
+    yLabel->GetTextProperty()->SetColor(0.0, 1.0, 0.0);  // Green
+    yLabel->GetTextProperty()->SetFontSize(14);
+    yLabel->GetTextProperty()->SetBold(1);
+    renderer->AddActor2D(yLabel);
+
+    vtkSmartPointer<vtkTextActor> zLabel = vtkSmartPointer<vtkTextActor>::New();
+    zLabel->SetInput("Z");
+    zLabel->SetPosition(-5.2, -5.2);
+    zLabel->GetTextProperty()->SetColor(0.0, 0.0, 1.0);  // Blue
+    zLabel->GetTextProperty()->SetFontSize(14);
+    zLabel->GetTextProperty()->SetBold(1);
+    renderer->AddActor2D(zLabel);
+
     // Add plane
     auto planeSource = vtkSmartPointer<vtkPlaneSource>::New();
     planeSource->SetCenter(0, 0, 0);
@@ -261,6 +447,14 @@ void Visualizer::show_scene(const Plane_3& plane, const Polyhedron& polytope, co
 
         renderer->AddActor(sphereActor);
     }
+
+    // Set up camera for better 3D view
+    vtkCamera* camera = renderer->GetActiveCamera();
+    camera->SetPosition(2, -4, 8);  // Position camera at an angle
+    camera->SetFocalPoint(0, 0, 0);  // Look at the origin
+    camera->SetViewUp(0, 0, 1);  // Set Z-axis as up direction
+    camera->ParallelProjectionOn();
+    camera->SetParallelScale(5.0);
 
     // Create window and interactor
     auto renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
@@ -468,29 +662,135 @@ void Visualizer::plot_2d_points_and_polygons(const std::vector<Point_2>& surf_po
     renderWindow->AddRenderer(renderer);
     renderWindow->SetSize(800, 600);
 
-    // Add grid lines
+    // Add coordinate axes
+    vtkSmartPointer<vtkPoints> axisPoints = vtkSmartPointer<vtkPoints>::New();
+    
+    // X-axis (red)
+    vtkSmartPointer<vtkPoints> xAxisPoints = vtkSmartPointer<vtkPoints>::New();
+    xAxisPoints->InsertNextPoint(0.0, 0.0, 0.0);
+    xAxisPoints->InsertNextPoint(5.0, 0.0, 0.0);
+    vtkSmartPointer<vtkCellArray> xAxisLines = vtkSmartPointer<vtkCellArray>::New();
+    vtkSmartPointer<vtkLine> xLine = vtkSmartPointer<vtkLine>::New();
+    xLine->GetPointIds()->SetId(0, 0);
+    xLine->GetPointIds()->SetId(1, 1);
+    xAxisLines->InsertNextCell(xLine);
+    vtkSmartPointer<vtkPolyData> xAxisPolyData = vtkSmartPointer<vtkPolyData>::New();
+    xAxisPolyData->SetPoints(xAxisPoints);
+    xAxisPolyData->SetLines(xAxisLines);
+    vtkSmartPointer<vtkPolyDataMapper> xAxisMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+    xAxisMapper->SetInputData(xAxisPolyData);
+    vtkSmartPointer<vtkActor> xAxisActor = vtkSmartPointer<vtkActor>::New();
+    xAxisActor->SetMapper(xAxisMapper);
+    xAxisActor->GetProperty()->SetColor(1.0, 0.0, 0.0);  // Red for X-axis
+    xAxisActor->GetProperty()->SetLineWidth(2);
+    renderer->AddActor(xAxisActor);
+
+    // Y-axis (green)
+    vtkSmartPointer<vtkPoints> yAxisPoints = vtkSmartPointer<vtkPoints>::New();
+    yAxisPoints->InsertNextPoint(0.0, 0.0, 0.0);
+    yAxisPoints->InsertNextPoint(0.0, 5.0, 0.0);
+    vtkSmartPointer<vtkCellArray> yAxisLines = vtkSmartPointer<vtkCellArray>::New();
+    vtkSmartPointer<vtkLine> yLine = vtkSmartPointer<vtkLine>::New();
+    yLine->GetPointIds()->SetId(0, 0);
+    yLine->GetPointIds()->SetId(1, 1);
+    yAxisLines->InsertNextCell(yLine);
+    vtkSmartPointer<vtkPolyData> yAxisPolyData = vtkSmartPointer<vtkPolyData>::New();
+    yAxisPolyData->SetPoints(yAxisPoints);
+    yAxisPolyData->SetLines(yAxisLines);
+    vtkSmartPointer<vtkPolyDataMapper> yAxisMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+    yAxisMapper->SetInputData(yAxisPolyData);
+    vtkSmartPointer<vtkActor> yAxisActor = vtkSmartPointer<vtkActor>::New();
+    yAxisActor->SetMapper(yAxisMapper);
+    yAxisActor->GetProperty()->SetColor(0.0, 1.0, 0.0);  // Green for Y-axis
+    yAxisActor->GetProperty()->SetLineWidth(2);
+    renderer->AddActor(yAxisActor);
+
+    // Z-axis (blue)
+    vtkSmartPointer<vtkPoints> zAxisPoints = vtkSmartPointer<vtkPoints>::New();
+    zAxisPoints->InsertNextPoint(0.0, 0.0, 0.0);
+    zAxisPoints->InsertNextPoint(0.0, 0.0, 5.0);
+    vtkSmartPointer<vtkCellArray> zAxisLines = vtkSmartPointer<vtkCellArray>::New();
+    vtkSmartPointer<vtkLine> zLine = vtkSmartPointer<vtkLine>::New();
+    zLine->GetPointIds()->SetId(0, 0);
+    zLine->GetPointIds()->SetId(1, 1);
+    zAxisLines->InsertNextCell(zLine);
+    vtkSmartPointer<vtkPolyData> zAxisPolyData = vtkSmartPointer<vtkPolyData>::New();
+    zAxisPolyData->SetPoints(zAxisPoints);
+    zAxisPolyData->SetLines(zAxisLines);
+    vtkSmartPointer<vtkPolyDataMapper> zAxisMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+    zAxisMapper->SetInputData(zAxisPolyData);
+    vtkSmartPointer<vtkActor> zAxisActor = vtkSmartPointer<vtkActor>::New();
+    zAxisActor->SetMapper(zAxisMapper);
+    zAxisActor->GetProperty()->SetColor(0.0, 0.0, 1.0);  // Blue for Z-axis
+    zAxisActor->GetProperty()->SetLineWidth(2);
+    renderer->AddActor(zAxisActor);
+
+    // Add grid lines and axis labels
     vtkSmartPointer<vtkPoints> gridPoints = vtkSmartPointer<vtkPoints>::New();
     vtkSmartPointer<vtkCellArray> gridLines = vtkSmartPointer<vtkCellArray>::New();
     
-    // Add horizontal grid lines
+    // Add horizontal grid lines and labels
     for (double y = -5.0; y <= 5.0; y += 1.0) {
+        // Grid line
         vtkIdType id1 = gridPoints->InsertNextPoint(-5.0, y, 0.0);
         vtkIdType id2 = gridPoints->InsertNextPoint(5.0, y, 0.0);
         vtkSmartPointer<vtkLine> line = vtkSmartPointer<vtkLine>::New();
         line->GetPointIds()->SetId(0, id1);
         line->GetPointIds()->SetId(1, id2);
         gridLines->InsertNextCell(line);
+
+        // Y-axis label
+        vtkSmartPointer<vtkTextActor> label = vtkSmartPointer<vtkTextActor>::New();
+        label->SetInput(std::to_string(static_cast<int>(y)).c_str());
+        label->SetPosition(-5.2, y - 0.1);
+        label->GetTextProperty()->SetColor(0.0, 0.0, 0.0);
+        label->GetTextProperty()->SetFontSize(12);
+        renderer->AddActor2D(label);
     }
     
-    // Add vertical grid lines
+    // Add vertical grid lines and labels
     for (double x = -5.0; x <= 5.0; x += 1.0) {
+        // Grid line
         vtkIdType id1 = gridPoints->InsertNextPoint(x, -5.0, 0.0);
         vtkIdType id2 = gridPoints->InsertNextPoint(x, 5.0, 0.0);
         vtkSmartPointer<vtkLine> line = vtkSmartPointer<vtkLine>::New();
         line->GetPointIds()->SetId(0, id1);
         line->GetPointIds()->SetId(1, id2);
         gridLines->InsertNextCell(line);
+
+        // X-axis label
+        vtkSmartPointer<vtkTextActor> label = vtkSmartPointer<vtkTextActor>::New();
+        label->SetInput(std::to_string(static_cast<int>(x)).c_str());
+        label->SetPosition(x - 0.1, -5.2);
+        label->GetTextProperty()->SetColor(0.0, 0.0, 0.0);
+        label->GetTextProperty()->SetFontSize(12);
+        renderer->AddActor2D(label);
     }
+
+    // Add axis labels
+    vtkSmartPointer<vtkTextActor> xLabel = vtkSmartPointer<vtkTextActor>::New();
+    xLabel->SetInput("X");
+    xLabel->SetPosition(5.5, -5.2);
+    xLabel->GetTextProperty()->SetColor(1.0, 0.0, 0.0);  // Red
+    xLabel->GetTextProperty()->SetFontSize(14);
+    xLabel->GetTextProperty()->SetBold(1);
+    renderer->AddActor2D(xLabel);
+
+    vtkSmartPointer<vtkTextActor> yLabel = vtkSmartPointer<vtkTextActor>::New();
+    yLabel->SetInput("Y");
+    yLabel->SetPosition(-5.2, 5.5);
+    yLabel->GetTextProperty()->SetColor(0.0, 1.0, 0.0);  // Green
+    yLabel->GetTextProperty()->SetFontSize(14);
+    yLabel->GetTextProperty()->SetBold(1);
+    renderer->AddActor2D(yLabel);
+
+    vtkSmartPointer<vtkTextActor> zLabel = vtkSmartPointer<vtkTextActor>::New();
+    zLabel->SetInput("Z");
+    zLabel->SetPosition(-5.2, -5.2);
+    zLabel->GetTextProperty()->SetColor(0.0, 0.0, 1.0);  // Blue
+    zLabel->GetTextProperty()->SetFontSize(14);
+    zLabel->GetTextProperty()->SetBold(1);
+    renderer->AddActor2D(zLabel);
 
     vtkSmartPointer<vtkPolyData> gridPolyData = vtkSmartPointer<vtkPolyData>::New();
     gridPolyData->SetPoints(gridPoints);
@@ -505,63 +805,135 @@ void Visualizer::plot_2d_points_and_polygons(const std::vector<Point_2>& surf_po
     gridActor->GetProperty()->SetLineWidth(1);
     renderer->AddActor(gridActor);
 
-    // Add surface points
+    // Add surface points and connect them with lines
     if (!surf_points.empty()) {
         std::cout << "\nSurface Points:" << std::endl;
         vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
+        vtkSmartPointer<vtkCellArray> lines = vtkSmartPointer<vtkCellArray>::New();
+        
+        // Add points and create lines
+        vtkIdType prevId = -1;
+        vtkIdType firstId = -1;
+        
         for (const auto& p : surf_points) {
-            points->InsertNextPoint(p.x(), p.y(), 0.0);
+            vtkIdType currentId = points->InsertNextPoint(p.x(), p.y(), 0.0);
             std::cout << "(" << p.x() << ", " << p.y() << ")" << std::endl;
+
+            // Create sphere for vertex
+            vtkSmartPointer<vtkSphereSource> sphereSource = vtkSmartPointer<vtkSphereSource>::New();
+            sphereSource->SetCenter(p.x(), p.y(), 0.0);
+            sphereSource->SetRadius(0.02);
+            sphereSource->Update();
+
+            vtkSmartPointer<vtkPolyDataMapper> sphereMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+            sphereMapper->SetInputConnection(sphereSource->GetOutputPort());
+
+            vtkSmartPointer<vtkActor> sphereActor = vtkSmartPointer<vtkActor>::New();
+            sphereActor->SetMapper(sphereMapper);
+            sphereActor->GetProperty()->SetColor(0.0, 0.0, 1.0);  // Blue
+            renderer->AddActor(sphereActor);
+
+            // Create line
+            if (prevId != -1) {
+                vtkSmartPointer<vtkLine> line = vtkSmartPointer<vtkLine>::New();
+                line->GetPointIds()->SetId(0, prevId);
+                line->GetPointIds()->SetId(1, currentId);
+                lines->InsertNextCell(line);
+            }
+            if (firstId == -1) firstId = currentId;
+            prevId = currentId;
+        }
+
+        // Close the polygon
+        if (prevId != -1 && firstId != -1) {
+            vtkSmartPointer<vtkLine> line = vtkSmartPointer<vtkLine>::New();
+            line->GetPointIds()->SetId(0, prevId);
+            line->GetPointIds()->SetId(1, firstId);
+            lines->InsertNextCell(line);
         }
 
         vtkSmartPointer<vtkPolyData> polyData = vtkSmartPointer<vtkPolyData>::New();
         polyData->SetPoints(points);
-
-        vtkSmartPointer<vtkVertexGlyphFilter> vertexGlyphFilter = vtkSmartPointer<vtkVertexGlyphFilter>::New();
-        vertexGlyphFilter->SetInputData(polyData);
+        polyData->SetLines(lines);
 
         vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
-        mapper->SetInputConnection(vertexGlyphFilter->GetOutputPort());
+        mapper->SetInputData(polyData);
 
         vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
         actor->SetMapper(mapper);
         actor->GetProperty()->SetColor(0.0, 0.0, 1.0);  // Blue
-        actor->GetProperty()->SetPointSize(10);
+        actor->GetProperty()->SetLineWidth(2);
         renderer->AddActor(actor);
     }
 
-    // Add intersection points
+    // Add intersection points and connect them with lines
     if (!intersection_points.empty()) {
         std::cout << "\nIntersection Points:" << std::endl;
         vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
+        vtkSmartPointer<vtkCellArray> lines = vtkSmartPointer<vtkCellArray>::New();
+        
+        // Add points and create lines
+        vtkIdType prevId = -1;
+        vtkIdType firstId = -1;
+        
         for (const auto& p : intersection_points) {
-            points->InsertNextPoint(p.x(), p.y(), 0.0);
+            vtkIdType currentId = points->InsertNextPoint(p.x(), p.y(), 0.0);
             std::cout << "(" << p.x() << ", " << p.y() << ")" << std::endl;
+
+            // Create sphere for vertex
+            vtkSmartPointer<vtkSphereSource> sphereSource = vtkSmartPointer<vtkSphereSource>::New();
+            sphereSource->SetCenter(p.x(), p.y(), 0.0);
+            sphereSource->SetRadius(0.02);
+            sphereSource->Update();
+
+            vtkSmartPointer<vtkPolyDataMapper> sphereMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+            sphereMapper->SetInputConnection(sphereSource->GetOutputPort());
+
+            vtkSmartPointer<vtkActor> sphereActor = vtkSmartPointer<vtkActor>::New();
+            sphereActor->SetMapper(sphereMapper);
+            sphereActor->GetProperty()->SetColor(1.0, 0.0, 0.0);  // Red
+            renderer->AddActor(sphereActor);
+
+            // Create line
+            if (prevId != -1) {
+                vtkSmartPointer<vtkLine> line = vtkSmartPointer<vtkLine>::New();
+                line->GetPointIds()->SetId(0, prevId);
+                line->GetPointIds()->SetId(1, currentId);
+                lines->InsertNextCell(line);
+            }
+            if (firstId == -1) firstId = currentId;
+            prevId = currentId;
+        }
+
+        // Close the polygon
+        if (prevId != -1 && firstId != -1) {
+            vtkSmartPointer<vtkLine> line = vtkSmartPointer<vtkLine>::New();
+            line->GetPointIds()->SetId(0, prevId);
+            line->GetPointIds()->SetId(1, firstId);
+            lines->InsertNextCell(line);
         }
 
         vtkSmartPointer<vtkPolyData> polyData = vtkSmartPointer<vtkPolyData>::New();
         polyData->SetPoints(points);
-
-        vtkSmartPointer<vtkVertexGlyphFilter> vertexGlyphFilter = vtkSmartPointer<vtkVertexGlyphFilter>::New();
-        vertexGlyphFilter->SetInputData(polyData);
+        polyData->SetLines(lines);
 
         vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
-        mapper->SetInputConnection(vertexGlyphFilter->GetOutputPort());
+        mapper->SetInputData(polyData);
 
         vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
         actor->SetMapper(mapper);
         actor->GetProperty()->SetColor(1.0, 0.0, 0.0);  // Red
-        actor->GetProperty()->SetPointSize(10);
+        actor->GetProperty()->SetLineWidth(2);
         renderer->AddActor(actor);
     }
 
-    // Set up camera
+    // Set up camera for better 3D view
     vtkCamera* camera = renderer->GetActiveCamera();
-    camera->SetPosition(0, 0, 10);
-    camera->SetFocalPoint(0, 0, 0);
-    camera->SetViewUp(0, 1, 0);
+    camera->SetPosition(2, -4, 8);  // Position camera at an angle
+    camera->SetFocalPoint(0, 0, 0);  // Look at the origin
+    camera->SetViewUp(0, 0, 1);  // Set Z-axis as up direction
     camera->ParallelProjectionOn();
-    camera->SetParallelScale(5.0);  // Set the scale for parallel projection
+    camera->SetParallelScale(5.0);
 
     // Create interactor and start visualization
     vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
