@@ -648,12 +648,12 @@ void Visualizer::show_2d_polygons(const Polygon_2& polygon1, const Polygon_2& po
     renderWindowInteractor->Start();
 }
 
-void Visualizer::plot_2d_points_and_polygons(const std::vector<Point_2>& surf_points, 
-                                           const std::vector<Point_2>& intersection_points) {
+void Visualizer::plot_2d_points_and_polygons(const Polygon_2& surf_polygon, 
+                                           const Polygon_2& intersection_polygon) {
     // Debug print
     std::cout << "\n=== Debug Information ===" << std::endl;
-    std::cout << "Number of surface points: " << surf_points.size() << std::endl;
-    std::cout << "Number of intersection points: " << intersection_points.size() << std::endl;
+    std::cout << "Number of surface points: " << std::distance(surf_polygon.vertices_begin(), surf_polygon.vertices_end()) << std::endl;
+    std::cout << "Number of intersection points: " << std::distance(intersection_polygon.vertices_begin(), intersection_polygon.vertices_end()) << std::endl;
 
     // Create VTK visualization
     vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
@@ -705,108 +705,8 @@ void Visualizer::plot_2d_points_and_polygons(const std::vector<Point_2>& surf_po
     yAxisActor->GetProperty()->SetLineWidth(2);
     renderer->AddActor(yAxisActor);
 
-    // Z-axis (blue)
-    vtkSmartPointer<vtkPoints> zAxisPoints = vtkSmartPointer<vtkPoints>::New();
-    zAxisPoints->InsertNextPoint(0.0, 0.0, 0.0);
-    zAxisPoints->InsertNextPoint(0.0, 0.0, 5.0);
-    vtkSmartPointer<vtkCellArray> zAxisLines = vtkSmartPointer<vtkCellArray>::New();
-    vtkSmartPointer<vtkLine> zLine = vtkSmartPointer<vtkLine>::New();
-    zLine->GetPointIds()->SetId(0, 0);
-    zLine->GetPointIds()->SetId(1, 1);
-    zAxisLines->InsertNextCell(zLine);
-    vtkSmartPointer<vtkPolyData> zAxisPolyData = vtkSmartPointer<vtkPolyData>::New();
-    zAxisPolyData->SetPoints(zAxisPoints);
-    zAxisPolyData->SetLines(zAxisLines);
-    vtkSmartPointer<vtkPolyDataMapper> zAxisMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
-    zAxisMapper->SetInputData(zAxisPolyData);
-    vtkSmartPointer<vtkActor> zAxisActor = vtkSmartPointer<vtkActor>::New();
-    zAxisActor->SetMapper(zAxisMapper);
-    zAxisActor->GetProperty()->SetColor(0.0, 0.0, 1.0);  // Blue for Z-axis
-    zAxisActor->GetProperty()->SetLineWidth(2);
-    renderer->AddActor(zAxisActor);
-
-    // Add grid lines and axis labels
-    vtkSmartPointer<vtkPoints> gridPoints = vtkSmartPointer<vtkPoints>::New();
-    vtkSmartPointer<vtkCellArray> gridLines = vtkSmartPointer<vtkCellArray>::New();
-    
-    // Add horizontal grid lines and labels
-    for (double y = -5.0; y <= 5.0; y += 1.0) {
-        // Grid line
-        vtkIdType id1 = gridPoints->InsertNextPoint(-5.0, y, 0.0);
-        vtkIdType id2 = gridPoints->InsertNextPoint(5.0, y, 0.0);
-        vtkSmartPointer<vtkLine> line = vtkSmartPointer<vtkLine>::New();
-        line->GetPointIds()->SetId(0, id1);
-        line->GetPointIds()->SetId(1, id2);
-        gridLines->InsertNextCell(line);
-
-        // Y-axis label
-        vtkSmartPointer<vtkTextActor> label = vtkSmartPointer<vtkTextActor>::New();
-        label->SetInput(std::to_string(static_cast<int>(y)).c_str());
-        label->SetPosition(-5.2, y - 0.1);
-        label->GetTextProperty()->SetColor(0.0, 0.0, 0.0);
-        label->GetTextProperty()->SetFontSize(12);
-        renderer->AddActor2D(label);
-    }
-    
-    // Add vertical grid lines and labels
-    for (double x = -5.0; x <= 5.0; x += 1.0) {
-        // Grid line
-        vtkIdType id1 = gridPoints->InsertNextPoint(x, -5.0, 0.0);
-        vtkIdType id2 = gridPoints->InsertNextPoint(x, 5.0, 0.0);
-        vtkSmartPointer<vtkLine> line = vtkSmartPointer<vtkLine>::New();
-        line->GetPointIds()->SetId(0, id1);
-        line->GetPointIds()->SetId(1, id2);
-        gridLines->InsertNextCell(line);
-
-        // X-axis label
-        vtkSmartPointer<vtkTextActor> label = vtkSmartPointer<vtkTextActor>::New();
-        label->SetInput(std::to_string(static_cast<int>(x)).c_str());
-        label->SetPosition(x - 0.1, -5.2);
-        label->GetTextProperty()->SetColor(0.0, 0.0, 0.0);
-        label->GetTextProperty()->SetFontSize(12);
-        renderer->AddActor2D(label);
-    }
-
-    // Add axis labels
-    vtkSmartPointer<vtkTextActor> xLabel = vtkSmartPointer<vtkTextActor>::New();
-    xLabel->SetInput("X");
-    xLabel->SetPosition(5.5, -5.2);
-    xLabel->GetTextProperty()->SetColor(1.0, 0.0, 0.0);  // Red
-    xLabel->GetTextProperty()->SetFontSize(14);
-    xLabel->GetTextProperty()->SetBold(1);
-    renderer->AddActor2D(xLabel);
-
-    vtkSmartPointer<vtkTextActor> yLabel = vtkSmartPointer<vtkTextActor>::New();
-    yLabel->SetInput("Y");
-    yLabel->SetPosition(-5.2, 5.5);
-    yLabel->GetTextProperty()->SetColor(0.0, 1.0, 0.0);  // Green
-    yLabel->GetTextProperty()->SetFontSize(14);
-    yLabel->GetTextProperty()->SetBold(1);
-    renderer->AddActor2D(yLabel);
-
-    vtkSmartPointer<vtkTextActor> zLabel = vtkSmartPointer<vtkTextActor>::New();
-    zLabel->SetInput("Z");
-    zLabel->SetPosition(-5.2, -5.2);
-    zLabel->GetTextProperty()->SetColor(0.0, 0.0, 1.0);  // Blue
-    zLabel->GetTextProperty()->SetFontSize(14);
-    zLabel->GetTextProperty()->SetBold(1);
-    renderer->AddActor2D(zLabel);
-
-    vtkSmartPointer<vtkPolyData> gridPolyData = vtkSmartPointer<vtkPolyData>::New();
-    gridPolyData->SetPoints(gridPoints);
-    gridPolyData->SetLines(gridLines);
-    
-    vtkSmartPointer<vtkPolyDataMapper> gridMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
-    gridMapper->SetInputData(gridPolyData);
-    
-    vtkSmartPointer<vtkActor> gridActor = vtkSmartPointer<vtkActor>::New();
-    gridActor->SetMapper(gridMapper);
-    gridActor->GetProperty()->SetColor(0.8, 0.8, 0.8);  // Light gray
-    gridActor->GetProperty()->SetLineWidth(1);
-    renderer->AddActor(gridActor);
-
-    // Add surface points and connect them with lines
-    if (!surf_points.empty()) {
+    // Add surface polygon
+    if (!surf_polygon.is_empty()) {
         std::cout << "\nSurface Points:" << std::endl;
         vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
         vtkSmartPointer<vtkCellArray> lines = vtkSmartPointer<vtkCellArray>::New();
@@ -815,13 +715,13 @@ void Visualizer::plot_2d_points_and_polygons(const std::vector<Point_2>& surf_po
         vtkIdType prevId = -1;
         vtkIdType firstId = -1;
         
-        for (const auto& p : surf_points) {
-            vtkIdType currentId = points->InsertNextPoint(p.x(), p.y(), 0.0);
-            std::cout << "(" << p.x() << ", " << p.y() << ")" << std::endl;
+        for (auto it = surf_polygon.vertices_begin(); it != surf_polygon.vertices_end(); ++it) {
+            vtkIdType currentId = points->InsertNextPoint(it->x(), it->y(), 0.0);
+            std::cout << "(" << it->x() << ", " << it->y() << ")" << std::endl;
 
             // Create sphere for vertex
             vtkSmartPointer<vtkSphereSource> sphereSource = vtkSmartPointer<vtkSphereSource>::New();
-            sphereSource->SetCenter(p.x(), p.y(), 0.0);
+            sphereSource->SetCenter(it->x(), it->y(), 0.0);
             sphereSource->SetRadius(0.02);
             sphereSource->Update();
 
@@ -866,8 +766,8 @@ void Visualizer::plot_2d_points_and_polygons(const std::vector<Point_2>& surf_po
         renderer->AddActor(actor);
     }
 
-    // Add intersection points and connect them with lines
-    if (!intersection_points.empty()) {
+    // Add intersection polygon
+    if (!intersection_polygon.is_empty()) {
         std::cout << "\nIntersection Points:" << std::endl;
         vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
         vtkSmartPointer<vtkCellArray> lines = vtkSmartPointer<vtkCellArray>::New();
@@ -876,13 +776,13 @@ void Visualizer::plot_2d_points_and_polygons(const std::vector<Point_2>& surf_po
         vtkIdType prevId = -1;
         vtkIdType firstId = -1;
         
-        for (const auto& p : intersection_points) {
-            vtkIdType currentId = points->InsertNextPoint(p.x(), p.y(), 0.0);
-            std::cout << "(" << p.x() << ", " << p.y() << ")" << std::endl;
+        for (auto it = intersection_polygon.vertices_begin(); it != intersection_polygon.vertices_end(); ++it) {
+            vtkIdType currentId = points->InsertNextPoint(it->x(), it->y(), 0.0);
+            std::cout << "(" << it->x() << ", " << it->y() << ")" << std::endl;
 
             // Create sphere for vertex
             vtkSmartPointer<vtkSphereSource> sphereSource = vtkSmartPointer<vtkSphereSource>::New();
-            sphereSource->SetCenter(p.x(), p.y(), 0.0);
+            sphereSource->SetCenter(it->x(), it->y(), 0.0);
             sphereSource->SetRadius(0.02);
             sphereSource->Update();
 
@@ -927,17 +827,12 @@ void Visualizer::plot_2d_points_and_polygons(const std::vector<Point_2>& surf_po
         renderer->AddActor(actor);
     }
 
-    // Set up camera for better 3D view
-    vtkCamera* camera = renderer->GetActiveCamera();
-    camera->SetPosition(2, -4, 8);  // Position camera at an angle
-    camera->SetFocalPoint(0, 0, 0);  // Look at the origin
-    camera->SetViewUp(0, 0, 1);  // Set Z-axis as up direction
-    camera->ParallelProjectionOn();
-    camera->SetParallelScale(5.0);
-
-    // Create interactor and start visualization
+    // Create interactor
     vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
     renderWindowInteractor->SetRenderWindow(renderWindow);
+
+    // Initialize and start
+    renderer->ResetCamera();
     renderWindowInteractor->Initialize();
     renderWindow->Render();
     renderWindowInteractor->Start();

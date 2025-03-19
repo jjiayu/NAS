@@ -29,8 +29,8 @@ public:
     static void show_scene(const Plane_3& plane, const Polyhedron& polytope, const Polyhedron& intersection_polygon);
     static void show_2d_polygon(const Polygon_2& polygon);
     static void show_2d_polygons(const Polygon_2& polygon1, const Polygon_2& polygon2);
-    static void plot_2d_points_and_polygons(const std::vector<Point_2>& surf_points, 
-                                          const std::vector<Point_2>& intersection_points);
+    static void plot_2d_points_and_polygons(const Polygon_2& surf_polygon, 
+                                          const Polygon_2& intersection_polygon);
 };
 
 } // namespace nas

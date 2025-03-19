@@ -254,46 +254,49 @@ void polytope_surf_intersection(const std::vector<Point_3>& surf_pts, const Poly
     Transformation transform = create_transfomation_to_surface_center(surf_pts, plane);
 
     // Transform surface points to plane coordinates
-    std::vector<Point_2> transformed_surf_pts_2d;
+    std::vector<Point_2> surf_pts_2d;
     for (const auto& point : surf_pts) {
         Point_3 transformed = transform(point);
-        transformed_surf_pts_2d.push_back(Point_2(transformed.x(), transformed.y()));
+        surf_pts_2d.push_back(Point_2(transformed.x(), transformed.y()));
     }
 
     // Transform intersection points to plane coordinates
-    std::vector<Point_2> transformed_intersection_pts_2d;
+    std::vector<Point_2> intersection_pts_2d;
     for (const auto& point : intersection_points) {
         Point_3 transformed = transform(point);
-        transformed_intersection_pts_2d.push_back(Point_2(transformed.x(), transformed.y()));
+        intersection_pts_2d.push_back(Point_2(transformed.x(), transformed.y()));
     }
 
-    // Create 2D polygons from the points
-    Polygon_2 surf_polygon(transformed_surf_pts_2d.begin(), transformed_surf_pts_2d.end());
-    Polygon_2 intersection_polygon(transformed_intersection_pts_2d.begin(), transformed_intersection_pts_2d.end());
+    // Create 2D polygons directly using convex hull
+    Polygon_2 surf_polygon_2d;
+    CGAL::convex_hull_2(surf_pts_2d.begin(), surf_pts_2d.end(), std::back_inserter(surf_polygon_2d));
+
+    Polygon_2 intersection_polygon_2d;
+    CGAL::convex_hull_2(intersection_pts_2d.begin(), intersection_pts_2d.end(), std::back_inserter(intersection_polygon_2d));
 
     // Print points for visualization
     std::cout << "\nSurface Points (2D):" << std::endl;
-    for (const auto& p : transformed_surf_pts_2d) {
-        std::cout << "(" << p.x() << ", " << p.y() << ")" << std::endl;
+    for (auto it = surf_polygon_2d.vertices_begin(); it != surf_polygon_2d.vertices_end(); ++it) {
+        std::cout << "(" << it->x() << ", " << it->y() << ")" << std::endl;
     }
 
     std::cout << "\nIntersection Points (2D):" << std::endl;
-    for (const auto& p : transformed_intersection_pts_2d) {
-        std::cout << "(" << p.x() << ", " << p.y() << ")" << std::endl;
+    for (auto it = intersection_polygon_2d.vertices_begin(); it != intersection_polygon_2d.vertices_end(); ++it) {
+        std::cout << "(" << it->x() << ", " << it->y() << ")" << std::endl;
     }
 
     // Visualize 2D polygons
     std::cout << "\nSurface Polygon:" << std::endl;
-    std::cout << "Is simple: " << surf_polygon.is_simple() << std::endl;
-    std::cout << "Is convex: " << surf_polygon.is_convex() << std::endl;
-    std::cout << "Area: " << surf_polygon.area() << std::endl;
+    std::cout << "Is simple: " << surf_polygon_2d.is_simple() << std::endl;
+    std::cout << "Is convex: " << surf_polygon_2d.is_convex() << std::endl;
+    std::cout << "Area: " << surf_polygon_2d.area() << std::endl;
 
     std::cout << "\nIntersection Polygon:" << std::endl;
-    std::cout << "Is simple: " << intersection_polygon.is_simple() << std::endl;
-    std::cout << "Is convex: " << intersection_polygon.is_convex() << std::endl;
-    std::cout << "Area: " << intersection_polygon.area() << std::endl;
+    std::cout << "Is simple: " << intersection_polygon_2d.is_simple() << std::endl;
+    std::cout << "Is convex: " << intersection_polygon_2d.is_convex() << std::endl;
+    std::cout << "Area: " << intersection_polygon_2d.area() << std::endl;
 
-    Visualizer::plot_2d_points_and_polygons(transformed_surf_pts_2d, transformed_intersection_pts_2d);
+    Visualizer::plot_2d_points_and_polygons(surf_polygon_2d, intersection_polygon_2d);
 
 }
 
