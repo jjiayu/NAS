@@ -213,6 +213,105 @@ Transformation create_transfomation_to_surface_center(const std::vector<Point_3>
     );
 }
 
+// Helper function to check if a point is inside a polygon
+bool is_point_inside_polygon(const Point_2& point, const Polygon_2& polygon) {
+    bool inside = false;
+    auto j = polygon.vertices_end() - 1;
+    
+    for (auto i = polygon.vertices_begin(); i != polygon.vertices_end(); ++i) {
+        if (((i->y() > point.y()) != (j->y() > point.y())) &&
+            (point.x() < (j->x() - i->x()) * (point.y() - i->y()) / (j->y() - i->y()) + i->x())) {
+            inside = !inside;
+        }
+        j = i;
+    }
+    return inside;
+}
+
+// Helper function to compute intersection between two line segments
+bool compute_segment_intersection(const Point_2& p1, const Point_2& p2,
+                                const Point_2& p3, const Point_2& p4,
+                                Point_2& intersection) {
+    double denominator = (p1.x() - p2.x()) * (p3.y() - p4.y()) - 
+                        (p1.y() - p2.y()) * (p3.x() - p4.x());
+    
+    if (std::abs(denominator) < 1e-10) return false;  // Lines are parallel or coincident
+    
+    double t = ((p1.x() - p3.x()) * (p3.y() - p4.y()) - 
+                (p1.y() - p3.y()) * (p3.x() - p4.x())) / denominator;
+    
+    double u = -((p1.x() - p2.x()) * (p1.y() - p3.y()) - 
+                 (p1.y() - p2.y()) * (p1.x() - p3.x())) / denominator;
+    
+    if (t >= 0 && t <= 1 && u >= 0 && u <= 1) {
+        intersection = Point_2(p1.x() + t * (p2.x() - p1.x()),
+                             p1.y() + t * (p2.y() - p1.y()));
+        return true;
+    }
+    return false;
+}
+
+// Function to compute intersection between two polygons
+Polygon_2 compute_polygon_intersection(const Polygon_2& poly1, const Polygon_2& poly2) {
+    std::vector<Point_2> intersection_points;
+    
+    // Step 1: Find vertices of poly1 that are inside poly2
+    for (auto it = poly1.vertices_begin(); it != poly1.vertices_end(); ++it) {
+        if (is_point_inside_polygon(*it, poly2)) {
+            intersection_points.push_back(*it);
+        }
+    }
+    
+    // Step 2: Find vertices of poly2 that are inside poly1
+    for (auto it = poly2.vertices_begin(); it != poly2.vertices_end(); ++it) {
+        if (is_point_inside_polygon(*it, poly1)) {
+            intersection_points.push_back(*it);
+        }
+    }
+    
+    // Step 3: Find intersection points between edges
+    for (auto it1 = poly1.vertices_begin(); it1 != poly1.vertices_end(); ++it1) {
+        auto next1 = std::next(it1);
+        if (next1 == poly1.vertices_end()) next1 = poly1.vertices_begin();
+        
+        for (auto it2 = poly2.vertices_begin(); it2 != poly2.vertices_end(); ++it2) {
+            auto next2 = std::next(it2);
+            if (next2 == poly2.vertices_end()) next2 = poly2.vertices_begin();
+            
+            Point_2 intersection;
+            if (compute_segment_intersection(*it1, *next1, *it2, *next2, intersection)) {
+                intersection_points.push_back(intersection);
+            }
+        }
+    }
+    
+    // Step 4: Sort points in counterclockwise order around their centroid
+    if (intersection_points.size() >= 3) {
+        // Calculate centroid
+        Point_2 centroid(0, 0);
+        for (const auto& p : intersection_points) {
+            centroid = Point_2(centroid.x() + p.x(), centroid.y() + p.y());
+        }
+        centroid = Point_2(centroid.x() / intersection_points.size(),
+                          centroid.y() / intersection_points.size());
+        
+        // Sort points counterclockwise around centroid
+        std::sort(intersection_points.begin(), intersection_points.end(),
+            [&centroid](const Point_2& a, const Point_2& b) {
+                return std::atan2(a.y() - centroid.y(), a.x() - centroid.x()) <
+                       std::atan2(b.y() - centroid.y(), b.x() - centroid.x());
+            });
+    }
+    
+    // Step 5: Create the intersection polygon
+    Polygon_2 result;
+    for (const auto& p : intersection_points) {
+        result.push_back(p);
+    }
+    
+    return result;
+}
+
 void polytope_surf_intersection(const std::vector<Point_3>& surf_pts, const Polyhedron& polytope) {
     // Fit plane to surface points
     Plane_3 plane;
@@ -296,8 +395,17 @@ void polytope_surf_intersection(const std::vector<Point_3>& surf_pts, const Poly
     std::cout << "Is convex: " << intersection_polygon_2d.is_convex() << std::endl;
     std::cout << "Area: " << intersection_polygon_2d.area() << std::endl;
 
-    Visualizer::plot_2d_points_and_polygons(surf_polygon_2d, intersection_polygon_2d);
-
+    // Compute intersection of 2D polygons
+    Polygon_2 intersection_result = compute_polygon_intersection(surf_polygon_2d, intersection_polygon_2d);
+    
+    // Print intersection result
+    std::cout << "\nIntersection Result:" << std::endl;
+    std::cout << "Number of vertices: " << std::distance(intersection_result.vertices_begin(), 
+                                                        intersection_result.vertices_end()) << std::endl;
+    std::cout << "Area: " << intersection_result.area() << std::endl;
+    
+    // Visualize the result
+    Visualizer::plot_2d_points_and_polygons(surf_polygon_2d, intersection_result);
 }
 
 } // namespace nas
