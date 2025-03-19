@@ -293,6 +293,8 @@ void polytope_surf_intersection(const std::vector<Point_3>& surf_pts, const Poly
     std::cout << "Is convex: " << intersection_polygon.is_convex() << std::endl;
     std::cout << "Area: " << intersection_polygon.area() << std::endl;
 
+    Visualizer::plot_2d_points_and_polygons(transformed_surf_pts_2d, transformed_intersection_pts_2d);
+
 }
 
 } // namespace nas

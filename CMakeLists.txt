@@ -41,12 +41,19 @@ include_directories("/opt/homebrew/include")  # For CGAL headers
 add_library(utils_lib src/utils.cpp)
 add_library(node_lib src/node.cpp)
 add_library(tree_lib src/tree.cpp)
+add_library(visualizer_lib src/visualizer.cpp)
 
 # Set library dependencies
 target_link_libraries(tree_lib PRIVATE utils_lib node_lib ${VTK_LIBRARIES})
 target_link_libraries(utils_lib PRIVATE 
     ${VTK_LIBRARIES}
     /opt/homebrew/lib/libqhull_r.dylib
+    visualizer_lib
+    CGAL::CGAL
+)
+target_link_libraries(visualizer_lib PRIVATE 
+    ${VTK_LIBRARIES}
+    CGAL::CGAL
 )
 
 # Add executable
@@ -57,6 +64,7 @@ target_link_libraries(nas_plan PRIVATE
     node_lib
     tree_lib
     utils_lib
+    visualizer_lib
     CGAL::CGAL
     ${VTK_LIBRARIES}
     Eigen3::Eigen
@@ -64,6 +72,6 @@ target_link_libraries(nas_plan PRIVATE
 
 # Enable VTK modules
 vtk_module_autoinit(
-  TARGETS nas_plan tree_lib utils_lib
+  TARGETS nas_plan tree_lib utils_lib visualizer_lib
   MODULES ${VTK_LIBRARIES}
 )

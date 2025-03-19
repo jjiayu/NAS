@@ -156,6 +156,19 @@ tree_lib/fast:
 .PHONY : tree_lib/fast
 
 #=============================================================================
+# Target rules for targets named visualizer_lib
+
+# Build rule for target.
+visualizer_lib: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 visualizer_lib
+.PHONY : visualizer_lib
+
+# fast build rule for target.
+visualizer_lib/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/visualizer_lib.dir/build.make CMakeFiles/visualizer_lib.dir/build
+.PHONY : visualizer_lib/fast
+
+#=============================================================================
 # Target rules for targets named nas_plan
 
 # Build rule for target.
@@ -264,6 +277,30 @@ src/utils.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/utils_lib.dir/build.make CMakeFiles/utils_lib.dir/src/utils.cpp.s
 .PHONY : src/utils.cpp.s
 
+src/visualizer.o: src/visualizer.cpp.o
+.PHONY : src/visualizer.o
+
+# target to build an object file
+src/visualizer.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/visualizer_lib.dir/build.make CMakeFiles/visualizer_lib.dir/src/visualizer.cpp.o
+.PHONY : src/visualizer.cpp.o
+
+src/visualizer.i: src/visualizer.cpp.i
+.PHONY : src/visualizer.i
+
+# target to preprocess a source file
+src/visualizer.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/visualizer_lib.dir/build.make CMakeFiles/visualizer_lib.dir/src/visualizer.cpp.i
+.PHONY : src/visualizer.cpp.i
+
+src/visualizer.s: src/visualizer.cpp.s
+.PHONY : src/visualizer.s
+
+# target to generate assembly for a file
+src/visualizer.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/visualizer_lib.dir/build.make CMakeFiles/visualizer_lib.dir/src/visualizer.cpp.s
+.PHONY : src/visualizer.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -276,6 +313,7 @@ help:
 	@echo "... node_lib"
 	@echo "... tree_lib"
 	@echo "... utils_lib"
+	@echo "... visualizer_lib"
 	@echo "... src/nas_plan.o"
 	@echo "... src/nas_plan.i"
 	@echo "... src/nas_plan.s"
@@ -288,6 +326,9 @@ help:
 	@echo "... src/utils.o"
 	@echo "... src/utils.i"
 	@echo "... src/utils.s"
+	@echo "... src/visualizer.o"
+	@echo "... src/visualizer.i"
+	@echo "... src/visualizer.s"
 .PHONY : help
 
 
