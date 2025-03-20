@@ -2,8 +2,6 @@
 #include "nas_plan.hpp"
 #include "node.hpp"
 #include "visualizer.hpp"
-#include <CGAL/Simple_cartesian.h>
-#include <CGAL/Surface_mesh.h>
 #include "constants.hpp"
 #include "tree.hpp"
 #include "utils.hpp"
@@ -11,15 +9,11 @@
 using namespace nas;
 
 int main() {
-
-
-
     //Create the tree
     Tree tree;
 
-    // Expand tree to depth 3
-    std::cout << "Expanding tree to depth: " << tree.num_steps << std::endl;
-    tree.expand_to_depth(tree.num_steps);
+    // Expand the tree (Depth = num_steps)
+    tree.expand(tree.num_steps);
     std::cout << std::endl;
     
     // Print information about each layer
@@ -35,9 +29,9 @@ int main() {
         std::cout << std::endl;
     }
 
-    for (const auto& plane : tree.env_model) {
-        Visualizer::show_polyhedron(plane);
-    }
+    // for (const auto& plane : tree.env_model) {
+    //     Visualizer::show_polyhedron(plane);
+    // }
 
     // // Visualize the polytopes
     // Visualizer::show_polyhedron(tree.rf_in_lf_polytope);

@@ -1,15 +1,14 @@
-#ifndef CONSTANTS_HPP
-#define CONSTANTS_HPP
+#ifndef NAS_CONSTANTS_HPP
+#define NAS_CONSTANTS_HPP
 
-#include <CGAL/Polyhedron_3.h>
-#include <CGAL/IO/Polyhedron_iostream.h>
-
-typedef CGAL::Simple_cartesian<double> Kernel;
-typedef Kernel::Point_3 Point_3;
-typedef Kernel::Vector_3 Vector_3;
-typedef CGAL::Polyhedron_3<Kernel> Polyhedron;
+#include "types.hpp"
 
 namespace nas {
+
+// Constants for the NAS algorithm
+const double EPSILON = 1e-10;
+const double SURFACE_EPSILON = 1e-3;
+const double COLLISION_EPSILON = 1e-3;
 
 // Define Foot stance status
 const int LEFT_FOOT = 0;   // Represents the left foot in stance
@@ -20,7 +19,7 @@ const std::string rf_in_lf_path = "/Users/jiayu/Desktop/nas_ws/NAS/data/constrai
 const std::string lf_in_rf_path = "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/LF_constraints_in_RF_quasi_flat_REDUCED.obj";
 
 // Define Goal Specificaitons
-const int goal_stance_foot = LEFT_FOOT;
+const int stance_foot_at_goal = LEFT_FOOT;
 const Vector_3 goal_offset(0.0, 0.0, 0.0); // goal offset applied to move in the local frame of the goal surface (last surface)
 
 // Define Number of Steps
@@ -60,4 +59,4 @@ const std::vector<std::vector<Point_3>> surf_list = {
 
 }
 
-#endif // CONSTANTS_HPP
+#endif // NAS_CONSTANTS_HPP

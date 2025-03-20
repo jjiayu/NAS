@@ -1,23 +1,15 @@
 // include/prob_data.hpp
 
-#ifndef TREE_HPP
-#define TREE_HPP
+#ifndef NAS_TREE_HPP
+#define NAS_TREE_HPP
 
+#include "types.hpp"
 #include <vector>
 #include <string>
-#include <CGAL/Simple_cartesian.h>
-#include <CGAL/Polyhedron_3.h>
-#include <Eigen/Dense>
-#include "constants.hpp" // Include the constants header
+#include "constants.hpp"
 #include <iostream>
 #include <queue>
 #include "node.hpp"
-
-// Define types
-typedef CGAL::Simple_cartesian<double> Kernel;
-typedef Kernel::Point_3 Point;
-typedef CGAL::Polyhedron_3<Kernel> Polyhedron;
-typedef CGAL::Vector_3<Kernel> Vector_3;
 
 namespace nas {
 
@@ -51,12 +43,10 @@ public:
     // ~ProblemData();
 
     // Methods
-    void expand_layer();
-    void expand_to_depth(int depth);
+    void expand(int depth);
     std::vector<Node*> get_children(Node* parent);
-
 };
 
 } // namespace nas
 
-#endif // TREE_HPP
+#endif // NAS_TREE_HPP
