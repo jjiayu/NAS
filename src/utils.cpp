@@ -203,52 +203,99 @@ bool compute_2d_edge_intersection(const Point_2& p1, const Point_2& p2,
     return false;
 }
 
-// Function to compute intersection between two polygons in 2d
-Polygon_2 compute_polygon_intersection(const Polygon_2& poly1, const Polygon_2& poly2) {
-    std::vector<Point_2> intersection_points;
-    
-    // Step 1: Find vertices of poly1 that are inside poly2
-    for (auto it = poly1.vertices_begin(); it != poly1.vertices_end(); ++it) {
-        if (is_point_inside_polygon(*it, poly2)) {
-            intersection_points.push_back(*it);
-        }
+// Helper function to check if point is inside edge
+bool is_point_inside_edge(const Point_2& point, const Point_2& edge_start, const Point_2& edge_end) {
+    return ((edge_end.x() - edge_start.x()) * (point.y() - edge_start.y()) -
+            (edge_end.y() - edge_start.y()) * (point.x() - edge_start.x())) >= 0;
+}
+
+// Helper function to get intersection point
+Point_2 compute_intersection(const Point_2& prev_point, const Point_2& current_point,
+                           const Point_2& edge_start, const Point_2& edge_end) {
+    Point_2 intersection;
+    compute_2d_edge_intersection(prev_point, current_point, edge_start, edge_end, intersection);
+    return intersection;
+}
+
+// Function to compute intersection between two polygons in 2d using Sutherland-Hodgman
+Polygon_2 compute_polygon_intersection(const Polygon_2& intersection_polygon, const Polygon_2& surf_polygon) {
+    if (intersection_polygon.is_empty() || surf_polygon.is_empty()) {
+        std::cout << "One of the input polygons is empty" << std::endl;
+        return Polygon_2();
     }
-    
-    // Step 2: Find vertices of poly2 that are inside poly1
-    for (auto it = poly2.vertices_begin(); it != poly2.vertices_end(); ++it) {
-        if (is_point_inside_polygon(*it, poly1)) {
-            intersection_points.push_back(*it);
-        }
+
+    std::cout << "\nStarting Sutherland-Hodgman clipping:" << std::endl;
+    std::cout << "Subject polygon vertices: " << intersection_polygon.size() << std::endl;
+    std::cout << "Clip polygon vertices: " << surf_polygon.size() << std::endl;
+
+    // List outputList = subjectPolygon
+    std::vector<Point_2> output_list;
+    for (auto it = intersection_polygon.vertices_begin(); it != intersection_polygon.vertices_end(); ++it) {
+        output_list.push_back(*it);
     }
-    
-    // Step 3: Find intersection points between edges
-    for (auto it1 = poly1.vertices_begin(); it1 != poly1.vertices_end(); ++it1) {
-        auto next1 = std::next(it1);
-        if (next1 == poly1.vertices_end()) next1 = poly1.vertices_begin();
-        
-        for (auto it2 = poly2.vertices_begin(); it2 != poly2.vertices_end(); ++it2) {
-            auto next2 = std::next(it2);
-            if (next2 == poly2.vertices_end()) next2 = poly2.vertices_begin();
-            
-            Point_2 intersection;
-            if (compute_2d_edge_intersection(*it1, *next1, *it2, *next2, intersection)) {
-                intersection_points.push_back(intersection);
+
+    // for (Edge clipEdge in clipPolygon) do
+    auto clip_end = surf_polygon.vertices_end();
+    int edge_count = 0;
+    for (auto clip_it = surf_polygon.vertices_begin(); clip_it != clip_end; ++clip_it) {
+        if (output_list.empty()) {
+            std::cout << "Output list became empty after edge " << edge_count << std::endl;
+            return Polygon_2();
+        }
+
+        // Get clip edge
+        Point_2 edge_start = *clip_it;
+        Point_2 edge_end = (std::next(clip_it) == clip_end) ? 
+                          *surf_polygon.vertices_begin() : *std::next(clip_it);
+
+        std::cout << "\nProcessing clip edge " << edge_count << ": (" 
+                  << edge_start.x() << "," << edge_start.y() << ") -> ("
+                  << edge_end.x() << "," << edge_end.y() << ")" << std::endl;
+
+        // List inputList = outputList
+        std::vector<Point_2> input_list = output_list;
+        output_list.clear();
+
+        // for (int i = 0; i < inputList.count; i += 1) do
+        for (size_t i = 0; i < input_list.size(); i++) {
+            Point_2 current_point = input_list[i];
+            Point_2 prev_point = input_list[(i + input_list.size() - 1) % input_list.size()];
+
+            bool current_inside = is_point_inside_edge(current_point, edge_start, edge_end);
+            bool prev_inside = is_point_inside_edge(prev_point, edge_start, edge_end);
+
+            std::cout << "  Point " << i << " (" << current_point.x() << "," << current_point.y() 
+                      << ") inside: " << current_inside << std::endl;
+
+            if (current_inside) {
+                if (!prev_inside) {
+                    Point_2 intersecting_point = compute_intersection(prev_point, current_point, edge_start, edge_end);
+                    output_list.push_back(intersecting_point);
+                    std::cout << "    Added intersection point: (" << intersecting_point.x() 
+                              << "," << intersecting_point.y() << ")" << std::endl;
+                }
+                output_list.push_back(current_point);
+                std::cout << "    Added current point" << std::endl;
+            }
+            else if (prev_inside) {
+                Point_2 intersecting_point = compute_intersection(prev_point, current_point, edge_start, edge_end);
+                output_list.push_back(intersecting_point);
+                std::cout << "    Added intersection point: (" << intersecting_point.x() 
+                          << "," << intersecting_point.y() << ")" << std::endl;
             }
         }
+
+        std::cout << "Points after edge " << edge_count << ": " << output_list.size() << std::endl;
+        edge_count++;
     }
-    
-    // Step 4: Create and sort points using convex hull
+
+    // Create final polygon
     Polygon_2 result;
-    if (intersection_points.size() >= 3) {
-        // Use CGAL's convex hull to sort points counterclockwise
-        CGAL::convex_hull_2(intersection_points.begin(), intersection_points.end(), std::back_inserter(result));
-    } else {
-        // If we have less than 3 points, just add them to the result
-        for (const auto& p : intersection_points) {
-            result.push_back(p);
-        }
+    for (const auto& point : output_list) {
+        result.push_back(point);
     }
-    
+
+    std::cout << "Final polygon vertices: " << result.size() << std::endl;
     return result;
 }
 
@@ -336,7 +383,7 @@ void polytope_surf_intersection(const std::vector<Point_3>& surf_pts, const Poly
     std::cout << "Area: " << intersection_polygon_2d.area() << std::endl;
 
     // Compute intersection of 2D polygons
-    Polygon_2 intersection_result = compute_polygon_intersection(surf_polygon_2d, intersection_polygon_2d);
+    Polygon_2 intersection_result = compute_polygon_intersection(intersection_polygon_2d, surf_polygon_2d);
     
     // Print intersection result
     std::cout << "\nIntersection Result:" << std::endl;
