@@ -4,14 +4,17 @@
 #include "types.hpp"
 #include <vector>
 #include <string>
+#include <stdexcept>
 
 namespace nas {
 
-bool load_obj(const std::string& filename, Polyhedron& polyhedron);
+void load_obj(const std::string& filename, Polyhedron& polyhedron);
 
 std::vector<Polyhedron> convert_surf_pts_to_polyhedron(std::vector<std::vector<Point_3>> surface_list);
 
-Vector_3 get_centroid(const Polyhedron& polyhedron);
+Vector_3 get_centroid(const std::vector<Point_3>& points);
+
+Vector_3 compute_centroid(const std::vector<Point_3>& points);
 
 Polyhedron minkowski_sum(const std::vector<Vector_3>& patch_vertices, 
                          const Polyhedron& polytope);

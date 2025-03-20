@@ -19,7 +19,7 @@ const std::string rf_in_lf_path = "/Users/jiayu/Desktop/nas_ws/NAS/data/constrai
 const std::string lf_in_rf_path = "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/LF_constraints_in_RF_quasi_flat_REDUCED.obj";
 
 // Define Goal Specificaitons
-const int goal_stance_foot = LEFT_FOOT;
+const int stance_foot_at_goal = LEFT_FOOT;
 const Vector_3 goal_offset(0.0, 0.0, 0.0); // goal offset applied to move in the local frame of the goal surface (last surface)
 
 // Define Number of Steps
@@ -32,7 +32,7 @@ const int total_num_steps = 3;
 // 1) bottom left, 2) bottom right, 3) top right, 4) top left
 
 // Flat Terrain for testing
-const std::vector<std::vector<Point_3>> surf_pts_list = {
+const std::vector<std::vector<Point_3>> surf_list = {
     // Surface 1
     {
         Point_3(0.0, 0.0, 0.0),  // bottom left

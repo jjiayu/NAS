@@ -43,10 +43,8 @@ public:
     // ~ProblemData();
 
     // Methods
-    void expand_layer();
-    void expand_to_depth(int depth);
+    void expand(int depth);
     std::vector<Node*> get_children(Node* parent);
-
 };
 
 } // namespace nas

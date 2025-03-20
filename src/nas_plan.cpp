@@ -12,9 +12,8 @@ int main() {
     //Create the tree
     Tree tree;
 
-    // Expand tree to depth 3
-    std::cout << "Expanding tree to depth: " << tree.num_steps << std::endl;
-    tree.expand_to_depth(tree.num_steps);
+    // Expand the tree (Depth = num_steps)
+    tree.expand(tree.num_steps);
     std::cout << std::endl;
     
     // Print information about each layer
@@ -30,15 +29,15 @@ int main() {
         std::cout << std::endl;
     }
 
-    for (const auto& plane : tree.env_model) {
-        Visualizer::show_polyhedron(plane);
-    }
+    // for (const auto& plane : tree.env_model) {
+    //     Visualizer::show_polyhedron(plane);
+    // }
 
     // // Visualize the polytopes
     // Visualizer::show_polyhedron(tree.rf_in_lf_polytope);
     // Visualizer::show_polyhedron(tree.lf_in_rf_polytope);
 
-    std::cout << surf_pts_list.size() << std::endl;
+    std::cout << surf_list.size() << std::endl;
 
     return 0;
 }

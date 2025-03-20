@@ -13,12 +13,11 @@
 
 namespace nas {
 
-bool load_obj(const std::string& filename, Polyhedron& polyhedron) {
+void load_obj(const std::string& filename, Polyhedron& polyhedron) {
     if (!CGAL::IO::read_polygon_mesh(filename, polyhedron)) {
-        std::cerr << "Failed to load polyhedron from: " << filename << std::endl;
-        return false;
+        throw std::runtime_error("Failed to load polyhedron from: " + filename);
     }
-    return true;
+    std::cout << "Successfully loaded polytope from: " << filename << std::endl;
 }
 
 std::vector<Polyhedron> convert_surf_pts_to_polyhedron(std::vector<std::vector<Point_3>> surface_list) {
@@ -59,6 +58,18 @@ Vector_3 get_centroid(const Polyhedron& polyhedron) {
         // Handle the case where there are no vertices
         return Vector_3(0.0, 0.0, 0.0); // Or throw an exception, or handle as needed
     }
+}
+
+Vector_3 get_centroid(const std::vector<Point_3>& points) {
+    if (points.empty()) {
+        return Vector_3(0, 0, 0);
+    }
+
+    Vector_3 sum(0, 0, 0);
+    for (const auto& point : points) {
+        sum = sum + (point - CGAL::ORIGIN);
+    }
+    return sum / static_cast<double>(points.size());
 }
 
 Polyhedron minkowski_sum(const std::vector<Vector_3>& patch_vertices, 
@@ -422,6 +433,23 @@ void polytope_surf_intersection(const std::vector<Point_3>& surf_pts, const Poly
         std::cout << "Intersection polygon:" << std::endl;
         Visualizer::show_polyhedron(intersection_3d);
     }
+}
+
+Vector_3 compute_centroid(const std::vector<Point_3>& points) {
+    if (points.empty()) {
+        return Vector_3(0.0, 0.0, 0.0);  // Return zero vector for empty input
+    }
+
+    Vector_3 centroid(0.0, 0.0, 0.0);
+    for (const Point_3& point : points) {
+        centroid = centroid + Vector_3(point.x(), point.y(), point.z());
+    }
+
+    return Vector_3(
+        centroid.x() / points.size(),
+        centroid.y() / points.size(),
+        centroid.z() / points.size()
+    );
 }
 
 } // namespace nas
