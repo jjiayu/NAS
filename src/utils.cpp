@@ -174,25 +174,31 @@ bool is_point_inside_polygon(const Point_2& point, const Polygon_2& polygon) {
     return inside;
 }
 
-// Helper function to compute intersection between two line segments
+// Helper function to compute intersection between two line segments using CGAL
 bool compute_2d_edge_intersection(const Point_2& p1, const Point_2& p2,
                                 const Point_2& p3, const Point_2& p4,
                                 Point_2& intersection) {
-    double denominator = (p1.x() - p2.x()) * (p3.y() - p4.y()) - 
-                        (p1.y() - p2.y()) * (p3.x() - p4.x());
+    Kernel::Segment_2 segment1(p1, p2);
+    Kernel::Segment_2 segment2(p3, p4);
     
-    if (std::abs(denominator) < 1e-10) return false;  // Lines are parallel or coincident
+    auto result = CGAL::intersection(segment1, segment2);
     
-    double t = ((p1.x() - p3.x()) * (p3.y() - p4.y()) - 
-                (p1.y() - p3.y()) * (p3.x() - p4.x())) / denominator;
-    
-    double u = -((p1.x() - p2.x()) * (p1.y() - p3.y()) - 
-                 (p1.y() - p2.y()) * (p1.x() - p3.x())) / denominator;
-    
-    if (t >= 0 && t <= 1 && u >= 0 && u <= 1) {
-        intersection = Point_2(p1.x() + t * (p2.x() - p1.x()),
-                             p1.y() + t * (p2.y() - p1.y()));
-        return true;
+    if (result) {
+        try {
+            if (const Point_2* p = std::get_if<Point_2>(&*result)) {
+                // Intersection is a point
+                intersection = *p;
+                return true;
+            }
+            else if (const Kernel::Segment_2* s = std::get_if<Kernel::Segment_2>(&*result)) {
+                // Segments overlap, take midpoint
+                intersection = CGAL::midpoint(s->source(), s->target());
+                return true;
+            }
+        } catch (const std::bad_variant_access&) {
+            // Handle variant access error
+            return false;
+        }
     }
     return false;
 }
