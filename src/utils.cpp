@@ -109,11 +109,11 @@ Polyhedron minkowski_sum(const std::vector<Vector_3>& patch_vertices,
 
 
 Transformation create_transfomation_to_surface_center(const std::vector<Point_3>& surf_pts, const Plane_3& plane) {
-    // Get the normal vector and normalize it
+    // 1. Get and normalize the normal vector (Z-axis)
     Vector_3 normal = plane.orthogonal_vector();
     normal = normal / std::sqrt(normal.squared_length());
     
-    // Calculate centroid of surface points to use as origin
+    // 2. Calculate centroid as origin
     Point_3 centroid(0, 0, 0);
     for (const auto& point : surf_pts) {
         centroid = Point_3(centroid.x() + point.x(),
@@ -124,24 +124,38 @@ Transformation create_transfomation_to_surface_center(const std::vector<Point_3>
                       centroid.y() / surf_pts.size(),
                       centroid.z() / surf_pts.size());
     
-    // Create basis vectors for the plane coordinate system
-    // Use the first surface point to create x-axis (projected onto plane)
-    Vector_3 first_point_vec = Vector_3(surf_pts[0].x() - centroid.x(),
-                                      surf_pts[0].y() - centroid.y(),
-                                      surf_pts[0].z() - centroid.z());
-    // Project first point vector onto plane
-    first_point_vec = first_point_vec - (first_point_vec * normal) * normal;
-    first_point_vec = first_point_vec / std::sqrt(first_point_vec.squared_length());
+    // 3. Find the point furthest from centroid for robust X-axis
+    double max_dist = 0;
+    Vector_3 x_axis_candidate;
+    for (const auto& point : surf_pts) {
+        Vector_3 vec(point.x() - centroid.x(),
+                    point.y() - centroid.y(),
+                    point.z() - centroid.z());
+        // Project vector onto plane
+        Vector_3 projected = vec - (vec * normal) * normal;
+        double dist = projected.squared_length();
+        if (dist > max_dist) {
+            max_dist = dist;
+            x_axis_candidate = projected;
+        }
+    }
     
-    // Create y-axis using cross product
-    Vector_3 y_axis = CGAL::cross_product(normal, first_point_vec);
+    // 4. Normalize X-axis
+    Vector_3 x_axis = x_axis_candidate / std::sqrt(x_axis_candidate.squared_length());
+    
+    // 5. Create Y-axis using cross product (ensures right-handed system)
+    Vector_3 y_axis = CGAL::cross_product(normal, x_axis);
     y_axis = y_axis / std::sqrt(y_axis.squared_length());
     
-    // Create and return transformation matrix from world to plane coordinates
+    // 6. Double check X-axis is perpendicular (optional but safer)
+    x_axis = CGAL::cross_product(y_axis, normal);
+    x_axis = x_axis / std::sqrt(x_axis.squared_length());
+    
+    // Create transformation matrix from world to surface coordinates
     return Transformation(
-        first_point_vec.x(), y_axis.x(), normal.x(), centroid.x(),
-        first_point_vec.y(), y_axis.y(), normal.y(), centroid.y(),
-        first_point_vec.z(), y_axis.z(), normal.z(), centroid.z()
+        x_axis.x(), y_axis.x(), normal.x(), centroid.x(),
+        x_axis.y(), y_axis.y(), normal.y(), centroid.y(),
+        x_axis.z(), y_axis.z(), normal.z(), centroid.z()
     );
 }
 
@@ -242,7 +256,7 @@ void polytope_surf_intersection(const std::vector<Point_3>& surf_pts, const Poly
         CGAL::Dimension_tag<0>() // 0 for points
     );
     
-    // Find intersection points
+    // Find intersection points with the plane
     std::vector<Point_3> intersection_points;
     for (auto edge = polytope.edges_begin(); edge != polytope.edges_end(); ++edge) {
         Point_3 p1 = edge->vertex()->point();
