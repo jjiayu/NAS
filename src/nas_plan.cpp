@@ -2,8 +2,6 @@
 #include "nas_plan.hpp"
 #include "node.hpp"
 #include "visualizer.hpp"
-#include <CGAL/Simple_cartesian.h>
-#include <CGAL/Surface_mesh.h>
 #include "constants.hpp"
 #include "tree.hpp"
 #include "utils.hpp"
@@ -11,9 +9,6 @@
 using namespace nas;
 
 int main() {
-
-
-
     //Create the tree
     Tree tree;
 

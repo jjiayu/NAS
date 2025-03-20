@@ -10,7 +10,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/__wctype.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/__xlocale.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/_abort.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/_assert.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/_ctermid.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/_ctype.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/_locale.h \
@@ -1044,9 +1043,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/16/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/16/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/16/include/__stddef_wchar_t.h \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/16/include/arm_bf16.h \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/16/include/arm_fp16.h \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/16/include/arm_neon.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/16/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/16/include/immintrin.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/16/include/limits.h \
@@ -1057,15 +1053,130 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /Users/jiayu/Desktop/nas_ws/NAS/include/nas_plan.hpp \
   /Users/jiayu/Desktop/nas_ws/NAS/include/node.hpp \
   /Users/jiayu/Desktop/nas_ws/NAS/include/tree.hpp \
+  /Users/jiayu/Desktop/nas_ws/NAS/include/types.hpp \
   /Users/jiayu/Desktop/nas_ws/NAS/include/utils.hpp \
   /Users/jiayu/Desktop/nas_ws/NAS/include/visualizer.hpp \
   /opt/homebrew/include/CGAL/Aff_transformation_2.h \
   /opt/homebrew/include/CGAL/Aff_transformation_3.h \
   /opt/homebrew/include/CGAL/Algebraic_extension_traits.h \
   /opt/homebrew/include/CGAL/Algebraic_structure_traits.h \
+  /opt/homebrew/include/CGAL/Aos_observer.h \
   /opt/homebrew/include/CGAL/Arithmetic_kernel/Arithmetic_kernel_base.h \
+  /opt/homebrew/include/CGAL/Arr_accessor.h \
+  /opt/homebrew/include/CGAL/Arr_bounded_planar_topology_traits_2.h \
+  /opt/homebrew/include/CGAL/Arr_dcel.h \
+  /opt/homebrew/include/CGAL/Arr_dcel_base.h \
+  /opt/homebrew/include/CGAL/Arr_default_dcel.h \
+  /opt/homebrew/include/CGAL/Arr_default_overlay_traits.h \
+  /opt/homebrew/include/CGAL/Arr_enums.h \
+  /opt/homebrew/include/CGAL/Arr_extended_dcel.h \
+  /opt/homebrew/include/CGAL/Arr_geometry_traits/Segment_assertions.h \
+  /opt/homebrew/include/CGAL/Arr_naive_point_location.h \
+  /opt/homebrew/include/CGAL/Arr_overlay_2.h \
+  /opt/homebrew/include/CGAL/Arr_point_location/Arr_batched_point_location_traits_2.h \
+  /opt/homebrew/include/CGAL/Arr_point_location/Arr_naive_point_location_impl.h \
+  /opt/homebrew/include/CGAL/Arr_point_location/Arr_walk_along_line_pl_impl.h \
+  /opt/homebrew/include/CGAL/Arr_point_location_result.h \
+  /opt/homebrew/include/CGAL/Arr_segment_traits_2.h \
+  /opt/homebrew/include/CGAL/Arr_tags.h \
+  /opt/homebrew/include/CGAL/Arr_topology_traits/Arr_bounded_planar_batched_pl_helper.h \
+  /opt/homebrew/include/CGAL/Arr_topology_traits/Arr_bounded_planar_construction_helper.h \
+  /opt/homebrew/include/CGAL/Arr_topology_traits/Arr_bounded_planar_insertion_helper.h \
+  /opt/homebrew/include/CGAL/Arr_topology_traits/Arr_bounded_planar_overlay_helper.h \
+  /opt/homebrew/include/CGAL/Arr_topology_traits/Arr_bounded_planar_topology_traits_2_impl.h \
+  /opt/homebrew/include/CGAL/Arr_topology_traits/Arr_bounded_planar_vert_decomp_helper.h \
+  /opt/homebrew/include/CGAL/Arr_topology_traits/Arr_inc_insertion_zone_visitor.h \
+  /opt/homebrew/include/CGAL/Arr_topology_traits/Arr_planar_topology_traits_base_2.h \
+  /opt/homebrew/include/CGAL/Arr_topology_traits/Arr_unb_planar_batched_pl_helper.h \
+  /opt/homebrew/include/CGAL/Arr_topology_traits/Arr_unb_planar_construction_helper.h \
+  /opt/homebrew/include/CGAL/Arr_topology_traits/Arr_unb_planar_insertion_helper.h \
+  /opt/homebrew/include/CGAL/Arr_topology_traits/Arr_unb_planar_overlay_helper.h \
+  /opt/homebrew/include/CGAL/Arr_topology_traits/Arr_unb_planar_topology_traits_2_impl.h \
+  /opt/homebrew/include/CGAL/Arr_topology_traits/Arr_unb_planar_vert_decomp_helper.h \
+  /opt/homebrew/include/CGAL/Arr_unb_planar_topology_traits_2.h \
+  /opt/homebrew/include/CGAL/Arr_walk_along_line_point_location.h \
+  /opt/homebrew/include/CGAL/Arrangement_2.h \
+  /opt/homebrew/include/CGAL/Arrangement_2/Arr_compute_zone_visitor.h \
+  /opt/homebrew/include/CGAL/Arrangement_2/Arr_default_planar_topology.h \
+  /opt/homebrew/include/CGAL/Arrangement_2/Arr_do_intersect_zone_visitor.h \
+  /opt/homebrew/include/CGAL/Arrangement_2/Arr_traits_adaptor_2.h \
+  /opt/homebrew/include/CGAL/Arrangement_2/Arr_traits_adaptor_2_dispatching.h \
+  /opt/homebrew/include/CGAL/Arrangement_2/Arrangement_2_iterators.h \
+  /opt/homebrew/include/CGAL/Arrangement_2/Arrangement_on_surface_2_global.h \
+  /opt/homebrew/include/CGAL/Arrangement_2/Arrangement_on_surface_2_impl.h \
+  /opt/homebrew/include/CGAL/Arrangement_2/Arrangement_zone_2_impl.h \
+  /opt/homebrew/include/CGAL/Arrangement_on_surface_2.h \
+  /opt/homebrew/include/CGAL/Arrangement_zone_2.h \
+  /opt/homebrew/include/CGAL/BOOST_MP_arithmetic_kernel.h \
   /opt/homebrew/include/CGAL/Bbox_2.h \
   /opt/homebrew/include/CGAL/Bbox_3.h \
+  /opt/homebrew/include/CGAL/Bigfloat_interval_traits.h \
+  /opt/homebrew/include/CGAL/Boolean_set_operations_2/Ccb_curve_iterator.h \
+  /opt/homebrew/include/CGAL/Boolean_set_operations_2/Curve_with_halfedge.h \
+  /opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_agg_meta_traits.h \
+  /opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_agg_op.h \
+  /opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_agg_op_surface_sweep_2.h \
+  /opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_agg_op_visitor.h \
+  /opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_base_functor.h \
+  /opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_bfs_base_visitor.h \
+  /opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_bfs_intersection_visitor.h \
+  /opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_bfs_join_visitor.h \
+  /opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_bfs_scanner.h \
+  /opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_bfs_xor_visitor.h \
+  /opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_default_dcel.h \
+  /opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_difference_functor.h \
+  /opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_do_intersect_functor.h \
+  /opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_intersection_functor.h \
+  /opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_join_functor.h \
+  /opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_merge.h \
+  /opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_on_surface_base_2.h \
+  /opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_on_surface_base_2_impl.h \
+  /opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_polygon_simplifier.h \
+  /opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_polygon_validation.h \
+  /opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_simplifier_traits.h \
+  /opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_sym_diff_functor.h \
+  /opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_traits_adaptor.h \
+  /opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_traits_decorator.h \
+  /opt/homebrew/include/CGAL/Boolean_set_operations_2/Indexed_event.h \
+  /opt/homebrew/include/CGAL/Boolean_set_operations_2/Point_with_vertex.h \
+  /opt/homebrew/include/CGAL/Boolean_set_operations_2/Polygon_2_curve_iterator.h \
+  /opt/homebrew/include/CGAL/CC_safe_handle.h \
+  /opt/homebrew/include/CGAL/CORE/BigFloat.h \
+  /opt/homebrew/include/CGAL/CORE/BigFloatRep.h \
+  /opt/homebrew/include/CGAL/CORE/BigFloat_impl.h \
+  /opt/homebrew/include/CGAL/CORE/BigInt.h \
+  /opt/homebrew/include/CGAL/CORE/BigRat.h \
+  /opt/homebrew/include/CGAL/CORE/CORE.h \
+  /opt/homebrew/include/CGAL/CORE/Config.h \
+  /opt/homebrew/include/CGAL/CORE/CoreAux.h \
+  /opt/homebrew/include/CGAL/CORE/CoreAux_impl.h \
+  /opt/homebrew/include/CGAL/CORE/CoreDefs.h \
+  /opt/homebrew/include/CGAL/CORE/CoreDefs_impl.h \
+  /opt/homebrew/include/CGAL/CORE/Expr.h \
+  /opt/homebrew/include/CGAL/CORE/ExprRep.h \
+  /opt/homebrew/include/CGAL/CORE/Expr_impl.h \
+  /opt/homebrew/include/CGAL/CORE/Filter.h \
+  /opt/homebrew/include/CGAL/CORE/Impl.h \
+  /opt/homebrew/include/CGAL/CORE/MemoryPool.h \
+  /opt/homebrew/include/CGAL/CORE/Promote.h \
+  /opt/homebrew/include/CGAL/CORE/Real.h \
+  /opt/homebrew/include/CGAL/CORE/RealRep.h \
+  /opt/homebrew/include/CGAL/CORE/Real_impl.h \
+  /opt/homebrew/include/CGAL/CORE/RefCount.h \
+  /opt/homebrew/include/CGAL/CORE/Timer.h \
+  /opt/homebrew/include/CGAL/CORE/extLong.h \
+  /opt/homebrew/include/CGAL/CORE/extLong_impl.h \
+  /opt/homebrew/include/CGAL/CORE/poly/Poly.h \
+  /opt/homebrew/include/CGAL/CORE/poly/Poly.tcc \
+  /opt/homebrew/include/CGAL/CORE/poly/Sturm.h \
+  /opt/homebrew/include/CGAL/CORE_BigFloat.h \
+  /opt/homebrew/include/CGAL/CORE_BigInt.h \
+  /opt/homebrew/include/CGAL/CORE_BigRat.h \
+  /opt/homebrew/include/CGAL/CORE_Expr.h \
+  /opt/homebrew/include/CGAL/CORE_arithmetic_kernel.h \
+  /opt/homebrew/include/CGAL/CORE_coercion_traits.h \
+  /opt/homebrew/include/CGAL/Cache.h \
+  /opt/homebrew/include/CGAL/Cartesian.h \
   /opt/homebrew/include/CGAL/Cartesian/Aff_transformation_2.h \
   /opt/homebrew/include/CGAL/Cartesian/Aff_transformation_3.h \
   /opt/homebrew/include/CGAL/Cartesian/Aff_transformation_rep_2.h \
@@ -1077,6 +1188,7 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /opt/homebrew/include/CGAL/Cartesian/Data_accessor_2.h \
   /opt/homebrew/include/CGAL/Cartesian/Direction_2.h \
   /opt/homebrew/include/CGAL/Cartesian/Direction_3.h \
+  /opt/homebrew/include/CGAL/Cartesian/Is_trivial_construction.h \
   /opt/homebrew/include/CGAL/Cartesian/Iso_cuboid_3.h \
   /opt/homebrew/include/CGAL/Cartesian/Iso_rectangle_2.h \
   /opt/homebrew/include/CGAL/Cartesian/Line_2.h \
@@ -1118,11 +1230,14 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /opt/homebrew/include/CGAL/Cartesian/solve_3.h \
   /opt/homebrew/include/CGAL/Cartesian_converter.h \
   /opt/homebrew/include/CGAL/Cartesian_converter_fwd.h \
+  /opt/homebrew/include/CGAL/Chinese_remainder_traits.h \
   /opt/homebrew/include/CGAL/Circle_2.h \
   /opt/homebrew/include/CGAL/Circle_3.h \
   /opt/homebrew/include/CGAL/Coercion_traits.h \
+  /opt/homebrew/include/CGAL/Compact_container.h \
   /opt/homebrew/include/CGAL/Conic_2.h \
   /opt/homebrew/include/CGAL/Container_helper.h \
+  /opt/homebrew/include/CGAL/Converting_construction.h \
   /opt/homebrew/include/CGAL/Default.h \
   /opt/homebrew/include/CGAL/Dimension.h \
   /opt/homebrew/include/CGAL/Direction_2.h \
@@ -1166,10 +1281,56 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /opt/homebrew/include/CGAL/Distance_3/internal/squared_distance_utils_3.h \
   /opt/homebrew/include/CGAL/Dynamic_property_map.h \
   /opt/homebrew/include/CGAL/Enum_converter.h \
+  /opt/homebrew/include/CGAL/Epic_converter.h \
+  /opt/homebrew/include/CGAL/Exact_kernel_selector.h \
+  /opt/homebrew/include/CGAL/Exact_predicates_exact_constructions_kernel.h \
+  /opt/homebrew/include/CGAL/Exact_predicates_inexact_constructions_kernel.h \
   /opt/homebrew/include/CGAL/FPU.h \
+  /opt/homebrew/include/CGAL/Filtered_kernel.h \
+  /opt/homebrew/include/CGAL/Filtered_kernel/Cartesian_coordinate_iterator_2.h \
+  /opt/homebrew/include/CGAL/Filtered_kernel/Cartesian_coordinate_iterator_3.h \
+  /opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Angle_3.h \
+  /opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Collinear_3.h \
+  /opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Compare_distance_3.h \
+  /opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Compare_squared_radius_3.h \
+  /opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Compare_weighted_squared_radius_3.h \
+  /opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Compare_x_2.h \
+  /opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Compare_y_2.h \
+  /opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Compare_y_at_x_2.h \
+  /opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Coplanar_3.h \
+  /opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Do_intersect_2.h \
+  /opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Do_intersect_3.h \
+  /opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Equal_2.h \
+  /opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Equal_3.h \
+  /opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Is_degenerate_3.h \
+  /opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Orientation_2.h \
+  /opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Orientation_3.h \
+  /opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Power_side_of_oriented_power_circle_2.h \
+  /opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Power_side_of_oriented_power_sphere_3.h \
+  /opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Side_of_oriented_circle_2.h \
+  /opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Side_of_oriented_sphere_3.h \
+  /opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Static_filter_error.h \
+  /opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Static_filters.h \
+  /opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/tools.h \
+  /opt/homebrew/include/CGAL/Filtered_kernel_fwd.h \
+  /opt/homebrew/include/CGAL/Filtered_predicate.h \
   /opt/homebrew/include/CGAL/Fraction_traits.h \
+  /opt/homebrew/include/CGAL/GMP/Gmpfr_type.h \
+  /opt/homebrew/include/CGAL/GMP/Gmpfr_type_static.h \
+  /opt/homebrew/include/CGAL/GMP/Gmpq_type.h \
+  /opt/homebrew/include/CGAL/GMP/Gmpz_type.h \
+  /opt/homebrew/include/CGAL/GMP/Gmpzf_type.h \
   /opt/homebrew/include/CGAL/GMPXX_arithmetic_kernel.h \
+  /opt/homebrew/include/CGAL/GMP_arithmetic_kernel.h \
+  /opt/homebrew/include/CGAL/General_polygon_set_2.h \
+  /opt/homebrew/include/CGAL/General_polygon_set_on_surface_2.h \
+  /opt/homebrew/include/CGAL/General_polygon_with_holes_2.h \
   /opt/homebrew/include/CGAL/Get_arithmetic_kernel.h \
+  /opt/homebrew/include/CGAL/Gmp_coercion_traits.h \
+  /opt/homebrew/include/CGAL/Gmpq.h \
+  /opt/homebrew/include/CGAL/Gmpz.h \
+  /opt/homebrew/include/CGAL/Gmpzf.h \
+  /opt/homebrew/include/CGAL/Gps_segment_traits_2.h \
   /opt/homebrew/include/CGAL/HalfedgeDS_const_decorator.h \
   /opt/homebrew/include/CGAL/HalfedgeDS_decorator.h \
   /opt/homebrew/include/CGAL/HalfedgeDS_default.h \
@@ -1180,16 +1341,49 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /opt/homebrew/include/CGAL/HalfedgeDS_iterator.h \
   /opt/homebrew/include/CGAL/HalfedgeDS_list.h \
   /opt/homebrew/include/CGAL/HalfedgeDS_vertex_base.h \
+  /opt/homebrew/include/CGAL/Handle.h \
   /opt/homebrew/include/CGAL/Handle_for.h \
   /opt/homebrew/include/CGAL/Handle_for_virtual.h \
   /opt/homebrew/include/CGAL/Handle_hash_function.h \
   /opt/homebrew/include/CGAL/Has_conversion.h \
   /opt/homebrew/include/CGAL/Has_member.h \
+  /opt/homebrew/include/CGAL/Has_timestamp.h \
   /opt/homebrew/include/CGAL/Hash_map/internal/chained_map.h \
+  /opt/homebrew/include/CGAL/Homogeneous/Aff_transformationH2.h \
+  /opt/homebrew/include/CGAL/Homogeneous/Aff_transformationH3.h \
+  /opt/homebrew/include/CGAL/Homogeneous/ConicHPA2.h \
+  /opt/homebrew/include/CGAL/Homogeneous/Data_accessorH2.h \
+  /opt/homebrew/include/CGAL/Homogeneous/DirectionH2.h \
+  /opt/homebrew/include/CGAL/Homogeneous/DirectionH3.h \
+  /opt/homebrew/include/CGAL/Homogeneous/Homogeneous_base.h \
+  /opt/homebrew/include/CGAL/Homogeneous/Iso_cuboidH3.h \
+  /opt/homebrew/include/CGAL/Homogeneous/Iso_rectangleH2.h \
+  /opt/homebrew/include/CGAL/Homogeneous/LineH2.h \
+  /opt/homebrew/include/CGAL/Homogeneous/PlaneH3.h \
+  /opt/homebrew/include/CGAL/Homogeneous/PointH2.h \
+  /opt/homebrew/include/CGAL/Homogeneous/PointH3.h \
+  /opt/homebrew/include/CGAL/Homogeneous/RayH3.h \
+  /opt/homebrew/include/CGAL/Homogeneous/SphereH3.h \
+  /opt/homebrew/include/CGAL/Homogeneous/VectorH2.h \
+  /opt/homebrew/include/CGAL/Homogeneous/VectorH3.h \
+  /opt/homebrew/include/CGAL/Homogeneous/Weighted_point_2.h \
+  /opt/homebrew/include/CGAL/Homogeneous/Weighted_point_3.h \
+  /opt/homebrew/include/CGAL/Homogeneous/basic_constructionsH2.h \
+  /opt/homebrew/include/CGAL/Homogeneous/basic_constructionsH3.h \
+  /opt/homebrew/include/CGAL/Homogeneous/distance_predicatesH2.h \
+  /opt/homebrew/include/CGAL/Homogeneous/distance_predicatesH3.h \
+  /opt/homebrew/include/CGAL/Homogeneous/function_objects.h \
+  /opt/homebrew/include/CGAL/Homogeneous/predicates_on_directionsH2.h \
+  /opt/homebrew/include/CGAL/Homogeneous/predicates_on_pointsH2.h \
+  /opt/homebrew/include/CGAL/Homogeneous/predicates_on_pointsH3.h \
   /opt/homebrew/include/CGAL/Homogeneous_converter.h \
   /opt/homebrew/include/CGAL/IO/3MF.h \
   /opt/homebrew/include/CGAL/IO/3MF/read_3mf.h \
   /opt/homebrew/include/CGAL/IO/3MF/write_3mf.h \
+  /opt/homebrew/include/CGAL/IO/Arr_iostream.h \
+  /opt/homebrew/include/CGAL/IO/Arr_text_formatter.h \
+  /opt/homebrew/include/CGAL/IO/Arrangement_2_reader.h \
+  /opt/homebrew/include/CGAL/IO/Arrangement_2_writer.h \
   /opt/homebrew/include/CGAL/IO/Color.h \
   /opt/homebrew/include/CGAL/IO/GOCAD.h \
   /opt/homebrew/include/CGAL/IO/Generic_writer.h \
@@ -1428,12 +1622,14 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /opt/homebrew/include/CGAL/Intersections_3/internal/Triangle_3_Triangle_3_do_intersect.h \
   /opt/homebrew/include/CGAL/Intersections_3/internal/Triangle_3_Triangle_3_intersection.h \
   /opt/homebrew/include/CGAL/Intersections_3/internal/tetrahedron_lines_intersections_3.h \
+  /opt/homebrew/include/CGAL/Interval_arithmetic.h \
   /opt/homebrew/include/CGAL/Interval_nt.h \
   /opt/homebrew/include/CGAL/Interval_traits.h \
   /opt/homebrew/include/CGAL/Iso_cuboid_3.h \
   /opt/homebrew/include/CGAL/Iso_rectangle_2.h \
   /opt/homebrew/include/CGAL/Iterator_project.h \
   /opt/homebrew/include/CGAL/Iterator_range.h \
+  /opt/homebrew/include/CGAL/Iterator_transform.h \
   /opt/homebrew/include/CGAL/Kernel/Conic_misc.h \
   /opt/homebrew/include/CGAL/Kernel/Return_base_tag.h \
   /opt/homebrew/include/CGAL/Kernel/Same_uncertainty.h \
@@ -1450,17 +1646,28 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /opt/homebrew/include/CGAL/Kernel/interface_macros.h \
   /opt/homebrew/include/CGAL/Kernel/mpl.h \
   /opt/homebrew/include/CGAL/Kernel/solve.h \
+  /opt/homebrew/include/CGAL/Kernel_d/Cartesian_const_iterator_d.h \
   /opt/homebrew/include/CGAL/Kernel_traits.h \
   /opt/homebrew/include/CGAL/Kernel_traits_fwd.h \
+  /opt/homebrew/include/CGAL/Lazy.h \
+  /opt/homebrew/include/CGAL/Lazy_exact_nt.h \
+  /opt/homebrew/include/CGAL/Lazy_kernel.h \
   /opt/homebrew/include/CGAL/Line_2.h \
   /opt/homebrew/include/CGAL/Line_3.h \
+  /opt/homebrew/include/CGAL/MP_Float.h \
+  /opt/homebrew/include/CGAL/MP_Float_arithmetic_kernel.h \
+  /opt/homebrew/include/CGAL/MP_Float_impl.h \
   /opt/homebrew/include/CGAL/Modifier_base.h \
   /opt/homebrew/include/CGAL/Modular_arithmetic/Residue_type.h \
   /opt/homebrew/include/CGAL/Modular_traits.h \
+  /opt/homebrew/include/CGAL/Mpzf.h \
+  /opt/homebrew/include/CGAL/Multiset.h \
   /opt/homebrew/include/CGAL/NT_converter.h \
   /opt/homebrew/include/CGAL/N_step_adaptor_derived.h \
   /opt/homebrew/include/CGAL/Named_function_parameters.h \
   /opt/homebrew/include/CGAL/Needs_parens_as_product.h \
+  /opt/homebrew/include/CGAL/No_intersection_surface_sweep_2.h \
+  /opt/homebrew/include/CGAL/Number_types/internal/Exact_type_selector.h \
   /opt/homebrew/include/CGAL/Object.h \
   /opt/homebrew/include/CGAL/Origin.h \
   /opt/homebrew/include/CGAL/Origin_impl.h \
@@ -1475,6 +1682,7 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /opt/homebrew/include/CGAL/Polygon_2/Polygon_2_simplicity.h \
   /opt/homebrew/include/CGAL/Polygon_2/Polygon_2_vertex_circulator.h \
   /opt/homebrew/include/CGAL/Polygon_2_algorithms.h \
+  /opt/homebrew/include/CGAL/Polygon_with_holes_2.h \
   /opt/homebrew/include/CGAL/Polyhedron_3.h \
   /opt/homebrew/include/CGAL/Polyhedron_3_fwd.h \
   /opt/homebrew/include/CGAL/Polyhedron_incremental_builder_3.h \
@@ -1497,7 +1705,26 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /opt/homebrew/include/CGAL/Segment_2.h \
   /opt/homebrew/include/CGAL/Segment_3.h \
   /opt/homebrew/include/CGAL/Simple_cartesian.h \
+  /opt/homebrew/include/CGAL/Simple_homogeneous.h \
+  /opt/homebrew/include/CGAL/Small_unordered_set.h \
   /opt/homebrew/include/CGAL/Sphere_3.h \
+  /opt/homebrew/include/CGAL/Sqrt_extension.h \
+  /opt/homebrew/include/CGAL/Sqrt_extension/Algebraic_extension_traits.h \
+  /opt/homebrew/include/CGAL/Sqrt_extension/Algebraic_structure_traits.h \
+  /opt/homebrew/include/CGAL/Sqrt_extension/Chinese_remainder_traits.h \
+  /opt/homebrew/include/CGAL/Sqrt_extension/Coercion_traits.h \
+  /opt/homebrew/include/CGAL/Sqrt_extension/Eigen_NumTraits.h \
+  /opt/homebrew/include/CGAL/Sqrt_extension/Fraction_traits.h \
+  /opt/homebrew/include/CGAL/Sqrt_extension/Get_arithmetic_kernel.h \
+  /opt/homebrew/include/CGAL/Sqrt_extension/Modular_traits.h \
+  /opt/homebrew/include/CGAL/Sqrt_extension/Real_embeddable_traits.h \
+  /opt/homebrew/include/CGAL/Sqrt_extension/Scalar_factor_traits.h \
+  /opt/homebrew/include/CGAL/Sqrt_extension/Sqrt_extension_type.h \
+  /opt/homebrew/include/CGAL/Sqrt_extension/Wang_traits.h \
+  /opt/homebrew/include/CGAL/Sqrt_extension/convert_to_bfi.h \
+  /opt/homebrew/include/CGAL/Sqrt_extension/io.h \
+  /opt/homebrew/include/CGAL/Sqrt_extension_fwd.h \
+  /opt/homebrew/include/CGAL/Static_filtered_predicate.h \
   /opt/homebrew/include/CGAL/Surface_mesh.h \
   /opt/homebrew/include/CGAL/Surface_mesh/IO.h \
   /opt/homebrew/include/CGAL/Surface_mesh/IO/3MF.h \
@@ -1506,10 +1733,41 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /opt/homebrew/include/CGAL/Surface_mesh/Properties.h \
   /opt/homebrew/include/CGAL/Surface_mesh/Surface_mesh.h \
   /opt/homebrew/include/CGAL/Surface_mesh/Surface_mesh_fwd.h \
+  /opt/homebrew/include/CGAL/Surface_sweep_2.h \
+  /opt/homebrew/include/CGAL/Surface_sweep_2/Arr_basic_insertion_traits_2.h \
+  /opt/homebrew/include/CGAL/Surface_sweep_2/Arr_construction_event.h \
+  /opt/homebrew/include/CGAL/Surface_sweep_2/Arr_construction_event_base.h \
+  /opt/homebrew/include/CGAL/Surface_sweep_2/Arr_construction_ss_visitor.h \
+  /opt/homebrew/include/CGAL/Surface_sweep_2/Arr_construction_subcurve.h \
+  /opt/homebrew/include/CGAL/Surface_sweep_2/Arr_default_overlay_traits_base.h \
+  /opt/homebrew/include/CGAL/Surface_sweep_2/Arr_insertion_ss_visitor.h \
+  /opt/homebrew/include/CGAL/Surface_sweep_2/Arr_insertion_traits_2.h \
+  /opt/homebrew/include/CGAL/Surface_sweep_2/Arr_no_intersection_insertion_ss_visitor.h \
+  /opt/homebrew/include/CGAL/Surface_sweep_2/Arr_overlay_event.h \
+  /opt/homebrew/include/CGAL/Surface_sweep_2/Arr_overlay_ss_visitor.h \
+  /opt/homebrew/include/CGAL/Surface_sweep_2/Arr_overlay_subcurve.h \
+  /opt/homebrew/include/CGAL/Surface_sweep_2/Arr_overlay_traits_2.h \
+  /opt/homebrew/include/CGAL/Surface_sweep_2/Curve_comparer.h \
+  /opt/homebrew/include/CGAL/Surface_sweep_2/Default_event.h \
+  /opt/homebrew/include/CGAL/Surface_sweep_2/Default_event_base.h \
+  /opt/homebrew/include/CGAL/Surface_sweep_2/Default_subcurve.h \
+  /opt/homebrew/include/CGAL/Surface_sweep_2/Default_visitor.h \
+  /opt/homebrew/include/CGAL/Surface_sweep_2/Default_visitor_base.h \
+  /opt/homebrew/include/CGAL/Surface_sweep_2/Do_interior_intersect_visitor.h \
+  /opt/homebrew/include/CGAL/Surface_sweep_2/Event_comparer.h \
+  /opt/homebrew/include/CGAL/Surface_sweep_2/No_intersection_surface_sweep_2_impl.h \
+  /opt/homebrew/include/CGAL/Surface_sweep_2/No_overlap_event_base.h \
+  /opt/homebrew/include/CGAL/Surface_sweep_2/No_overlap_subcurve.h \
+  /opt/homebrew/include/CGAL/Surface_sweep_2/Random_access_output_iterator.h \
+  /opt/homebrew/include/CGAL/Surface_sweep_2/Surface_sweep_2_impl.h \
+  /opt/homebrew/include/CGAL/Surface_sweep_2/Surface_sweep_2_utils.h \
   /opt/homebrew/include/CGAL/Tetrahedron_3.h \
+  /opt/homebrew/include/CGAL/Time_stamper.h \
   /opt/homebrew/include/CGAL/Triangle_2.h \
   /opt/homebrew/include/CGAL/Triangle_3.h \
+  /opt/homebrew/include/CGAL/Triangulation_structural_filtering_traits.h \
   /opt/homebrew/include/CGAL/Uncertain.h \
+  /opt/homebrew/include/CGAL/Union_find.h \
   /opt/homebrew/include/CGAL/Unique_hash_map.h \
   /opt/homebrew/include/CGAL/Vector_2.h \
   /opt/homebrew/include/CGAL/Vector_3.h \
@@ -1523,6 +1781,7 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /opt/homebrew/include/CGAL/assertions_behaviour.h \
   /opt/homebrew/include/CGAL/assertions_impl.h \
   /opt/homebrew/include/CGAL/auto_link/CGAL.h \
+  /opt/homebrew/include/CGAL/auto_link/CORE.h \
   /opt/homebrew/include/CGAL/auto_link/auto_link.h \
   /opt/homebrew/include/CGAL/basic.h \
   /opt/homebrew/include/CGAL/basic_classes.h \
@@ -1565,12 +1824,16 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /opt/homebrew/include/CGAL/boost/graph/properties_Surface_mesh_time_stamp.h \
   /opt/homebrew/include/CGAL/boost/iterator/counting_iterator.hpp \
   /opt/homebrew/include/CGAL/boost/iterator/transform_iterator.hpp \
+  /opt/homebrew/include/CGAL/boost_mp.h \
+  /opt/homebrew/include/CGAL/boost_mp_type.h \
   /opt/homebrew/include/CGAL/circulator.h \
   /opt/homebrew/include/CGAL/circulator_bases.h \
   /opt/homebrew/include/CGAL/config.h \
   /opt/homebrew/include/CGAL/constant.h \
   /opt/homebrew/include/CGAL/constructions/kernel_ftC2.h \
   /opt/homebrew/include/CGAL/constructions/kernel_ftC3.h \
+  /opt/homebrew/include/CGAL/convert_to_bfi.h \
+  /opt/homebrew/include/CGAL/cpp_float.h \
   /opt/homebrew/include/CGAL/determinant.h \
   /opt/homebrew/include/CGAL/disable_warnings.h \
   /opt/homebrew/include/CGAL/double.h \
@@ -1578,28 +1841,36 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /opt/homebrew/include/CGAL/enum.h \
   /opt/homebrew/include/CGAL/exceptions.h \
   /opt/homebrew/include/CGAL/export/CGAL.h \
+  /opt/homebrew/include/CGAL/export/CORE.h \
   /opt/homebrew/include/CGAL/export/helpers.h \
+  /opt/homebrew/include/CGAL/extended_euclidean_algorithm.h \
   /opt/homebrew/include/CGAL/float.h \
   /opt/homebrew/include/CGAL/function_objects.h \
   /opt/homebrew/include/CGAL/functional.h \
+  /opt/homebrew/include/CGAL/gmp.h \
   /opt/homebrew/include/CGAL/gmpxx.h \
   /opt/homebrew/include/CGAL/gmpxx_coercion_traits.h \
   /opt/homebrew/include/CGAL/int.h \
   /opt/homebrew/include/CGAL/intersection_2.h \
   /opt/homebrew/include/CGAL/intersection_3.h \
   /opt/homebrew/include/CGAL/intersections.h \
+  /opt/homebrew/include/CGAL/ipower.h \
   /opt/homebrew/include/CGAL/is_convertible.h \
   /opt/homebrew/include/CGAL/iterator.h \
   /opt/homebrew/include/CGAL/kernel_assertions.h \
   /opt/homebrew/include/CGAL/kernel_basic.h \
   /opt/homebrew/include/CGAL/kernel_config.h \
   /opt/homebrew/include/CGAL/license.h \
+  /opt/homebrew/include/CGAL/license/Arrangement_on_surface_2.h \
+  /opt/homebrew/include/CGAL/license/Boolean_set_operations_2.h \
   /opt/homebrew/include/CGAL/license/Polyhedron.h \
   /opt/homebrew/include/CGAL/license/Surface_mesh.h \
+  /opt/homebrew/include/CGAL/license/Surface_sweep_2.h \
   /opt/homebrew/include/CGAL/license/lgpl.h \
   /opt/homebrew/include/CGAL/long_double.h \
   /opt/homebrew/include/CGAL/long_long.h \
   /opt/homebrew/include/CGAL/memory.h \
+  /opt/homebrew/include/CGAL/min_max_n.h \
   /opt/homebrew/include/CGAL/mpq_class.h \
   /opt/homebrew/include/CGAL/mpz_class.h \
   /opt/homebrew/include/CGAL/number_type_basic.h \
@@ -1618,6 +1889,7 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /opt/homebrew/include/CGAL/squared_distance_3.h \
   /opt/homebrew/include/CGAL/tags.h \
   /opt/homebrew/include/CGAL/test_FPU_rounding_mode_impl.h \
+  /opt/homebrew/include/CGAL/transforming_iterator.h \
   /opt/homebrew/include/CGAL/tss.h \
   /opt/homebrew/include/CGAL/tuple.h \
   /opt/homebrew/include/CGAL/type_traits.h \
@@ -1815,6 +2087,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /opt/homebrew/include/boost/math/ccmath/isinf.hpp \
   /opt/homebrew/include/boost/math/ccmath/isnan.hpp \
   /opt/homebrew/include/boost/math/ccmath/ldexp.hpp \
+  /opt/homebrew/include/boost/math/constants/calculate_constants.hpp \
+  /opt/homebrew/include/boost/math/constants/constants.hpp \
   /opt/homebrew/include/boost/math/cstdfloat/cstdfloat_cmath.hpp \
   /opt/homebrew/include/boost/math/cstdfloat/cstdfloat_complex.hpp \
   /opt/homebrew/include/boost/math/cstdfloat/cstdfloat_iostream.hpp \
@@ -1822,21 +2096,55 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /opt/homebrew/include/boost/math/cstdfloat/cstdfloat_types.hpp \
   /opt/homebrew/include/boost/math/policies/error_handling.hpp \
   /opt/homebrew/include/boost/math/policies/policy.hpp \
+  /opt/homebrew/include/boost/math/special_functions/acosh.hpp \
+  /opt/homebrew/include/boost/math/special_functions/asinh.hpp \
+  /opt/homebrew/include/boost/math/special_functions/atanh.hpp \
+  /opt/homebrew/include/boost/math/special_functions/bernoulli.hpp \
   /opt/homebrew/include/boost/math/special_functions/cbrt.hpp \
+  /opt/homebrew/include/boost/math/special_functions/cos_pi.hpp \
+  /opt/homebrew/include/boost/math/special_functions/detail/bernoulli_details.hpp \
+  /opt/homebrew/include/boost/math/special_functions/detail/erf_inv.hpp \
   /opt/homebrew/include/boost/math/special_functions/detail/fp_traits.hpp \
+  /opt/homebrew/include/boost/math/special_functions/detail/gamma_inva.hpp \
+  /opt/homebrew/include/boost/math/special_functions/detail/igamma_inverse.hpp \
+  /opt/homebrew/include/boost/math/special_functions/detail/igamma_large.hpp \
+  /opt/homebrew/include/boost/math/special_functions/detail/lgamma_small.hpp \
+  /opt/homebrew/include/boost/math/special_functions/detail/polygamma.hpp \
   /opt/homebrew/include/boost/math/special_functions/detail/round_fwd.hpp \
+  /opt/homebrew/include/boost/math/special_functions/detail/unchecked_bernoulli.hpp \
+  /opt/homebrew/include/boost/math/special_functions/detail/unchecked_factorial.hpp \
+  /opt/homebrew/include/boost/math/special_functions/digamma.hpp \
+  /opt/homebrew/include/boost/math/special_functions/erf.hpp \
+  /opt/homebrew/include/boost/math/special_functions/expm1.hpp \
+  /opt/homebrew/include/boost/math/special_functions/factorials.hpp \
   /opt/homebrew/include/boost/math/special_functions/fpclassify.hpp \
+  /opt/homebrew/include/boost/math/special_functions/gamma.hpp \
   /opt/homebrew/include/boost/math/special_functions/hypot.hpp \
+  /opt/homebrew/include/boost/math/special_functions/lanczos.hpp \
+  /opt/homebrew/include/boost/math/special_functions/log1p.hpp \
   /opt/homebrew/include/boost/math/special_functions/math_fwd.hpp \
   /opt/homebrew/include/boost/math/special_functions/next.hpp \
+  /opt/homebrew/include/boost/math/special_functions/polygamma.hpp \
+  /opt/homebrew/include/boost/math/special_functions/pow.hpp \
+  /opt/homebrew/include/boost/math/special_functions/powm1.hpp \
   /opt/homebrew/include/boost/math/special_functions/sign.hpp \
+  /opt/homebrew/include/boost/math/special_functions/sin_pi.hpp \
+  /opt/homebrew/include/boost/math/special_functions/sqrt1pm1.hpp \
+  /opt/homebrew/include/boost/math/special_functions/trigamma.hpp \
   /opt/homebrew/include/boost/math/special_functions/trunc.hpp \
+  /opt/homebrew/include/boost/math/special_functions/zeta.hpp \
+  /opt/homebrew/include/boost/math/tools/array.hpp \
   /opt/homebrew/include/boost/math/tools/assert.hpp \
+  /opt/homebrew/include/boost/math/tools/atomic.hpp \
+  /opt/homebrew/include/boost/math/tools/big_constant.hpp \
   /opt/homebrew/include/boost/math/tools/complex.hpp \
   /opt/homebrew/include/boost/math/tools/config.hpp \
+  /opt/homebrew/include/boost/math/tools/convert_from_string.hpp \
   /opt/homebrew/include/boost/math/tools/cstdint.hpp \
+  /opt/homebrew/include/boost/math/tools/cxx03_warn.hpp \
   /opt/homebrew/include/boost/math/tools/detail/polynomial_horner3_20.hpp \
   /opt/homebrew/include/boost/math/tools/detail/rational_horner3_20.hpp \
+  /opt/homebrew/include/boost/math/tools/fraction.hpp \
   /opt/homebrew/include/boost/math/tools/is_constant_evaluated.hpp \
   /opt/homebrew/include/boost/math/tools/is_detected.hpp \
   /opt/homebrew/include/boost/math/tools/is_standalone.hpp \
@@ -1846,7 +2154,10 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /opt/homebrew/include/boost/math/tools/promotion.hpp \
   /opt/homebrew/include/boost/math/tools/rational.hpp \
   /opt/homebrew/include/boost/math/tools/real_cast.hpp \
+  /opt/homebrew/include/boost/math/tools/roots.hpp \
+  /opt/homebrew/include/boost/math/tools/series.hpp \
   /opt/homebrew/include/boost/math/tools/throw_exception.hpp \
+  /opt/homebrew/include/boost/math/tools/toms748_solve.hpp \
   /opt/homebrew/include/boost/math/tools/traits.hpp \
   /opt/homebrew/include/boost/math/tools/tuple.hpp \
   /opt/homebrew/include/boost/math/tools/type_traits.hpp \
@@ -2146,7 +2457,9 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /opt/homebrew/include/boost/multiprecision/cpp_int/multiply.hpp \
   /opt/homebrew/include/boost/multiprecision/cpp_int/serialize.hpp \
   /opt/homebrew/include/boost/multiprecision/cpp_int/value_pack.hpp \
+  /opt/homebrew/include/boost/multiprecision/debug_adaptor.hpp \
   /opt/homebrew/include/boost/multiprecision/detail/assert.hpp \
+  /opt/homebrew/include/boost/multiprecision/detail/atomic.hpp \
   /opt/homebrew/include/boost/multiprecision/detail/bitscan.hpp \
   /opt/homebrew/include/boost/multiprecision/detail/check_cpp11_config.hpp \
   /opt/homebrew/include/boost/multiprecision/detail/constexpr.hpp \
@@ -2172,12 +2485,15 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /opt/homebrew/include/boost/multiprecision/detail/precision.hpp \
   /opt/homebrew/include/boost/multiprecision/detail/rebind.hpp \
   /opt/homebrew/include/boost/multiprecision/detail/standalone_config.hpp \
+  /opt/homebrew/include/boost/multiprecision/detail/string_helpers.hpp \
   /opt/homebrew/include/boost/multiprecision/detail/ublas_interop.hpp \
   /opt/homebrew/include/boost/multiprecision/fwd.hpp \
+  /opt/homebrew/include/boost/multiprecision/gmp.hpp \
   /opt/homebrew/include/boost/multiprecision/integer.hpp \
   /opt/homebrew/include/boost/multiprecision/number.hpp \
   /opt/homebrew/include/boost/multiprecision/rational_adaptor.hpp \
   /opt/homebrew/include/boost/multiprecision/traits/explicit_conversion.hpp \
+  /opt/homebrew/include/boost/multiprecision/traits/extract_exponent_type.hpp \
   /opt/homebrew/include/boost/multiprecision/traits/is_backend.hpp \
   /opt/homebrew/include/boost/multiprecision/traits/is_byte_container.hpp \
   /opt/homebrew/include/boost/multiprecision/traits/is_complex.hpp \
@@ -2723,323 +3039,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /opt/homebrew/include/boost/version.hpp \
   /opt/homebrew/include/gmp.h \
   /opt/homebrew/include/gmpxx.h \
-  /opt/homebrew/include/mpfr.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/Cholesky \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/Core \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/Dense \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/Eigenvalues \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/Geometry \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/Householder \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/Jacobi \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/LU \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/QR \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/SVD \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Cholesky/LDLT.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Cholesky/LLT.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/plugins/ArrayCwiseBinaryOps.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/plugins/ArrayCwiseUnaryOps.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/plugins/BlockMethods.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/plugins/CommonCwiseBinaryOps.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/plugins/CommonCwiseUnaryOps.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/plugins/IndexedViewMethods.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/plugins/MatrixCwiseBinaryOps.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/plugins/MatrixCwiseUnaryOps.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/plugins/ReshapedMethods.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/ArithmeticSequence.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/Array.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/ArrayBase.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/ArrayWrapper.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/Assign.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/AssignEvaluator.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/BandMatrix.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/Block.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/BooleanRedux.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/CommaInitializer.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/ConditionEstimator.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/CoreEvaluators.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/CoreIterators.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/CwiseBinaryOp.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/CwiseNullaryOp.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/CwiseTernaryOp.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/CwiseUnaryOp.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/CwiseUnaryView.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/DenseBase.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/DenseCoeffsBase.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/DenseStorage.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/Diagonal.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/DiagonalMatrix.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/DiagonalProduct.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/Dot.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/EigenBase.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/Fuzzy.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/GeneralProduct.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/GenericPacketMath.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/GlobalFunctions.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/IO.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/IndexedView.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/Inverse.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/Map.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/MapBase.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/MathFunctions.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/MathFunctionsImpl.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/Matrix.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/MatrixBase.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/NestByValue.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/NoAlias.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/NumTraits.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/PartialReduxEvaluator.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/PermutationMatrix.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/PlainObjectBase.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/Product.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/ProductEvaluators.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/Random.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/Redux.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/Ref.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/Replicate.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/Reshaped.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/ReturnByValue.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/Reverse.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/Select.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/SelfAdjointView.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/SelfCwiseBinaryOp.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/Solve.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/SolveTriangular.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/SolverBase.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/StableNorm.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/StlIterators.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/Stride.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/Swap.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/Transpose.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/Transpositions.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/TriangularMatrix.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/VectorBlock.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/VectorwiseOp.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/Visitor.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/arch/Default/BFloat16.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/arch/Default/ConjHelper.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/arch/Default/GenericPacketMathFunctions.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/arch/Default/GenericPacketMathFunctionsFwd.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/arch/Default/Half.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/arch/Default/Settings.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/arch/Default/TypeCasting.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/arch/NEON/Complex.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/arch/NEON/GeneralBlockPanelKernel.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/arch/NEON/MathFunctions.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/arch/NEON/PacketMath.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/arch/NEON/TypeCasting.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/functors/AssignmentFunctors.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/functors/BinaryFunctors.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/functors/NullaryFunctors.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/functors/StlFunctors.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/functors/TernaryFunctors.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/functors/UnaryFunctors.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/products/GeneralBlockPanelKernel.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/products/GeneralMatrixMatrix.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/products/GeneralMatrixMatrixTriangular.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/products/GeneralMatrixVector.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/products/Parallelizer.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/products/SelfadjointMatrixMatrix.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/products/SelfadjointMatrixVector.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/products/SelfadjointProduct.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/products/SelfadjointRank2Update.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/products/TriangularMatrixMatrix.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/products/TriangularMatrixVector.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/products/TriangularSolverMatrix.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/products/TriangularSolverVector.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/util/BlasUtil.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/util/ConfigureVectorization.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/util/Constants.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/util/DisableStupidWarnings.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/util/ForwardDeclarations.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/util/IndexedViewHelper.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/util/IntegralConstant.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/util/MKL_support.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/util/Macros.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/util/Memory.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/util/Meta.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/util/ReenableStupidWarnings.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/util/ReshapedHelper.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/util/StaticAssert.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/util/SymbolicIndex.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/util/XprHelper.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/ComplexSchur.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/HessenbergDecomposition.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/RealQZ.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/RealSchur.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/Tridiagonalization.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/ComplexEigenSolver.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/ComplexSchur.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/EigenSolver.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/GeneralizedEigenSolver.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/GeneralizedSelfAdjointEigenSolver.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/HessenbergDecomposition.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/MatrixBaseEigenvalues.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/RealQZ.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/RealSchur.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/SelfAdjointEigenSolver.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/Tridiagonalization.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Geometry/AlignedBox.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Geometry/AngleAxis.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Geometry/EulerAngles.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Geometry/Homogeneous.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Geometry/Hyperplane.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Geometry/OrthoMethods.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Geometry/ParametrizedLine.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Geometry/Quaternion.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Geometry/Rotation2D.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Geometry/RotationBase.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Geometry/Scaling.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Geometry/Transform.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Geometry/Translation.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Geometry/Umeyama.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Geometry/arch/Geometry_SIMD.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Householder/BlockHouseholder.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Householder/Householder.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Householder/HouseholderSequence.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Jacobi/Jacobi.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/LU/Determinant.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/LU/FullPivLU.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/LU/InverseImpl.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/LU/PartialPivLU.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/LU/arch/InverseSize4.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/QR/ColPivHouseholderQR.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/QR/CompleteOrthogonalDecomposition.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/QR/FullPivHouseholderQR.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/QR/HouseholderQR.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/SVD/BDCSVD.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/SVD/JacobiSVD.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/SVD/SVDBase.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/SVD/UpperBidiagonalization.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/misc/Image.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/misc/Kernel.h \
-  /opt/homebrew/opt/eigen/include/eigen3/Eigen/src/misc/RealSvd2x2.h
+  /opt/homebrew/include/mpfr.h
 
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/SVD/BDCSVD.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/QR/FullPivHouseholderQR.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/QR/CompleteOrthogonalDecomposition.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/QR/ColPivHouseholderQR.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/LU/InverseImpl.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/LU/Determinant.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Geometry/Translation.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Geometry/Scaling.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Geometry/Rotation2D.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Geometry/ParametrizedLine.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Geometry/Homogeneous.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/MatrixBaseEigenvalues.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/Tridiagonalization.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/ComplexSchur.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/util/StaticAssert.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/util/ReshapedHelper.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/util/ReenableStupidWarnings.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/util/Memory.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/util/BlasUtil.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/products/TriangularSolverVector.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/products/TriangularSolverMatrix.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/products/TriangularMatrixMatrix.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/products/SelfadjointProduct.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/products/Parallelizer.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/products/GeneralMatrixMatrix.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/products/GeneralBlockPanelKernel.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/arch/NEON/TypeCasting.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/arch/NEON/MathFunctions.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/arch/NEON/GeneralBlockPanelKernel.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/arch/Default/Settings.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/arch/Default/Half.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/Visitor.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/Swap.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/SolveTriangular.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/Reshaped.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/Replicate.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/Redux.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/PlainObjectBase.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/PermutationMatrix.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/NumTraits.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/NestByValue.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/MatrixBase.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/MathFunctions.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/Map.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/IndexedView.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/GlobalFunctions.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/GenericPacketMath.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/GeneralProduct.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/ProductEvaluators.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/EigenBase.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/DiagonalMatrix.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/Diagonal.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/CwiseTernaryOp.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/ArrayWrapper.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/ArithmeticSequence.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/plugins/ReshapedMethods.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/plugins/MatrixCwiseUnaryOps.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/plugins/MatrixCwiseBinaryOps.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/plugins/ArrayCwiseUnaryOps.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/plugins/ArrayCwiseBinaryOps.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/QR:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/Dense:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/Core:
 
 /opt/homebrew/include/mpfr.h:
 
@@ -3059,13 +3060,7 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/type_traits/remove_reference.hpp:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/misc/RealSvd2x2.h:
-
 /opt/homebrew/include/boost/type_traits/remove_pointer.hpp:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/util/IntegralConstant.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/functors/NullaryFunctors.h:
 
 /opt/homebrew/include/boost/type_traits/remove_extent.hpp:
 
@@ -3080,8 +3075,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/type_traits/make_unsigned.hpp:
 
 /opt/homebrew/include/boost/type_traits/make_signed.hpp:
-
-/opt/homebrew/include/boost/type_traits/is_volatile.hpp:
 
 /opt/homebrew/include/boost/type_traits/is_void.hpp:
 
@@ -3100,8 +3093,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/type_traits/is_same.hpp:
 
 /opt/homebrew/include/boost/type_traits/is_rvalue_reference.hpp:
-
-/opt/homebrew/include/boost/type_traits/is_reference.hpp:
 
 /opt/homebrew/include/boost/type_traits/is_polymorphic.hpp:
 
@@ -3125,8 +3116,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/type_traits/is_copy_assignable.hpp:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/products/SelfadjointMatrixMatrix.h:
-
 /opt/homebrew/include/boost/type_traits/is_convertible.hpp:
 
 /opt/homebrew/include/boost/type_traits/is_const.hpp:
@@ -3143,11 +3132,7 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/type_traits/has_trivial_move_assign.hpp:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/DenseCoeffsBase.h:
-
 /opt/homebrew/include/boost/type_traits/has_trivial_copy.hpp:
-
-/opt/homebrew/include/boost/type_traits/has_trivial_assign.hpp:
 
 /opt/homebrew/include/boost/type_traits/has_nothrow_assign.hpp:
 
@@ -3170,8 +3155,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/type_traits/has_complement.hpp:
 
 /opt/homebrew/include/boost/type_traits/has_bit_xor_assign.hpp:
-
-/opt/homebrew/include/boost/type_traits/has_bit_xor.hpp:
 
 /opt/homebrew/include/boost/type_traits/has_bit_or.hpp:
 
@@ -3205,13 +3188,9 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/type_traits/add_reference.hpp:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/VectorBlock.h:
-
 /opt/homebrew/include/boost/type_index/type_index_facade.hpp:
 
 /opt/homebrew/include/boost/type_index/stl_type_index.hpp:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/misc/Kernel.h:
 
 /opt/homebrew/include/boost/type_index.hpp:
 
@@ -3225,8 +3204,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/static_assert.hpp:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/functors/AssignmentFunctors.h:
-
 /opt/homebrew/include/boost/type_traits/is_complex.hpp:
 
 /opt/homebrew/include/boost/smart_ptr/detail/yield_k.hpp:
@@ -3239,19 +3216,13 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/smart_ptr/detail/sp_noexcept.hpp:
 
-/opt/homebrew/include/boost/smart_ptr/detail/sp_has_sync_intrinsics.hpp:
-
 /opt/homebrew/include/boost/smart_ptr/detail/sp_counted_impl.hpp:
 
 /opt/homebrew/include/boost/smart_ptr/detail/sp_convertible.hpp:
 
-/opt/homebrew/include/boost/smart_ptr/detail/local_counted_base.hpp:
-
 /opt/homebrew/include/boost/type_traits/is_arithmetic.hpp:
 
 /opt/homebrew/include/boost/smart_ptr/detail/deprecated_macros.hpp:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/SolverBase.h:
 
 /opt/homebrew/include/boost/range/size.hpp:
 
@@ -3275,8 +3246,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/random/uniform_01.hpp:
 
-/opt/homebrew/include/boost/random/splitmix64.hpp:
-
 /opt/homebrew/include/boost/random/shuffle_output.hpp:
 
 /opt/homebrew/include/boost/random/seed_seq.hpp:
@@ -3289,25 +3258,15 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/random/non_central_chi_squared_distribution.hpp:
 
-/opt/homebrew/include/boost/random/mixmax.hpp:
-
 /opt/homebrew/include/boost/random/linear_feedback_shift.hpp:
 
 /opt/homebrew/include/boost/random/laplace_distribution.hpp:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/CommaInitializer.h:
-
-/opt/homebrew/include/boost/type_traits/has_trivial_destructor.hpp:
-
-/opt/homebrew/include/boost/random/inversive_congruential.hpp:
 
 /opt/homebrew/include/boost/random/independent_bits.hpp:
 
 /opt/homebrew/include/boost/random/hyperexponential_distribution.hpp:
 
 /opt/homebrew/include/boost/random/generate_canonical.hpp:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/EigenSolver.h:
 
 /opt/homebrew/include/boost/random/discrete_distribution.hpp:
 
@@ -3351,8 +3310,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/property_map/vector_property_map.hpp:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/Select.h:
-
 /opt/homebrew/include/boost/preprocessor/variadic/limits/size_64.hpp:
 
 /opt/homebrew/include/boost/preprocessor/tuple/rem.hpp:
@@ -3363,25 +3320,15 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/preprocessor/seq/limits/size_256.hpp:
 
-/opt/homebrew/include/boost/preprocessor/seq/limits/elem_256.hpp:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Householder/HouseholderSequence.h:
-
-/opt/homebrew/include/boost/preprocessor/seq/fold_left.hpp:
-
 /opt/homebrew/include/boost/preprocessor/seq/elem.hpp:
 
 /opt/homebrew/include/boost/preprocessor/seq/detail/is_empty.hpp:
-
-/opt/homebrew/include/boost/preprocessor/repetition/for.hpp:
 
 /opt/homebrew/include/boost/preprocessor/repetition/enum_params.hpp:
 
 /opt/homebrew/include/boost/preprocessor/repetition/detail/limits/for_256.hpp:
 
 /opt/homebrew/include/boost/preprocessor/repeat.hpp:
-
-/opt/homebrew/include/boost/preprocessor/logical/not.hpp:
 
 /opt/homebrew/include/boost/preprocessor/logical/bool.hpp:
 
@@ -3447,11 +3394,7 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/predef/platform/ios.h:
 
-/opt/homebrew/include/boost/predef/platform/cloudabi.h:
-
 /opt/homebrew/include/boost/predef/platform.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/Transpositions.h:
 
 /opt/homebrew/include/boost/predef/other/wordsize.h:
 
@@ -3487,10 +3430,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/predef/library/std/msvc.h:
 
-/opt/homebrew/include/boost/predef/library/std/msl.h:
-
-/opt/homebrew/include/boost/predef/library/std/modena.h:
-
 /opt/homebrew/include/boost/predef/library/std/cxx.h:
 
 /opt/homebrew/include/boost/predef/library/std.h:
@@ -3507,8 +3446,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/predef/language/stdc.h:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/Householder:
-
 /opt/homebrew/include/boost/predef/language/cuda.h:
 
 /opt/homebrew/include/boost/predef/language.h:
@@ -3520,8 +3457,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/predef/hardware/simd/x86/versions.h:
 
 /opt/homebrew/include/boost/predef/hardware/simd/x86.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Geometry/RotationBase.h:
 
 /opt/homebrew/include/boost/predef/hardware/simd/arm.h:
 
@@ -3549,15 +3484,9 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/predef/compiler/pgi.h:
 
-/opt/homebrew/include/boost/predef/compiler/nvcc.h:
-
 /opt/homebrew/include/boost/predef/compiler/microtec.h:
 
 /opt/homebrew/include/boost/predef/compiler/metaware.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/StableNorm.h:
-
-/opt/homebrew/include/boost/predef/compiler/kai.h:
 
 /opt/homebrew/include/boost/predef/compiler/hp_acc.h:
 
@@ -3577,8 +3506,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/predef/architecture/x86.h:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/CwiseNullaryOp.h:
-
 /opt/homebrew/include/boost/type_traits/is_compound.hpp:
 
 /opt/homebrew/include/boost/predef/architecture/sys390.h:
@@ -3595,23 +3522,13 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/predef/architecture/m68k.h:
 
-/opt/homebrew/include/boost/predef/architecture/loongarch.h:
-
 /opt/homebrew/include/boost/predef/architecture/e2k.h:
 
 /opt/homebrew/include/boost/predef/architecture/convex.h:
 
-/opt/homebrew/include/boost/predef/architecture/arm.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/Eigenvalues:
-
 /opt/homebrew/include/boost/predef/architecture/alpha.h:
 
 /opt/homebrew/include/boost/pending/property.hpp:
-
-/opt/homebrew/include/boost/pending/detail/property.hpp:
-
-/opt/homebrew/include/boost/none_t.hpp:
 
 /opt/homebrew/include/boost/utility/base_from_member.hpp:
 
@@ -3619,21 +3536,27 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/multiprecision/traits/transcendental_reduction_type.hpp:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/misc/Image.h:
-
 /opt/homebrew/include/boost/multiprecision/traits/std_integer_traits.hpp:
 
 /opt/homebrew/include/boost/multiprecision/traits/is_complex.hpp:
 
 /opt/homebrew/include/boost/multiprecision/traits/is_backend.hpp:
 
+/opt/homebrew/include/boost/multiprecision/traits/extract_exponent_type.hpp:
+
 /opt/homebrew/include/boost/type_traits/is_function.hpp:
 
 /opt/homebrew/include/boost/multiprecision/number.hpp:
 
+/opt/homebrew/include/boost/pending/detail/property.hpp:
+
+/opt/homebrew/include/boost/multiprecision/gmp.hpp:
+
 /opt/homebrew/include/boost/multiprecision/fwd.hpp:
 
 /opt/homebrew/include/boost/multiprecision/detail/ublas_interop.hpp:
+
+/opt/homebrew/include/boost/multiprecision/detail/string_helpers.hpp:
 
 /opt/homebrew/include/boost/multiprecision/detail/standalone_config.hpp:
 
@@ -3663,17 +3586,11 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/multiprecision/detail/fpclassify.hpp:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Geometry/Transform.h:
-
 /opt/homebrew/include/boost/multiprecision/detail/empty_value.hpp:
 
 /opt/homebrew/include/boost/multiprecision/detail/digits.hpp:
 
 /opt/homebrew/include/boost/multiprecision/detail/bitscan.hpp:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Householder/BlockHouseholder.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/Cholesky:
 
 /opt/homebrew/include/boost/multiprecision/cpp_int/multiply.hpp:
 
@@ -3681,13 +3598,9 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/multiprecision/cpp_int/literals.hpp:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/functors/StlFunctors.h:
-
 /opt/homebrew/include/boost/multiprecision/cpp_int/intel_intrinsics.hpp:
 
 /opt/homebrew/include/boost/multiprecision/cpp_int/import_export.hpp:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/CoreIterators.h:
 
 /opt/homebrew/include/boost/multiprecision/cpp_int/divide.hpp:
 
@@ -3727,15 +3640,9 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/mpl/vector/aux_/front.hpp:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/VectorwiseOp.h:
-
 /opt/homebrew/include/boost/mpl/vector/aux_/O1_size.hpp:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Cholesky/LLT.h:
-
 /opt/homebrew/include/boost/mpl/tag.hpp:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Jacobi/Jacobi.h:
 
 /opt/homebrew/include/boost/mpl/sequence_tag_fwd.hpp:
 
@@ -3779,19 +3686,13 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/mpl/iter_fold.hpp:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/products/SelfadjointRank2Update.h:
-
 /opt/homebrew/include/boost/mpl/is_sequence.hpp:
 
 /opt/homebrew/include/boost/mpl/integral_c.hpp:
 
 /opt/homebrew/include/boost/mpl/int_fwd.hpp:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/arch/Default/BFloat16.h:
-
 /opt/homebrew/include/boost/mpl/inserter.hpp:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Geometry/AlignedBox.h:
 
 /opt/homebrew/include/boost/mpl/identity.hpp:
 
@@ -3804,8 +3705,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/random/uniform_real_distribution.hpp:
 
 /opt/homebrew/include/boost/mpl/equal_to.hpp:
-
-/opt/homebrew/include/boost/mpl/empty_fwd.hpp:
 
 /opt/homebrew/include/boost/mpl/deref.hpp:
 
@@ -3847,8 +3746,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/plus.hpp:
 
-/opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/or.hpp:
-
 /opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/minus.hpp:
 
 /opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/full_lambda.hpp:
@@ -3857,15 +3754,7 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/equal_to.hpp:
 
-/opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/apply_fwd.hpp:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/ArrayBase.h:
-
 /opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/advance_backward.hpp:
-
-/opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/vector.hpp:
-
-/opt/homebrew/include/boost/mpl/aux_/numeric_cast_utils.hpp:
 
 /opt/homebrew/include/boost/mpl/aux_/nttp_decl.hpp:
 
@@ -3873,19 +3762,11 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/mpl/aux_/na_fwd.hpp:
 
-/opt/homebrew/include/boost/predef/library/c/uc.h:
-
-/opt/homebrew/include/boost/mpl/aux_/msvc_never_true.hpp:
-
 /opt/homebrew/include/boost/mpl/aux_/msvc_eti_base.hpp:
 
 /opt/homebrew/include/boost/range/config.hpp:
 
 /opt/homebrew/include/boost/mpl/aux_/lambda_arity_param.hpp:
-
-/opt/homebrew/include/boost/mpl/lambda_fwd.hpp:
-
-/opt/homebrew/include/boost/mpl/aux_/iter_fold_impl.hpp:
 
 /opt/homebrew/include/boost/mpl/aux_/is_msvc_eti_arg.hpp:
 
@@ -3931,11 +3812,7 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/mpl/aux_/config/msvc.hpp:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/Product.h:
-
 /opt/homebrew/include/boost/mpl/aux_/config/has_xxx.hpp:
-
-/opt/homebrew/include/boost/mpl/aux_/config/has_apply.hpp:
 
 /opt/homebrew/include/boost/preprocessor/variadic/size.hpp:
 
@@ -3960,10 +3837,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/mpl/aux_/arity.hpp:
 
 /opt/homebrew/include/boost/mpl/aux_/arithmetic_op.hpp:
-
-/opt/homebrew/include/boost/mpl/aux_/advance_backward.hpp:
-
-/opt/homebrew/include/boost/mpl/aux_/O1_size_impl.hpp:
 
 /opt/homebrew/include/boost/mpl/at_fwd.hpp:
 
@@ -3999,8 +3872,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/mp11/detail/mp_front.hpp:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/arch/NEON/PacketMath.h:
-
 /opt/homebrew/include/boost/mp11/detail/mp_fold.hpp:
 
 /opt/homebrew/include/boost/mp11/detail/mp_defer.hpp:
@@ -4031,31 +3902,19 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/move/detail/meta_utils_core.hpp:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/Random.h:
-
 /opt/homebrew/include/boost/move/detail/meta_utils.hpp:
 
 /opt/homebrew/include/boost/mpl/push_back.hpp:
 
 /opt/homebrew/include/boost/move/detail/iterator_traits.hpp:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Geometry/Umeyama.h:
-
 /opt/homebrew/include/boost/type_traits/is_floating_point.hpp:
 
 /opt/homebrew/include/boost/move/detail/iterator_to_raw_pointer.hpp:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/products/TriangularMatrixVector.h:
-
-/opt/homebrew/include/boost/move/detail/destruct_n.hpp:
-
 /opt/homebrew/include/boost/type_traits/has_equal_to.hpp:
 
 /opt/homebrew/include/boost/move/detail/config_begin.hpp:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/RealQZ.h:
-
-/opt/homebrew/include/boost/move/detail/addressof.hpp:
 
 /opt/homebrew/include/boost/move/algo/move.hpp:
 
@@ -4069,10 +3928,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/move/algo/detail/merge.hpp:
 
-/opt/homebrew/include/boost/type_traits/is_union.hpp:
-
-/opt/homebrew/include/boost/move/algo/detail/insertion_sort.hpp:
-
 /opt/homebrew/include/boost/move/algo/detail/heap_sort.hpp:
 
 /opt/homebrew/include/boost/move/algo/adaptive_sort.hpp:
@@ -4082,6 +3937,10 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/move/algo/adaptive_merge.hpp:
 
 /opt/homebrew/include/boost/math/tools/traits.hpp:
+
+/opt/homebrew/include/boost/math/tools/toms748_solve.hpp:
+
+/opt/homebrew/include/boost/math/tools/series.hpp:
 
 /opt/homebrew/include/boost/math/tools/real_cast.hpp:
 
@@ -4095,21 +3954,41 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/math/tools/detail/rational_horner3_20.hpp:
 
-/opt/homebrew/include/boost/math/tools/detail/polynomial_horner3_20.hpp:
+/opt/homebrew/include/boost/math/tools/convert_from_string.hpp:
 
-/opt/homebrew/include/boost/math/tools/cstdint.hpp:
+/opt/homebrew/include/boost/predef/architecture/loongarch.h:
 
-/opt/homebrew/include/boost/predef/os/bsd/open.h:
+/opt/homebrew/include/boost/math/tools/big_constant.hpp:
 
-/opt/homebrew/include/boost/math/tools/config.hpp:
+/opt/homebrew/include/boost/math/tools/atomic.hpp:
+
+/opt/homebrew/include/boost/math/special_functions/zeta.hpp:
 
 /opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/iter_fold_impl.hpp:
 
 /opt/homebrew/include/boost/math/special_functions/trunc.hpp:
 
+/opt/homebrew/include/boost/math/special_functions/sqrt1pm1.hpp:
+
+/opt/homebrew/include/boost/math/special_functions/sin_pi.hpp:
+
+/opt/homebrew/include/boost/type_traits/is_union.hpp:
+
+/opt/homebrew/include/boost/move/algo/detail/insertion_sort.hpp:
+
+/opt/homebrew/include/boost/math/special_functions/powm1.hpp:
+
+/opt/homebrew/include/boost/math/special_functions/pow.hpp:
+
 /opt/homebrew/include/boost/math/special_functions/next.hpp:
 
+/opt/homebrew/include/boost/math/tools/fraction.hpp:
+
 /opt/homebrew/include/boost/math/special_functions/math_fwd.hpp:
+
+/opt/homebrew/include/boost/math/special_functions/log1p.hpp:
+
+/opt/homebrew/include/boost/math/special_functions/lanczos.hpp:
 
 /opt/homebrew/include/boost/multiprecision/cpp_int/limits.hpp:
 
@@ -4117,11 +3996,31 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/math/special_functions/fpclassify.hpp:
 
+/opt/homebrew/include/boost/random/mixmax.hpp:
+
+/opt/homebrew/include/boost/math/special_functions/digamma.hpp:
+
 /opt/homebrew/include/boost/predef/os/aix.h:
 
 /opt/homebrew/include/boost/mpl/aux_/adl_barrier.hpp:
 
 /opt/homebrew/include/boost/math/special_functions/detail/round_fwd.hpp:
+
+/opt/homebrew/include/boost/predef/os/bsd/open.h:
+
+/opt/homebrew/include/boost/math/tools/config.hpp:
+
+/opt/homebrew/include/boost/math/special_functions/detail/polygamma.hpp:
+
+/opt/homebrew/include/boost/math/special_functions/detail/lgamma_small.hpp:
+
+/opt/homebrew/include/boost/math/special_functions/detail/igamma_large.hpp:
+
+/opt/homebrew/include/boost/math/special_functions/detail/gamma_inva.hpp:
+
+/opt/homebrew/include/boost/math/special_functions/detail/bernoulli_details.hpp:
+
+/opt/homebrew/include/boost/math/special_functions/atanh.hpp:
 
 /opt/homebrew/include/boost/type_traits/is_assignable.hpp:
 
@@ -4130,6 +4029,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/math/cstdfloat/cstdfloat_types.hpp:
 
 /opt/homebrew/include/boost/math/cstdfloat/cstdfloat_limits.hpp:
+
+/opt/homebrew/include/boost/math/constants/calculate_constants.hpp:
 
 /opt/homebrew/include/boost/math/ccmath/ldexp.hpp:
 
@@ -4155,13 +4056,7 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/lexical_cast/detail/converter_numeric.hpp:
 
-/opt/homebrew/include/boost/lexical_cast/detail/converter_lexical_streams.hpp:
-
 /opt/homebrew/include/boost/lexical_cast/detail/converter_lexical.hpp:
-
-/opt/homebrew/include/boost/lexical_cast/detail/buffer_view.hpp:
-
-/opt/homebrew/include/boost/lexical_cast/bad_lexical_cast.hpp:
 
 /opt/homebrew/include/boost/iterator/iterator_facade.hpp:
 
@@ -4171,15 +4066,11 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/iterator/iterator_adaptor.hpp:
 
-/opt/homebrew/include/boost/iterator/function_output_iterator.hpp:
-
 /opt/homebrew/include/boost/iterator/detail/enable_if.hpp:
 
 /opt/homebrew/include/boost/multiprecision/cpp_int/cpp_int_config.hpp:
 
 /opt/homebrew/include/boost/iterator/detail/config_def.hpp:
-
-/opt/homebrew/include/boost/iterator/counting_iterator.hpp:
 
 /opt/homebrew/include/boost/math/ccmath/isinf.hpp:
 
@@ -4187,11 +4078,7 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/io/ios_state.hpp:
 
-/opt/homebrew/include/boost/intrusive/pointer_traits.hpp:
-
 /opt/homebrew/include/boost/intrusive/pointer_rebind.hpp:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/arch/NEON/Complex.h:
 
 /opt/homebrew/include/boost/intrusive/detail/workaround.hpp:
 
@@ -4215,8 +4102,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/integer_fwd.hpp:
 
-/opt/homebrew/include/boost/integer/static_log2.hpp:
-
 /opt/homebrew/include/boost/integer/integer_mask.hpp:
 
 /opt/homebrew/include/boost/mp11/integral.hpp:
@@ -4236,14 +4121,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/graph/graph_traits.hpp:
 
 /opt/homebrew/include/boost/functional/hash.hpp:
-
-/opt/homebrew/include/boost/graph/property_maps/null_property_map.hpp:
-
-/opt/homebrew/include/boost/foreach_fwd.hpp:
-
-/opt/homebrew/include/boost/foreach.hpp:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/RealSchur.h:
 
 /opt/homebrew/include/boost/exception/exception.hpp:
 
@@ -4289,10 +4166,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/core/invoke_swap.hpp:
 
-/opt/homebrew/include/boost/mpl/vector/aux_/item.hpp:
-
-/opt/homebrew/include/boost/core/enable_if.hpp:
-
 /opt/homebrew/include/boost/core/detail/sp_thread_yield.hpp:
 
 /opt/homebrew/include/boost/core/detail/sp_thread_pause.hpp:
@@ -4300,8 +4173,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/core/demangle.hpp:
 
 /opt/homebrew/include/boost/core/cmath.hpp:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/functors/TernaryFunctors.h:
 
 /opt/homebrew/include/boost/core/checked_delete.hpp:
 
@@ -4312,10 +4183,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/type_traits/add_rvalue_reference.hpp:
 
 /opt/homebrew/include/boost/container_hash/is_range.hpp:
-
-/opt/homebrew/include/boost/container_hash/is_described_class.hpp:
-
-/opt/homebrew/include/boost/container_hash/is_contiguous_range.hpp:
 
 /opt/homebrew/include/boost/mpl/aux_/config/forwarding.hpp:
 
@@ -4334,10 +4201,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/container_hash/detail/hash_range.hpp:
 
 /opt/homebrew/include/boost/container_hash/detail/hash_integral.hpp:
-
-/opt/homebrew/include/boost/mpl/aux_/lambda_support.hpp:
-
-/opt/homebrew/include/boost/container/vector.hpp:
 
 /opt/homebrew/include/boost/container/throw_exception.hpp:
 
@@ -4359,13 +4222,7 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/container/detail/workaround.hpp:
 
-/opt/homebrew/include/boost/container/detail/variadic_templates_tools.hpp:
-
 /opt/homebrew/include/boost/container/detail/std_fwd.hpp:
-
-/opt/homebrew/include/boost/preprocessor/list/detail/fold_left.hpp:
-
-/opt/homebrew/include/boost/container/detail/placement_new.hpp:
 
 /opt/homebrew/include/boost/container/detail/pair.hpp:
 
@@ -4377,8 +4234,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/container/detail/iterators.hpp:
 
-/opt/homebrew/include/boost/container/detail/is_sorted.hpp:
-
 /opt/homebrew/include/boost/container/detail/is_pair.hpp:
 
 /opt/homebrew/include/boost/container/detail/next_capacity.hpp:
@@ -4387,13 +4242,7 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/container/detail/container_or_allocator_rebind.hpp:
 
-/opt/homebrew/include/boost/container/detail/alloc_helpers.hpp:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/BooleanRedux.h:
-
 /opt/homebrew/include/boost/container/detail/algorithm.hpp:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/HessenbergDecomposition.h:
 
 /opt/homebrew/include/boost/mpl/aux_/clear_impl.hpp:
 
@@ -4422,8 +4271,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/config/detail/posix_features.hpp:
 
 /opt/homebrew/include/boost/config/detail/cxx_composite.hpp:
-
-/opt/homebrew/include/boost/config/compiler/clang_version.hpp:
 
 /opt/homebrew/include/boost/concept_check.hpp:
 
@@ -4455,8 +4302,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/utils_classes.h:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Cholesky/LDLT.h:
-
 /opt/homebrew/include/CGAL/utility.h:
 
 /opt/homebrew/include/CGAL/user_classes.h:
@@ -4464,8 +4309,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/intrusive/detail/minimal_pair_header.hpp:
 
 /opt/homebrew/include/CGAL/use.h:
-
-/opt/homebrew/include/CGAL/type_traits/is_iterator.h:
 
 /opt/homebrew/include/CGAL/type_traits.h:
 
@@ -4477,11 +4320,11 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/tss.h:
 
+/opt/homebrew/include/CGAL/transforming_iterator.h:
+
 /opt/homebrew/include/CGAL/rank.h:
 
 /opt/homebrew/include/CGAL/predicates_on_points_2.h:
-
-/opt/homebrew/include/CGAL/predicates/kernel_ftC3.h:
 
 /opt/homebrew/include/CGAL/predicates/kernel_ftC2.h:
 
@@ -4495,11 +4338,25 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/mpz_class.h:
 
+/opt/homebrew/include/CGAL/min_max_n.h:
+
+/opt/homebrew/include/CGAL/long_double.h:
+
+/opt/homebrew/include/CGAL/license/lgpl.h:
+
+/opt/homebrew/include/CGAL/license/Surface_sweep_2.h:
+
 /opt/homebrew/include/boost/type_traits/same_traits.hpp:
 
 /opt/homebrew/include/boost/mpl/vector/vector20.hpp:
 
 /opt/homebrew/include/CGAL/license/Polyhedron.h:
+
+/opt/homebrew/include/boost/predef/compiler/nvcc.h:
+
+/opt/homebrew/include/CGAL/license/Arrangement_on_surface_2.h:
+
+/opt/homebrew/include/CGAL/kernel_config.h:
 
 /opt/homebrew/include/boost/type_traits/has_modulus_assign.hpp:
 
@@ -4509,91 +4366,103 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/kernel_basic.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/remove_const_ref.h:
+/opt/homebrew/include/CGAL/kernel_assertions.h:
 
-/Users/jiayu/Desktop/nas_ws/NAS/include/tree.hpp:
+/opt/homebrew/include/boost/lexical_cast/detail/converter_lexical_streams.hpp:
 
-/opt/homebrew/include/CGAL/iterator.h:
+/opt/homebrew/include/CGAL/ipower.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/cwchar:
+/opt/homebrew/include/CGAL/intersection_3.h:
 
-/opt/homebrew/include/CGAL/intersections.h:
+/opt/homebrew/include/CGAL/int.h:
+
+/opt/homebrew/include/CGAL/gmp.h:
 
 /opt/homebrew/include/CGAL/functional.h:
 
+/opt/homebrew/include/boost/random/variate_generator.hpp:
+
+/opt/homebrew/include/boost/preprocessor/seq/transform.hpp:
+
+/opt/homebrew/include/CGAL/function_objects.h:
+
 /opt/homebrew/include/CGAL/float.h:
+
+/opt/homebrew/include/CGAL/extended_euclidean_algorithm.h:
 
 /opt/homebrew/include/CGAL/export/helpers.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__compare/ordering.h:
-
-/opt/homebrew/include/CGAL/gmpxx_coercion_traits.h:
-
 /opt/homebrew/include/CGAL/export/CGAL.h:
 
-/opt/homebrew/include/CGAL/boost/graph/IO/Generic_facegraph_builder.h:
-
-/opt/homebrew/include/CGAL/exceptions.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/StlIterators.h:
-
-/opt/homebrew/include/CGAL/Cartesian/Circle_2.h:
-
-/opt/homebrew/include/CGAL/enable_warnings.h:
-
-/opt/homebrew/include/CGAL/determinant.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__numeric/gcd_lcm.h:
-
-/opt/homebrew/include/CGAL/constructions/kernel_ftC3.h:
-
-/opt/homebrew/include/CGAL/boost/iterator/transform_iterator.hpp:
+/opt/homebrew/include/CGAL/enum.h:
 
 /opt/homebrew/include/CGAL/double.h:
 
-/opt/homebrew/include/boost/move/detail/force_ptr.hpp:
+/opt/homebrew/include/CGAL/disable_warnings.h:
 
-/opt/homebrew/include/CGAL/Distance_2/Segment_2_Segment_2.h:
+/opt/homebrew/include/CGAL/determinant.h:
 
-/opt/homebrew/include/CGAL/boost/graph/properties_Surface_mesh_time_stamp.h:
+/opt/homebrew/include/CGAL/constructions/kernel_ftC2.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_rune_t.h:
+/opt/homebrew/include/CGAL/constant.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__ranges/enable_view.h:
+/opt/homebrew/include/CGAL/config.h:
 
-/opt/homebrew/include/CGAL/Intersections_3/Segment_3_Triangle_3.h:
+/opt/homebrew/include/boost/container/detail/copy_move_algo.hpp:
 
-/opt/homebrew/include/CGAL/boost/graph/properties_HalfedgeDS_default.h:
+/opt/homebrew/include/CGAL/circulator_bases.h:
 
-/opt/homebrew/include/boost/math/tools/promotion.hpp:
+/opt/homebrew/include/CGAL/circulator.h:
 
-/opt/homebrew/include/CGAL/Intersections_2/Ray_2_Segment_2.h:
+/opt/homebrew/include/boost/container/detail/is_sorted.hpp:
 
-/opt/homebrew/include/CGAL/boost/graph/named_params_helper.h:
+/opt/homebrew/include/CGAL/boost_mp.h:
+
+/opt/homebrew/include/CGAL/boost/iterator/transform_iterator.hpp:
+
+/opt/homebrew/include/CGAL/boost/iterator/counting_iterator.hpp:
+
+/opt/homebrew/include/boost/predef/compiler/dignus.h:
+
+/opt/homebrew/include/CGAL/boost/graph/properties_Surface_mesh.h:
+
+/opt/homebrew/include/boost/range/empty.hpp:
+
+/opt/homebrew/include/CGAL/boost/graph/properties_Polyhedron_3_time_stamp.h:
+
+/opt/homebrew/include/CGAL/boost/graph/properties_HalfedgeDS_base.h:
+
+/opt/homebrew/include/CGAL/boost_mp_type.h:
+
+/opt/homebrew/include/CGAL/boost/graph/properties.h:
 
 /opt/homebrew/include/CGAL/boost/graph/iterator.h:
 
-/opt/homebrew/include/boost/smart_ptr/detail/local_sp_deleter.hpp:
+/opt/homebrew/include/CGAL/boost/graph/io.h:
 
-/opt/homebrew/include/CGAL/boost/graph/graph_traits_Surface_mesh.h:
+/opt/homebrew/include/CGAL/boost/graph/internal/initialized_index_maps_helpers.h:
 
-/opt/homebrew/include/boost/version.hpp:
+/opt/homebrew/include/CGAL/boost/graph/internal/helpers.h:
 
-/opt/homebrew/include/CGAL/Cartesian/basic_constructions_3.h:
+/opt/homebrew/include/boost/type_traits/add_const.hpp:
 
-/opt/homebrew/include/CGAL/boost/graph/copy_face_graph.h:
+/opt/homebrew/include/CGAL/boost/graph/internal/Has_member_clear.h:
+
+/opt/homebrew/include/CGAL/boost/graph/halfedge_graph_traits.h:
+
+/opt/homebrew/include/CGAL/boost/graph/graph_traits_HalfedgeDS.h:
+
+/opt/homebrew/include/CGAL/boost/graph/backward_compatibility_functions.h:
 
 /opt/homebrew/include/CGAL/boost/graph/IO/WRL.h:
 
 /opt/homebrew/include/CGAL/boost/graph/IO/VTK.h:
 
+/opt/homebrew/include/boost/range/concepts.hpp:
+
+/opt/homebrew/include/CGAL/boost/graph/IO/STL.h:
+
 /opt/homebrew/include/CGAL/boost/graph/IO/PLY.h:
-
-/opt/homebrew/include/boost/mpl/aux_/begin_end_impl.hpp:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__atomic/atomic_sync.h:
-
-/opt/homebrew/include/CGAL/boost/graph/IO/OFF.h:
 
 /opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/bind_fwd.hpp:
 
@@ -4601,61 +4470,179 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/boost/graph/IO/INP.h:
 
-/opt/homebrew/include/CGAL/Intersections_3/Bbox_3_Tetrahedron_3.h:
+/opt/homebrew/include/CGAL/exceptions.h:
 
-/opt/homebrew/include/CGAL/boost/graph/IO/3MF.h:
+/opt/homebrew/include/CGAL/boost/graph/IO/Generic_facegraph_builder.h:
 
-/opt/homebrew/include/CGAL/Distance_3/Segment_3_Line_3.h:
-
-/opt/homebrew/include/CGAL/boost/graph/Euler_operations.h:
+/opt/homebrew/include/CGAL/boost/graph/IO/GOCAD.h:
 
 /opt/homebrew/include/CGAL/basic_classes.h:
 
-/opt/homebrew/include/CGAL/auto_link/auto_link.h:
+/opt/homebrew/include/CGAL/auto_link/CGAL.h:
 
 /opt/homebrew/include/boost/range/size_type.hpp:
 
 /opt/homebrew/include/CGAL/assertions_impl.h:
 
-/opt/homebrew/include/CGAL/Has_member.h:
-
-/opt/homebrew/include/CGAL/assertions_behaviour.h:
-
 /opt/homebrew/include/CGAL/assertions.h:
+
+/opt/homebrew/include/CGAL/algorithm.h:
 
 /opt/homebrew/include/CGAL/aff_transformation_tags_impl.h:
 
-/opt/homebrew/include/boost/smart_ptr/detail/shared_count.hpp:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/__wctype.h:
-
-/opt/homebrew/include/CGAL/Weighted_point_3.h:
+/opt/homebrew/include/CGAL/Weighted_point_2.h:
 
 /opt/homebrew/include/CGAL/Vector_3.h:
 
-/opt/homebrew/include/CGAL/boost/iterator/counting_iterator.hpp:
-
 /opt/homebrew/include/CGAL/Vector_2.h:
+
+/opt/homebrew/include/boost/random/splitmix64.hpp:
+
+/opt/homebrew/include/CGAL/Union_find.h:
+
+/opt/homebrew/include/CGAL/Triangulation_structural_filtering_traits.h:
+
+/opt/homebrew/include/CGAL/Time_stamper.h:
+
+/opt/homebrew/include/CGAL/Tetrahedron_3.h:
+
+/opt/homebrew/include/CGAL/Surface_sweep_2/Surface_sweep_2_utils.h:
+
+/opt/homebrew/include/CGAL/Surface_sweep_2/Surface_sweep_2_impl.h:
+
+/opt/homebrew/include/boost/container/detail/variadic_templates_tools.hpp:
+
+/opt/homebrew/include/CGAL/Surface_sweep_2/No_overlap_event_base.h:
+
+/opt/homebrew/include/CGAL/Surface_sweep_2/No_intersection_surface_sweep_2_impl.h:
+
+/opt/homebrew/include/CGAL/Surface_sweep_2/Event_comparer.h:
+
+/opt/homebrew/include/boost/none_t.hpp:
+
+/opt/homebrew/include/CGAL/Surface_sweep_2/Do_interior_intersect_visitor.h:
+
+/opt/homebrew/include/CGAL/Surface_sweep_2/Default_visitor_base.h:
+
+/opt/homebrew/include/boost/math/special_functions/detail/unchecked_factorial.hpp:
+
+/opt/homebrew/include/CGAL/Surface_sweep_2/Default_visitor.h:
+
+/opt/homebrew/include/CGAL/Surface_sweep_2/Default_subcurve.h:
+
+/opt/homebrew/include/CGAL/Surface_sweep_2/Default_event_base.h:
+
+/opt/homebrew/include/boost/container_hash/is_contiguous_range.hpp:
+
+/opt/homebrew/include/CGAL/Surface_sweep_2/Arr_overlay_subcurve.h:
+
+/opt/homebrew/include/CGAL/Surface_sweep_2/Arr_overlay_ss_visitor.h:
+
+/opt/homebrew/include/CGAL/Surface_sweep_2/Arr_construction_event_base.h:
+
+/opt/homebrew/include/boost/predef/compiler/kai.h:
+
+/opt/homebrew/include/CGAL/Surface_sweep_2/Arr_construction_event.h:
+
+/opt/homebrew/include/boost/preprocessor/list/detail/fold_left.hpp:
+
+/opt/homebrew/include/boost/container/detail/placement_new.hpp:
+
+/opt/homebrew/include/CGAL/Surface_sweep_2/Arr_basic_insertion_traits_2.h:
+
+/opt/homebrew/include/CGAL/Surface_sweep_2.h:
 
 /opt/homebrew/include/CGAL/Surface_mesh/Surface_mesh_fwd.h:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/QR/HouseholderQR.h:
+/opt/homebrew/include/boost/move/algo/detail/is_sorted.hpp:
+
+/opt/homebrew/include/boost/intrusive/detail/mpl.hpp:
+
+/opt/homebrew/include/CGAL/Surface_mesh/Surface_mesh.h:
+
+/opt/homebrew/include/boost/math/tools/type_traits.hpp:
+
+/opt/homebrew/include/CGAL/Surface_mesh/Properties.h:
 
 /opt/homebrew/include/CGAL/Surface_mesh/IO.h:
 
-/opt/homebrew/include/boost/random/exponential_distribution.hpp:
+/opt/homebrew/include/CGAL/Static_filtered_predicate.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/iomanip:
+/opt/homebrew/include/boost/mpl/lambda_fwd.hpp:
 
-/opt/homebrew/include/CGAL/Surface_mesh.h:
+/opt/homebrew/include/boost/mpl/aux_/iter_fold_impl.hpp:
+
+/opt/homebrew/include/CGAL/Sqrt_extension_fwd.h:
+
+/opt/homebrew/include/CGAL/basic.h:
+
+/opt/homebrew/include/CGAL/Sqrt_extension/io.h:
+
+/opt/homebrew/include/CGAL/Sqrt_extension/convert_to_bfi.h:
+
+/opt/homebrew/include/CGAL/Sqrt_extension/Wang_traits.h:
+
+/opt/homebrew/include/boost/smart_ptr/detail/sp_has_sync_intrinsics.hpp:
+
+/opt/homebrew/include/CGAL/Sqrt_extension/Sqrt_extension_type.h:
+
+/opt/homebrew/include/boost/predef/library/c/uc.h:
+
+/opt/homebrew/include/boost/mpl/aux_/msvc_never_true.hpp:
+
+/opt/homebrew/include/CGAL/Sqrt_extension/Scalar_factor_traits.h:
+
+/opt/homebrew/include/CGAL/Sqrt_extension/Real_embeddable_traits.h:
+
+/opt/homebrew/include/boost/preprocessor/seq/limits/elem_256.hpp:
+
+/opt/homebrew/include/CGAL/Sqrt_extension/Modular_traits.h:
+
+/opt/homebrew/include/boost/type_traits/is_volatile.hpp:
+
+/opt/homebrew/include/CGAL/Sqrt_extension/Eigen_NumTraits.h:
+
+/opt/homebrew/include/boost/mpl/aux_/advance_backward.hpp:
+
+/opt/homebrew/include/CGAL/Sqrt_extension/Coercion_traits.h:
+
+/opt/homebrew/include/CGAL/Sqrt_extension/Chinese_remainder_traits.h:
+
+/opt/homebrew/include/CGAL/Sqrt_extension/Algebraic_structure_traits.h:
+
+/opt/homebrew/include/CGAL/Sqrt_extension/Algebraic_extension_traits.h:
+
+/opt/homebrew/include/boost/mpl/aux_/lambda_support.hpp:
+
+/opt/homebrew/include/boost/container/vector.hpp:
+
+/opt/homebrew/include/CGAL/Sqrt_extension.h:
+
+/opt/homebrew/include/boost/type_traits/detail/is_function_cxx_11.hpp:
+
+/opt/homebrew/include/CGAL/Sphere_3.h:
+
+/opt/homebrew/include/CGAL/Simple_homogeneous.h:
 
 /opt/homebrew/include/CGAL/Simple_cartesian.h:
 
+/opt/homebrew/include/boost/preprocessor/comparison/less_equal.hpp:
+
+/opt/homebrew/include/CGAL/Segment_3.h:
+
 /opt/homebrew/include/CGAL/STL_Extension/internal/parameters_interface.h:
 
-/opt/homebrew/include/boost/multiprecision/traits/max_digits10.hpp:
+/opt/homebrew/include/boost/type_traits/has_trivial_constructor.hpp:
 
-/opt/homebrew/include/CGAL/STL_Extension/internal/mesh_option_classes.h:
+/opt/homebrew/include/CGAL/STL_Extension/internal/mesh_parameters_interface.h:
+
+/opt/homebrew/include/boost/predef/hardware/simd/x86_amd/versions.h:
+
+/opt/homebrew/include/CGAL/Residue.h:
+
+/opt/homebrew/include/boost/type_traits/has_bit_or_assign.hpp:
+
+/opt/homebrew/include/CGAL/Ray_3.h:
 
 /opt/homebrew/include/CGAL/Ray_2.h:
 
@@ -4665,29 +4652,17 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Random_access_adaptor.h:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/AssignEvaluator.h:
-
 /opt/homebrew/include/CGAL/Profile_counter.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/ConditionEstimator.h:
-
-/opt/homebrew/include/CGAL/predicates/sign_of_determinant.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__format/extended_grapheme_cluster_table.h:
-
-/opt/homebrew/include/CGAL/Polyhedron_traits_3.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/cstdint:
-
-/opt/homebrew/include/CGAL/Polyhedron_items_3.h:
 
 /opt/homebrew/include/boost/iterator/reverse_iterator.hpp:
 
 /opt/homebrew/include/CGAL/Polyhedron_incremental_builder_3.h:
 
-/opt/homebrew/include/CGAL/Polyhedron_3_fwd.h:
+/opt/homebrew/include/CGAL/Polygon_2_algorithms.h:
 
 /opt/homebrew/include/CGAL/Polygon_2/Polygon_2_vertex_circulator.h:
+
+/opt/homebrew/include/CGAL/Polygon_2/Polygon_2_simplicity.h:
 
 /opt/homebrew/include/boost/multiprecision/cpp_int/comparison.hpp:
 
@@ -4701,103 +4676,141 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Polygon_2.h:
 
+/opt/homebrew/include/boost/preprocessor/logical/limits/bool_256.hpp:
+
+/opt/homebrew/include/CGAL/Point_2.h:
+
+/opt/homebrew/include/boost/preprocessor/repetition/limits/for_256.hpp:
+
+/opt/homebrew/include/CGAL/Plane_3.h:
+
+/opt/homebrew/include/gmp.h:
+
+/opt/homebrew/include/boost/preprocessor/tuple/elem.hpp:
+
+/opt/homebrew/include/CGAL/Origin_impl.h:
+
 /opt/homebrew/include/boost/mpl/aux_/yes_no.hpp:
 
 /opt/homebrew/include/CGAL/Origin.h:
 
-/opt/homebrew/include/boost/type_traits/is_lvalue_reference.hpp:
+/opt/homebrew/include/CGAL/Named_function_parameters.h:
 
-/opt/homebrew/include/boost/mp11/list.hpp:
+/opt/homebrew/include/CGAL/N_step_adaptor_derived.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__bit/byteswap.h:
+/opt/homebrew/include/boost/move/detail/destruct_n.hpp:
 
-/opt/homebrew/include/CGAL/NT_converter.h:
+/opt/homebrew/include/CGAL/Multiset.h:
+
+/opt/homebrew/include/CGAL/Mpzf.h:
 
 /opt/homebrew/include/CGAL/Modular_traits.h:
 
+/opt/homebrew/include/CGAL/Modular_arithmetic/Residue_type.h:
+
+/opt/homebrew/include/CGAL/Triangle_2.h:
+
+/opt/homebrew/include/CGAL/Modifier_base.h:
+
+/opt/homebrew/include/CGAL/MP_Float_arithmetic_kernel.h:
+
+/opt/homebrew/include/CGAL/MP_Float.h:
+
+/opt/homebrew/include/CGAL/Line_3.h:
+
+/opt/homebrew/include/boost/type_traits/copy_reference.hpp:
+
+/opt/homebrew/include/boost/type_traits/alignment_of.hpp:
+
+/opt/homebrew/include/boost/preprocessor/variadic/has_opt.hpp:
+
+/opt/homebrew/include/CGAL/Line_2.h:
+
+/opt/homebrew/include/CGAL/Lazy_kernel.h:
+
+/opt/homebrew/include/CGAL/Lazy_exact_nt.h:
+
+/opt/homebrew/include/CGAL/Lazy.h:
+
+/opt/homebrew/include/CGAL/Kernel_traits_fwd.h:
+
 /opt/homebrew/include/CGAL/Kernel_traits.h:
 
-/opt/homebrew/include/CGAL/boost/graph/properties.h:
+/opt/homebrew/include/boost/smart_ptr/detail/local_sp_deleter.hpp:
+
+/opt/homebrew/include/CGAL/boost/graph/graph_traits_Surface_mesh.h:
+
+/opt/homebrew/include/CGAL/Kernel_d/Cartesian_const_iterator_d.h:
+
+/opt/homebrew/include/CGAL/Kernel/solve.h:
 
 /opt/homebrew/include/CGAL/Object.h:
 
 /opt/homebrew/include/CGAL/Kernel/interface_macros.h:
 
+/opt/homebrew/include/CGAL/Kernel/hash_functions.h:
+
 /opt/homebrew/include/CGAL/Kernel/global_functions_internal_2.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_integral.h:
+/opt/homebrew/include/CGAL/Kernel/global_functions_3.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/compare:
+/opt/homebrew/include/CGAL/Kernel/global_functions_2.h:
 
-/opt/homebrew/include/CGAL/Kernel/function_objects.h:
+/opt/homebrew/include/CGAL/Kernel/global_functions.h:
 
 /opt/homebrew/include/boost/mpl/numeric_cast.hpp:
 
 /opt/homebrew/include/CGAL/Kernel/Type_mapper.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/copy_n.h:
-
-/opt/homebrew/include/CGAL/Kernel/Type_equality_wrapper.h:
-
 /opt/homebrew/include/CGAL/Kernel/Same_uncertainty.h:
+
+/opt/homebrew/include/CGAL/Kernel/Return_base_tag.h:
+
+/opt/homebrew/include/CGAL/Kernel/Conic_misc.h:
+
+/opt/homebrew/include/boost/mpl/vector/aux_/size.hpp:
+
+/opt/homebrew/include/CGAL/Iterator_project.h:
 
 /opt/homebrew/include/boost/random/triangle_distribution.hpp:
 
 /opt/homebrew/include/CGAL/Iso_rectangle_2.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/in_in_out_result.h:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/16/include/stddef.h:
-
-/opt/homebrew/include/CGAL/Iso_cuboid_3.h:
-
-/opt/homebrew/include/boost/mpl/aux_/push_front_impl.hpp:
-
-/opt/homebrew/include/boost/move/detail/launder.hpp:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_ssize_t.h:
-
-/opt/homebrew/include/CGAL/Interval_nt.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_member_object_pointer.h:
-
-/opt/homebrew/include/CGAL/Needs_parens_as_product.h:
-
 /opt/homebrew/include/boost/container/detail/min_max.hpp:
 
 /opt/homebrew/include/CGAL/Intersections_3/internal/tetrahedron_lines_intersections_3.h:
 
+/opt/homebrew/include/CGAL/Intersections_3/internal/Triangle_3_Triangle_3_intersection.h:
+
 /opt/homebrew/include/CGAL/Intersections_3/internal/Triangle_3_Triangle_3_do_intersect.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/remove_all_extents.h:
+/opt/homebrew/include/CGAL/Intersections_3/internal/Tetrahedron_3_Unbounded_3_do_intersect.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__random/is_valid.h:
-
-/opt/homebrew/include/CGAL/array.h:
-
-/opt/homebrew/include/CGAL/IO/VRML.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/internal/Tetrahedron_3_Triangle_3_intersection.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__concepts/common_with.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/internal/Tetrahedron_3_Tetrahedron_3_do_intersect.h:
+/opt/homebrew/include/CGAL/Intersections_3/internal/Tetrahedron_3_Triangle_3_do_intersect.h:
 
 /opt/homebrew/include/CGAL/Intersections_3/internal/Sphere_3_Triangle_3_do_intersect.h:
 
+/opt/homebrew/include/CGAL/Intersections_3/internal/Sphere_3_Tetrahedron_3_do_intersect.h:
+
 /opt/homebrew/include/CGAL/Intersections_3/internal/Segment_3_Triangle_3_intersection.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__fwd/ios.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/internal/Segment_3_Triangle_3_do_intersect.h:
+/opt/homebrew/include/CGAL/Intersections_3/internal/Segment_3_Tetrahedron_3_intersection.h:
 
 /opt/homebrew/include/boost/type_traits/detail/has_binary_operator.hpp:
 
 /opt/homebrew/include/CGAL/Intersections_3/internal/Segment_3_Tetrahedron_3_do_intersect.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__numeric/saturation_arithmetic.h:
+/opt/homebrew/include/CGAL/Intersections_3/internal/Segment_3_Sphere_3_do_intersect.h:
 
-/opt/homebrew/include/CGAL/Intersections_3/internal/Ray_3_Tetrahedron_3_intersection.h:
+/opt/homebrew/include/CGAL/Intersections_3/internal/Segment_3_Segment_3_intersection.h:
+
+/opt/homebrew/include/boost/multiprecision/detail/check_cpp11_config.hpp:
+
+/opt/homebrew/include/CGAL/Intersections_3/internal/Segment_3_Segment_3_do_intersect.h:
+
+/opt/homebrew/include/CGAL/representation_tags.h:
+
+/opt/homebrew/include/CGAL/Intersections_3/internal/Ray_3_Triangle_3_do_intersect.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/unique_copy.h:
 
@@ -4805,17 +4818,15 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Intersections_3/internal/Point_3_Triangle_3_intersection.h:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/Solve.h:
-
 /opt/homebrew/include/CGAL/IO/OFF/File_header_OFF_impl.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__concepts/boolean_testable.h:
 
+/opt/homebrew/include/CGAL/CORE/Config.h:
+
 /opt/homebrew/include/CGAL/Intersections_2/Segment_2_Segment_2.h:
 
 /opt/homebrew/include/CGAL/Intersections_3/internal/Point_3_Triangle_3_do_intersect.h:
-
-/opt/homebrew/include/CGAL/Kernel/solve.h:
 
 /opt/homebrew/include/CGAL/Intersections_3/internal/Point_3_Tetrahedron_3_do_intersect.h:
 
@@ -4827,10 +4838,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Intersections_3/internal/Point_3_Segment_3_intersection.h:
 
-/opt/homebrew/include/boost/preprocessor/facilities/identity.hpp:
-
-/opt/homebrew/include/CGAL/Intersections_3/internal/Point_3_Segment_3_do_intersect.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_floating_point.h:
 
 /opt/homebrew/include/CGAL/Intersections_3/internal/Point_3_Ray_3_intersection.h:
@@ -4840,8 +4847,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/variant:
 
 /opt/homebrew/include/CGAL/Intersections_3/internal/Point_3_Ray_3_do_intersect.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/Matrix.h:
 
 /opt/homebrew/include/CGAL/Intersections_3/internal/Plane_3_Tetrahedron_3_intersection.h:
 
@@ -4891,14 +4896,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Intersections_3/internal/Line_3_Point_3_do_intersect.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__iterator/readable_traits.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/internal/Line_3_Plane_3_intersection.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/internal/Line_3_Line_3_intersection.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/util/ConfigureVectorization.h:
-
 /opt/homebrew/include/boost/preprocessor/inc.hpp:
 
 /opt/homebrew/include/boost/predef/os/solaris.h:
@@ -4925,6 +4922,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Intersections_3/internal/Iso_cuboid_3_Iso_cuboid_3_do_intersect.h:
 
+/opt/homebrew/include/CGAL/CORE/BigInt.h:
+
 /opt/homebrew/include/CGAL/Intersections_3/internal/Bbox_3_Segment_3_intersection.h:
 
 /opt/homebrew/include/CGAL/Intersections_3/internal/Bbox_3_Segment_3_do_intersect.h:
@@ -4939,13 +4938,19 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/mpl/arg_fwd.hpp:
 
+/opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Is_degenerate_3.h:
+
 /opt/homebrew/include/CGAL/Intersections_3/internal/Bbox_3_Line_3_do_intersect.h:
 
-/opt/homebrew/include/CGAL/disable_warnings.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/internal/Bbox_3_Iso_cuboid_3_do_intersect.h:
-
 /opt/homebrew/include/CGAL/Intersections_3/Triangle_3_Triangle_3.h:
+
+/opt/homebrew/include/CGAL/boost/graph/properties_HalfedgeDS_default.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_rune_t.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__ranges/enable_view.h:
+
+/opt/homebrew/include/CGAL/Intersections_3/Segment_3_Triangle_3.h:
 
 /opt/homebrew/include/boost/mpl/less.hpp:
 
@@ -4953,11 +4958,9 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Intersections_3/Segment_3_Sphere_3.h:
 
+/opt/homebrew/include/CGAL/Arr_topology_traits/Arr_unb_planar_insertion_helper.h:
+
 /opt/homebrew/include/CGAL/Intersections_3/Ray_3_Triangle_3.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__format/formatter_integral.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/internal/Ray_3_Tetrahedron_3_do_intersect.h:
 
 /opt/homebrew/include/CGAL/license/Surface_mesh.h:
 
@@ -4979,10 +4982,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Intersections_3/Ray_3_Segment_3.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/noexcept_move_assign_container.h:
-
-/opt/homebrew/include/CGAL/Surface_mesh/IO/PLY.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/find_segment_if.h:
 
 /opt/homebrew/include/CGAL/Intersections_3/Point_3_Triangle_3.h:
@@ -5001,9 +5000,9 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Intersections_3/Plane_3_Point_3.h:
 
-/opt/homebrew/include/CGAL/Intersections_3/Plane_3_Plane_3.h:
+/opt/homebrew/include/CGAL/CORE/MemoryPool.h:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/Geometry:
+/opt/homebrew/include/CGAL/Intersections_3/Plane_3_Plane_3.h:
 
 /opt/homebrew/include/boost/random/detail/enable_warnings.hpp:
 
@@ -5013,21 +5012,11 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Intersections_3/Line_3_Segment_3.h:
 
-/opt/homebrew/include/gmp.h:
-
-/opt/homebrew/include/boost/preprocessor/tuple/elem.hpp:
-
-/opt/homebrew/include/CGAL/Origin_impl.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/Iso_cuboid_3_Tetrahedron_3.h:
-
 /opt/homebrew/include/boost/smart_ptr/detail/spinlock_gcc_atomic.hpp:
 
 /opt/homebrew/include/CGAL/Intersections_3/Iso_cuboid_3_Segment_3.h:
 
 /opt/homebrew/include/CGAL/Intersections_3/Iso_cuboid_3_Point_3.h:
-
-/opt/homebrew/include/CGAL/Polygon_2/Polygon_2_simplicity.h:
 
 /opt/homebrew/include/CGAL/property_map.h:
 
@@ -5037,11 +5026,11 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Intersections_3/Ray_3_Ray_3.h:
 
-/opt/homebrew/include/CGAL/Polygon_2_algorithms.h:
+/opt/homebrew/include/CGAL/boost/graph/IO/3MF.h:
+
+/opt/homebrew/include/CGAL/Intersections_3/Bbox_3_Tetrahedron_3.h:
 
 /opt/homebrew/include/CGAL/Intersections_3/Bbox_3_Sphere_3.h:
-
-/opt/homebrew/include/CGAL/kernel_config.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_unique.h:
 
@@ -5049,23 +5038,7 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Intersections_3/Bbox_3_Iso_cuboid_3.h:
 
-/opt/homebrew/include/CGAL/Kernel/global_functions.h:
-
 /opt/homebrew/include/CGAL/Intersections_2/internal/Triangle_2_Triangle_2_intersection_impl.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/remove_pointer.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/internal/Iso_cuboid_3_Plane_3_do_intersect.h:
-
-/opt/homebrew/include/boost/mpl/aux_/advance_forward.hpp:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__fwd/streambuf.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_replace_if.h:
-
-/opt/homebrew/include/CGAL/Intersections_2/internal/Triangle_2_Triangle_2_do_intersect_impl.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Geometry/EulerAngles.h:
 
 /opt/homebrew/include/CGAL/Intersections_3/internal/Iso_cuboid_3_Line_3_do_intersect.h:
 
@@ -5075,15 +5048,9 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Intersections_2/Point_2_Triangle_2.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__functional/binary_negate.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__utility/rel_ops.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/resource.h:
-
-/opt/homebrew/include/CGAL/boost/graph/IO/polygon_mesh_io.h:
-
 /opt/homebrew/include/boost/predef/compiler/gcc.h:
+
+/opt/homebrew/include/CGAL/Has_timestamp.h:
 
 /opt/homebrew/include/CGAL/Intersections_2/Point_2_Segment_2.h:
 
@@ -5091,13 +5058,11 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Intersections_2/Line_2_Triangle_2.h:
 
-/opt/homebrew/include/boost/type_traits/has_trivial_constructor.hpp:
-
-/opt/homebrew/include/CGAL/STL_Extension/internal/mesh_parameters_interface.h:
-
 /opt/homebrew/include/boost/random/negative_binomial_distribution.hpp:
 
 /opt/homebrew/include/boost/preprocessor/array/elem.hpp:
+
+/opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Equal_3.h:
 
 /opt/homebrew/include/CGAL/Intersections_2/Line_2_Segment_2.h:
 
@@ -5107,51 +5072,21 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Intersections_2/Line_2_Ray_2.h:
 
-/opt/homebrew/include/CGAL/Intersections_2/Line_2_Line_2.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Geometry/Hyperplane.h:
-
-/opt/homebrew/include/boost/math/cstdfloat/cstdfloat_complex.hpp:
-
-/opt/homebrew/include/CGAL/boost/graph/graph_traits_HalfedgeDS_default.h:
-
-/opt/homebrew/include/CGAL/Intersections_2/Iso_rectangle_2_Triangle_2.h:
-
 /opt/homebrew/include/CGAL/Intersections_3/Line_3_Plane_3.h:
 
 /opt/homebrew/include/CGAL/Intersections_2/Iso_rectangle_2_Point_2.h:
 
-/opt/homebrew/include/CGAL/Modifier_base.h:
-
-/opt/homebrew/include/CGAL/Triangle_2.h:
-
-/opt/homebrew/include/CGAL/Intersections_2/Iso_rectangle_2_Line_2.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/internal/Iso_cuboid_3_Iso_cuboid_3_intersection.h:
-
-/opt/homebrew/include/CGAL/Intersections_2/Circle_2_Triangle_2.h:
-
 /opt/homebrew/include/CGAL/Intersections_2/Circle_2_Segment_2.h:
 
-/opt/homebrew/include/CGAL/Intersections_2/Circle_2_Point_2.h:
+/opt/homebrew/include/CGAL/Surface_sweep_2/No_overlap_subcurve.h:
 
 /opt/homebrew/include/CGAL/Intersections_2/Circle_2_Line_2.h:
 
-/opt/homebrew/include/boost/predef/architecture/sparc.h:
-
-/opt/homebrew/include/CGAL/Intersections_2/Circle_2_Iso_rectangle_2.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/Assign.h:
-
 /opt/homebrew/include/CGAL/Intersections_2/Circle_2_Circle_2.h:
-
-/opt/homebrew/include/CGAL/Kernel/global_functions_3.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_is_sorted_until.h:
 
 /opt/homebrew/include/CGAL/Intersection_traits.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/plugins/CommonCwiseUnaryOps.h:
 
 /opt/homebrew/include/CGAL/Intersections_3/Bbox_3_Point_3.h:
 
@@ -5163,12 +5098,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/IO/scan_OFF.h:
 
-/opt/homebrew/include/CGAL/Tetrahedron_3.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/algorithm:
-
-/opt/homebrew/include/CGAL/IO/print_OFF.h:
-
 /opt/homebrew/include/CGAL/IO/polygon_mesh_io.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_inplace_merge.h:
@@ -5178,10 +5107,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/iterator/iterator_traits.hpp:
 
 /opt/homebrew/include/CGAL/IO/helpers.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/internal/Sphere_3_Tetrahedron_3_do_intersect.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/Ref.h:
 
 /opt/homebrew/include/boost/type_traits/integral_constant.hpp:
 
@@ -5201,18 +5126,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/IO/VRML/VRML_2_ostream.h:
 
-/opt/homebrew/include/boost/random/piecewise_linear_distribution.hpp:
-
-/opt/homebrew/include/CGAL/Intersections_3/internal/Plane_3_Ray_3_intersection.h:
-
-/opt/homebrew/include/boost/smart_ptr/shared_ptr.hpp:
-
-/opt/homebrew/include/boost/mpl/void.hpp:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_int16_t.h:
-
-/opt/homebrew/include/CGAL/IO/VRML/File_writer_VRML_2.h:
-
 /opt/homebrew/include/boost/predef/architecture/ia64.h:
 
 /opt/homebrew/include/CGAL/IO/STL/STL_reader.h:
@@ -5229,10 +5142,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/IO/Polyhedron_VRML_1_ostream.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_copy_constructible.h:
-
-/opt/homebrew/include/CGAL/IO/OI/Inventor_ostream.h:
-
 /opt/homebrew/include/boost/predef/platform/android.h:
 
 /opt/homebrew/include/CGAL/Intersections_3/Plane_3_Triangle_3.h:
@@ -5241,17 +5150,11 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/IO/OI/File_writer_inventor.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_move_backward.h:
-
-/opt/homebrew/include/CGAL/IO/OFF/File_writer_OFF.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/set_symmetric_difference.h:
 
 /opt/homebrew/include/CGAL/IO/OFF/File_scanner_OFF.h:
 
 /opt/homebrew/include/CGAL/IO/OFF/File_header_extended_OFF.h:
-
-/opt/homebrew/include/CGAL/int.h:
 
 /opt/homebrew/include/boost/random/poisson_distribution.hpp:
 
@@ -5261,19 +5164,75 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/IO/GOCAD.h:
 
-/opt/homebrew/include/CGAL/Intersections_3/internal/Iso_cuboid_3_Plane_3_intersection.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__utility/no_destroy.h:
-
-/opt/homebrew/include/CGAL/IO/Color.h:
+/opt/homebrew/include/CGAL/IO/Arr_text_formatter.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_u_int8_t.h:
 
 /opt/homebrew/include/CGAL/IO/3MF/write_3mf.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__chrono/convert_to_tm.h:
+/opt/homebrew/include/CGAL/Homogeneous/predicates_on_directionsH2.h:
 
-/opt/homebrew/include/CGAL/gmpxx.h:
+/opt/homebrew/include/CGAL/Homogeneous/function_objects.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_find.h:
+
+/opt/homebrew/include/CGAL/Homogeneous/distance_predicatesH3.h:
+
+/opt/homebrew/include/boost/preprocessor/repetition/for.hpp:
+
+/opt/homebrew/include/CGAL/Homogeneous/VectorH2.h:
+
+/opt/homebrew/include/CGAL/Intersections_3/internal/Bbox_3_Iso_cuboid_3_do_intersect.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__numeric/adjacent_difference.h:
+
+/opt/homebrew/include/CGAL/Homogeneous/SphereH3.h:
+
+/opt/homebrew/include/CGAL/Homogeneous/PointH3.h:
+
+/opt/homebrew/include/CGAL/Intersections_3/internal/Tetrahedron_3_Tetrahedron_3_do_intersect.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__concepts/common_with.h:
+
+/opt/homebrew/include/CGAL/Homogeneous/PlaneH3.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/bitset:
+
+/opt/homebrew/include/CGAL/Homogeneous/LineH2.h:
+
+/opt/homebrew/include/CGAL/Homogeneous/Iso_cuboidH3.h:
+
+/opt/homebrew/include/CGAL/Homogeneous/Homogeneous_base.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__iterator/mergeable.h:
+
+/opt/homebrew/include/CGAL/Homogeneous/DirectionH3.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/enable_if.h:
+
+/opt/homebrew/include/CGAL/Homogeneous/Data_accessorH2.h:
+
+/opt/homebrew/include/CGAL/Intersections_2/Circle_2_Point_2.h:
+
+/opt/homebrew/include/boost/mpl/limits/arity.hpp:
+
+/opt/homebrew/include/CGAL/Intersections_3/Sphere_3_Tetrahedron_3.h:
+
+/opt/homebrew/include/CGAL/Homogeneous/ConicHPA2.h:
+
+/opt/homebrew/include/CGAL/Intersections_3/internal/Iso_cuboid_3_Iso_cuboid_3_intersection.h:
+
+/opt/homebrew/include/CGAL/Surface_sweep_2/Arr_construction_ss_visitor.h:
+
+/opt/homebrew/include/CGAL/Intersections_2/Circle_2_Triangle_2.h:
+
+/opt/homebrew/include/CGAL/Homogeneous/Aff_transformationH3.h:
+
+/opt/homebrew/include/CGAL/Homogeneous/Aff_transformationH2.h:
+
+/opt/homebrew/include/CGAL/assertions_behaviour.h:
+
+/opt/homebrew/include/CGAL/Has_member.h:
 
 /opt/homebrew/include/CGAL/Has_conversion.h:
 
@@ -5281,7 +5240,9 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Handle_hash_function.h:
 
-/opt/homebrew/include/CGAL/Intersections_3/Tetrahedron_3_Tetrahedron_3.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_wchar_t.h:
+
+/opt/homebrew/include/CGAL/Handle.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/cctype:
 
@@ -5297,17 +5258,11 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/HalfedgeDS_iterator.h:
 
-/opt/homebrew/include/CGAL/Weighted_point_2.h:
-
-/opt/homebrew/include/CGAL/HalfedgeDS_items_decorator.h:
-
 /opt/homebrew/include/CGAL/HalfedgeDS_items_2.h:
 
 /opt/homebrew/include/CGAL/HalfedgeDS_halfedge_base.h:
 
 /opt/homebrew/include/CGAL/HalfedgeDS_face_base.h:
-
-/opt/homebrew/include/CGAL/HalfedgeDS_default.h:
 
 /opt/homebrew/include/boost/mpl/aux_/numeric_op.hpp:
 
@@ -5315,33 +5270,131 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/HalfedgeDS_decorator.h:
 
+/opt/homebrew/include/CGAL/Homogeneous/Weighted_point_2.h:
+
 /opt/homebrew/include/boost/container/detail/type_traits.hpp:
 
 /opt/homebrew/include/CGAL/HalfedgeDS_const_decorator.h:
+
+/opt/homebrew/include/CGAL/Gmpzf.h:
+
+/opt/homebrew/include/boost/predef/library/std/msl.h:
+
+/opt/homebrew/include/CGAL/Gmpz.h:
+
+/opt/homebrew/include/CGAL/Intersections_3/Tetrahedron_3_Tetrahedron_3.h:
+
+/opt/homebrew/include/CGAL/Gmpq.h:
+
+/opt/homebrew/include/boost/type_traits/is_reference.hpp:
+
+/opt/homebrew/include/CGAL/General_polygon_with_holes_2.h:
+
+/opt/homebrew/include/CGAL/General_polygon_set_on_surface_2.h:
+
+/opt/homebrew/include/CGAL/Container_helper.h:
+
+/opt/homebrew/include/CGAL/General_polygon_set_2.h:
+
+/opt/homebrew/include/CGAL/GMP/Gmpzf_type.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/list:
+
+/opt/homebrew/include/CGAL/GMP/Gmpq_type.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__utility/exchange.h:
 
 /opt/homebrew/include/CGAL/Fraction_traits.h:
 
+/opt/homebrew/include/CGAL/Surface_sweep_2/Arr_insertion_ss_visitor.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_generate.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/set_intersection.h:
+
+/opt/homebrew/include/CGAL/Filtered_predicate.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/add_volatile.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_id_t.h:
+
+/opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Static_filter_error.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__iterator/readable_traits.h:
+
+/opt/homebrew/include/CGAL/Intersections_3/internal/Line_3_Plane_3_intersection.h:
+
+/opt/homebrew/include/CGAL/Intersections_3/internal/Line_3_Line_3_intersection.h:
+
+/opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Side_of_oriented_circle_2.h:
+
+/opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Power_side_of_oriented_power_circle_2.h:
+
+/opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Orientation_3.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/is_heap_until.h:
+
+/opt/homebrew/include/CGAL/Gps_segment_traits_2.h:
+
+/opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Equal_2.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_copy_constructible.h:
+
+/opt/homebrew/include/CGAL/IO/OI/Inventor_ostream.h:
+
+/opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Do_intersect_3.h:
+
+/opt/homebrew/include/boost/intrusive/pointer_traits.hpp:
+
+/opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Do_intersect_2.h:
+
+/opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Compare_x_2.h:
+
+/opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/vector.hpp:
+
+/opt/homebrew/include/boost/mpl/aux_/numeric_cast_utils.hpp:
+
+/opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Compare_weighted_squared_radius_3.h:
+
+/opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Compare_squared_radius_3.h:
+
+/opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Compare_distance_3.h:
+
+/opt/homebrew/include/boost/container/detail/alloc_helpers.hpp:
+
+/opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Collinear_3.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/assert.h:
+
+/opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Angle_3.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_partition.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/xlocale/_wchar.h:
+
+/opt/homebrew/include/CGAL/Filtered_kernel.h:
+
 /opt/homebrew/include/CGAL/FPU.h:
 
-/opt/homebrew/include/CGAL/aff_transformation_tags.h:
+/opt/homebrew/include/CGAL/Exact_predicates_inexact_constructions_kernel.h:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/DenseBase.h:
+/opt/homebrew/include/CGAL/Arrangement_2/Arr_compute_zone_visitor.h:
 
 /opt/homebrew/include/CGAL/Dynamic_property_map.h:
 
-/opt/homebrew/include/CGAL/intersection_3.h:
-
 /opt/homebrew/include/CGAL/Distance_3/Triangle_3_Triangle_3.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/string.h:
 
 /opt/homebrew/include/CGAL/Iterator_range.h:
 
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/string.h:
+
 /opt/homebrew/include/CGAL/Distance_3/Segment_3_Segment_3.h:
 
+/opt/homebrew/include/boost/multiprecision/detail/atomic.hpp:
+
 /opt/homebrew/include/CGAL/Distance_3/Segment_3_Ray_3.h:
+
+/opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_traits_adaptor.h:
 
 /opt/homebrew/include/CGAL/Distance_3/Segment_3_Plane_3.h:
 
@@ -5359,10 +5412,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Distance_3/Ray_3_Line_3.h:
 
-/opt/homebrew/include/boost/predef/compiler/dignus.h:
-
-/opt/homebrew/include/CGAL/boost/graph/properties_Surface_mesh.h:
-
 /opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/and.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/upper_bound.h:
@@ -5377,15 +5426,21 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Intersections_3/internal/Ray_3_Ray_3_intersection.h:
 
+/opt/homebrew/include/CGAL/Arrangement_2/Arrangement_on_surface_2_global.h:
+
 /opt/homebrew/include/CGAL/IO/3MF.h:
 
 /opt/homebrew/include/CGAL/Distance_3/Point_3_Point_3.h:
+
+/opt/homebrew/include/boost/math/special_functions/acosh.hpp:
 
 /opt/homebrew/include/CGAL/squared_distance_3.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__utility/convert_to_integral.h:
 
 /opt/homebrew/include/CGAL/Distance_3/Plane_3_Plane_3.h:
+
+/opt/homebrew/include/CGAL/license/Boolean_set_operations_2.h:
 
 /opt/homebrew/include/CGAL/Distance_2/Triangle_2_Triangle_2.h:
 
@@ -5395,6 +5450,12 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/IO/OFF/generic_copy_OFF.h:
 
+/opt/homebrew/include/boost/move/detail/force_ptr.hpp:
+
+/opt/homebrew/include/CGAL/boost/graph/properties_Surface_mesh_time_stamp.h:
+
+/opt/homebrew/include/CGAL/Distance_2/Segment_2_Segment_2.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/make_32_64_or_128_bit.h:
 
 /opt/homebrew/include/CGAL/Intersections_3/internal/Line_3_Segment_3_do_intersect.h:
@@ -5403,23 +5464,17 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Distance_2/Segment_2_Ray_2.h:
 
-/opt/homebrew/include/CGAL/Intersections_3/internal/Segment_3_Sphere_3_do_intersect.h:
-
 /opt/homebrew/include/boost/predef/os/macos.h:
 
 /opt/homebrew/include/CGAL/Distance_2/Ray_2_Triangle_2.h:
 
-/opt/homebrew/include/boost/predef/language/objc.h:
-
-/opt/homebrew/include/boost/math/tools/numeric_limits.hpp:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/max.h:
-
-/opt/homebrew/include/CGAL/Real_embeddable_traits.h:
-
 /opt/homebrew/include/boost/type_traits/is_constructible.hpp:
 
 /opt/homebrew/include/boost/preprocessor/arithmetic/mod.hpp:
+
+/opt/homebrew/include/CGAL/cpp_float.h:
+
+/opt/homebrew/include/CGAL/Arr_dcel.h:
 
 /opt/homebrew/include/CGAL/Distance_2/Ray_2_Ray_2.h:
 
@@ -5433,17 +5488,9 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Distance_2/Point_2_Line_2.h:
 
-/opt/homebrew/include/boost/preprocessor/logical/limits/bool_256.hpp:
-
-/opt/homebrew/include/CGAL/Point_2.h:
-
-/opt/homebrew/include/CGAL/N_step_adaptor_derived.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__availability:
 
 /opt/homebrew/include/CGAL/Distance_2/Line_2_Triangle_2.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/DiagonalProduct.h:
 
 /opt/homebrew/include/boost/preprocessor/seq/limits/fold_left_256.hpp:
 
@@ -5453,8 +5500,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Direction_2.h:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/LU:
-
 /opt/homebrew/include/boost/predef/os/bsd.h:
 
 /opt/homebrew/include/CGAL/Dimension.h:
@@ -5463,13 +5508,15 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Default.h:
 
-/opt/homebrew/include/CGAL/Container_helper.h:
+/opt/homebrew/include/CGAL/HalfedgeDS_items_decorator.h:
+
+/opt/homebrew/include/CGAL/export/CORE.h:
+
+/opt/homebrew/include/CGAL/Compact_container.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_count_if.h:
 
 /opt/homebrew/include/CGAL/Conic_2.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/products/GeneralMatrixMatrixTriangular.h:
 
 /opt/homebrew/include/CGAL/Circle_3.h:
 
@@ -5477,17 +5524,17 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Circle_2.h:
 
+/opt/homebrew/include/CGAL/Chinese_remainder_traits.h:
+
 /opt/homebrew/include/boost/type_traits/extent.hpp:
 
 /opt/homebrew/include/boost/predef/os/irix.h:
 
 /opt/homebrew/include/CGAL/Cartesian/solve_3.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_uid_t.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/internal/Sphere_3_Sphere_3_do_intersect.h:
-
 /opt/homebrew/include/CGAL/Intersections_3/internal/Plane_3_Ray_3_do_intersect.h:
+
+/opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Power_side_of_oriented_power_sphere_3.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_nothrow_assignable.h:
 
@@ -5496,6 +5543,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/CGAL/Homogeneous_converter.h:
 
 /opt/homebrew/include/CGAL/Cartesian/function_objects.h:
+
+/opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Orientation_2.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__string/extern_template_lists.h:
 
@@ -5507,12 +5556,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Cartesian/ft_constructions_2.h:
 
-/opt/homebrew/include/boost/move/algo/detail/is_sorted.hpp:
-
-/opt/homebrew/include/boost/intrusive/detail/mpl.hpp:
-
-/opt/homebrew/include/CGAL/Surface_mesh/Surface_mesh.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__bit/bit_log2.h:
 
 /opt/homebrew/include/CGAL/Cartesian/basic_constructions_2.h:
@@ -5522,6 +5565,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/CGAL/Cartesian/Vector_2.h:
 
 /opt/homebrew/include/boost/math/cstdfloat/cstdfloat_iostream.hpp:
+
+/opt/homebrew/include/CGAL/Arrangement_2/Arr_traits_adaptor_2.h:
 
 /opt/homebrew/include/CGAL/Cartesian/Triangle_3.h:
 
@@ -5539,15 +5584,11 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Cartesian/Segment_2.h:
 
-/opt/homebrew/include/CGAL/Modular_arithmetic/Residue_type.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/pstl_equal.h:
-
-/opt/homebrew/include/CGAL/Kernel/global_functions_internal_3.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/copy_backward.h:
 
 /opt/homebrew/include/CGAL/Cartesian/Scaling_rep_3.h:
+
+/opt/homebrew/include/CGAL/Homogeneous/PointH2.h:
 
 /opt/homebrew/include/CGAL/Cartesian/Rotation_rep_2.h:
 
@@ -5559,9 +5600,15 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Cartesian/Ray_2.h:
 
+/opt/homebrew/include/CGAL/Surface_sweep_2/Arr_construction_subcurve.h:
+
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/16/include/__stdarg_header_macro.h:
 
 /opt/homebrew/include/CGAL/Cartesian/Point_2.h:
+
+/opt/homebrew/include/CGAL/Cartesian/Is_trivial_construction.h:
+
+/opt/homebrew/include/CGAL/IO/Arrangement_2_writer.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/pstl_backends/cpu_backend.h:
 
@@ -5579,6 +5626,164 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Cartesian/Aff_transformation_3.h:
 
+/opt/homebrew/include/CGAL/Cartesian.h:
+
+/opt/homebrew/include/CGAL/Intersections_2/Line_2_Line_2.h:
+
+/opt/homebrew/include/CGAL/Intersections_3/Point_3_Ray_3.h:
+
+/opt/homebrew/include/CGAL/CORE_Expr.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/remove_pointer.h:
+
+/opt/homebrew/include/CGAL/Intersections_3/internal/Iso_cuboid_3_Plane_3_do_intersect.h:
+
+/opt/homebrew/include/boost/mpl/aux_/advance_forward.hpp:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__fwd/streambuf.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_replace_if.h:
+
+/opt/homebrew/include/CGAL/Intersections_2/internal/Triangle_2_Triangle_2_do_intersect_impl.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__ranges/dangling.h:
+
+/opt/homebrew/include/CGAL/CORE_BigRat.h:
+
+/opt/homebrew/include/boost/lexical_cast/detail/buffer_view.hpp:
+
+/opt/homebrew/include/CGAL/CORE_BigInt.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/apply_cv.h:
+
+/opt/homebrew/include/CGAL/CORE_BigFloat.h:
+
+/opt/homebrew/include/CGAL/CORE/poly/Sturm.h:
+
+/opt/homebrew/include/boost/preprocessor/facilities/identity.hpp:
+
+/opt/homebrew/include/CGAL/Intersections_3/internal/Point_3_Segment_3_do_intersect.h:
+
+/opt/homebrew/include/boost/move/detail/placement_new.hpp:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_int64_t.h:
+
+/opt/homebrew/include/CGAL/CORE/poly/Poly.h:
+
+/opt/homebrew/include/CGAL/Intersections_2/Iso_rectangle_2_Line_2.h:
+
+/opt/homebrew/include/boost/type_traits/has_post_decrement.hpp:
+
+/opt/homebrew/include/boost/preprocessor/list/reverse.hpp:
+
+/opt/homebrew/include/boost/math/cstdfloat/cstdfloat_cmath.hpp:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/16/include/__stddef_size_t.h:
+
+/opt/homebrew/include/CGAL/CORE/extLong_impl.h:
+
+/opt/homebrew/include/CGAL/Intersections_3/internal/Iso_cuboid_3_Plane_3_intersection.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__utility/no_destroy.h:
+
+/opt/homebrew/include/CGAL/IO/Color.h:
+
+/opt/homebrew/include/CGAL/CORE/extLong.h:
+
+/opt/homebrew/include/boost/random/taus88.hpp:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/remove_volatile.h:
+
+/opt/homebrew/include/CGAL/CORE/RealRep.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/pstl_sort.h:
+
+/opt/homebrew/include/CGAL/CORE/Promote.h:
+
+/opt/homebrew/include/boost/version.hpp:
+
+/opt/homebrew/include/CGAL/boost/graph/copy_face_graph.h:
+
+/opt/homebrew/include/CGAL/Cartesian/basic_constructions_3.h:
+
+/opt/homebrew/include/CGAL/CORE/ExprRep.h:
+
+/opt/homebrew/include/CGAL/CORE/Expr.h:
+
+/opt/homebrew/include/CGAL/CORE/CoreDefs.h:
+
+/opt/homebrew/include/boost/integer/static_log2.hpp:
+
+/opt/homebrew/include/CGAL/CORE/CORE.h:
+
+/opt/homebrew/include/CGAL/CORE/BigFloatRep.h:
+
+/opt/homebrew/include/boost/random/piecewise_linear_distribution.hpp:
+
+/opt/homebrew/include/CGAL/Intersections_3/internal/Plane_3_Ray_3_intersection.h:
+
+/opt/homebrew/include/boost/smart_ptr/shared_ptr.hpp:
+
+/opt/homebrew/include/boost/mpl/void.hpp:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_int16_t.h:
+
+/opt/homebrew/include/CGAL/IO/VRML/File_writer_VRML_2.h:
+
+/opt/homebrew/include/CGAL/CORE/BigFloat.h:
+
+/opt/homebrew/include/CGAL/type_traits/is_iterator.h:
+
+/opt/homebrew/include/CGAL/CC_safe_handle.h:
+
+/opt/homebrew/include/CGAL/Boolean_set_operations_2/Polygon_2_curve_iterator.h:
+
+/opt/homebrew/include/CGAL/predicates/kernel_ftC3.h:
+
+/opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_sym_diff_functor.h:
+
+/opt/homebrew/include/boost/config/compiler/clang_version.hpp:
+
+/opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_polygon_validation.h:
+
+/opt/homebrew/include/boost/math/cstdfloat/cstdfloat_complex.hpp:
+
+/opt/homebrew/include/CGAL/boost/graph/graph_traits_HalfedgeDS_default.h:
+
+/opt/homebrew/include/CGAL/Intersections_2/Iso_rectangle_2_Triangle_2.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_replace.h:
+
+/opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_on_surface_base_2_impl.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/reverse.h:
+
+/opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_merge.h:
+
+/opt/homebrew/include/boost/math/special_functions/detail/unchecked_bernoulli.hpp:
+
+/opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_default_dcel.h:
+
+/opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_bfs_xor_visitor.h:
+
+/opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_bfs_intersection_visitor.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/algorithm:
+
+/opt/homebrew/include/CGAL/IO/print_OFF.h:
+
+/opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_base_functor.h:
+
+/opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_agg_op_surface_sweep_2.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__chrono/time_point.h:
+
+/opt/homebrew/include/CGAL/Boolean_set_operations_2/Ccb_curve_iterator.h:
+
+/opt/homebrew/include/boost/math/tools/detail/polynomial_horner3_20.hpp:
+
+/opt/homebrew/include/CGAL/Bigfloat_interval_traits.h:
+
 /opt/homebrew/include/boost/type_traits/is_fundamental.hpp:
 
 /opt/homebrew/include/CGAL/Bbox_3.h:
@@ -5588,6 +5793,94 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/CGAL/Intersections_2/Point_2_Ray_2.h:
 
 /opt/homebrew/include/CGAL/Bbox_2.h:
+
+/opt/homebrew/include/CGAL/Kernel/mpl.h:
+
+/opt/homebrew/include/CGAL/BOOST_MP_arithmetic_kernel.h:
+
+/opt/homebrew/include/boost/predef/architecture/sparc.h:
+
+/opt/homebrew/include/CGAL/Intersections_2/Circle_2_Iso_rectangle_2.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_fd_zero.h:
+
+/opt/homebrew/include/CGAL/Arrangement_2/Arrangement_zone_2_impl.h:
+
+/opt/homebrew/include/boost/predef/architecture/arm.h:
+
+/opt/homebrew/include/CGAL/Arrangement_2/Arrangement_on_surface_2_impl.h:
+
+/opt/homebrew/include/CGAL/Surface_sweep_2/Random_access_output_iterator.h:
+
+/opt/homebrew/include/CGAL/HalfedgeDS_default.h:
+
+/opt/homebrew/include/boost/mpl/aux_/O1_size_impl.hpp:
+
+/opt/homebrew/include/CGAL/Arrangement_2/Arrangement_2_iterators.h:
+
+/opt/homebrew/include/CGAL/Arrangement_2/Arr_traits_adaptor_2_dispatching.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__utility/declval.h:
+
+/opt/homebrew/include/CGAL/Arrangement_2/Arr_default_planar_topology.h:
+
+/opt/homebrew/include/CGAL/Arr_walk_along_line_point_location.h:
+
+/opt/homebrew/include/CGAL/Arr_topology_traits/Arr_unb_planar_vert_decomp_helper.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_move_backward.h:
+
+/opt/homebrew/include/CGAL/IO/OFF/File_writer_OFF.h:
+
+/opt/homebrew/include/boost/predef/platform/cloudabi.h:
+
+/opt/homebrew/include/CGAL/Arr_topology_traits/Arr_unb_planar_overlay_helper.h:
+
+/opt/homebrew/include/CGAL/Arr_topology_traits/Arr_unb_planar_batched_pl_helper.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__filesystem/path_iterator.h:
+
+/opt/homebrew/include/CGAL/Arr_segment_traits_2.h:
+
+/opt/homebrew/include/boost/predef/architecture/ppc.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__format/format_functions.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/all_of.h:
+
+/opt/homebrew/include/CGAL/Arr_point_location/Arr_naive_point_location_impl.h:
+
+/opt/homebrew/include/CGAL/Arr_overlay_2.h:
+
+/opt/homebrew/include/CGAL/Arr_geometry_traits/Segment_assertions.h:
+
+/opt/homebrew/include/boost/preprocessor/arithmetic/limits/dec_256.hpp:
+
+/opt/homebrew/include/CGAL/version.h:
+
+/opt/homebrew/include/CGAL/Intersections_3/internal/Ray_3_Triangle_3_intersection.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__thread/formatter.h:
+
+/opt/homebrew/include/CGAL/Arr_enums.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_for_each_n.h:
+
+/opt/homebrew/include/CGAL/Arr_default_overlay_traits.h:
+
+/opt/homebrew/include/CGAL/Arr_default_dcel.h:
+
+/opt/homebrew/include/CGAL/Arr_dcel_base.h:
+
+/opt/homebrew/include/CGAL/Intersections_3/Iso_cuboid_3_Tetrahedron_3.h:
+
+/opt/homebrew/include/boost/predef/os/os400.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/lazy.h:
+
+/opt/homebrew/include/CGAL/Arr_bounded_planar_topology_traits_2.h:
+
+/opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_traits_decorator.h:
 
 /opt/homebrew/include/CGAL/Arithmetic_kernel/Arithmetic_kernel_base.h:
 
@@ -5600,14 +5893,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/CGAL/Polyhedron_3.h:
 
 /opt/homebrew/include/CGAL/Algebraic_extension_traits.h:
-
-/Users/jiayu/Desktop/nas_ws/NAS/include/visualizer.hpp:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/16/include/stdint.h:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/16/include/stdarg.h:
-
-/opt/homebrew/include/CGAL/algorithm.h:
 
 /opt/homebrew/include/boost/mpl/aux_/arg_typedef.hpp:
 
@@ -5623,19 +5908,39 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Aff_transformation_2.h:
 
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/16/include/arm_neon.h:
+/Users/jiayu/Desktop/nas_ws/NAS/include/visualizer.hpp:
+
+/opt/homebrew/include/CGAL/Arr_topology_traits/Arr_bounded_planar_batched_pl_helper.h:
+
+/Users/jiayu/Desktop/nas_ws/NAS/include/types.hpp:
+
+/opt/homebrew/include/boost/mpl/empty_fwd.hpp:
+
+/opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_agg_op.h:
+
+/opt/homebrew/include/CGAL/iterator.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/remove_const_ref.h:
+
+/Users/jiayu/Desktop/nas_ws/NAS/include/tree.hpp:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/16/include/stdint.h:
+
+/opt/homebrew/include/CGAL/Iso_cuboid_3.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/in_in_out_result.h:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/16/include/stddef.h:
+
+/opt/homebrew/include/CGAL/GMP/Gmpfr_type.h:
+
+/opt/homebrew/include/CGAL/Arr_extended_dcel.h:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/16/include/stdarg.h:
 
 /opt/homebrew/include/CGAL/Intersections_3/Sphere_3_Triangle_3.h:
 
 /opt/homebrew/include/CGAL/Distance_3/Weighted_point_3_Weighted_point_3.h:
-
-/opt/homebrew/include/boost/type_traits/has_post_decrement.hpp:
-
-/opt/homebrew/include/boost/preprocessor/list/reverse.hpp:
-
-/opt/homebrew/include/boost/math/cstdfloat/cstdfloat_cmath.hpp:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/16/include/__stddef_size_t.h:
 
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/16/include/__stddef_rsize_t.h:
 
@@ -5669,15 +5974,23 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/16/include/__stdarg_va_arg.h:
 
+/opt/homebrew/include/CGAL/Surface_sweep_2/Arr_insertion_traits_2.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/pstl_fill.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/xlocale/_wctype.h:
+
+/opt/homebrew/include/boost/preprocessor/seq/fold_left.hpp:
+
+/opt/homebrew/include/CGAL/GMP/Gmpfr_type_static.h:
 
 /opt/homebrew/include/CGAL/Distance_2/internal/squared_distance_utils_2.h:
 
 /opt/homebrew/include/boost/mpl/bind.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/xlocale.h:
+
+/opt/homebrew/include/CGAL/Arr_topology_traits/Arr_planar_topology_traits_base_2.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_compound.h:
 
@@ -5687,11 +6000,17 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Intersections_3/Line_3_Ray_3.h:
 
+/opt/homebrew/include/boost/container_hash/is_described_class.hpp:
+
+/opt/homebrew/include/CGAL/GMP_arithmetic_kernel.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_partial_sort.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/syslimits.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/stdio.h:
+
+/opt/homebrew/include/boost/math/special_functions/polygamma.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/signal.h:
 
@@ -5705,11 +6024,11 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/qos.h:
 
-/opt/homebrew/include/CGAL/license/lgpl.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_va_list.h:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/CwiseBinaryOp.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__utility/integer_sequence.h:
+
+/opt/homebrew/include/CGAL/Filtered_kernel_fwd.h:
 
 /opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/fold_impl.hpp:
 
@@ -5721,15 +6040,11 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_u_short.h:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/util/XprHelper.h:
-
 /opt/homebrew/include/CGAL/Distance_2/Point_2_Point_2.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_u_int64_t.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_u_int32_t.h:
-
-/opt/homebrew/include/CGAL/Line_3.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_u_int16_t.h:
 
@@ -5757,9 +6072,17 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_time_t.h:
 
-/opt/homebrew/include/CGAL/boost/graph/IO/GOCAD.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_suseconds_t.h:
+
+/opt/homebrew/include/boost/mpl/aux_/push_front_impl.hpp:
+
+/opt/homebrew/include/boost/move/detail/launder.hpp:
+
+/opt/homebrew/include/CGAL/Interval_nt.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_ssize_t.h:
+
+/opt/homebrew/include/CGAL/Arr_topology_traits/Arr_bounded_planar_vert_decomp_helper.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_sigset_t.h:
 
@@ -5777,6 +6100,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/preprocessor/seq/for_each_i.hpp:
 
+/opt/homebrew/include/CGAL/CORE/RefCount.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_pid_t.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_null.h:
@@ -5790,6 +6115,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_mbstate_t.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__math/hyperbolic_functions.h:
+
+/opt/homebrew/include/CGAL/Aos_observer.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_int8_t.h:
 
@@ -5805,10 +6132,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Cartesian/Direction_2.h:
 
-/opt/homebrew/include/boost/move/detail/placement_new.hpp:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_int64_t.h:
-
 /opt/homebrew/include/CGAL/HalfedgeDS_vertex_base.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_ino64_t.h:
@@ -5816,10 +6139,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/iterator/transform_iterator.hpp:
 
 /opt/homebrew/include/CGAL/Cartesian/Sphere_3.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/add_volatile.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_id_t.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_fsblkcnt_t.h:
 
@@ -5835,17 +6154,17 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_fd_isset.h:
 
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__compare/compare_three_way_result.h:
+
+/opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_bfs_join_visitor.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_fd_copy.h:
+
+/opt/homebrew/include/CGAL/CORE/poly/Poly.tcc:
 
 /opt/homebrew/include/boost/mp11/algorithm.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_fd_clr.h:
-
-/opt/homebrew/include/boost/random/variate_generator.hpp:
-
-/opt/homebrew/include/boost/preprocessor/seq/transform.hpp:
-
-/opt/homebrew/include/CGAL/function_objects.h:
 
 /opt/homebrew/include/boost/iterator/iterator_categories.hpp:
 
@@ -5870,6 +6189,14 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__concepts/relation.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/_pthread/_pthread_rwlockattr_t.h:
+
+/opt/homebrew/include/CGAL/boost/graph/IO/polygon_mesh_io.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__functional/binary_negate.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__utility/rel_ops.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/resource.h:
 
 /opt/homebrew/include/boost/container/allocator_traits.hpp:
 
@@ -5905,10 +6232,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/stdio.h:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/arch/Default/TypeCasting.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/internal/Segment_3_Segment_3_intersection.h:
-
 /opt/homebrew/include/boost/predef/hardware/simd/ppc/versions.h:
 
 /opt/homebrew/include/boost/mpl/if.hpp:
@@ -5942,6 +6265,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/machine/_mcontext.h:
 
 /opt/homebrew/include/boost/predef/detail/comp_detected.h:
+
+/opt/homebrew/include/boost/math/tools/roots.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/machine/_endian.h:
 
@@ -5987,8 +6312,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/utility:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/arch/Default/GenericPacketMathFunctionsFwd.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/unordered_map:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/typeinfo:
@@ -6013,11 +6336,11 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/thread:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/Transpose.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/string_view:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/string.h:
+
+/opt/homebrew/include/boost/math/tools/array.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/string:
 
@@ -6025,15 +6348,17 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/stdio.h:
 
+/opt/homebrew/include/boost/multiprecision/traits/max_digits10.hpp:
+
+/opt/homebrew/include/CGAL/STL_Extension/internal/mesh_option_classes.h:
+
+/opt/homebrew/include/CGAL/Boolean_set_operations_2/Point_with_vertex.h:
+
 /opt/homebrew/include/boost/mpl/logical.hpp:
 
 /opt/homebrew/include/CGAL/Polygon_2/Polygon_2_edge_circulator.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/queue:
-
-/opt/homebrew/include/CGAL/basic.h:
-
-/opt/homebrew/include/CGAL/Kernel/mpl.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/print:
 
@@ -6041,17 +6366,17 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/16/include/immintrin.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/decay.h:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/16/include/arm_fp16.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/_types/_intmax_t.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_rsize_t.h:
 
+/opt/homebrew/include/boost/math/special_functions/gamma.hpp:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/optional:
 
-/opt/homebrew/include/CGAL/Intersections_3/internal/Tetrahedron_3_Triangle_3_do_intersect.h:
+/opt/homebrew/include/CGAL/aff_transformation_tags.h:
+
+/opt/homebrew/include/CGAL/GMP/Gmpz_type.h:
 
 /opt/homebrew/include/boost/concept/detail/general.hpp:
 
@@ -6063,7 +6388,9 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/memory_resource:
 
-/opt/homebrew/include/CGAL/Kernel/Conic_misc.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_constant_evaluated.h:
+
+/opt/homebrew/include/CGAL/Arr_topology_traits/Arr_bounded_planar_topology_traits_2_impl.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/math.h:
 
@@ -6089,15 +6416,13 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Distance_2/Point_2_Ray_2.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/time.h:
+/opt/homebrew/include/boost/random/exponential_distribution.hpp:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/sample.h:
+/opt/homebrew/include/CGAL/Surface_mesh.h:
 
-/opt/homebrew/include/CGAL/Intersections_3/internal/Line_3_Tetrahedron_3_intersection.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/iomanip:
 
-/opt/homebrew/include/CGAL/Point_3.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/functors/UnaryFunctors.h:
+/opt/homebrew/include/CGAL/No_intersection_surface_sweep_2.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__chrono/year_month.h:
 
@@ -6125,10 +6450,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/float.h:
 
-/opt/homebrew/include/boost/range/empty.hpp:
-
-/opt/homebrew/include/CGAL/boost/graph/properties_Polyhedron_3_time_stamp.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/filesystem:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_enum.h:
@@ -6136,6 +6457,10 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/fenv.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/execution:
+
+/opt/homebrew/include/CGAL/intersections.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/cwchar:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/ctype.h:
 
@@ -6151,17 +6476,35 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/cstdarg:
 
+/opt/homebrew/include/CGAL/CORE/BigFloat_impl.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_int32_t.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/concepts:
 
+/opt/homebrew/include/CGAL/Point_3.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/time.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/sample.h:
+
+/opt/homebrew/include/CGAL/Intersections_3/internal/Line_3_Tetrahedron_3_intersection.h:
+
 /opt/homebrew/include/CGAL/Intersections_3/internal/Bbox_3_Triangle_3_do_intersect.h:
+
+/opt/homebrew/include/CGAL/Kernel/function_objects.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_integral.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/compare:
 
 /opt/homebrew/include/boost/mpl/aux_/value_wknd.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/clocale:
 
 /opt/homebrew/include/CGAL/Intersections_3/internal/Plane_3_Segment_3_intersection.h:
+
+/opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_join_functor.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_class.h:
 
@@ -6173,17 +6516,15 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/chrono:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/util/MKL_support.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/charconv:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/cassert:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/bitset:
+/opt/homebrew/include/boost/type_traits/has_bit_xor.hpp:
+
+/opt/homebrew/include/CGAL/Cache.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/bit:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/util/DisableStupidWarnings.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__format/formatter.h:
 
@@ -6205,19 +6546,17 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__variant/monostate.h:
 
-/opt/homebrew/include/boost/mpl/vector/aux_/preprocessed/typeof_based/vector10.hpp:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__utility/to_underlying.h:
+/opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Static_filters.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__format/width_estimation_table.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__utility/piecewise_construct.h:
 
+/opt/homebrew/include/boost/multiprecision/debug_adaptor.hpp:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__utility/is_pointer_in_range.h:
 
 /Users/jiayu/Desktop/nas_ws/NAS/include/node.hpp:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__utility/integer_sequence.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__utility/forward.h:
 
@@ -6233,8 +6572,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Hash_map/internal/chained_map.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__utility/declval.h:
-
 /opt/homebrew/include/boost/mpl/vector/aux_/empty.hpp:
 
 /opt/homebrew/include/boost/container/detail/config_begin.hpp:
@@ -6248,8 +6585,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__utility/auto_cast.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__utility/as_lvalue.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Geometry/OrthoMethods.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/partition.h:
 
@@ -6297,11 +6632,11 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_referenceable.h:
 
+/opt/homebrew/include/CGAL/auto_link/CORE.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/operation_traits.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__tuple/tuple_indices.h:
-
-/opt/homebrew/include/CGAL/Uncertain.h:
+/opt/homebrew/include/CGAL/Homogeneous/distance_predicatesH2.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__filesystem/filesystem_error.h:
 
@@ -6313,23 +6648,29 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/nat.h:
 
+/opt/homebrew/include/boost/type_traits/has_trivial_destructor.hpp:
+
+/opt/homebrew/include/boost/random/inversive_congruential.hpp:
+
+/opt/homebrew/include/CGAL/Filtered_kernel/Cartesian_coordinate_iterator_3.h:
+
+/opt/homebrew/include/CGAL/Intersections_3/internal/Sphere_3_Sphere_3_do_intersect.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_uid_t.h:
+
 /opt/homebrew/include/boost/preprocessor/arithmetic/detail/div_base.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/make_const_lvalue_ref.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/internal/Tetrahedron_3_Unbounded_3_do_intersect.h:
 
 /opt/homebrew/include/CGAL/Intersections_3/Segment_3_Segment_3.h:
 
 /opt/homebrew/include/CGAL/Installation/internal/enable_third_party_libraries.h:
 
-/opt/homebrew/include/boost/predef/os/os400.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/lazy.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__concepts/common_reference_with.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_void.h:
+
+/opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Compare_y_2.h:
 
 /opt/homebrew/include/boost/random/weibull_distribution.hpp:
 
@@ -6339,13 +6680,11 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_unsigned_integer.h:
 
-/opt/homebrew/include/boost/predef/hardware/simd/x86_amd/versions.h:
-
-/opt/homebrew/include/CGAL/Residue.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__concepts/constructible.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/locale:
+
+/opt/homebrew/include/CGAL/Small_unordered_set.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_trivially_lexicographically_comparable.h:
 
@@ -6375,15 +6714,9 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_primary_template.h:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/SVD/JacobiSVD.h:
+/opt/homebrew/include/CGAL/Iterator_transform.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_pointer.h:
-
-/opt/homebrew/include/boost/type_traits/is_float.hpp:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/in_out_result.h:
-
-/opt/homebrew/include/CGAL/boost/graph/graph_traits_Polyhedron_3.h:
 
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/16/include/__stddef_wchar_t.h:
 
@@ -6397,23 +6730,15 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_null_pointer.h:
 
+/opt/homebrew/include/boost/math/special_functions/factorials.hpp:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/pstl_merge.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_nothrow_move_constructible.h:
 
-/opt/homebrew/include/CGAL/Intersections_3/Point_3_Ray_3.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_nothrow_copy_constructible.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__locale:
-
-/opt/homebrew/include/boost/preprocessor/arithmetic/limits/dec_256.hpp:
-
-/opt/homebrew/include/CGAL/version.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__thread/formatter.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/internal/Ray_3_Triangle_3_intersection.h:
 
 /opt/homebrew/include/boost/type_traits/is_base_and_derived.hpp:
 
@@ -6423,8 +6748,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_nothrow_convertible.h:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/plugins/CommonCwiseBinaryOps.h:
-
 /opt/homebrew/include/boost/mpl/aux_/preprocessor/params.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__format/format_string.h:
@@ -6433,23 +6756,21 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_nothrow_constructible.h:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/util/ForwardDeclarations.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/DenseStorage.h:
-
 /opt/homebrew/include/CGAL/IO/Polyhedron_VRML_2_ostream.h:
 
 /Users/jiayu/Desktop/nas_ws/NAS/src/nas_plan.cpp:
 
-/opt/homebrew/include/boost/type_traits/is_member_object_pointer.hpp:
+/opt/homebrew/include/CGAL/constructions/kernel_ftC3.h:
 
-/opt/homebrew/include/boost/type_traits/add_pointer.hpp:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__numeric/gcd_lcm.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_count.h:
+/opt/homebrew/include/CGAL/Needs_parens_as_product.h:
 
-/opt/homebrew/include/CGAL/Segment_2.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_member_object_pointer.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_fundamental.h:
+
+/opt/homebrew/include/CGAL/CORE/Real_impl.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__charconv/traits.h:
 
@@ -6458,6 +6779,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_final.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_execution_policy.h:
+
+/opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_agg_op_visitor.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_equality_comparable.h:
 
@@ -6469,6 +6792,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Intersections_3/internal/Ray_3_Segment_3_intersection.h:
 
+/opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_agg_meta_traits.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_copy_assignable.h:
 
 /opt/homebrew/include/CGAL/boost/graph/properties_Polyhedron_3.h:
@@ -6479,15 +6804,19 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_convertible.h:
 
+/opt/homebrew/include/boost/mpl/aux_/config/has_apply.hpp:
+
+/opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_bfs_scanner.h:
+
 /opt/homebrew/include/CGAL/IO/Polyhedron_OFF_iostream.h:
 
 /opt/homebrew/include/CGAL/In_place_list.h:
 
 /opt/homebrew/include/CGAL/Intersections_3/Plane_3_Sphere_3.h:
 
-/opt/homebrew/include/CGAL/Cartesian/Line_3.h:
+/opt/homebrew/include/CGAL/CORE_coercion_traits.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_constant_evaluated.h:
+/opt/homebrew/include/CGAL/Cartesian/Line_3.h:
 
 /opt/homebrew/include/CGAL/Intersections_3/Sphere_3_Sphere_3.h:
 
@@ -6503,7 +6832,7 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_move_constructible.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/reverse.h:
+/opt/homebrew/include/CGAL/CORE/CoreAux.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_bounded_array.h:
 
@@ -6529,7 +6858,13 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__utility/forward_like.h:
 
+/opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Coplanar_3.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_allocator.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/decay.h:
+
+/opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_bfs_base_visitor.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/conjunction.h:
 
@@ -6543,11 +6878,9 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/copy_cvref.h:
 
+/opt/homebrew/include/CGAL/Surface_sweep_2/Curve_comparer.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/errno.h:
-
-/opt/homebrew/include/boost/type_traits/add_const.hpp:
-
-/opt/homebrew/include/CGAL/boost/graph/internal/Has_member_clear.h:
 
 /opt/homebrew/include/boost/mpl/aux_/has_size.hpp:
 
@@ -6556,8 +6889,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/CGAL/Cartesian/Iso_rectangle_2.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/clamp.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/MathFunctionsImpl.h:
 
 /opt/homebrew/include/boost/random/extreme_value_distribution.hpp:
 
@@ -6575,8 +6906,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/aligned_storage.h:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/ComplexEigenSolver.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/malloc/_ptrcheck.h:
 
 /opt/homebrew/include/CGAL/IO/STL.h:
@@ -6592,8 +6921,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__random/log2.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/add_cv.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/SVD/SVDBase.h:
 
 /opt/homebrew/include/CGAL/boost/graph/helpers.h:
 
@@ -6621,21 +6948,31 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__tuple/make_tuple_types.h:
 
+/opt/homebrew/include/boost/math/special_functions/cos_pi.hpp:
+
+/opt/homebrew/include/CGAL/Uncertain.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__tuple/tuple_indices.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__memory/destruct_n.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__tree:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__threading_support:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_partition.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__math/fdim.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/xlocale/_wchar.h:
+/opt/homebrew/include/CGAL/Arr_topology_traits/Arr_bounded_planar_construction_helper.h:
 
 /opt/homebrew/include/boost/io_fwd.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__concepts/movable.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__thread/thread.h:
+
+/opt/homebrew/include/CGAL/Number_types/internal/Exact_type_selector.h:
+
+/opt/homebrew/include/CGAL/Arrangement_zone_2.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_max.h:
 
@@ -6649,12 +6986,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__thread/jthread.h:
 
-/opt/homebrew/include/boost/preprocessor/seq/cat.hpp:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/arm/endian.h:
-
-/opt/homebrew/include/CGAL/Surface_mesh/IO/3MF.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/pthread/pthread_impl.h:
 
 /opt/homebrew/include/boost/type_traits/has_pre_decrement.hpp:
@@ -6663,19 +6994,15 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__system_error/error_code.h:
 
-/opt/homebrew/include/CGAL/representation_tags.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/internal/Ray_3_Triangle_3_do_intersect.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/xlocale/_string.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__functional/boyer_moore_searcher.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__charconv/to_chars_base_10.h:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/IO.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__system_error/error_category.h:
+
+/opt/homebrew/include/CGAL/Gmp_coercion_traits.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__system_error/errc.h:
 
@@ -6683,11 +7010,13 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/conditional.h:
 
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__numeric/iota.h:
+
+/opt/homebrew/include/CGAL/Homogeneous/DirectionH2.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/pthread/sched.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_posix_vdisable.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/Block.h:
 
 /opt/homebrew/include/boost/predef/architecture/blackfin.h:
 
@@ -6731,8 +7060,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__chrono/month.h:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/plugins/BlockMethods.h:
-
 /opt/homebrew/include/boost/mpl/bool.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__functional/compose.h:
@@ -6745,6 +7072,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__ranges/movable_box.h:
 
+/opt/homebrew/include/CGAL/convert_to_bfi.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__ranges/enable_borrowed_range.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/replace_copy.h:
@@ -6755,19 +7084,17 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__thread/poll_with_backoff.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__ranges/dangling.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__math/traits.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_base_of.h:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/NoAlias.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_replace.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__functional/bind_back.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__ranges/concepts.h:
+
+/opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/or.hpp:
+
+/opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_difference_functor.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__charconv/to_chars_result.h:
 
@@ -6783,6 +7110,12 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__random/uniform_int_distribution.h:
 
+/opt/homebrew/include/CGAL/array.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/remove_all_extents.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__random/is_valid.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/_xlocale.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__numeric/transform_exclusive_scan.h:
@@ -6791,9 +7124,11 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_any_of.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/alloca.h:
+/opt/homebrew/include/CGAL/Intersections_3/internal/Ray_3_Tetrahedron_3_intersection.h:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/SVD/UpperBidiagonalization.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__numeric/saturation_arithmetic.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/alloca.h:
 
 /opt/homebrew/include/boost/mpl/minus.hpp:
 
@@ -6811,19 +7146,15 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__chrono/year_month_day.h:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Householder/Householder.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/wait.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__functional/unary_negate.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__numeric/midpoint.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__numeric/iota.h:
+/opt/homebrew/include/CGAL/Polygon_with_holes_2.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_implicitly_default_constructible.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/_assert.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__exception/exception_ptr.h:
 
@@ -6871,6 +7202,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/multiprecision/integer.hpp:
 
+/opt/homebrew/include/boost/math/special_functions/erf.hpp:
+
 /opt/homebrew/include/boost/concept/detail/concept_undef.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__concepts/same_as.h:
@@ -6886,8 +7219,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__memory/temp_value.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/_pthread/_pthread_types.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/arch/Default/GenericPacketMathFunctions.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__memory/shared_ptr.h:
 
@@ -6915,6 +7246,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__fwd/tuple.h:
 
+/opt/homebrew/include/CGAL/Sqrt_extension/Fraction_traits.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__math/inverse_hyperbolic_functions.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__memory/builtin_new_allocator.h:
@@ -6929,6 +7262,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/_locale.h:
 
+/opt/homebrew/include/CGAL/Epic_converter.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__utility/pair.h:
 
 /opt/homebrew/include/boost/type_traits/has_nothrow_constructor.hpp:
@@ -6938,8 +7273,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__memory/allocate_at_least.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__math/trigonometric_functions.h:
-
-/opt/homebrew/include/CGAL/Kernel/global_functions_2.h:
 
 /opt/homebrew/include/CGAL/Triangle_3.h:
 
@@ -6953,9 +7286,9 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__memory/addressof.h:
 
-/opt/homebrew/include/CGAL/Intersections_3/internal/Triangle_3_Triangle_3_intersection.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_pod.h:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Geometry/Quaternion.h:
+/opt/homebrew/include/CGAL/Arr_naive_point_location.h:
 
 /opt/homebrew/include/boost/type_traits/has_plus.hpp:
 
@@ -6987,6 +7320,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__memory/allocation_guard.h:
 
+/opt/homebrew/include/CGAL/IO/Arrangement_2_reader.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__math/fma.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__memory/assume_aligned.h:
@@ -6999,11 +7334,13 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/dependent_type.h:
 
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/is_partitioned.h:
+
+/opt/homebrew/include/CGAL/Exact_kernel_selector.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/_types/_nl_item.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/_types/_uint16_t.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/PartialReduxEvaluator.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__locale_dir/locale_base_api/bsd_locale_defaults.h:
 
@@ -7020,6 +7357,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_sort.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__iterator/sortable.h:
+
+/opt/homebrew/include/CGAL/CORE/Impl.h:
 
 /opt/homebrew/include/CGAL/squared_distance_2.h:
 
@@ -7043,21 +7382,15 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Cartesian/Circle_3.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__iterator/mergeable.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/min_max_result.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__iterator/iterator_traits.h:
-
-/opt/homebrew/include/CGAL/boost/graph/io.h:
 
 /opt/homebrew/include/boost/preprocessor/list/adt.hpp:
 
 /opt/homebrew/include/boost/predef/library/c.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__format/write_escaped.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/Stride.h:
 
 /opt/homebrew/include/boost/mpl/aux_/fold_impl.hpp:
 
@@ -7093,6 +7426,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/utility/detail/result_of_variadic.hpp:
 
+/opt/homebrew/include/CGAL/CORE/CoreDefs_impl.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__iterator/insert_iterator.h:
 
 /opt/homebrew/include/boost/preprocessor/config/limits.hpp:
@@ -7107,15 +7442,15 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_constructible.h:
 
+/opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_polygon_simplifier.h:
+
+/opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/tools.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__functional/identity.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__iterator/bounded_iter.h:
 
-/opt/homebrew/include/CGAL/config.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__format/range_formatter.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/util/SymbolicIndex.h:
 
 /opt/homebrew/include/boost/preprocessor/comparison/limits/not_equal_256.hpp:
 
@@ -7123,11 +7458,7 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__fwd/subrange.h:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/Jacobi:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__fwd/string.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/TriangularMatrix.h:
 
 /opt/homebrew/include/CGAL/Intersections_3/Point_3_Tetrahedron_3.h:
 
@@ -7143,17 +7474,11 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/pstl_backend.h:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/ReturnByValue.h:
-
 /opt/homebrew/include/boost/move/algo/detail/adaptive_sort_merge.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_trivially_constructible.h:
 
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/16/include/limits.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_trivially_move_assignable.h:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/16/include/arm_bf16.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/cmath:
 
@@ -7173,6 +7498,10 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__fwd/get.h:
 
+/opt/homebrew/include/boost/iterator/counting_iterator.hpp:
+
+/opt/homebrew/include/CGAL/Homogeneous/predicates_on_pointsH3.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__fwd/bit_reference.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/underlying_type.h:
@@ -7181,23 +7510,17 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__utility/move.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__math/fdim.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__functional/reference_wrapper.h:
-
-/opt/homebrew/include/CGAL/boost/graph/properties_HalfedgeDS_base.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/apply_cv.h:
 
 /opt/homebrew/include/boost/mp11/detail/mp_count.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__functional/pointer_to_binary_function.h:
 
-/opt/homebrew/include/boost/predef/library/std/_prefix.h:
+/opt/homebrew/include/boost/range/begin.hpp:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/type_list.h:
+/opt/homebrew/include/CGAL/Intersections_2/Iso_rectangle_2_Ray_2.h:
 
-/opt/homebrew/include/CGAL/is_convertible.h:
+/opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_do_intersect_functor.h:
 
 /opt/homebrew/include/boost/utility/enable_if.hpp:
 
@@ -7211,9 +7534,7 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__functional/not_fn.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__compare/compare_weak_order_fallback.h:
-
-/opt/homebrew/include/CGAL/Kernel/Wutils.h:
+/opt/homebrew/include/CGAL/Arr_topology_traits/Arr_bounded_planar_insertion_helper.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__filesystem/directory_entry.h:
 
@@ -7279,6 +7600,10 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Intersections_3/internal/Plane_3_Triangle_3_intersection.h:
 
+/opt/homebrew/include/CGAL/Kernel/Wutils.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__compare/compare_weak_order_fallback.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__format/formatter_output.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__filesystem/file_type.h:
@@ -7287,7 +7612,21 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/half_positive.h:
 
+/opt/homebrew/include/CGAL/Intersections_3/internal/Ray_3_Tetrahedron_3_do_intersect.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__format/formatter_integral.h:
+
+/opt/homebrew/include/CGAL/Homogeneous/Iso_rectangleH2.h:
+
 /opt/homebrew/include/CGAL/Distance_2/Point_2_Segment_2.h:
+
+/opt/homebrew/include/boost/mpl/vector/aux_/item.hpp:
+
+/opt/homebrew/include/boost/core/enable_if.hpp:
+
+/opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_simplifier_traits.h:
+
+/opt/homebrew/include/boost/math/tools/cxx03_warn.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__format/formatter_integer.h:
 
@@ -7301,6 +7640,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_scoped_enum.h:
 
+/opt/homebrew/include/boost/math/special_functions/detail/igamma_inverse.hpp:
+
 /opt/homebrew/include/CGAL/Distance_3/Line_3_Line_3.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__format/format_error.h:
@@ -7311,23 +7652,21 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Intersections_3/internal/Line_3_Tetrahedron_3_do_intersect.h:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/LU/PartialPivLU.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/_stdlib.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__format/format_context.h:
+
+/opt/homebrew/include/CGAL/CORE/Real.h:
 
 /opt/homebrew/include/CGAL/Quotient.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__iterator/iter_move.h:
 
-/opt/homebrew/include/boost/preprocessor/comparison/less_equal.hpp:
+/opt/homebrew/include/CGAL/predicates/sign_of_determinant.h:
 
-/opt/homebrew/include/CGAL/Segment_3.h:
+/opt/homebrew/include/CGAL/Polyhedron_traits_3.h:
 
-/opt/homebrew/include/boost/preprocessor/repetition/limits/for_256.hpp:
-
-/opt/homebrew/include/CGAL/Plane_3.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__format/extended_grapheme_cluster_table.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/wchar.h:
 
@@ -7336,6 +7675,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_partial_sort_copy.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_callable.h:
+
+/opt/homebrew/include/CGAL/Arrangement_2/Arr_do_intersect_zone_visitor.h:
 
 /opt/homebrew/include/boost/math/tools/rational.hpp:
 
@@ -7351,15 +7692,11 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Cartesian/predicates_on_points_2.h:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/LU/FullPivLU.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/is_sorted.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__memory/swap_allocator.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__filesystem/perm_options.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__filesystem/path_iterator.h:
 
 /opt/homebrew/include/CGAL/Intersections_3/internal/Plane_3_Segment_3_do_intersect.h:
 
@@ -7372,6 +7709,18 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__fwd/istream.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__iterator/ostreambuf_iterator.h:
+
+/opt/homebrew/include/boost/predef/library/std/_prefix.h:
+
+/opt/homebrew/include/CGAL/is_convertible.h:
+
+/opt/homebrew/include/CGAL/CORE/Timer.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/type_list.h:
+
+/opt/homebrew/include/boost/foreach.hpp:
+
+/opt/homebrew/include/CGAL/Homogeneous/basic_constructionsH2.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/count_if.h:
 
@@ -7387,7 +7736,21 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__debug_utils/strict_weak_ordering_check.h:
 
+/opt/homebrew/include/CGAL/boost/graph/Euler_operations.h:
+
+/opt/homebrew/include/CGAL/Distance_3/Segment_3_Line_3.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/cwctype:
+
+/opt/homebrew/include/boost/predef/language/objc.h:
+
+/opt/homebrew/include/boost/math/tools/numeric_limits.hpp:
+
+/opt/homebrew/include/CGAL/Real_embeddable_traits.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/max.h:
+
+/opt/homebrew/include/boost/math/special_functions/expm1.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__functional/unary_function.h:
 
@@ -7397,15 +7760,7 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__condition_variable/condition_variable.h:
 
-/opt/homebrew/include/CGAL/Intersections_2/Bbox_2_Circle_2.h:
-
-/opt/homebrew/include/CGAL/Unique_hash_map.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__math/modulo.h:
-
-/opt/homebrew/include/CGAL/boost/graph/internal/initialized_index_maps_helpers.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/is_partitioned.h:
 
 /opt/homebrew/include/boost/math/special_functions/detail/fp_traits.hpp:
 
@@ -7435,11 +7790,11 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__concepts/equality_comparable.h:
 
-/opt/homebrew/include/boost/multiprecision/detail/check_cpp11_config.hpp:
-
-/opt/homebrew/include/CGAL/Intersections_3/internal/Segment_3_Segment_3_do_intersect.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__concepts/derived_from.h:
+
+/opt/homebrew/include/CGAL/Intersections_3/internal/Segment_3_Triangle_3_do_intersect.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__fwd/ios.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__concepts/copyable.h:
 
@@ -7451,21 +7806,11 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__concepts/convertible_to.h:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/util/IndexedViewHelper.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/xlocale/_ctype.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/pstl_backends/cpu_backends/transform_reduce.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/_ctermid.h:
-
-/opt/homebrew/include/boost/predef/architecture/ppc.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__format/format_functions.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/all_of.h:
-
-/opt/homebrew/include/CGAL/auto_link/CGAL.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__chrono/weekday.h:
 
@@ -7479,6 +7824,10 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__concepts/assignable.h:
 
+/opt/homebrew/include/CGAL/Polyhedron_3_fwd.h:
+
+/opt/homebrew/include/CGAL/Arr_topology_traits/Arr_bounded_planar_overlay_helper.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/inplace_merge.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__compare/strong_order.h:
@@ -7488,8 +7837,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__compare/synth_three_way.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__ranges/view_interface.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/products/SelfadjointMatrixVector.h:
 
 /opt/homebrew/include/boost/intrusive/detail/algorithm.hpp:
 
@@ -7515,7 +7862,15 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__iterator/permutable.h:
 
+/opt/homebrew/include/CGAL/gmpxx_coercion_traits.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__compare/ordering.h:
+
+/opt/homebrew/include/CGAL/IO/Arr_iostream.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_arithmetic.h:
+
+/opt/homebrew/include/CGAL/Arr_point_location/Arr_batched_point_location_traits_2.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_sort_heap.h:
 
@@ -7529,27 +7884,29 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__memory_resource/polymorphic_allocator.h:
 
-/opt/homebrew/include/CGAL/Kernel/Return_base_tag.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_generate.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/set_intersection.h:
+/opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_intersection_functor.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__compare/is_eq.h:
+
+/opt/homebrew/include/CGAL/Interval_arithmetic.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__compare/compare_three_way.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/sort.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__exception/operations.h:
+/opt/homebrew/include/boost/preprocessor/logical/not.hpp:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/util/Constants.h:
+/opt/homebrew/include/boost/math/special_functions/bernoulli.hpp:
+
+/opt/homebrew/include/CGAL/Filtered_kernel/Cartesian_coordinate_iterator_2.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__exception/operations.h:
 
 /opt/homebrew/include/CGAL/Enum_converter.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/stable_sort.h:
+/opt/homebrew/include/boost/math/special_functions/asinh.hpp:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__chrono/time_point.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/stable_sort.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__tuple/sfinae_helpers.h:
 
@@ -7559,19 +7916,23 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__numeric/transform_inclusive_scan.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__chrono/steady_clock.h:
+/opt/homebrew/include/CGAL/Surface_sweep_2/Arr_overlay_event.h:
 
-/opt/homebrew/include/CGAL/constructions/kernel_ftC2.h:
+/opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Compare_y_at_x_2.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__chrono/steady_clock.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__chrono/year.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__memory/voidify.h:
 
-/opt/homebrew/include/CGAL/kernel_assertions.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__atomic/atomic_lock_free.h:
 
 /opt/homebrew/include/CGAL/Intersections_3/Plane_3_Tetrahedron_3.h:
+
+/opt/homebrew/include/CGAL/Unique_hash_map.h:
+
+/opt/homebrew/include/CGAL/Intersections_2/Bbox_2_Circle_2.h:
 
 /opt/homebrew/include/boost/predef/hardware/simd/arm/versions.h:
 
@@ -7617,21 +7978,15 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__format/format_to_n_result.h:
 
+/opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/apply_fwd.hpp:
+
+/opt/homebrew/include/CGAL/Homogeneous/RayH3.h:
+
 /opt/homebrew/include/boost/preprocessor/repetition/detail/for.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__functional/invoke.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__chrono/convert_to_timespec.h:
-
-/opt/homebrew/include/boost/random/shuffle_order.hpp:
-
-/opt/homebrew/include/boost/preprocessor/arithmetic/detail/is_maximum_number.hpp:
-
-/opt/homebrew/include/boost/detail/numeric_traits.hpp:
-
-/opt/homebrew/include/CGAL/Surface_mesh/IO/OFF.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/internal/Segment_3_Tetrahedron_3_intersection.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/pthread.h:
 
@@ -7660,6 +8015,10 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/shift_left.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__bit_reference:
+
+/opt/homebrew/include/CGAL/enable_warnings.h:
+
+/opt/homebrew/include/CGAL/Cartesian/Circle_2.h:
 
 /opt/homebrew/include/boost/intrusive/pack_options.hpp:
 
@@ -7699,8 +8058,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/next_permutation.h:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/arch/Default/ConjHelper.h:
-
 /opt/homebrew/include/boost/predef/compiler/metrowerks.h:
 
 /opt/homebrew/include/boost/mpl/pop_back_fwd.hpp:
@@ -7733,7 +8090,7 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__format/concepts.h:
 
-/opt/homebrew/include/CGAL/boost/graph/backward_compatibility_functions.h:
+/opt/homebrew/include/CGAL/Homogeneous/predicates_on_pointsH2.h:
 
 /opt/homebrew/include/boost/type_traits/copy_cv_ref.hpp:
 
@@ -7777,6 +8134,10 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/type_traits/integral_promotion.hpp:
 
+/opt/homebrew/include/boost/math/special_functions/trigamma.hpp:
+
+/opt/homebrew/include/boost/math/special_functions/detail/erf_inv.hpp:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_object.h:
 
 /opt/homebrew/include/boost/preprocessor/repetition/enum_trailing_params.hpp:
@@ -7786,8 +8147,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_in_port_t.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/unwrap_iter.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/SVD:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_remove_copy_if.h:
 
@@ -7803,6 +8162,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Intersections_3/internal/Line_3_Plane_3_do_intersect.h:
 
+/opt/homebrew/include/CGAL/Arrangement_on_surface_2.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/fill.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/remove_reference.h:
@@ -7817,8 +8178,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__atomic/atomic.h:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Geometry/AngleAxis.h:
-
 /opt/homebrew/include/CGAL/Intersections_2/Iso_rectangle_2_Segment_2.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__debug_utils/randomize_range.h:
@@ -7829,11 +8188,13 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__iterator/size.h:
 
-/opt/homebrew/include/CGAL/constant.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/three_way_comp_ref_type.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/swap_ranges.h:
+
+/opt/homebrew/include/CGAL/Kernel/Type_equality_wrapper.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/copy_n.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/sort_heap.h:
 
@@ -7849,11 +8210,7 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__atomic/check_memory_order.h:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/CoreEvaluators.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/pstl_is_partitioned.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/Reverse.h:
 
 /opt/homebrew/include/boost/type_traits/has_divides_assign.hpp:
 
@@ -7864,10 +8221,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/mpl/aux_/na.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__format/parser_std_format_spec.h:
-
-/opt/homebrew/include/boost/type_traits/detail/is_function_cxx_11.hpp:
-
-/opt/homebrew/include/CGAL/Sphere_3.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_unsigned.h:
 
@@ -7889,6 +8242,16 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__utility/priority_tag.h:
 
+/opt/homebrew/include/CGAL/gmpxx.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__chrono/convert_to_tm.h:
+
+/opt/homebrew/include/boost/mpl/aux_/begin_end_impl.hpp:
+
+/opt/homebrew/include/CGAL/boost/graph/IO/OFF.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__atomic/atomic_sync.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__bit/bit_ceil.h:
 
 /opt/homebrew/include/CGAL/Intersections_3/Line_3_Line_3.h:
@@ -7898,8 +8261,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/predef/architecture/z.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__filesystem/copy_options.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/Inverse.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/set_difference.h:
 
@@ -7917,15 +8278,9 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/stddef.h:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/SelfAdjointEigenSolver.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/replace_if.h:
 
 /opt/homebrew/include/CGAL/Intersections_3/Segment_3_Tetrahedron_3.h:
-
-/opt/homebrew/include/boost/range/begin.hpp:
-
-/opt/homebrew/include/CGAL/Intersections_2/Iso_rectangle_2_Ray_2.h:
 
 /opt/homebrew/include/boost/predef/platform/mingw.h:
 
@@ -7945,9 +8300,9 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/predef/compiler/palm.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_uuid_t.h:
+/opt/homebrew/include/boost/math/constants/constants.hpp:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/LU/arch/InverseSize4.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_uuid_t.h:
 
 /opt/homebrew/include/boost/type_traits/has_plus_assign.hpp:
 
@@ -7967,23 +8322,23 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__chrono/calendar.h:
 
-/opt/homebrew/include/CGAL/boost/graph/internal/helpers.h:
-
 /opt/homebrew/include/boost/type_traits/has_left_shift.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/_ctype.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/invoke.h:
 
+/opt/homebrew/include/CGAL/Arr_point_location/Arr_walk_along_line_pl_impl.h:
+
 /opt/homebrew/include/boost/predef/platform/windows_uwp.h:
 
 /opt/homebrew/include/boost/predef/platform/windows_runtime.h:
 
+/opt/homebrew/include/CGAL/Surface_sweep_2/Arr_no_intersection_insertion_ss_visitor.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__assertion_handler:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_transform.h:
-
-/opt/homebrew/include/CGAL/boost/graph/halfedge_graph_traits.h:
 
 /opt/homebrew/include/boost/random/student_t_distribution.hpp:
 
@@ -7995,11 +8350,11 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_nothrow_destructible.h:
 
+/opt/homebrew/include/CGAL/Arr_topology_traits/Arr_unb_planar_construction_helper.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/arm/_types.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_set_union.h:
-
-/opt/homebrew/include/CGAL/enum.h:
 
 /opt/homebrew/include/boost/type_traits/aligned_storage.hpp:
 
@@ -8013,13 +8368,19 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_sample.h:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/SelfCwiseBinaryOp.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_copy_backward.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_reverse_copy.h:
+/opt/homebrew/include/boost/random/shuffle_order.hpp:
 
-/opt/homebrew/include/CGAL/boost/graph/graph_traits_HalfedgeDS.h:
+/opt/homebrew/include/boost/preprocessor/arithmetic/detail/is_maximum_number.hpp:
+
+/opt/homebrew/include/boost/detail/numeric_traits.hpp:
+
+/opt/homebrew/include/CGAL/Surface_mesh/IO/OFF.h:
+
+/opt/homebrew/include/CGAL/Arr_tags.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_reverse_copy.h:
 
 /opt/homebrew/include/boost/preprocessor/seq/enum.hpp:
 
@@ -8041,8 +8402,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__functional/pointer_to_unary_function.h:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/MapBase.h:
-
 /opt/homebrew/include/boost/predef/library/std/roguewave.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_polymorphic.h:
@@ -8058,8 +8417,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/assert.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/move.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_nth_element.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__format/format_fwd.h:
 
@@ -8077,7 +8434,11 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_next_permutation.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__compare/compare_three_way_result.h:
+/opt/homebrew/include/boost/mpl/vector/aux_/preprocessed/typeof_based/vector10.hpp:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__utility/to_underlying.h:
+
+/opt/homebrew/include/CGAL/Converting_construction.h:
 
 /opt/homebrew/include/boost/random/traits.hpp:
 
@@ -8087,13 +8448,11 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_make_heap.h:
 
-/opt/homebrew/include/CGAL/Named_function_parameters.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_is_sorted.h:
 
-/opt/homebrew/include/CGAL/Kernel_traits_fwd.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__mbstate_t.h:
+
+/opt/homebrew/include/CGAL/Homogeneous/VectorH3.h:
 
 /opt/homebrew/include/boost/range/mutable_iterator.hpp:
 
@@ -8111,9 +8470,15 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Cartesian/predicates_on_planes_3.h:
 
+/opt/homebrew/include/CGAL/Arr_point_location_result.h:
+
 /opt/homebrew/include/boost/mp11/detail/mp_remove_if.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__bit/countl.h:
+
+/opt/homebrew/include/boost/math/tools/cstdint.hpp:
+
+/opt/homebrew/include/CGAL/Arr_topology_traits/Arr_inc_insertion_zone_visitor.h:
 
 /opt/homebrew/include/boost/move/adl_move_swap.hpp:
 
@@ -8151,9 +8516,15 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_for_each.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_wchar_t.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__math/error_functions.h:
+
+/opt/homebrew/include/boost/type_traits/is_member_object_pointer.hpp:
+
+/opt/homebrew/include/boost/type_traits/add_pointer.hpp:
+
+/opt/homebrew/include/CGAL/Segment_2.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_count.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__atomic/kill_dependency.h:
 
@@ -8165,8 +8536,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_move.h:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/GeneralizedSelfAdjointEigenSolver.h:
-
 /opt/homebrew/include/boost/move/detail/std_ns_begin.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/pstl_any_all_none_of.h:
@@ -8176,6 +8545,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/type_traits/has_modulus.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_rotate.h:
+
+/opt/homebrew/include/CGAL/Surface_sweep_2/Arr_default_overlay_traits_base.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_fill_n.h:
 
@@ -8195,6 +8566,12 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_stable_sort.h:
 
+/opt/homebrew/include/boost/smart_ptr/detail/shared_count.hpp:
+
+/opt/homebrew/include/CGAL/Weighted_point_3.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/__wctype.h:
+
 /opt/homebrew/include/CGAL/version_checker.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_nlink_t.h:
@@ -8213,12 +8590,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_clamp.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/memory:
-
-/opt/homebrew/include/CGAL/boost/graph/properties_Polyhedron_3_features.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/Fuzzy.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/_wctype.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__memory/ranges_uninitialized_algorithms.h:
@@ -8229,11 +8600,11 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/IO/Generic_writer.h:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/Dot.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_binary_search.h:
 
 /opt/homebrew/include/CGAL/Distance_3/Point_3_Plane_3.h:
+
+/opt/homebrew/include/CGAL/Arrangement_2.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_find_end.h:
 
@@ -8267,9 +8638,11 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_adjacent_find.h:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/CwiseUnaryOp.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/add_lvalue_reference.h:
+
+/opt/homebrew/include/CGAL/Intersections_3/internal/Tetrahedron_3_Triangle_3_intersection.h:
+
+/opt/homebrew/include/CGAL/IO/VRML.h:
 
 /opt/homebrew/include/boost/move/algo/detail/set_difference.hpp:
 
@@ -8283,10 +8656,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__concepts/different_from.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/stdint.h:
-
-/opt/homebrew/include/CGAL/STL_Extension/internal/Has_features.h:
-
 /opt/homebrew/include/boost/type_traits/has_new_operator.hpp:
 
 /opt/homebrew/include/boost/preprocessor/list/limits/fold_left_256.hpp:
@@ -8295,23 +8664,11 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/pstl_replace.h:
 
-/opt/homebrew/include/boost/range/concepts.hpp:
-
-/opt/homebrew/include/CGAL/boost/graph/IO/STL.h:
-
 /opt/homebrew/include/CGAL/Intersections_3/internal/Point_3_Tetrahedron_3_intersection.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/any_of.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__iterator/access.h:
-
-/opt/homebrew/include/boost/type_traits/copy_reference.hpp:
-
-/opt/homebrew/include/boost/type_traits/alignment_of.hpp:
-
-/opt/homebrew/include/boost/preprocessor/variadic/has_opt.hpp:
-
-/opt/homebrew/include/CGAL/Line_2.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/unordered_set:
 
@@ -8331,29 +8688,31 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__math/roots.h:
 
+/opt/homebrew/include/CGAL/Kernel/global_functions_internal_3.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/pstl_equal.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/pstl_count.h:
 
 /opt/homebrew/include/boost/type_traits/detail/is_member_function_pointer_cxx_11.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/rank.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__numeric/adjacent_difference.h:
-
 /opt/homebrew/include/CGAL/Cartesian/Plane_3.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/pstl_sort.h:
+/opt/homebrew/include/CGAL/Homogeneous/basic_constructionsH3.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/_types/_uintmax_t.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/_types/_uint64_t.h:
+
+/opt/homebrew/include/CGAL/Arr_unb_planar_topology_traits_2.h:
 
 /opt/homebrew/include/CGAL/Intersections_3/internal/Point_3_Point_3_do_intersect.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_aggregate.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_contains.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/SelfAdjointView.h:
 
 /opt/homebrew/include/boost/type_traits/is_array.hpp:
 
@@ -8365,6 +8724,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/predef/compiler/edg.h:
 
+/opt/homebrew/include/CGAL/Sqrt_extension/Get_arithmetic_kernel.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_blksize_t.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/_pthread/_pthread_attr_t.h:
@@ -8372,6 +8733,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/lower_bound.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/pstl_backends/cpu_backends/fill.h:
+
+/opt/homebrew/include/CGAL/Homogeneous/Weighted_point_3.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_seek_set.h:
 
@@ -8395,8 +8758,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_replace_copy_if.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/is_heap_until.h:
-
 /opt/homebrew/include/CGAL/Intersections_3/Line_3_Tetrahedron_3.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/pop_heap.h:
@@ -8407,11 +8768,11 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/partial_sort.h:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/functors/BinaryFunctors.h:
+/opt/homebrew/include/boost/predef/library/std/modena.h:
 
-/opt/homebrew/include/boost/mpl/limits/arity.hpp:
+/opt/homebrew/include/CGAL/Exact_predicates_exact_constructions_kernel.h:
 
-/opt/homebrew/include/CGAL/Intersections_3/Sphere_3_Tetrahedron_3.h:
+/opt/homebrew/include/CGAL/Arr_topology_traits/Arr_unb_planar_topology_traits_2_impl.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/find.h:
 
@@ -8433,13 +8794,7 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_remove.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_fd_zero.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/enable_if.h:
-
-/opt/homebrew/include/boost/mpl/vector/aux_/size.hpp:
-
-/opt/homebrew/include/CGAL/Iterator_project.h:
+/opt/homebrew/include/CGAL/CORE/CoreAux_impl.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__format/format_arg.h:
 
@@ -8447,19 +8802,11 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/min.h:
 
-/opt/homebrew/include/boost/multiprecision/cpp_int.hpp:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/arm/limits.h:
-
-/opt/homebrew/include/boost/math/tools/is_constant_evaluated.hpp:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__utility/swap.h:
-
-/opt/homebrew/include/boost/math/tools/type_traits.hpp:
-
-/opt/homebrew/include/CGAL/Surface_mesh/Properties.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/remove_copy_if.h:
+
+/opt/homebrew/include/CGAL/Surface_mesh/IO/PLY.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/noexcept_move_assign_container.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__atomic/atomic_flag.h:
 
@@ -8477,17 +8824,29 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Intersections_3/Line_3_Point_3.h:
 
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_nth_element.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__filesystem/perms.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/list:
+/opt/homebrew/include/boost/move/detail/addressof.hpp:
+
+/opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Side_of_oriented_sphere_3.h:
+
+/opt/homebrew/include/boost/lexical_cast/bad_lexical_cast.hpp:
+
+/opt/homebrew/include/CGAL/CORE_arithmetic_kernel.h:
+
+/opt/homebrew/include/boost/multiprecision/cpp_int.hpp:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/arm/limits.h:
+
+/opt/homebrew/include/boost/math/tools/is_constant_evaluated.hpp:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__utility/swap.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/remove.h:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/products/GeneralMatrixVector.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_mismatch.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/GeneralizedEigenSolver.h:
 
 /opt/homebrew/include/CGAL/tags.h:
 
@@ -8497,13 +8856,19 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/make_heap.h:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Geometry/arch/Geometry_SIMD.h:
-
 /opt/homebrew/include/boost/mp11/bind.hpp:
 
 /opt/homebrew/include/CGAL/Intersections_3/internal/Bbox_3_Iso_cuboid_3_intersection.h:
 
-/opt/homebrew/include/CGAL/Kernel/hash_functions.h:
+/opt/homebrew/include/boost/type_traits/has_trivial_assign.hpp:
+
+/opt/homebrew/include/CGAL/CORE/BigRat.h:
+
+/opt/homebrew/include/boost/type_traits/is_float.hpp:
+
+/opt/homebrew/include/CGAL/boost/graph/graph_traits_Polyhedron_3.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/in_out_result.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/_strings.h:
 
@@ -8524,6 +8889,10 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/CGAL/Intersection_traits_3.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/for_each_segment.h:
+
+/opt/homebrew/include/boost/iterator/function_output_iterator.hpp:
+
+/opt/homebrew/include/CGAL/Boolean_set_operations_2/Curve_with_halfedge.h:
 
 /opt/homebrew/include/CGAL/Cartesian/Direction_3.h:
 
@@ -8551,15 +8920,17 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Intersections_3/Point_3_Point_3.h:
 
+/opt/homebrew/include/CGAL/auto_link/auto_link.h:
+
+/opt/homebrew/include/CGAL/CORE/Expr_impl.h:
+
+/opt/homebrew/include/CGAL/Surface_sweep_2/Arr_overlay_traits_2.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/equal_range.h:
 
 /opt/homebrew/include/boost/type_traits/has_minus.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/generate.h:
-
-/opt/homebrew/include/boost/type_traits/has_bit_or_assign.hpp:
-
-/opt/homebrew/include/CGAL/Ray_3.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__format/format_parse_context.h:
 
@@ -8569,15 +8940,13 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/merge.h:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/CwiseUnaryView.h:
-
 /opt/homebrew/include/boost/predef/compiler/ibm.h:
 
 /opt/homebrew/include/CGAL/Intersections_3/internal/Line_3_Ray_3_intersection.h:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/BandMatrix.h:
+/opt/homebrew/include/CGAL/boost/graph/properties_Polyhedron_3_features.h:
 
-/opt/homebrew/include/CGAL/circulator.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/memory:
 
 /opt/homebrew/include/boost/predef/library/c/_prefix.h:
 
@@ -8597,11 +8966,9 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__charconv/to_chars_integral.h:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/util/Macros.h:
+/opt/homebrew/include/boost/smart_ptr/detail/local_counted_base.hpp:
 
-/opt/homebrew/include/CGAL/long_double.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/Array.h:
+/opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_on_surface_base_2.h:
 
 /opt/homebrew/include/boost/concept/assert.hpp:
 
@@ -8611,13 +8978,13 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/_wchar.h:
 
+/opt/homebrew/include/CGAL/Surface_sweep_2/Default_event.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/result_of.h:
 
-/opt/homebrew/include/boost/random/taus88.hpp:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/remove_volatile.h:
-
 /opt/homebrew/include/boost/random/fisher_f_distribution.hpp:
+
+/opt/homebrew/include/CGAL/MP_Float_impl.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/copy.h:
 
@@ -8625,17 +8992,37 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Users/jiayu/Desktop/nas_ws/NAS/include/constants.hpp:
 
+/opt/homebrew/include/boost/math/tools/promotion.hpp:
+
+/opt/homebrew/include/CGAL/boost/graph/named_params_helper.h:
+
+/opt/homebrew/include/CGAL/Intersections_2/Ray_2_Segment_2.h:
+
 /opt/homebrew/include/boost/type_traits/detail/config.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/pstl_backends/cpu_backends/transform.h:
-
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/plugins/IndexedViewMethods.h:
 
 /opt/homebrew/include/CGAL/test_FPU_rounding_mode_impl.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_lexicographical_compare.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_find.h:
+/opt/homebrew/include/boost/preprocessor/seq/cat.hpp:
+
+/opt/homebrew/include/CGAL/Surface_mesh/IO/3MF.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/arm/endian.h:
+
+/opt/homebrew/include/boost/graph/property_maps/null_property_map.hpp:
+
+/opt/homebrew/include/boost/foreach_fwd.hpp:
+
+/opt/homebrew/include/CGAL/Arr_accessor.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_trivially_move_assignable.h:
+
+/opt/homebrew/include/CGAL/Polyhedron_items_3.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/cstdint:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/in_found_result.h:
 
@@ -8653,27 +9040,29 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__format/format_args.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/assert.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__bit/bit_cast.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/arm/_limits.h:
 
+/opt/homebrew/include/CGAL/STL_Extension/internal/Has_features.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/stdint.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__memory/align.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_pod.h:
+/opt/homebrew/include/boost/type_traits/is_lvalue_reference.hpp:
 
-/opt/homebrew/opt/eigen/include/eigen3/Eigen/src/Core/util/Meta.h:
+/opt/homebrew/include/boost/mp11/list.hpp:
+
+/opt/homebrew/include/CGAL/NT_converter.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__bit/byteswap.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/_types.h:
 
 /opt/homebrew/include/boost/mpl/next.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__iterator/move_iterator.h:
-
-/opt/homebrew/include/boost/container/detail/copy_move_algo.hpp:
-
-/opt/homebrew/include/CGAL/circulator_bases.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__functional/binary_function.h:
 
@@ -8689,9 +9078,13 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/comp.h:
 
+/opt/homebrew/include/CGAL/CORE/Filter.h:
+
 /opt/homebrew/include/boost/concept/detail/concept_def.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_stable_partition.h:
+
+/opt/homebrew/include/CGAL/Boolean_set_operations_2/Indexed_event.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_core_convertible.h:
 
@@ -8718,8 +9111,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/arm/types.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/sys/appleapiopts.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_for_each_n.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/pstl_backends/cpu_backends/libdispatch.h:
 

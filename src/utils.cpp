@@ -2,37 +2,14 @@
 #include "tree.hpp"
 #include "constants.hpp"
 #include "visualizer.hpp"
-#include <CGAL/Simple_cartesian.h>
-#include <CGAL/Polyhedron_3.h>
+#include "types.hpp"
 #include <CGAL/IO/Polyhedron_iostream.h>
 #include <CGAL/IO/polygon_mesh_io.h>
+#include <CGAL/convex_hull_3.h>
+#include <CGAL/Boolean_set_operations_2.h>
+#include <CGAL/linear_least_squares_fitting_3.h>
 #include <fstream>
 #include <iostream>
-#include <CGAL/Aff_transformation_3.h>
-#include <CGAL/aff_transformation_tags.h>  // For TRANSLATION tag
-#include <CGAL/convex_hull_3.h>  // Add this instead of minkowski_sum_3
-#include <CGAL/linear_least_squares_fitting_3.h> // This wasn't enough
-#include <CGAL/Linear_algebraCd.h>              // Need this
-#include <CGAL/linear_least_squares_fitting_points_3.h> // And this specific header
-#include <CGAL/Polygon_2.h>
-#include <CGAL/Boolean_set_operations_2.h>
-#include <boost/variant.hpp>
-#include <CGAL/Gps_segment_traits_2.h>
-#include <CGAL/General_polygon_set_2.h>
-#include <libqhull_r/qhull_ra.h>  // Add QHULL header
-
-typedef CGAL::Simple_cartesian<double> Kernel; // Using Simple Geometry Kernel
-typedef CGAL::Polyhedron_3<Kernel> Polyhedron;
-typedef CGAL::Vector_3<Kernel> Vector_3;
-typedef CGAL::Point_3<Kernel> Point_3;
-typedef Kernel::Plane_3 Plane_3;
-typedef CGAL::Aff_transformation_3<Kernel> Transformation;
-typedef CGAL::Polygon_2<Kernel> Polygon_2;
-typedef Kernel::Point_2 Point_2;
-typedef CGAL::Gps_segment_traits_2<Kernel> Traits_2;
-typedef CGAL::General_polygon_set_2<Traits_2> Polygon_set_2;
-typedef Traits_2::Polygon_2 General_polygon_2;
-typedef CGAL::Polygon_with_holes_2<Kernel> Polygon_with_holes_2;  // Add this line
 
 namespace nas {
 

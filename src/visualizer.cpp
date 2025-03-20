@@ -25,7 +25,7 @@
 
 namespace nas {
 
-void Visualizer::show_plane(const Plane& plane, double size) {
+void Visualizer::show_plane(const Plane_3& plane, double size) {
     // Create plane source
     auto planeSource = vtkSmartPointer<vtkPlaneSource>::New();
     planeSource->SetCenter(0, 0, 0);

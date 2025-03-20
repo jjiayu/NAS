@@ -1,16 +1,9 @@
-#ifndef UTILS_HPP
-#define UTILS_HPP
+#ifndef NAS_UTILS_HPP
+#define NAS_UTILS_HPP
 
-#include <CGAL/Simple_cartesian.h>
-#include <CGAL/Polyhedron_3.h>
+#include "types.hpp"
 #include <vector>
-
-typedef CGAL::Simple_cartesian<double> Kernel;
-typedef CGAL::Polyhedron_3<Kernel> Polyhedron;
-typedef Kernel::Point_3 Point_3;
-typedef Kernel::Vector_3 Vector_3;
-typedef Kernel::Plane_3 Plane_3;
-typedef CGAL::Aff_transformation_3<Kernel> Transformation;
+#include <string>
 
 namespace nas {
 

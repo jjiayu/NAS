@@ -1,25 +1,15 @@
 #include "tree.hpp"
-#include "constants.hpp"
-#include <CGAL/Simple_cartesian.h>
-#include <CGAL/Polyhedron_3.h>
+#include "types.hpp"
 #include <CGAL/IO/Polyhedron_iostream.h>
 #include <CGAL/IO/polygon_mesh_io.h>
-#include <CGAL/Aff_transformation_3.h>
-#include <CGAL/aff_transformation_tags.h>  // For TRANSLATION tag
-#include <CGAL/convex_hull_3.h>  // Add this instead of minkowski_sum_3
-#include <CGAL/intersections.h>  // For intersection operations
+#include <CGAL/convex_hull_3.h>
+#include <CGAL/intersections.h>
 #include <CGAL/Polygon_mesh_processing/corefinement.h>
 #include <CGAL/Polygon_mesh_processing/triangulate_faces.h>
-#include <CGAL/Surface_mesh.h>
 #include <fstream>
 #include "utils.hpp"
 #include <algorithm>
 #include "visualizer.hpp"
-
-typedef CGAL::Simple_cartesian<double> Kernel;
-typedef CGAL::Polyhedron_3<Kernel> Polyhedron;
-typedef CGAL::Aff_transformation_3<Kernel> Transformation;
-typedef Kernel::Plane_3 Plane_3;
 
 namespace nas {
 
@@ -125,10 +115,9 @@ void Tree::expand_to_depth(int target_depth) {
 std::vector<Node*> Tree::get_children(Node* parent) {
     std::vector<Node*> children;
 
-    // Compute minkowski sum
+    // Step 1: Compute minkowski sum based on the patch vertices and the base polytope
     Polyhedron base_polytope = parent->stance_foot == 0 ? rf_in_lf_polytope : lf_in_rf_polytope;
     Polyhedron P_union = minkowski_sum(parent->patch_vertices, base_polytope);
-    // Visualizer::show_polyhedron(P_union); //Visualize the union of all transformed polytopes
 
     // Example: create two children for each node
     for (int i = 0; i < 2; ++i) {

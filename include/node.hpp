@@ -1,16 +1,9 @@
+#ifndef NAS_NODE_HPP
+#define NAS_NODE_HPP
+
+#include "types.hpp"
 #include <vector>
-#ifndef NODE_HPP
-#define NODE_HPP
-
-#include <CGAL/Simple_cartesian.h>
-#include <CGAL/Polyhedron_3.h>
-
-using namespace std;
-
-typedef CGAL::Simple_cartesian<double> Kernel;
-typedef CGAL::Polyhedron_3<Kernel> Polyhedron;
-typedef Kernel::Point_3 Point_3;
-typedef Kernel::Vector_3 Vector_3;
+#include <memory>
 
 namespace nas {
 

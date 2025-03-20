@@ -1,5 +1,10 @@
 cmake_minimum_required(VERSION 3.15)
 
+# Set build type to Release if not specified
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release)
+endif()
+
 project(
   nas
   VERSION 1.0
@@ -12,9 +17,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Set Homebrew paths for Apple Silicon
 set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "/opt/homebrew/opt/cgal")
-set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "/opt/homebrew/opt/eigen")
 set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "/opt/homebrew/opt/vtk@9.2")
-set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "/opt/homebrew/opt/qhull")
 
 # Find required packages
 find_package(CGAL REQUIRED)
@@ -28,13 +31,9 @@ find_package(VTK 9.2 REQUIRED COMPONENTS
   RenderingFreeType
 )
 
-# Find Eigen3 (Mac Silicon specific)
-find_package(Eigen3 3.3 REQUIRED NO_MODULE)
-
 # Add the include directory
 include_directories(include)
 include_directories(${VTK_INCLUDE_DIRS})
-include_directories(${EIGEN3_INCLUDE_DIR})
 include_directories("/opt/homebrew/include")  # For CGAL headers
 
 # Add library with source files
@@ -47,7 +46,6 @@ add_library(visualizer_lib src/visualizer.cpp)
 target_link_libraries(tree_lib PRIVATE utils_lib node_lib ${VTK_LIBRARIES})
 target_link_libraries(utils_lib PRIVATE 
     ${VTK_LIBRARIES}
-    /opt/homebrew/lib/libqhull_r.dylib
     visualizer_lib
     CGAL::CGAL
 )
@@ -67,7 +65,6 @@ target_link_libraries(nas_plan PRIVATE
     visualizer_lib
     CGAL::CGAL
     ${VTK_LIBRARIES}
-    Eigen3::Eigen
 )
 
 # Enable VTK modules

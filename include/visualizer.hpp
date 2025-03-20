@@ -1,30 +1,17 @@
-#ifndef VISUALIZER_HPP
-#define VISUALIZER_HPP
+#ifndef NAS_VISUALIZER_HPP
+#define NAS_VISUALIZER_HPP
 
-#include <CGAL/Simple_cartesian.h>
+#include "types.hpp"
 #include <CGAL/Surface_mesh.h>
-#include <CGAL/Polygon_2.h>
-#include <CGAL/Polyhedron_3.h>
-#include <CGAL/Point_3.h>
-#include <CGAL/Plane_3.h>
 #include <vector>
-
-typedef CGAL::Simple_cartesian<double> Kernel;
-typedef Kernel::Point_3 Point;
-typedef CGAL::Surface_mesh<Point> Mesh;
-typedef Kernel::Plane_3 Plane;
-typedef Kernel::Vector_3 Vector;
-typedef CGAL::Polyhedron_3<Kernel> Polyhedron;
-typedef CGAL::Polygon_2<Kernel> Polygon_2;
-typedef CGAL::Point_3<Kernel> Point_3;
-typedef CGAL::Plane_3<Kernel> Plane_3;
-typedef Kernel::Point_2 Point_2;
 
 namespace nas {
 
+typedef CGAL::Surface_mesh<Point_3> Mesh;
+
 class Visualizer {
 public:
-    static void show_plane(const Plane& plane, double size = 5.0);
+    static void show_plane(const Plane_3& plane, double size = 5.0);
     static void show_polyhedron(const Polyhedron& P);
     static void show_scene(const Plane_3& plane, const Polyhedron& polytope, const Polyhedron& intersection_polygon);
     static void show_2d_polygon(const Polygon_2& polygon);
