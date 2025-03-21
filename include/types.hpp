@@ -1,5 +1,4 @@
-#ifndef NAS_TYPES_HPP
-#define NAS_TYPES_HPP
+#pragma once
 
 #include <CGAL/Simple_cartesian.h>
 #include <CGAL/Polyhedron_3.h>
@@ -29,6 +28,4 @@ typedef CGAL::General_polygon_set_2<Traits_2> Polygon_set_2;
 typedef Traits_2::Polygon_2 General_polygon_2;
 typedef CGAL::Polygon_with_holes_2<Kernel> Polygon_with_holes_2;
 
-} // namespace nas
-
-#endif // NAS_TYPES_HPP 
+} // namespace nas 

@@ -1,5 +1,4 @@
-#ifndef NAS_UTILS_HPP
-#define NAS_UTILS_HPP
+#pragma once
 
 #include "types.hpp"
 #include <vector>
@@ -25,5 +24,3 @@ void polytope_surf_intersection(const std::vector<Point_3>& surf_pts, const Poly
 Transformation create_transfomation_to_surface_center(const std::vector<Point_3>& surf_pts, const Plane_3& plane);
 
 } // namespace nas
-
-#endif

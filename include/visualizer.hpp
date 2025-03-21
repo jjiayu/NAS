@@ -1,5 +1,4 @@
-#ifndef NAS_VISUALIZER_HPP
-#define NAS_VISUALIZER_HPP
+#pragma once
 
 #include "types.hpp"
 #include <CGAL/Surface_mesh.h>
@@ -21,5 +20,3 @@ public:
 };
 
 } // namespace nas
-
-#endif

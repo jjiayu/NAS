@@ -1,5 +1,4 @@
-#ifndef NAS_NODE_HPP
-#define NAS_NODE_HPP
+#pragma once
 
 #include "types.hpp"
 #include <vector>
@@ -21,5 +20,3 @@ namespace nas {
     };
 
 }
-
-#endif // NODE_HPP

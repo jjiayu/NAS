@@ -1,7 +1,6 @@
 // include/prob_data.hpp
 
-#ifndef NAS_TREE_HPP
-#define NAS_TREE_HPP
+#pragma once
 
 #include "types.hpp"
 #include <vector>
@@ -48,5 +47,3 @@ public:
 };
 
 } // namespace nas
-
-#endif // NAS_TREE_HPP

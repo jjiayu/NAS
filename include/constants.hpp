@@ -1,5 +1,4 @@
-#ifndef NAS_CONSTANTS_HPP
-#define NAS_CONSTANTS_HPP
+#pragma once
 
 #include "types.hpp"
 
@@ -58,5 +57,3 @@ const std::vector<std::vector<Point_3>> surf_list = {
 };
 
 }
-
-#endif // NAS_CONSTANTS_HPP
