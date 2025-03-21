@@ -40,16 +40,27 @@ include_directories("/opt/homebrew/include")  # For CGAL headers
 add_library(utils_lib src/utils.cpp)
 add_library(node_lib src/node.cpp)
 add_library(tree_lib src/tree.cpp)
+add_library(geometry_lib src/geometry.cpp)
+add_library(surface_lib src/surface.cpp)
 add_library(visualizer_lib src/visualizer.cpp)
 
 # Set library dependencies
-target_link_libraries(tree_lib PRIVATE utils_lib node_lib ${VTK_LIBRARIES})
+target_link_libraries(tree_lib PRIVATE utils_lib node_lib surface_lib ${VTK_LIBRARIES})
 target_link_libraries(utils_lib PRIVATE 
     ${VTK_LIBRARIES}
     visualizer_lib
     CGAL::CGAL
 )
 target_link_libraries(visualizer_lib PRIVATE 
+    ${VTK_LIBRARIES}
+    CGAL::CGAL
+)
+target_link_libraries(geometry_lib PRIVATE
+    CGAL::CGAL
+)
+target_link_libraries(surface_lib PRIVATE 
+    utils_lib
+    geometry_lib
     ${VTK_LIBRARIES}
     CGAL::CGAL
 )
@@ -61,6 +72,7 @@ add_executable(nas_plan src/nas_plan.cpp)
 target_link_libraries(nas_plan PRIVATE 
     node_lib
     tree_lib
+    surface_lib
     utils_lib
     visualizer_lib
     CGAL::CGAL

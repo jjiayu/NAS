@@ -98,6 +98,9 @@
         "thread": "cpp",
         "bit": "cpp",
         "chrono": "cpp",
-        "stdfloat": "cpp"
+        "stdfloat": "cpp",
+        "span": "cpp",
+        "ranges": "cpp",
+        "text_encoding": "cpp"
     }
 }

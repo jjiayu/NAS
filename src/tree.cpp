@@ -35,6 +35,11 @@ Tree::Tree() {
         goal_stance_foot == 1 ? "RIGHT FOOT (1)" : "INVALID") << std::endl;
     std::cout << "  - Goal Location (World Frame): " << goal_location << std::endl;
 
+    // Creat the Surfaces List
+    for (const auto& surf_pts : surf_list) {
+        surfaces.push_back(Surface(surf_pts));
+    }
+
     // Initialize the root node
     Node* root_ptr = new Node();
     root_ptr->parent_ptr = nullptr;

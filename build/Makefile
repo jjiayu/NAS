@@ -156,6 +156,32 @@ tree_lib/fast:
 .PHONY : tree_lib/fast
 
 #=============================================================================
+# Target rules for targets named geometry_lib
+
+# Build rule for target.
+geometry_lib: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 geometry_lib
+.PHONY : geometry_lib
+
+# fast build rule for target.
+geometry_lib/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/geometry_lib.dir/build.make CMakeFiles/geometry_lib.dir/build
+.PHONY : geometry_lib/fast
+
+#=============================================================================
+# Target rules for targets named surface_lib
+
+# Build rule for target.
+surface_lib: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 surface_lib
+.PHONY : surface_lib
+
+# fast build rule for target.
+surface_lib/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/surface_lib.dir/build.make CMakeFiles/surface_lib.dir/build
+.PHONY : surface_lib/fast
+
+#=============================================================================
 # Target rules for targets named visualizer_lib
 
 # Build rule for target.
@@ -180,6 +206,30 @@ nas_plan: cmake_check_build_system
 nas_plan/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/nas_plan.dir/build.make CMakeFiles/nas_plan.dir/build
 .PHONY : nas_plan/fast
+
+src/geometry.o: src/geometry.cpp.o
+.PHONY : src/geometry.o
+
+# target to build an object file
+src/geometry.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/geometry_lib.dir/build.make CMakeFiles/geometry_lib.dir/src/geometry.cpp.o
+.PHONY : src/geometry.cpp.o
+
+src/geometry.i: src/geometry.cpp.i
+.PHONY : src/geometry.i
+
+# target to preprocess a source file
+src/geometry.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/geometry_lib.dir/build.make CMakeFiles/geometry_lib.dir/src/geometry.cpp.i
+.PHONY : src/geometry.cpp.i
+
+src/geometry.s: src/geometry.cpp.s
+.PHONY : src/geometry.s
+
+# target to generate assembly for a file
+src/geometry.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/geometry_lib.dir/build.make CMakeFiles/geometry_lib.dir/src/geometry.cpp.s
+.PHONY : src/geometry.cpp.s
 
 src/nas_plan.o: src/nas_plan.cpp.o
 .PHONY : src/nas_plan.o
@@ -228,6 +278,30 @@ src/node.s: src/node.cpp.s
 src/node.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/node_lib.dir/build.make CMakeFiles/node_lib.dir/src/node.cpp.s
 .PHONY : src/node.cpp.s
+
+src/surface.o: src/surface.cpp.o
+.PHONY : src/surface.o
+
+# target to build an object file
+src/surface.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/surface_lib.dir/build.make CMakeFiles/surface_lib.dir/src/surface.cpp.o
+.PHONY : src/surface.cpp.o
+
+src/surface.i: src/surface.cpp.i
+.PHONY : src/surface.i
+
+# target to preprocess a source file
+src/surface.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/surface_lib.dir/build.make CMakeFiles/surface_lib.dir/src/surface.cpp.i
+.PHONY : src/surface.cpp.i
+
+src/surface.s: src/surface.cpp.s
+.PHONY : src/surface.s
+
+# target to generate assembly for a file
+src/surface.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/surface_lib.dir/build.make CMakeFiles/surface_lib.dir/src/surface.cpp.s
+.PHONY : src/surface.cpp.s
 
 src/tree.o: src/tree.cpp.o
 .PHONY : src/tree.o
@@ -309,17 +383,25 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... geometry_lib"
 	@echo "... nas_plan"
 	@echo "... node_lib"
+	@echo "... surface_lib"
 	@echo "... tree_lib"
 	@echo "... utils_lib"
 	@echo "... visualizer_lib"
+	@echo "... src/geometry.o"
+	@echo "... src/geometry.i"
+	@echo "... src/geometry.s"
 	@echo "... src/nas_plan.o"
 	@echo "... src/nas_plan.i"
 	@echo "... src/nas_plan.s"
 	@echo "... src/node.o"
 	@echo "... src/node.i"
 	@echo "... src/node.s"
+	@echo "... src/surface.o"
+	@echo "... src/surface.i"
+	@echo "... src/surface.s"
 	@echo "... src/tree.o"
 	@echo "... src/tree.i"
 	@echo "... src/tree.s"

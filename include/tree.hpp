@@ -3,6 +3,7 @@
 #pragma once
 
 #include "types.hpp"
+#include "surface.hpp"
 #include <vector>
 #include <string>
 #include "constants.hpp"
@@ -28,6 +29,9 @@ public:
 
     // Number of steps
     int num_steps;
+
+    // Surfaces
+    std::vector<Surface> surfaces;
 
     // Variables representing the Tree (Breadth First Search Expansion)
     std::vector<std::vector<Node*>> layers;  // Store nodes by layer

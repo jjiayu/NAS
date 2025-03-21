@@ -137,6 +137,8 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/utils_lib.dir/DependInfo.cmake"
   "CMakeFiles/node_lib.dir/DependInfo.cmake"
   "CMakeFiles/tree_lib.dir/DependInfo.cmake"
+  "CMakeFiles/geometry_lib.dir/DependInfo.cmake"
+  "CMakeFiles/surface_lib.dir/DependInfo.cmake"
   "CMakeFiles/visualizer_lib.dir/DependInfo.cmake"
   "CMakeFiles/nas_plan.dir/DependInfo.cmake"
   )

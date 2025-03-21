@@ -39,27 +39,6 @@ std::vector<Polyhedron> convert_surf_pts_to_polyhedron(std::vector<std::vector<P
     return polyhedra; // Return the vector of polyhedra
 }
 
-Vector_3 get_centroid(const Polyhedron& polyhedron) {
-    Vector_3 centroid_vector(0.0, 0.0, 0.0); // Initialize a Vector_3 for the centroid
-    int vertex_count = 0;
-
-    for (auto v = polyhedron.vertices_begin(); v != polyhedron.vertices_end(); ++v) {
-        const Point_3& point = v->point();
-        centroid_vector = centroid_vector + Vector_3(point.x(), point.y(), point.z()); // Accumulate the vector
-        vertex_count++;
-    }
-
-    // Calculate the centroid as a Vector_3
-    if (vertex_count > 0) {
-        return Vector_3(centroid_vector.x() / vertex_count, 
-                        centroid_vector.y() / vertex_count, 
-                        centroid_vector.z() / vertex_count);
-    } else {
-        // Handle the case where there are no vertices
-        return Vector_3(0.0, 0.0, 0.0); // Or throw an exception, or handle as needed
-    }
-}
-
 Vector_3 get_centroid(const std::vector<Point_3>& points) {
     if (points.empty()) {
         return Vector_3(0, 0, 0);
@@ -433,23 +412,6 @@ void polytope_surf_intersection(const std::vector<Point_3>& surf_pts, const Poly
         std::cout << "Intersection polygon:" << std::endl;
         Visualizer::show_polyhedron(intersection_3d);
     }
-}
-
-Vector_3 compute_centroid(const std::vector<Point_3>& points) {
-    if (points.empty()) {
-        return Vector_3(0.0, 0.0, 0.0);  // Return zero vector for empty input
-    }
-
-    Vector_3 centroid(0.0, 0.0, 0.0);
-    for (const Point_3& point : points) {
-        centroid = centroid + Vector_3(point.x(), point.y(), point.z());
-    }
-
-    return Vector_3(
-        centroid.x() / points.size(),
-        centroid.y() / points.size(),
-        centroid.z() / points.size()
-    );
 }
 
 } // namespace nas
