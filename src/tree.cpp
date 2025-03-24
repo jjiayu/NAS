@@ -22,6 +22,12 @@ Tree::Tree() {
     load_obj(rf_in_lf_path, rf_in_lf_polytope);
     load_obj(lf_in_rf_path, lf_in_rf_polytope);
 
+    // Creat the Surfaces List
+    std::cout << "\n[ Generate Environment Inforamtion (Get Surface Parameters) ]" << std::endl;
+    for (int i = 0; i < surf_list.size(); ++i) {
+        surfaces.push_back(Surface(surf_list[i], i));
+    }
+
     // Initialize parameters
     std::cout << "\n[ Initializing Parameters ]" << std::endl;
     node_counter = 0;
@@ -29,16 +35,11 @@ Tree::Tree() {
     goal_stance_foot = stance_foot_at_goal;
     goal_location = get_centroid(surf_list.back()) + goal_offset;
     std::cout << "  - Node counter: " << node_counter << std::endl;
-    std::cout << "  - Total steps: " << num_steps << std::endl;
+    std::cout << "  - Total number of steps: " << num_steps << std::endl;
     std::cout << "  - Goal Stance Foot: " << 
         (goal_stance_foot == 0 ? "LEFT FOOT (0)" : 
-        goal_stance_foot == 1 ? "RIGHT FOOT (1)" : "INVALID") << std::endl;
+         goal_stance_foot == 1 ? "RIGHT FOOT (1)" : "INVALID") << std::endl;
     std::cout << "  - Goal Location (World Frame): " << goal_location << std::endl;
-
-    // Creat the Surfaces List
-    for (const auto& surf_pts : surf_list) {
-        surfaces.push_back(Surface(surf_pts));
-    }
 
     // Initialize the root node
     Node* root_ptr = new Node();
@@ -101,6 +102,7 @@ std::vector<Node*> Tree::get_children(Node* parent) {
     std::vector<Node*> children;
 
     // Step 1: Compute minkowski sum based on the patch vertices and the base polytope
+    // ToDO: make sure we get the correct base polytop
     Polyhedron base_polytope = parent->stance_foot == 0 ? rf_in_lf_polytope : lf_in_rf_polytope;
     Polyhedron P_union = minkowski_sum(parent->patch_vertices, base_polytope);
 
