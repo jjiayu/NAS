@@ -20,7 +20,6 @@ void load_obj(const std::string& filename, Polyhedron& polyhedron) {
     std::cout << "Successfully loaded polytope from: " << filename << std::endl;
 }
 
-
 Transformation create_transfomation_to_surface_center(const std::vector<Point_3>& surf_pts, const Plane_3& plane) {
     // 1. Get and normalize the normal vector (Z-axis)
     Vector_3 normal = plane.orthogonal_vector();

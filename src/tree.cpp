@@ -107,17 +107,30 @@ std::vector<Node*> Tree::get_children(Node* parent) {
     Polyhedron base_polytope = parent->stance_foot == 0 ? rf_in_lf_polytope : lf_in_rf_polytope;
     Polyhedron P_union = minkowski_sum(parent->patch_vertices, base_polytope);
 
-    // Example: create two children for each node
-    for (int i = 0; i < 2; ++i) {
-        Node* child = new Node();
-        child->parent_ptr = parent;
-        child->node_id = node_counter++;
-        // TODO(jiayu): Update patch vertices computation
-        child->patch_vertices = parent->patch_vertices;
-        child->stance_foot = (parent->stance_foot == 0) ? 1 : 0;  // Alternate feet
+    // Loop over all surfaces
+    for (const auto& surface : surfaces) {
+        // Compute intersection between P_union and current surface
+        std::vector<Point_3> intersection_points;
+        intersection_points = compute_polytope_plane_intersection(surface.plane, P_union);
         
-        children.push_back(child);
+        // Print number of intersection points
+        std::cout << "Number of intersection points: " << intersection_points.size() << std::endl;
+        
+        // Visualize the intersection
+        // Visualizer::show_scene(surface.plane, P_union, intersection_points);
     }
+
+    // // Example: create two children for each node
+    // for (int i = 0; i < 2; ++i) {
+    //     Node* child = new Node();
+    //     child->parent_ptr = parent;
+    //     child->node_id = node_counter++;
+    //     // TODO(jiayu): Update patch vertices computation
+    //     child->patch_vertices = parent->patch_vertices;
+    //     child->stance_foot = (parent->stance_foot == 0) ? 1 : 0;  // Alternate feet
+        
+    //     children.push_back(child);
+    // }
     return children;
 }
 
