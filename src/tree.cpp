@@ -9,6 +9,7 @@
 #include <CGAL/intersections.h>
 #include <CGAL/Polygon_mesh_processing/corefinement.h>
 #include <CGAL/Polygon_mesh_processing/triangulate_faces.h>
+#include <vtkRendererCollection.h>
 #include <fstream>
 #include <algorithm>
 
@@ -116,8 +117,27 @@ std::vector<Node*> Tree::get_children(Node* parent) {
         // Print number of intersection points
         std::cout << "Number of intersection points: " << intersection_points.size() << std::endl;
         
-        // Visualize the intersection
-        // Visualizer::show_scene(surface.plane, P_union, intersection_points);
+        // Create visualization window and get renderer
+        std::string window_title = "Surface " + std::to_string(surface.surf_id) + 
+                                 " - " + std::to_string(intersection_points.size()) + " intersection points";
+        auto renderWindow = Visualizer::create_figure(window_title);
+        auto renderer = renderWindow->GetRenderers()->GetFirstRenderer();
+        renderer->SetBackground(1.0, 1.0, 1.0);  // White background
+
+        // Add coordinate axes
+        Visualizer::add_coordinate_axes(renderer);
+
+        // Add the plane (light blue)
+        Visualizer::add_plane(renderer, surface.plane, (double[]){0.7, 0.9, 1.0}, 0.3);
+
+        // Add P_union (pink)
+        Visualizer::add_polyhedron(renderer, P_union, (double[]){1.0, 0.7, 0.8}, 0.5);
+
+        // Add intersection points (red)
+        Visualizer::add_points(renderer, intersection_points, (double[]){1.0, 0.0, 0.0}, 0.05);  // Slightly larger points
+
+        // Show the visualization
+        Visualizer::show(renderWindow);
     }
 
     // // Example: create two children for each node
