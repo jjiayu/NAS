@@ -14,8 +14,13 @@
 
 namespace nas {
 
+class Surface;
+
 std::vector<Point_2> transform_3d_points_to_surface_plane(const std::vector<Point_3>& points, const Transformation& transformation);
 std::vector<Point_3> transform_2d_points_to_world(const std::vector<Point_2>& points, const Transformation& inverse_transformation);
 Vector_3 get_centroid(const std::vector<Point_3>& points);
+Polyhedron minkowski_sum(const std::vector<Vector_3>& patch_vertices, const Polyhedron& polytope);
+
+std::vector<Point_3> compute_polytope_plane_intersection(const Plane_3& plane, const Polyhedron& polytope);
 
 } // namespace nas

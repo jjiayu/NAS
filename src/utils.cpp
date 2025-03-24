@@ -20,29 +20,6 @@ void load_obj(const std::string& filename, Polyhedron& polyhedron) {
     std::cout << "Successfully loaded polytope from: " << filename << std::endl;
 }
 
-Polyhedron minkowski_sum(const std::vector<Vector_3>& patch_vertices, 
-                         const Polyhedron& polytope) {
-    // Store all vertices of the transformed polytopes
-    std::vector<Point_3> all_vertices;
-
-    // Build the list of all transformed polytopes and collect vertices
-    for (size_t i = 0; i < patch_vertices.size(); ++i) {
-        Transformation translation(CGAL::TRANSLATION, patch_vertices[i]);
-        
-        // Transform each vertex of the polytope and collect them
-        for (auto v = polytope.vertices_begin(); v != polytope.vertices_end(); ++v) {
-            Point_3 transformed_point = translation(v->point());
-            all_vertices.push_back(transformed_point);
-        }
-    }
-
-    // Compute convex hull of all vertices
-    Polyhedron P_union;
-    CGAL::convex_hull_3(all_vertices.begin(), all_vertices.end(), P_union);
-    
-    return P_union;
-}
-
 
 Transformation create_transfomation_to_surface_center(const std::vector<Point_3>& surf_pts, const Plane_3& plane) {
     // 1. Get and normalize the normal vector (Z-axis)
