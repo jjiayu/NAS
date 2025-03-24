@@ -16,5 +16,6 @@ namespace nas {
 
 std::vector<Point_2> transform_3d_points_to_surface_plane(const std::vector<Point_3>& points, const Transformation& transformation);
 std::vector<Point_3> transform_2d_points_to_world(const std::vector<Point_2>& points, const Transformation& inverse_transformation);
+Vector_3 get_centroid(const std::vector<Point_3>& points);
 
 } // namespace nas

@@ -4,6 +4,7 @@
 
 #include "types.hpp"
 #include "surface.hpp"
+#include "geometry.hpp"
 #include <vector>
 #include <string>
 #include "constants.hpp"

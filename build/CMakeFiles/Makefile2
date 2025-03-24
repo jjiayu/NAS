@@ -166,6 +166,7 @@ CMakeFiles/node_lib.dir/clean:
 # All Build rule for target.
 CMakeFiles/tree_lib.dir/all: CMakeFiles/utils_lib.dir/all
 CMakeFiles/tree_lib.dir/all: CMakeFiles/node_lib.dir/all
+CMakeFiles/tree_lib.dir/all: CMakeFiles/geometry_lib.dir/all
 CMakeFiles/tree_lib.dir/all: CMakeFiles/surface_lib.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/tree_lib.dir/build.make CMakeFiles/tree_lib.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/tree_lib.dir/build.make CMakeFiles/tree_lib.dir/build

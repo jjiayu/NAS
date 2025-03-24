@@ -20,4 +20,17 @@ std::vector<Point_3> transform_2d_points_to_world(const std::vector<Point_2>& po
     }
     return transformed_points;
 }
+
+Vector_3 get_centroid(const std::vector<Point_3>& points) {
+    if (points.empty()) {
+        return Vector_3(0, 0, 0);
+    }
+
+    Vector_3 sum(0, 0, 0);
+    for (const auto& point : points) {
+        sum = sum + (point - CGAL::ORIGIN);
+    }
+    return sum / static_cast<double>(points.size());
+}
+
 } // namespace nas

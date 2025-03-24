@@ -20,37 +20,6 @@ void load_obj(const std::string& filename, Polyhedron& polyhedron) {
     std::cout << "Successfully loaded polytope from: " << filename << std::endl;
 }
 
-std::vector<Polyhedron> convert_surf_pts_to_polyhedron(std::vector<std::vector<Point_3>> surface_list) {
-    std::vector<Polyhedron> polyhedra; // Changed to store polyhedra
-    
-    for (const auto& surface : surface_list) {
-        // Get four points from the surface
-        Point_3 p1(surface[0][0], surface[0][1], surface[0][2]); // bottom left
-        Point_3 p2(surface[1][0], surface[1][1], surface[1][2]); // bottom right
-        Point_3 p3(surface[2][0], surface[2][1], surface[2][2]); // top right
-        Point_3 p4(surface[3][0], surface[3][1], surface[3][2]); // top left
-        
-        // Create a polyhedron from the four points
-        Polyhedron polyhedron;
-        polyhedron.make_tetrahedron(p1, p2, p3, p4); // Assuming a tetrahedron for the surface
-        polyhedra.push_back(polyhedron);
-    }
-    
-    return polyhedra; // Return the vector of polyhedra
-}
-
-Vector_3 get_centroid(const std::vector<Point_3>& points) {
-    if (points.empty()) {
-        return Vector_3(0, 0, 0);
-    }
-
-    Vector_3 sum(0, 0, 0);
-    for (const auto& point : points) {
-        sum = sum + (point - CGAL::ORIGIN);
-    }
-    return sum / static_cast<double>(points.size());
-}
-
 Polyhedron minkowski_sum(const std::vector<Vector_3>& patch_vertices, 
                          const Polyhedron& polytope) {
     // Store all vertices of the transformed polytopes

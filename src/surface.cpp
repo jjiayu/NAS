@@ -50,12 +50,13 @@ Surface::Surface(const std::vector<Point_3>& points, int& surface_idx) {
     std::cout << "    [" << std::setw(10) << 0.0 << " " << std::setw(10) << 0.0 << " " << std::setw(10) << 0.0 << " " << std::setw(10) << 1.0 << "]" << std::endl;
     std::cout << "  - 3D Vertices:" << std::endl;
     for (const auto& vertex : vertices_3d) {
-        std::cout << "    " << vertex << std::endl;
+        std::cout << "    (" << std::setw(8) << vertex.x() << ", " 
+                             << std::setw(8) << vertex.y() << ", " 
+                             << std::setw(8) << vertex.z() << ")" << std::endl;
     }
 }
 
 void Surface::establish_surface_coordinate_system(const std::vector<Point_3>& points) {
-    
     // 1. Find the point furthest from centroid for robust X-axis
     double max_dist = 0;
     Vector_3 x_axis_candidate;

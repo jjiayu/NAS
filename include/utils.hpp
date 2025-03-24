@@ -9,10 +9,6 @@ namespace nas {
 
 void load_obj(const std::string& filename, Polyhedron& polyhedron);
 
-std::vector<Polyhedron> convert_surf_pts_to_polyhedron(std::vector<std::vector<Point_3>> surface_list);
-
-Vector_3 get_centroid(const std::vector<Point_3>& points);
-
 Vector_3 compute_centroid(const std::vector<Point_3>& points);
 
 Polyhedron minkowski_sum(const std::vector<Vector_3>& patch_vertices, 

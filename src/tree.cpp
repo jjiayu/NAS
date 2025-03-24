@@ -2,6 +2,7 @@
 #include "types.hpp"
 #include "visualizer.hpp"
 #include "utils.hpp"
+#include "geometry.hpp"
 #include <CGAL/IO/Polyhedron_iostream.h>
 #include <CGAL/IO/polygon_mesh_io.h>
 #include <CGAL/convex_hull_3.h>
@@ -15,7 +16,7 @@ namespace nas {
 
 // Tree Constructor
 Tree::Tree() {
-    std::cout << "\n=== Initializing Tree Generation Module ===\n" << std::endl;
+    std::cout << "\n=== Initialization code ===\n" << std::endl;
 
     // TODO(jiayu): Change to antecedant polytopes
     std::cout << "[ Loading Polytopes ]" << std::endl;
@@ -95,7 +96,7 @@ void Tree::expand(int target_depth) {
         }
     }
 
-    std::cout << "\n=== Tree Expansion Complete ===\n" << std::endl;
+    std::cout << "\n=== Initialization code finished ===\n" << std::endl;
 }
 
 std::vector<Node*> Tree::get_children(Node* parent) {

@@ -45,7 +45,7 @@ add_library(surface_lib src/surface.cpp)
 add_library(visualizer_lib src/visualizer.cpp)
 
 # Set library dependencies
-target_link_libraries(tree_lib PRIVATE utils_lib node_lib surface_lib ${VTK_LIBRARIES})
+target_link_libraries(tree_lib PRIVATE utils_lib node_lib surface_lib geometry_lib ${VTK_LIBRARIES})
 target_link_libraries(utils_lib PRIVATE 
     ${VTK_LIBRARIES}
     visualizer_lib
