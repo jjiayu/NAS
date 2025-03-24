@@ -108,36 +108,52 @@ std::vector<Node*> Tree::get_children(Node* parent) {
     Polyhedron base_polytope = parent->stance_foot == 0 ? rf_in_lf_polytope : lf_in_rf_polytope;
     Polyhedron P_union = minkowski_sum(parent->patch_vertices, base_polytope);
 
-    // Loop over all surfaces
+    // Step 2: Loop over all surfaces
     for (const auto& surface : surfaces) {
-        // Compute intersection between P_union and current surface
-        std::vector<Point_3> intersection_points;
-        intersection_points = compute_polytope_plane_intersection(surface.plane, P_union);
-        
+        // Sub-Step 1: Compute intersection between P_union and current surface
+        std::vector<Point_3> polytope_plane_intersect_pts_3d = compute_polytope_plane_intersection(surface.plane, P_union);
+
         // Print number of intersection points
-        std::cout << "Number of intersection points: " << intersection_points.size() << std::endl;
+        std::cout << "Number of intersection points: " << polytope_plane_intersect_pts_3d.size() << std::endl;
         
-        // Create visualization window and get renderer
-        std::string window_title = "Surface " + std::to_string(surface.surf_id) + 
-                                 " - " + std::to_string(intersection_points.size()) + " intersection points";
-        auto renderWindow = Visualizer::create_figure(window_title);
+        // Create 3D visualization
+        Polyhedron polytope_plane_intersect_polygon;        // Create intersection polygon (just for visualization)
+        CGAL::convex_hull_3(polytope_plane_intersect_pts_3d.begin(), polytope_plane_intersect_pts_3d.end(), polytope_plane_intersect_polygon);
+        auto renderWindow = Visualizer::create_figure("3D Visualization"); 
         auto renderer = renderWindow->GetRenderers()->GetFirstRenderer();
-        renderer->SetBackground(1.0, 1.0, 1.0);  // White background
+        Visualizer::add_plane(renderer, surface.plane, (double[]){0.7, 0.9, 1.0}, 0.3); // Add the plane (light blue)
+        Visualizer::add_polyhedron(renderer, P_union, (double[]){1.0, 0.7, 0.8}, 0.5);  // Add P_union (pink)
+        Visualizer::add_polyhedron(renderer, polytope_plane_intersect_polygon, (double[]){0.0, 1.0, 0.0}, 0.7);  // Add intersection polygon (green)
+        Visualizer::add_points(renderer, polytope_plane_intersect_pts_3d, (double[]){1.0, 0.0, 0.0}, 0.05);  // Add intersection points (red)
+        Visualizer::show(renderWindow);        // Show the 3D visualization
 
-        // Add coordinate axes
-        Visualizer::add_coordinate_axes(renderer);
+        // Create first 2D visualization (initial intersection)
+        std::vector<Point_2> polytope_plane_intersect_pts_2d = transform_3d_points_to_surface_plane(polytope_plane_intersect_pts_3d, surface.transform);
+        Polygon_2 polytope_plane_intersect_polygon_2d;
+        CGAL::convex_hull_2(polytope_plane_intersect_pts_2d.begin(), polytope_plane_intersect_pts_2d.end(), std::back_inserter(polytope_plane_intersect_polygon_2d));
 
-        // Add the plane (light blue)
-        Visualizer::add_plane(renderer, surface.plane, (double[]){0.7, 0.9, 1.0}, 0.3);
+        auto renderWindow2D = Visualizer::create_2d_figure("Initial 2D Intersection");
+        auto renderer2D = renderWindow2D->GetRenderers()->GetFirstRenderer();
+        Visualizer::add_2d_polygon(renderer2D, surface.polygon_2d, (double[]){0.0, 0.0, 1.0}, 1.0);  // Surface polygon in blue
+        Visualizer::add_2d_polygon(renderer2D, polytope_plane_intersect_polygon_2d, (double[]){1.0, 0.0, 0.0}, 1.0);  // Intersection polygon in red
+        Visualizer::add_2d_points(renderer2D, polytope_plane_intersect_pts_2d, (double[]){1.0, 0.0, 0.0}, 0.02);  // Points in red
+        Visualizer::show(renderWindow2D);        // Show the initial 2D visualization
 
-        // Add P_union (pink)
-        Visualizer::add_polyhedron(renderer, P_union, (double[]){1.0, 0.7, 0.8}, 0.5);
+        // Compute intersection between polygons
+        Polygon_2 polygon_intersect_res_2d = compute_polygon_intersection(polytope_plane_intersect_polygon_2d, surface.polygon_2d);
 
-        // Add intersection points (red)
-        Visualizer::add_points(renderer, intersection_points, (double[]){1.0, 0.0, 0.0}, 0.05);  // Slightly larger points
+        // Print intersection result
+        std::cout << "\nIntersection Result:" << std::endl;
+        std::cout << "Number of vertices: " << std::distance(polygon_intersect_res_2d.vertices_begin(), 
+                                                             polygon_intersect_res_2d.vertices_end()) << std::endl;
+        std::cout << "Area: " << polygon_intersect_res_2d.area() << std::endl;
 
-        // Show the visualization
-        Visualizer::show(renderWindow);
+        // Create second 2D visualization (final intersection result)
+        auto renderWindow2D_result = Visualizer::create_2d_figure("Final 2D Intersection Result");
+        auto renderer2D_result = renderWindow2D_result->GetRenderers()->GetFirstRenderer();
+        Visualizer::add_2d_polygon(renderer2D_result, surface.polygon_2d, (double[]){0.0, 0.0, 1.0}, 1.0);  // Surface polygon in blue
+        Visualizer::add_2d_polygon(renderer2D_result, polygon_intersect_res_2d, (double[]){1.0, 0.0, 0.0}, 1.0);  // Final intersection polygon in red
+        Visualizer::show(renderWindow2D_result);  // Show the final 2D visualization
     }
 
     // // Example: create two children for each node

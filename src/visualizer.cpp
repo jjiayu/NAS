@@ -28,12 +28,12 @@ namespace nas {
 
 vtkSmartPointer<vtkRenderWindow> Visualizer::create_figure(const std::string& title) {
     // Create renderer and window
-    auto renderer = vtkSmartPointer<vtkRenderer>::New();
-    renderer->SetBackground(0.1, 0.1, 0.1);  // Dark gray background
-    
     auto renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+    renderWindow->SetWindowName(title.c_str());
     renderWindow->SetSize(800, 600);
-    renderWindow->SetWindowName(title.c_str());  // Using SetWindowName instead of SetTitle
+    
+    auto renderer = vtkSmartPointer<vtkRenderer>::New();
+    renderer->SetBackground(1.0, 1.0, 1.0);  // White background
     renderWindow->AddRenderer(renderer);
     
     // Set up camera for better 3D view
@@ -43,6 +43,9 @@ vtkSmartPointer<vtkRenderWindow> Visualizer::create_figure(const std::string& ti
     camera->SetViewUp(0, 0, 1);  // Set Z-axis as up direction
     camera->ParallelProjectionOn();
     camera->SetParallelScale(5.0);
+
+    // Add coordinate axes by default
+    add_coordinate_axes(renderer);
 
     return renderWindow;
 }
@@ -349,6 +352,90 @@ void Visualizer::plot_2d_points_and_polygons(const Polygon_2& surf_polygon, cons
     add_points(renderer, intersection_points, intersection_color, 0.02);
 
     show(renderWindow);
+}
+
+vtkSmartPointer<vtkRenderWindow> Visualizer::create_2d_figure(const std::string& title) {
+    auto renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+    renderWindow->SetSize(800, 800);  // Square window for 2D
+    renderWindow->SetWindowName(title.c_str());
+    
+    auto renderer = vtkSmartPointer<vtkRenderer>::New();
+    renderer->SetBackground(1.0, 1.0, 1.0);  // White background
+    renderWindow->AddRenderer(renderer);
+    
+    // Set up camera for 2D view
+    auto camera = renderer->GetActiveCamera();
+    camera->ParallelProjectionOn();
+    camera->SetPosition(0, 0, 10);  // Move camera further back
+    camera->SetFocalPoint(0, 0, 0);
+    camera->SetViewUp(0, 1, 0);
+    camera->SetParallelScale(4.0);  // Zoom out more
+    
+    return renderWindow;
+}
+
+void Visualizer::add_2d_polygon(vtkRenderer* renderer, const Polygon_2& polygon, const double color[3], double opacity) {
+    auto points = vtkSmartPointer<vtkPoints>::New();
+    auto cells = vtkSmartPointer<vtkCellArray>::New();
+    
+    // Add points and create polygon
+    vtkIdType firstId = 0;
+    vtkIdType prevId = 0;
+    
+    for (auto vertex = polygon.vertices_begin(); vertex != polygon.vertices_end(); ++vertex) {
+        double point[3] = {CGAL::to_double(vertex->x()), CGAL::to_double(vertex->y()), 0.0};
+        vtkIdType id = points->InsertNextPoint(point);
+        
+        if (vertex != polygon.vertices_begin()) {
+            auto line = vtkSmartPointer<vtkLine>::New();
+            line->GetPointIds()->SetId(0, prevId);
+            line->GetPointIds()->SetId(1, id);
+            cells->InsertNextCell(line);
+        }
+        if (vertex == polygon.vertices_begin()) {
+            firstId = id;
+        }
+        prevId = id;
+    }
+    
+    // Close the polygon
+    auto line = vtkSmartPointer<vtkLine>::New();
+    line->GetPointIds()->SetId(0, prevId);
+    line->GetPointIds()->SetId(1, firstId);
+    cells->InsertNextCell(line);
+    
+    // Create the polygon actor
+    auto polyData = vtkSmartPointer<vtkPolyData>::New();
+    polyData->SetPoints(points);
+    polyData->SetLines(cells);
+    
+    auto mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+    mapper->SetInputData(polyData);
+    
+    auto actor = vtkSmartPointer<vtkActor>::New();
+    actor->SetMapper(mapper);
+    actor->GetProperty()->SetColor(color[0], color[1], color[2]);
+    actor->GetProperty()->SetOpacity(opacity);
+    actor->GetProperty()->SetLineWidth(2.0);  // Reduced line width
+    
+    renderer->AddActor(actor);
+}
+
+void Visualizer::add_2d_points(vtkRenderer* renderer, const std::vector<Point_2>& points, const double color[3], double radius) {
+    for (const auto& point : points) {
+        auto sphere = vtkSmartPointer<vtkSphereSource>::New();
+        sphere->SetCenter(CGAL::to_double(point.x()), CGAL::to_double(point.y()), 0.0);
+        sphere->SetRadius(radius);
+        
+        auto mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+        mapper->SetInputConnection(sphere->GetOutputPort());
+        
+        auto actor = vtkSmartPointer<vtkActor>::New();
+        actor->SetMapper(mapper);
+        actor->GetProperty()->SetColor(color[0], color[1], color[2]);
+        
+        renderer->AddActor(actor);
+    }
 }
 
 } // namespace nas 

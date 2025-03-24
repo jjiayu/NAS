@@ -18,6 +18,7 @@
 #include <vtkTextActor.h>
 #include <vtkCamera.h>
 #include <vector>
+#include "types.hpp"
 
 typedef CGAL::Simple_cartesian<double> Kernel;
 typedef Kernel::Point_3 Point_3;
@@ -59,6 +60,11 @@ public:
     static void show_2d_polygon(const Polygon_2& polygon);
     static void show_2d_polygons(const Polygon_2& polygon1, const Polygon_2& polygon2);
     static void plot_2d_points_and_polygons(const Polygon_2& surf_polygon, const Polygon_2& intersection_polygon);
+
+    // New 2D visualization functions
+    static vtkSmartPointer<vtkRenderWindow> create_2d_figure(const std::string& title);
+    static void add_2d_polygon(vtkRenderer* renderer, const Polygon_2& polygon, const double color[3], double opacity);
+    static void add_2d_points(vtkRenderer* renderer, const std::vector<Point_2>& points, const double color[3], double radius);
 };
 
 } // namespace nas

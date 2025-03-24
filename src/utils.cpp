@@ -2,6 +2,7 @@
 #include "tree.hpp"
 #include "constants.hpp"
 #include "visualizer.hpp"
+#include "geometry.hpp"
 #include "types.hpp"
 #include <CGAL/IO/Polyhedron_iostream.h>
 #include <CGAL/IO/polygon_mesh_io.h>
@@ -19,6 +20,8 @@ void load_obj(const std::string& filename, Polyhedron& polyhedron) {
     }
     std::cout << "Successfully loaded polytope from: " << filename << std::endl;
 }
+
+
 
 Transformation create_transfomation_to_surface_center(const std::vector<Point_3>& surf_pts, const Plane_3& plane) {
     // 1. Get and normalize the normal vector (Z-axis)
@@ -71,20 +74,6 @@ Transformation create_transfomation_to_surface_center(const std::vector<Point_3>
     );
 }
 
-// Helper function to check if a point is inside a polygon
-bool is_point_inside_polygon(const Point_2& point, const Polygon_2& polygon) {
-    bool inside = false;
-    auto j = polygon.vertices_end() - 1;
-    
-    for (auto i = polygon.vertices_begin(); i != polygon.vertices_end(); ++i) {
-        if (((i->y() > point.y()) != (j->y() > point.y())) &&
-            (point.x() < (j->x() - i->x()) * (point.y() - i->y()) / (j->y() - i->y()) + i->x())) {
-            inside = !inside;
-        }
-        j = i;
-    }
-    return inside;
-}
 
 // Helper function to compute intersection between two line segments using CGAL
 bool compute_2d_edge_intersection(const Point_2& p1, const Point_2& p2,

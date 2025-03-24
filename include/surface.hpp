@@ -13,8 +13,8 @@ namespace nas {
 class Surface {
 public:
     int surf_id;
-    std::vector<Point_3> vertices_3d;
-    std::vector<Point_2> vertices_2d;
+    std::vector<Point_3> vertices_3d; //sorted counterclockwise
+    std::vector<Point_2> vertices_2d; //sorted counterclockwise
     Plane_3 plane;
     Vector_3 norm;
     Vector_3 centroid;
