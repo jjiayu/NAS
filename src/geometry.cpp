@@ -163,7 +163,6 @@ std::vector<Point_2> compute_2d_polygon_intersection(const std::vector<Point_2>&
         std::cout << "Points after edge " << edge_count << ": " << output_list.size() << std::endl;
         edge_count++;
     }
-
     return output_list;
 }
 
