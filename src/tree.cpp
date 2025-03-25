@@ -35,7 +35,7 @@ Tree::Tree() {
     node_counter = 0;
     num_steps = total_num_steps;
     goal_stance_foot = stance_foot_at_goal;
-    goal_location = get_centroid(surf_list.back()) + goal_offset;
+    goal_location = surfaces.back().centroid + (goal_offset - CGAL::ORIGIN);  // Add offset vector to centroid point
     std::cout << "  - Node counter: " << node_counter << std::endl;
     std::cout << "  - Total number of steps: " << num_steps << std::endl;
     std::cout << "  - Goal Stance Foot: " << 
@@ -47,7 +47,7 @@ Tree::Tree() {
     Node* root_ptr = new Node();
     root_ptr->parent_ptr = nullptr;
     root_ptr->node_id = node_counter++;
-    root_ptr->patch_vertices = std::vector<Vector_3>({goal_location});
+    root_ptr->patch_vertices = std::vector<Point_3>({goal_location});  // Already Point_3, no conversion needed
     root_ptr->stance_foot = goal_stance_foot;
 
     std::cout << "\n[ Root Node (Goal) Information ]" << std::endl;

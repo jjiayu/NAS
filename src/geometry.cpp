@@ -21,26 +21,27 @@ std::vector<Point_3> transform_2d_points_to_world(const std::vector<Point_2>& po
     return transformed_points;
 }
 
-Vector_3 get_centroid(const std::vector<Point_3>& points) {
+Point_3 get_centroid(const std::vector<Point_3>& points) {
     if (points.empty()) {
-        return Vector_3(0, 0, 0);
+        return Point_3(0, 0, 0);
     }
 
     Vector_3 sum(0, 0, 0);
     for (const auto& point : points) {
-        sum = sum + (point - CGAL::ORIGIN);
+        sum = sum + (point - CGAL::ORIGIN);  // Convert Point_3 to Vector_3 for addition
     }
-    return sum / static_cast<double>(points.size());
+    return CGAL::ORIGIN + (sum / static_cast<double>(points.size()));  // Convert back to Point_3
 }
 
-Polyhedron minkowski_sum(const std::vector<Vector_3>& patch_vertices, 
+Polyhedron minkowski_sum(const std::vector<Point_3>& patch_vertices, 
                          const Polyhedron& polytope) {
     // Store all vertices of the transformed polytopes
     std::vector<Point_3> all_vertices;
 
     // Build the list of all transformed polytopes and collect vertices
     for (size_t i = 0; i < patch_vertices.size(); ++i) {
-        Transformation translation(CGAL::TRANSLATION, patch_vertices[i]);
+        // Convert Point_3 to Vector_3 for translation
+        Transformation translation(CGAL::TRANSLATION, patch_vertices[i] - CGAL::ORIGIN);
         
         // Transform each vertex of the polytope and collect them
         for (auto v = polytope.vertices_begin(); v != polytope.vertices_end(); ++v) {
@@ -90,19 +91,13 @@ std::vector<Point_2> compute_2d_polygon_intersection(const std::vector<Point_2>&
         return std::vector<Point_2>();
     }
 
-    // std::cout << "\nStarting Sutherland-Hodgman clipping:" << std::endl;
-    // std::cout << "Subject polygon vertices: " << subject_polygon.size() << std::endl;
-    // std::cout << "Clip polygon vertices: " << clip_polygon.size() << std::endl;
-
     // Initialize outputList to subjectPlygon
     std::vector<Point_2> output_list = subject_polygon;
 
     // for (Edge clipEdge in clipPolygon) do
     auto clip_end = clip_polygon.end();
-    int edge_count = 0;
     for (auto clip_it = clip_polygon.begin(); clip_it != clip_end; ++clip_it) {
         if (output_list.empty()) {
-            std::cout << "Output list became empty after edge " << edge_count << std::endl;
             return std::vector<Point_2>();
         }
 
@@ -110,10 +105,6 @@ std::vector<Point_2> compute_2d_polygon_intersection(const std::vector<Point_2>&
         Point_2 edge_start = *clip_it;
         Point_2 edge_end = (std::next(clip_it) == clip_end) ? 
                             clip_polygon.front() : *std::next(clip_it);
-
-        std::cout << "\nProcessing clip edge " << edge_count << ": (" 
-                  << edge_start.x() << "," << edge_start.y() << ") -> ("
-                  << edge_end.x() << "," << edge_end.y() << ")" << std::endl;
 
         // List inputList = outputList
         std::vector<Point_2> input_list = output_list;
@@ -130,9 +121,6 @@ std::vector<Point_2> compute_2d_polygon_intersection(const std::vector<Point_2>&
             bool current_inside = is_leftside_of_edge(current_point, edge_start, edge_end) >= 0;
             bool prev_inside = is_leftside_of_edge(prev_point, edge_start, edge_end) >= 0;
 
-            std::cout << "  Point " << i << " (" << current_point.x() << "," << current_point.y() 
-                      << ") inside: " << current_inside << std::endl;
-
             if (current_inside) {
                 if (!prev_inside) {
                     auto result = CGAL::intersection(edge, line);
@@ -140,13 +128,10 @@ std::vector<Point_2> compute_2d_polygon_intersection(const std::vector<Point_2>&
                         Point_2 intersection_point;
                         if (CGAL::assign(intersection_point, *result)) {
                             output_list.push_back(intersection_point);
-                            std::cout << "    Added intersection point: (" << intersection_point.x() 
-                                    << "," << intersection_point.y() << ")" << std::endl;
                         }
                     }
                 }
                 output_list.push_back(current_point);
-                std::cout << "    Added current point" << std::endl;
             }
             else if (prev_inside) {
                 auto result = CGAL::intersection(edge, line);
@@ -154,14 +139,10 @@ std::vector<Point_2> compute_2d_polygon_intersection(const std::vector<Point_2>&
                     Point_2 intersection_point;
                     if (CGAL::assign(intersection_point, *result)) {
                         output_list.push_back(intersection_point);
-                        std::cout << "    Added intersection point: (" << intersection_point.x() 
-                                << "," << intersection_point.y() << ")" << std::endl;
                     }
                 }
             }
         }
-        std::cout << "Points after edge " << edge_count << ": " << output_list.size() << std::endl;
-        edge_count++;
     }
     return output_list;
 }

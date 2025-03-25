@@ -17,7 +17,7 @@ public:
     std::vector<Point_2> vertices_2d; //sorted counterclockwise
     Plane_3 plane;
     Vector_3 norm;
-    Vector_3 centroid;
+    Point_3 centroid;
     Transformation transform; // Transformation to align with plane (center)
     Transformation transform_inverse; // Cached inverse transformation
     Polygon_2 polygon_2d;

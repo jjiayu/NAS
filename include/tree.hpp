@@ -26,7 +26,7 @@ public:
 
     // Goal
     int goal_stance_foot;
-    Vector_3 goal_location;
+    Point_3 goal_location;
 
     // Number of steps
     int num_steps;
