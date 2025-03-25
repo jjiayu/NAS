@@ -75,4 +75,97 @@ std::vector<Point_3> compute_polytope_plane_intersection(const Plane_3& plane, c
     return intersection_points;
 }
 
+double is_leftside_of_edge(const Point_2& point, const Point_2& edge_start, const Point_2& edge_end){
+    return ((edge_end.x() - edge_start.x()) * (point.y() - edge_start.y()) -
+            (edge_end.y() - edge_start.y()) * (point.x() - edge_start.x()));
+}
+
+
+// Compute the intersection between two 2d polygons using Sutherland-Hodgman algorithm
+// Subject polygon is the interseciton result between the polytope and the plans in 2d), clipping polygon is the surface polygon in 2d
+std::vector<Point_2> compute_2d_polygon_intersection(const std::vector<Point_2>& subject_polygon, const std::vector<Point_2>& clip_polygon) {
+    
+    if (subject_polygon.empty() || clip_polygon.empty()) {
+        std::cout << "One of the input polygons is empty" << std::endl;
+        return std::vector<Point_2>();
+    }
+
+    // std::cout << "\nStarting Sutherland-Hodgman clipping:" << std::endl;
+    // std::cout << "Subject polygon vertices: " << subject_polygon.size() << std::endl;
+    // std::cout << "Clip polygon vertices: " << clip_polygon.size() << std::endl;
+
+    // Initialize outputList to subjectPlygon
+    std::vector<Point_2> output_list = subject_polygon;
+
+    // for (Edge clipEdge in clipPolygon) do
+    auto clip_end = clip_polygon.end();
+    int edge_count = 0;
+    for (auto clip_it = clip_polygon.begin(); clip_it != clip_end; ++clip_it) {
+        if (output_list.empty()) {
+            std::cout << "Output list became empty after edge " << edge_count << std::endl;
+            return std::vector<Point_2>();
+        }
+
+        // Get clip edge
+        Point_2 edge_start = *clip_it;
+        Point_2 edge_end = (std::next(clip_it) == clip_end) ? 
+                            clip_polygon.front() : *std::next(clip_it);
+
+        std::cout << "\nProcessing clip edge " << edge_count << ": (" 
+                  << edge_start.x() << "," << edge_start.y() << ") -> ("
+                  << edge_end.x() << "," << edge_end.y() << ")" << std::endl;
+
+        // List inputList = outputList
+        std::vector<Point_2> input_list = output_list;
+        output_list.clear();
+
+        for (size_t i = 0; i < input_list.size(); i++) {
+            Point_2 current_point = input_list[i];
+            Point_2 prev_point = input_list[(i + input_list.size() - 1) % input_list.size()];//if current point is the first point, prev point is the last point
+            
+            // Create segments for intersection check
+            Segment_2 edge(edge_start, edge_end);
+            Segment_2 line(prev_point, current_point);
+
+            bool current_inside = is_leftside_of_edge(current_point, edge_start, edge_end) >= 0;
+            bool prev_inside = is_leftside_of_edge(prev_point, edge_start, edge_end) >= 0;
+
+            std::cout << "  Point " << i << " (" << current_point.x() << "," << current_point.y() 
+                      << ") inside: " << current_inside << std::endl;
+
+            if (current_inside) {
+                if (!prev_inside) {
+                    auto result = CGAL::intersection(edge, line);
+                    if (result) {
+                        Point_2 intersection_point;
+                        if (CGAL::assign(intersection_point, *result)) {
+                            output_list.push_back(intersection_point);
+                            std::cout << "    Added intersection point: (" << intersection_point.x() 
+                                    << "," << intersection_point.y() << ")" << std::endl;
+                        }
+                    }
+                }
+                output_list.push_back(current_point);
+                std::cout << "    Added current point" << std::endl;
+            }
+            else if (prev_inside) {
+                auto result = CGAL::intersection(edge, line);
+                if (result) {
+                    Point_2 intersection_point;
+                    if (CGAL::assign(intersection_point, *result)) {
+                        output_list.push_back(intersection_point);
+                        std::cout << "    Added intersection point: (" << intersection_point.x() 
+                                << "," << intersection_point.y() << ")" << std::endl;
+                    }
+                }
+            }
+        }
+        std::cout << "Points after edge " << edge_count << ": " << output_list.size() << std::endl;
+        edge_count++;
+    }
+
+    return output_list;
+}
+
+
 } // namespace nas

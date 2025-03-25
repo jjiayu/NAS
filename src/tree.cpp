@@ -140,20 +140,28 @@ std::vector<Node*> Tree::get_children(Node* parent) {
         Visualizer::show(renderWindow2D);        // Show the initial 2D visualization
 
         // Compute intersection between polygons
-        Polygon_2 polygon_intersect_res_2d = compute_polygon_intersection(polytope_plane_intersect_polygon_2d, surface.polygon_2d);
 
-        // Print intersection result
-        std::cout << "\nIntersection Result:" << std::endl;
-        std::cout << "Number of vertices: " << std::distance(polygon_intersect_res_2d.vertices_begin(), 
-                                                             polygon_intersect_res_2d.vertices_end()) << std::endl;
-        std::cout << "Area: " << polygon_intersect_res_2d.area() << std::endl;
+        //---------Old Implementation---------
+        // Polygon_2 polygon_intersect_res_2d = compute_polygon_intersection(polytope_plane_intersect_polygon_2d, surface.polygon_2d);
 
-        // Create second 2D visualization (final intersection result)
-        auto renderWindow2D_result = Visualizer::create_2d_figure("Final 2D Intersection Result");
-        auto renderer2D_result = renderWindow2D_result->GetRenderers()->GetFirstRenderer();
-        Visualizer::add_2d_polygon(renderer2D_result, surface.polygon_2d, (double[]){0.0, 0.0, 1.0}, 1.0);  // Surface polygon in blue
-        Visualizer::add_2d_polygon(renderer2D_result, polygon_intersect_res_2d, (double[]){1.0, 0.0, 0.0}, 1.0);  // Final intersection polygon in red
-        Visualizer::show(renderWindow2D_result);  // Show the final 2D visualization
+        // // Print intersection result
+        // std::cout << "\nIntersection Result:" << std::endl;
+        // std::cout << "Number of vertices: " << std::distance(polygon_intersect_res_2d.vertices_begin(), 
+        //                                                      polygon_intersect_res_2d.vertices_end()) << std::endl;
+        // std::cout << "Area: " << polygon_intersect_res_2d.area() << std::endl;
+
+        // // Create second 2D visualization (final intersection result)
+        // auto renderWindow2D_result = Visualizer::create_2d_figure("Final 2D Intersection Result");
+        // auto renderer2D_result = renderWindow2D_result->GetRenderers()->GetFirstRenderer();
+        // Visualizer::add_2d_polygon(renderer2D_result, surface.polygon_2d, (double[]){0.0, 0.0, 1.0}, 1.0);  // Surface polygon in blue
+        // Visualizer::add_2d_polygon(renderer2D_result, polygon_intersect_res_2d, (double[]){1.0, 0.0, 0.0}, 1.0);  // Final intersection polygon in red
+        // Visualizer::show(renderWindow2D_result);  // Show the final 2D visualization
+
+        //---------New Implementation---------
+        // Substep 2: Compute 2D intersection between the intersection polygon and the surface polygon
+
+        compute_2d_polygon_intersection(polytope_plane_intersect_pts_2d, surface.vertices_2d);
+
     }
 
     // // Example: create two children for each node

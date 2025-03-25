@@ -101,6 +101,7 @@
         "stdfloat": "cpp",
         "span": "cpp",
         "ranges": "cpp",
-        "text_encoding": "cpp"
+        "text_encoding": "cpp",
+        "__config": "cpp"
     }
 }
