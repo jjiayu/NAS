@@ -34,7 +34,7 @@ Surface::Surface(const std::vector<Point_3>& points, int& surface_idx) {
     }
 
     // Convert back to 3D
-    vertices_3d = transform_2d_points_to_world(vertices_2d, transform.inverse());
+    vertices_3d = transform_2d_points_to_world(vertices_2d, transform_inverse);
 
     // Print Surface Information
     std::cout << "\n- Surface Information " << std::endl;
@@ -86,6 +86,9 @@ void Surface::establish_surface_coordinate_system(const std::vector<Point_3>& po
         x_axis.y(), y_axis.y(), norm.y(), centroid.y(),
         x_axis.z(), y_axis.z(), norm.z(), centroid.z()
     );
+
+    // Cache the inverse transformation
+    transform_inverse = transform.inverse();
 }
 
 } // namespace nas

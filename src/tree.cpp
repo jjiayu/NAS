@@ -151,6 +151,17 @@ std::vector<Node*> Tree::get_children(Node* parent) {
         Visualizer::add_2d_points(renderer, polygon_2d_intersect_pts, (double[]){1.0, 0.0, 0.0}, 0.02);  // Points in red
         Visualizer::show(renderWindow);        // Show the initial 2D visualization
 
+        // Step 3: Convert the 2D intersection polygon to 3D (using the inverse transformation)
+        std::vector<Point_3> polytope_surf_3d_intersect_pts = transform_2d_points_to_world(polygon_2d_intersect_pts, surface.transform_inverse);
+        Polyhedron polytope_surf_3d_intersect_polygon;        // Create intersection polygon (just for visualization)
+        CGAL::convex_hull_3(polytope_surf_3d_intersect_pts.begin(), polytope_surf_3d_intersect_pts.end(), polytope_surf_3d_intersect_polygon);
+        renderWindow = Visualizer::create_figure("3D Polytope-Surface Intersection Visualization"); 
+        renderer = renderWindow->GetRenderers()->GetFirstRenderer();
+        Visualizer::add_plane(renderer, surface.plane, (double[]){0.7, 0.9, 1.0}, 0.3); // Add the plane (light blue)
+        Visualizer::add_polyhedron(renderer, P_union, (double[]){1.0, 0.7, 0.8}, 0.5);  // Add P_union (pink)
+        Visualizer::add_polyhedron(renderer, polytope_surf_3d_intersect_polygon, (double[]){0.0, 1.0, 0.0}, 0.7);  // Add intersection polygon (green)
+        Visualizer::add_points(renderer, polytope_surf_3d_intersect_pts, (double[]){1.0, 0.0, 0.0}, 0.05);  // Add intersection points (red)
+        Visualizer::show(renderWindow);        // Show the 3D visualization
     }
 
     // // Example: create two children for each node

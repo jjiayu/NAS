@@ -19,6 +19,7 @@ public:
     Vector_3 norm;
     Vector_3 centroid;
     Transformation transform; // Transformation to align with plane (center)
+    Transformation transform_inverse; // Cached inverse transformation
     Polygon_2 polygon_2d;
 
     
