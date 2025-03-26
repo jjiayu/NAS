@@ -12,7 +12,7 @@ namespace nas {
 
 class Surface {
 public:
-    int surf_id;
+    int surface_id;
     std::vector<Point_3> vertices_3d; //sorted counterclockwise
     std::vector<Point_2> vertices_2d; //sorted counterclockwise
     Plane_3 plane;
@@ -20,6 +20,7 @@ public:
     Point_3 centroid;
     Transformation transform; // Transformation to align with plane (center)
     Transformation transform_inverse; // Cached inverse transformation
+    Polyhedron polyhedron_3d;
     Polygon_2 polygon_2d;
 
     
