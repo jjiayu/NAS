@@ -1,6 +1,3 @@
-#ifndef NAS_PLAN_HPP
-#define NAS_PLAN_HPP
+#pragma once
 
 // Declarations (if any)
-
-#endif // NAS_PLAN_HPP
