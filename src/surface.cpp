@@ -8,7 +8,7 @@ Surface::Surface(const std::vector<Point_3>& points, int& surface_idx) {
     if (points.size() < 3) throw std::invalid_argument("At least 3 points are required to fit a surface");
 
     // Assign surface ID
-    surf_id = surface_idx;
+    surface_id = surface_idx;
 
     // Fit the plane
     CGAL::linear_least_squares_fitting_3(points.begin(), points.end(), plane, CGAL::Dimension_tag<0>());  // 0 for points
@@ -34,12 +34,15 @@ Surface::Surface(const std::vector<Point_3>& points, int& surface_idx) {
     }
 
     // Convert back to 3D
-    vertices_3d = transform_2d_points_to_world(vertices_2d, transform.inverse());
+    vertices_3d = transform_2d_points_to_world(vertices_2d, transform_inverse);
+
+    // Create 3D polyhedron
+    CGAL::convex_hull_3(vertices_3d.begin(), vertices_3d.end(), polyhedron_3d);
 
     // Print Surface Information
     std::cout << "\n- Surface Information " << std::endl;
     std::cout << std::fixed << std::setprecision(2);
-    std::cout << "  - Surface ID: " << surf_id << std::endl;
+    std::cout << "  - Surface ID: " << surface_id << std::endl;
     std::cout << "  - Plane: " << plane << std::endl;
     std::cout << "  - Norm: " << norm << std::endl;
     std::cout << "  - Centroid: " << centroid << std::endl;
@@ -86,6 +89,9 @@ void Surface::establish_surface_coordinate_system(const std::vector<Point_3>& po
         x_axis.y(), y_axis.y(), norm.y(), centroid.y(),
         x_axis.z(), y_axis.z(), norm.z(), centroid.z()
     );
+
+    // Cache the inverse transformation
+    transform_inverse = transform.inverse();
 }
 
 } // namespace nas

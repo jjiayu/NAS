@@ -4,11 +4,6 @@
 
 namespace nas {
 
-// Constants for the NAS algorithm
-const double EPSILON = 1e-10;
-const double SURFACE_EPSILON = 1e-3;
-const double COLLISION_EPSILON = 1e-3;
-
 // Define Foot stance status
 const int LEFT_FOOT = 0;   // Represents the left foot in stance
 const int RIGHT_FOOT = 1;  // Represents the right foot in stance

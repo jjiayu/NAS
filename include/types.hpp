@@ -27,5 +27,6 @@ typedef CGAL::Gps_segment_traits_2<Kernel> Traits_2;
 typedef CGAL::General_polygon_set_2<Traits_2> Polygon_set_2;
 typedef Traits_2::Polygon_2 General_polygon_2;
 typedef CGAL::Polygon_with_holes_2<Kernel> Polygon_with_holes_2;
+typedef CGAL::Segment_2<Kernel> Segment_2;
 
 } // namespace nas 
