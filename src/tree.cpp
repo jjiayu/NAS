@@ -35,7 +35,7 @@ Tree::Tree() {
     this->node_counter = 0;
     this->num_steps = total_num_steps;
     this->goal_stance_foot = stance_foot_at_goal;
-    this->goal_location = surfaces.back().centroid + (goal_offset - CGAL::ORIGIN);  // Add offset vector to centroid point
+    this->goal_location = surfaces.back().centroid + goal_offset;  // Add offset vector to centroid point
     std::cout << "  - Node counter: " << this->node_counter << std::endl;
     std::cout << "  - Total number of steps: " << this->num_steps << std::endl;
     std::cout << "  - Goal Stance Foot: " << 
@@ -68,9 +68,9 @@ Tree::Tree() {
 void Tree::expand(int target_depth) {
     std::cout << "=== Expand the Tree (Depth = " << target_depth << ") ==="  << std::endl;
     
-    while (!this->expansion_queue.empty() && this->layers.size() < static_cast<size_t>(target_depth)) {
-        std::cout << "[ Expanding Layer " << this->layers.size()-1 << " ]" << std::endl;
-        std::cout << "  - Nodes to process: " << this->expansion_queue.size() << std::endl;
+    while (!this->expansion_queue.empty() && this->layers.size() - 1 < static_cast<size_t>(target_depth)) { // -1 because we start from layer 0
+        std::cout << "[ Expanding Layer " << this->layers.size() - 1 << " ]" << std::endl;
+        std::cout << "  - Nodes to expand: " << this->expansion_queue.size() << std::endl;
         
         // Process all nodes at the current depth
         std::vector<Node*> new_layer;
@@ -83,17 +83,14 @@ void Tree::expand(int target_depth) {
             // Get children for current node
             auto children = get_children(current_node);
             
-            // Add children to the new layer and queue
-            for (auto child : children) {
-                new_layer.push_back(child);
-                this->expansion_queue.push(child);
+            // Add children to the queue and layers
+            if (!children.empty()) {
+                this->layers.push_back(children);
+                for (auto child : children) {
+                    this->expansion_queue.push(child);
+                }
+                std::cout << "  - New nodes created: " << children.size() << std::endl;
             }
-        }
-
-        // Add new layer to layers if not empty
-        if (!new_layer.empty()) {
-            this->layers.push_back(new_layer);
-            std::cout << "  - New nodes created: " << new_layer.size() << std::endl;
         }
     }
 
@@ -105,7 +102,7 @@ std::vector<Node*> Tree::get_children(Node* parent) {
     std::vector<Node*> children;
 
     // Step 1: Compute minkowski sum based on the patch vertices and the base polytope
-    // ToDO: make sure we get the correct base polytop
+    // TODO: make sure we get the correct base polytop
     Polyhedron base_polytope = parent->stance_foot == 0 ? rf_in_lf_polytope : lf_in_rf_polytope;
     Polyhedron P_union = minkowski_sum(parent->patch_vertices, base_polytope);
 
@@ -156,17 +153,6 @@ std::vector<Node*> Tree::get_children(Node* parent) {
         }
     }
 
-    // // Example: create two children for each node
-    // for (int i = 0; i < 2; ++i) {
-    //     Node* child = new Node();
-    //     child->parent_ptr = parent;
-    //     child->node_id = node_counter++;
-    //     // TODO(jiayu): Update patch vertices computation
-    //     child->patch_vertices = parent->patch_vertices;
-    //     child->stance_foot = (parent->stance_foot == 0) ? 1 : 0;  // Alternate feet
-        
-    //     children.push_back(child);
-    // }
     return children;
 }
 
