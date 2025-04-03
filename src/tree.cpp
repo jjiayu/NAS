@@ -50,6 +50,7 @@ Tree::Tree() {
     root_ptr->patch_vertices = std::vector<Point_3>({this->goal_location});  // Already Point_3, no conversion needed
     root_ptr->stance_foot = this->goal_stance_foot;
     root_ptr->surface_id = this->surfaces.back().surface_id;
+    root_ptr->depth = 0;
     std::cout << "\n[ Root Node (Goal) Information ]" << std::endl;
     std::cout << "  - Node ID: " << root_ptr->node_id << std::endl;
     std::cout << "  - Stance Foot: " << 
@@ -148,6 +149,7 @@ std::vector<Node*> Tree::get_children(Node* parent) {
                 child->patch_vertices = polytope_surf_3d_intersect_pts;
                 child->stance_foot = parent->stance_foot == 0 ?  1 : 0; //Alternate stance foot
                 child->surface_id = surface.surface_id;
+                child->depth = parent->depth + 1;
                 children.push_back(child);
             }
         }

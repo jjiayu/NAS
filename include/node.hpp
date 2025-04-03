@@ -18,6 +18,7 @@ namespace nas {
         std::vector<Point_3> patch_vertices; // The vertices of the patch
         int stance_foot; // The foot that is on the ground
         int surface_id; // The surface ID that the node belongs to
+        int depth; // The depth of the node in the tree
     };
 
 }
