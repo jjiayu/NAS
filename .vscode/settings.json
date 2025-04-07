@@ -102,6 +102,7 @@
         "span": "cpp",
         "ranges": "cpp",
         "text_encoding": "cpp",
-        "__config": "cpp"
+        "__config": "cpp",
+        "random": "cpp"
     }
 }

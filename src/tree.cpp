@@ -150,7 +150,13 @@ std::vector<Node*> Tree::get_children(Node* parent) {
                 child->stance_foot = parent->stance_foot == 0 ?  1 : 0; //Alternate stance foot
                 child->surface_id = surface.surface_id;
                 child->depth = parent->depth + 1;
+                child->surface_ptr = &surface;
                 children.push_back(child);
+                std::cout << "  - Child node created: ";
+                for (const auto& point : child->surface_ptr->vertices_3d) {
+                    std::cout << "(" << point.x() << ", " << point.y() << ", " << point.z() << ") ";
+                }
+                std::cout << std::endl;
             }
         }
     }

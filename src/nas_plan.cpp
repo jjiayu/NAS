@@ -29,15 +29,7 @@ int main() {
         std::cout << std::endl;
     }
 
-    // for (const auto& plane : tree.env_model) {
-    //     Visualizer::show_polyhedron(plane);
-    // }
-
-    // // Visualize the polytopes
-    // Visualizer::show_polyhedron(tree.rf_in_lf_polytope);
-    // Visualizer::show_polyhedron(tree.lf_in_rf_polytope);
-
-    std::cout << surf_list.size() << std::endl;
+    // Check if goal is inside which patches
 
     return 0;
 }
