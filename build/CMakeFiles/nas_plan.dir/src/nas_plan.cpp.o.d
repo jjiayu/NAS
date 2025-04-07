@@ -3018,4 +3018,36 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: \
   /opt/homebrew/include/vtk-9.4/vtkVector.h \
   /opt/homebrew/include/vtk-9.4/vtkTuple.h \
   /Users/jiayu/Desktop/nas_ws/NAS/include/constants.hpp \
-  /Users/jiayu/Desktop/nas_ws/NAS/include/tree.hpp
+  /Users/jiayu/Desktop/nas_ws/NAS/include/tree.hpp \
+  /opt/homebrew/include/yaml-cpp/yaml.h \
+  /opt/homebrew/include/yaml-cpp/parser.h \
+  /opt/homebrew/include/yaml-cpp/dll.h \
+  /opt/homebrew/include/yaml-cpp/emitter.h \
+  /opt/homebrew/include/yaml-cpp/binary.h \
+  /opt/homebrew/include/yaml-cpp/emitterdef.h \
+  /opt/homebrew/include/yaml-cpp/emittermanip.h \
+  /opt/homebrew/include/yaml-cpp/null.h \
+  /opt/homebrew/include/yaml-cpp/ostream_wrapper.h \
+  /opt/homebrew/include/yaml-cpp/emitterstyle.h \
+  /opt/homebrew/include/yaml-cpp/stlemitter.h \
+  /opt/homebrew/include/yaml-cpp/exceptions.h \
+  /opt/homebrew/include/yaml-cpp/mark.h \
+  /opt/homebrew/include/yaml-cpp/noexcept.h \
+  /opt/homebrew/include/yaml-cpp/traits.h \
+  /opt/homebrew/include/yaml-cpp/node/node.h \
+  /opt/homebrew/include/yaml-cpp/node/detail/iterator_fwd.h \
+  /opt/homebrew/include/yaml-cpp/node/ptr.h \
+  /opt/homebrew/include/yaml-cpp/node/type.h \
+  /opt/homebrew/include/yaml-cpp/node/impl.h \
+  /opt/homebrew/include/yaml-cpp/node/detail/memory.h \
+  /opt/homebrew/include/yaml-cpp/node/detail/node.h \
+  /opt/homebrew/include/yaml-cpp/node/detail/node_ref.h \
+  /opt/homebrew/include/yaml-cpp/node/detail/node_data.h \
+  /opt/homebrew/include/yaml-cpp/node/detail/node_iterator.h \
+  /opt/homebrew/include/yaml-cpp/node/iterator.h \
+  /opt/homebrew/include/yaml-cpp/node/detail/iterator.h \
+  /opt/homebrew/include/yaml-cpp/node/convert.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/c++/v1/valarray \
+  /opt/homebrew/include/yaml-cpp/node/detail/impl.h \
+  /opt/homebrew/include/yaml-cpp/node/parse.h \
+  /opt/homebrew/include/yaml-cpp/node/emit.h

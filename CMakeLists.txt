@@ -30,6 +30,7 @@ find_package(VTK 9.2 REQUIRED COMPONENTS
   RenderingOpenGL2
   RenderingFreeType
 )
+find_package(yaml-cpp REQUIRED)
 
 # Add the include directory
 include_directories(include)
@@ -77,6 +78,7 @@ target_link_libraries(nas_plan PRIVATE
     visualizer_lib
     CGAL::CGAL
     ${VTK_LIBRARIES}
+    yaml-cpp::yaml-cpp
 )
 
 # Enable VTK modules
