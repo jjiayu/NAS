@@ -26,6 +26,7 @@ const int total_num_steps = 3;
 // 1) bottom left, 2) bottom right, 3) top right, 4) top left
 
 // Flat Terrain for testing
+// 📌 TODO: shrink the surface by foot length and width
 const std::vector<std::vector<Point_3>> surf_list = {
     // Surface 1
     {
