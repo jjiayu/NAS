@@ -147,5 +147,9 @@ std::vector<Point_2> compute_2d_polygon_intersection(const std::vector<Point_2>&
     return output_list;
 }
 
+bool is_point_in_polygon(const Point_3& point, const std::vector<Point_3>& polygon, const Vector_3& normal) {
+    return true;
+}
+
 
 } // namespace nas

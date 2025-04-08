@@ -99,6 +99,7 @@ nas_plan: libtree_lib.dylib
 nas_plan: libsurface_lib.dylib
 nas_plan: libutils_lib.dylib
 nas_plan: libvisualizer_lib.dylib
+nas_plan: libgeometry_lib.dylib
 nas_plan: /opt/homebrew/lib/libvtkInteractionStyle-9.4.9.4.dylib
 nas_plan: /opt/homebrew/lib/libvtkRenderingOpenGL2-9.4.9.4.dylib
 nas_plan: /opt/homebrew/lib/libvtkRenderingFreeType-9.4.9.4.dylib

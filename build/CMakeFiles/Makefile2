@@ -300,6 +300,7 @@ CMakeFiles/visualizer_lib.dir/clean:
 CMakeFiles/nas_plan.dir/all: CMakeFiles/utils_lib.dir/all
 CMakeFiles/nas_plan.dir/all: CMakeFiles/node_lib.dir/all
 CMakeFiles/nas_plan.dir/all: CMakeFiles/tree_lib.dir/all
+CMakeFiles/nas_plan.dir/all: CMakeFiles/geometry_lib.dir/all
 CMakeFiles/nas_plan.dir/all: CMakeFiles/surface_lib.dir/all
 CMakeFiles/nas_plan.dir/all: CMakeFiles/visualizer_lib.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/nas_plan.dir/build.make CMakeFiles/nas_plan.dir/depend

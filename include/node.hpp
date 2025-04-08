@@ -6,9 +6,6 @@
 #include "surface.hpp"
 namespace nas {
 
-// Forward declaration
-class Surface;
-
 class Node {
 public:
     Node();
@@ -20,8 +17,9 @@ public:
         std::vector<Point_3> patch_vertices; // The vertices of the patch
         int stance_foot; // The foot that is on the ground
         int surface_id; // The surface ID that the node belongs to
-        const Surface* surface_ptr; // Pointer to the surface
         int depth; // The depth of the node in the tree
+        Node* kd_left_ptr; // Pointer to the left child node in the KD tree
+        Node* kd_right_ptr; // Pointer to the right child node in the KD tree
     };
 
 }

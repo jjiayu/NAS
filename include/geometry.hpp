@@ -14,8 +14,6 @@
 
 namespace nas {
 
-class Surface;
-
 std::vector<Point_2> transform_3d_points_to_surface_plane(const std::vector<Point_3>& points, const Transformation& transformation);
 
 std::vector<Point_3> transform_2d_points_to_world(const std::vector<Point_2>& points, const Transformation& inverse_transformation);
@@ -31,5 +29,7 @@ std::vector<Point_2> compute_2d_polygon_intersection(const std::vector<Point_2>&
 std::vector<Point_2> compute_2d_polygon_intersection(const std::vector<Point_2>& subject_polygon, const std::vector<Point_2>& clip_polygon);
 
 double is_leftside_of_edge(const Point_2& point, const Point_2& edge_start, const Point_2& edge_end);
+
+bool is_point_in_polygon(const Point_3& point, const std::vector<Point_3>& polygon, const Vector_3& normal);
 
 } // namespace nas

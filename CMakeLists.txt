@@ -76,6 +76,7 @@ target_link_libraries(nas_plan PRIVATE
     surface_lib
     utils_lib
     visualizer_lib
+    geometry_lib
     CGAL::CGAL
     ${VTK_LIBRARIES}
     yaml-cpp::yaml-cpp
