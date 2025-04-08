@@ -27,10 +27,17 @@ int main() {
         std::cout << "Node IDs: ";
         for (const auto& node : tree.layers[i]) {
             std::cout << node->node_id << " ";
-            std::cout<<is_point_in_polygon(tree.goal_location, node->patch_vertices, tree.surfaces[node->surface_id].norm)<<std::endl;
         }
         std::cout << std::endl;
     }
+
+    // Find nodes containing initial stance foot
+    std::vector<Node*> nodes = tree.find_nodes_containing_initial_stance_foot(LEFT_FOOT, Point_3(7.0, 0.5, 0.0));
+    std::cout << "Nodes containing initial stance foot: ";
+    for (const auto& node : nodes) {
+        std::cout << node->node_id << " ";
+    }
+    std::cout << std::endl;
 
     return 0;
 }

@@ -49,6 +49,7 @@ public:
     // Methods
     void expand(int depth);
     std::vector<Node*> get_children(Node* parent);
+    std::vector<Node*> find_nodes_containing_initial_stance_foot(const bool foot_flag, const Point_3& foot_pos);
 };
 
 } // namespace nas
