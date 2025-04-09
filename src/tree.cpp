@@ -51,6 +51,9 @@ Tree::Tree() {
     root_ptr->stance_foot = this->goal_stance_foot;
     root_ptr->surface_id = this->surfaces.back().surface_id;
     root_ptr->depth = 0;
+    root_ptr->patch_polygon = this->surfaces.back().polygon_2d; //in surface coordinate system
+    root_ptr->transform_to_2d = this->surfaces.back().transform; // Transformation to surface coordinate system
+    root_ptr->transform_to_3d = this->surfaces.back().transform_inverse; // Transformation from surface coordinate system to world coordinate system
     std::cout << "\n[ Root Node (Goal) Information ]" << std::endl;
     std::cout << "  - Node ID: " << root_ptr->node_id << std::endl;
     std::cout << "  - Stance Foot: " << 
@@ -150,6 +153,9 @@ std::vector<Node*> Tree::get_children(Node* parent) {
                 child->stance_foot = parent->stance_foot == 0 ?  1 : 0; //Alternate stance foot
                 child->surface_id = surface.surface_id;
                 child->depth = parent->depth + 1;
+                child->patch_polygon = polygon_2d_intersect_result;
+                child->transform_to_2d = surface.transform;
+                child->transform_to_3d = surface.transform_inverse; 
                 children.push_back(child);
             }
         }
