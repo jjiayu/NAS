@@ -19,6 +19,7 @@ int main() {
     std::cout << std::endl;
     
     // Print information about each layer
+    std::cout << "=== Tree Layers ===" << std::endl;
     for (size_t i = 0; i < tree.layers.size(); ++i) {
         std::cout << "Layer " << i << " has " << tree.layers[i].size() 
                   << " nodes" << std::endl;
@@ -27,15 +28,19 @@ int main() {
         std::cout << "Node IDs: ";
         for (const auto& node : tree.layers[i]) {
             std::cout << node->node_id << " ";
+            std::cout << "Stance Foot: " << node->stance_foot << std::endl;
         }
         std::cout << std::endl;
     }
 
     // Find nodes containing initial stance foot
-    std::vector<Node*> nodes = tree.find_nodes_containing_current_stance_foot(LEFT_FOOT, Point_3(6.0, 0.5, 0.0));
+    std::vector<Node*> nodes = tree.find_nodes_containing_current_stance_foot(current_stance_foot_flag, current_foot_pos);
     std::cout << "Nodes containing current stance foot: ";
     for (const auto& node : nodes) {
         std::cout << node->node_id << " ";
+        std::cout << "Node depth: " << node->depth << std::endl;
+        std::cout << "Stance Foot: " << node->stance_foot << std::endl;
+        std::cout << "Surface ID: " << node->surface_id << std::endl;
     }
     std::cout << std::endl;
 
