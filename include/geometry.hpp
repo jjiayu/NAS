@@ -14,7 +14,7 @@
 
 namespace nas {
 
-class Surface;
+class Node;  // Forward declaration
 
 std::vector<Point_2> transform_3d_points_to_surface_plane(const std::vector<Point_3>& points, const Transformation& transformation);
 

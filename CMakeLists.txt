@@ -30,6 +30,7 @@ find_package(VTK 9.2 REQUIRED COMPONENTS
   RenderingOpenGL2
   RenderingFreeType
 )
+find_package(yaml-cpp REQUIRED)
 
 # Add the include directory
 include_directories(include)
@@ -45,6 +46,7 @@ add_library(surface_lib src/surface.cpp)
 add_library(visualizer_lib src/visualizer.cpp)
 
 # Set library dependencies
+target_link_libraries(node_lib PRIVATE geometry_lib CGAL::CGAL)
 target_link_libraries(tree_lib PRIVATE utils_lib node_lib surface_lib geometry_lib visualizer_lib ${VTK_LIBRARIES})
 target_link_libraries(utils_lib PRIVATE 
     ${VTK_LIBRARIES}
@@ -75,8 +77,10 @@ target_link_libraries(nas_plan PRIVATE
     surface_lib
     utils_lib
     visualizer_lib
+    geometry_lib
     CGAL::CGAL
     ${VTK_LIBRARIES}
+    yaml-cpp::yaml-cpp
 )
 
 # Enable VTK modules

@@ -102,7 +102,9 @@ nas_plan: libvisualizer_lib.dylib
 nas_plan: /opt/homebrew/lib/libvtkInteractionStyle-9.4.9.4.dylib
 nas_plan: /opt/homebrew/lib/libvtkRenderingOpenGL2-9.4.9.4.dylib
 nas_plan: /opt/homebrew/lib/libvtkRenderingFreeType-9.4.9.4.dylib
+nas_plan: /opt/homebrew/lib/libyaml-cpp.0.8.0.dylib
 nas_plan: libnode_lib.dylib
+nas_plan: libgeometry_lib.dylib
 nas_plan: /opt/homebrew/lib/libvtkIOImage-9.4.9.4.dylib
 nas_plan: /opt/homebrew/lib/libvtkRenderingHyperTreeGrid-9.4.9.4.dylib
 nas_plan: /opt/homebrew/lib/libvtkImagingCore-9.4.9.4.dylib

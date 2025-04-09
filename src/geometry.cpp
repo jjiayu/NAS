@@ -1,6 +1,6 @@
 #include "types.hpp"
 #include "geometry.hpp"
-
+#include "node.hpp"
 namespace nas {
 
 std::vector<Point_2> transform_3d_points_to_surface_plane(const std::vector<Point_3>& points, const Transformation& transformation) {

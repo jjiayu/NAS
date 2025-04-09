@@ -51,6 +51,9 @@ Tree::Tree() {
     root_ptr->stance_foot = this->goal_stance_foot;
     root_ptr->surface_id = this->surfaces.back().surface_id;
     root_ptr->depth = 0;
+    root_ptr->patch_polygon = Polygon_2(); //NOTE: for now root node is just a point, so we initialize with an empty polygon
+    root_ptr->transform_to_2d = this->surfaces.back().transform; // Transformation to surface coordinate system
+    root_ptr->transform_to_3d = this->surfaces.back().transform_inverse; // Transformation from surface coordinate system to world coordinate system
     std::cout << "\n[ Root Node (Goal) Information ]" << std::endl;
     std::cout << "  - Node ID: " << root_ptr->node_id << std::endl;
     std::cout << "  - Stance Foot: " << 
@@ -76,6 +79,7 @@ void Tree::expand(int target_depth) {
         // Process all nodes at the current depth
         std::vector<Node*> new_layer;
         size_t nodes_at_current_depth = this->expansion_queue.size();
+        int total_children = 0;
 
         for (size_t i = 0; i < nodes_at_current_depth; ++i) {
             Node* current_node = this->expansion_queue.front();
@@ -84,14 +88,20 @@ void Tree::expand(int target_depth) {
             // Get children for current node
             auto children = get_children(current_node);
             
-            // Add children to the queue and layers
+            // Add children to the new layer and queue
             if (!children.empty()) {
-                this->layers.push_back(children);
+                new_layer.insert(new_layer.end(), children.begin(), children.end());
                 for (auto child : children) {
                     this->expansion_queue.push(child);
                 }
-                std::cout << "  - New nodes created: " << children.size() << std::endl;
+                total_children += children.size();
             }
+        }
+
+        // Add all children from this depth level as a new layer
+        if (!new_layer.empty()) {
+            this->layers.push_back(new_layer);
+            std::cout << "  - New nodes created: " << total_children << std::endl;
         }
     }
 
@@ -150,6 +160,9 @@ std::vector<Node*> Tree::get_children(Node* parent) {
                 child->stance_foot = parent->stance_foot == 0 ?  1 : 0; //Alternate stance foot
                 child->surface_id = surface.surface_id;
                 child->depth = parent->depth + 1;
+                child->patch_polygon = polygon_2d_intersect_result;
+                child->transform_to_2d = surface.transform;
+                child->transform_to_3d = surface.transform_inverse; 
                 children.push_back(child);
             }
         }
@@ -157,5 +170,17 @@ std::vector<Node*> Tree::get_children(Node* parent) {
 
     return children;
 }
+
+std::vector<Node*> Tree::find_nodes_containing_current_stance_foot(const bool foot_flag, const Point_3& foot_pos) {
+    std::vector<Node*> nodes;
+    for (const auto& layer : this->layers) {
+        for (const auto& node : layer) {
+            if (node->stance_foot == foot_flag && node->check_if_node_contains_point(foot_pos)) {
+                nodes.push_back(node);
+            }
+        }
+    }
+    return nodes;
+}   
 
 } // namespace nas  

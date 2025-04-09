@@ -390,6 +390,9 @@ pugixml_DIR:PATH=/opt/homebrew/lib/cmake/pugixml
 //utf8cpp include directory
 utf8cpp_INCLUDE_DIR:PATH=/opt/homebrew/include/utf8cpp
 
+//The directory containing a CMake configuration file for yaml-cpp.
+yaml-cpp_DIR:PATH=/opt/homebrew/lib/cmake/yaml-cpp
+
 
 ########################
 # INTERNAL cache entries
