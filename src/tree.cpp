@@ -168,7 +168,7 @@ std::vector<Node*> Tree::find_nodes_containing_initial_stance_foot(const bool fo
     std::vector<Node*> nodes;
     for (const auto& layer : this->layers) {
         for (const auto& node : layer) {
-            if (node->stance_foot == foot_flag && node->patch_vertices.size() > 0) {
+            if (node->stance_foot == foot_flag && node->check_if_node_contains_point(foot_pos)) {
                 std::cout<<"node depth: "<<node->depth<<std::endl;
                 nodes.push_back(node);
             }
