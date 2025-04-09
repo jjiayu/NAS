@@ -32,8 +32,8 @@ int main() {
     }
 
     // Find nodes containing initial stance foot
-    std::vector<Node*> nodes = tree.find_nodes_containing_initial_stance_foot(LEFT_FOOT, Point_3(6.0, 0.5, 0.0));
-    std::cout << "Nodes containing initial stance foot: ";
+    std::vector<Node*> nodes = tree.find_nodes_containing_current_stance_foot(LEFT_FOOT, Point_3(6.0, 0.5, 0.0));
+    std::cout << "Nodes containing current stance foot: ";
     for (const auto& node : nodes) {
         std::cout << node->node_id << " ";
     }
