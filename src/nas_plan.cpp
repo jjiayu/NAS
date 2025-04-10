@@ -44,5 +44,7 @@ int main() {
     }
     std::cout << std::endl;
 
+    tree.build_kd_trees();
+
     return 0;
 }
