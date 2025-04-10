@@ -181,6 +181,8 @@ std::vector<Node*> Tree::find_nodes_containing_current_stance_foot(const bool fo
         }
     }
     return nodes;
-}   
+}
+
+
 
 } // namespace nas  
