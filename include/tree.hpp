@@ -40,11 +40,11 @@ public:
 
     // Number of node counter
     int node_counter;
-    
+
     //Constructor
     Tree();
     // Destructor
-    ~Tree();
+    // ~Tree();
 
     // Methods
     void expand(int depth);

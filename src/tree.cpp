@@ -167,14 +167,14 @@ std::vector<Node*> Tree::get_children(Node* parent) {
             }
         }
     }
-
     return children;
 }
 
 std::vector<Node*> Tree::find_nodes_containing_current_stance_foot(const bool foot_flag, const Point_3& foot_pos) {
     std::vector<Node*> nodes;
-    for (const auto& layer : this->layers) {
-        for (const auto& node : layer) {
+    // Start from index 1 to skip the root layer (goal)
+    for (size_t layer_idx = 1; layer_idx < this->layers.size(); ++layer_idx) {
+        for (const auto& node : this->layers[layer_idx]) {
             if (node->stance_foot == foot_flag && node->check_if_node_contains_point(foot_pos)) {
                 nodes.push_back(node);
             }
