@@ -1,5 +1,3 @@
-// include/prob_data.hpp
-
 #pragma once
 
 #include "types.hpp"
@@ -43,8 +41,10 @@ public:
     int node_counter;
 
     // KD-trees for spatial queries (one for each foot)
-    std::unique_ptr<KD_Tree> kd_tree_left_foot;
-    std::unique_ptr<KD_Tree> kd_tree_right_foot;
+    std::unique_ptr<KD_Tree> left_foot_kd_tree; //kd tree for left foot nodes
+    std::unique_ptr<KD_Tree> right_foot_kd_tree; //kd tree for right foot nodes
+    Node* kd_tree_left_foot_root; //root of kd tree for left foot nodes
+    Node* kd_tree_right_foot_root; //root of kd tree for right foot nodes
 
     //Constructor
     Tree();
@@ -52,10 +52,16 @@ public:
     // Methods
     void expand(int depth);
     std::vector<Node*> get_children(Node* parent);
+
+    //Brute force methods for searching the nodes
     std::vector<Node*> find_nodes_containing_current_stance_foot_brute_force(const bool foot_flag, const Point_3& foot_pos);
     
     // KD-tree methods
-    void build_kd_trees();
+    std::vector<Node*> find_nodes_containing_contact_location_kd_tree(const bool foot_flag, const Point_3& contact_location);
+    void construct_kd_trees_for_left_and_right_foot();
+    Node* build_kd_tree_recursive(std::vector<Node*>& nodes, int depth);
+    void traverse_kd_tree(Node* node, int depth, const Point_3& contact_location, 
+                         std::vector<Node*>& result_nodes);
 };
 
 } // namespace nas

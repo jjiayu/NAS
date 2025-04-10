@@ -14,6 +14,8 @@ public:
     public:
         int node_id;    //The node ID
         Node* parent_ptr;   //Pointer to the parent node
+        Node* kd_left_ptr;     //Pointer to the left child in KD-tree
+        Node* kd_right_ptr;    //Pointer to the right child in KD-tree
         std::vector<Point_3> patch_vertices; // The vertices of the patch
         Polygon_2 patch_polygon; // The polygon of the patch (NOTE: defined in the surface coordinate system)
         Transformation transform_to_2d; // Transformation the surface coordinate system

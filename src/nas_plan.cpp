@@ -44,7 +44,15 @@ int main() {
     }
     std::cout << std::endl;
 
-    tree.build_kd_trees();
+    tree.construct_kd_trees_for_left_and_right_foot();
 
+    std::vector<Node*> nodes_left_foot = tree.find_nodes_containing_contact_location_kd_tree(LEFT_FOOT, current_foot_pos);
+    std::cout << "Nodes containing current stance foot: ";
+    for (const auto& node : nodes_left_foot) {
+        std::cout << node->node_id << " ";
+        std::cout << "Node depth: " << node->depth << std::endl;
+        std::cout << "Stance Foot: " << node->stance_foot << std::endl;
+        std::cout << "Surface ID: " << node->surface_id << std::endl;
+    }
     return 0;
 }
