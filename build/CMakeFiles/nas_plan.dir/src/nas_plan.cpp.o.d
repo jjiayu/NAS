@@ -2812,6 +2812,23 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: \
   /opt/homebrew/include/CGAL/General_polygon_set_2.h \
   /opt/homebrew/include/CGAL/General_polygon_set_on_surface_2.h \
   /opt/homebrew/include/CGAL/Arrangement_2.h \
+  /opt/homebrew/include/CGAL/Search_traits_3.h \
+  /opt/homebrew/include/CGAL/license/Spatial_searching.h \
+  /opt/homebrew/include/CGAL/Search_traits_adapter.h \
+  /opt/homebrew/include/CGAL/Kd_tree_rectangle.h \
+  /opt/homebrew/include/CGAL/Euclidean_distance.h \
+  /opt/homebrew/include/CGAL/Spatial_searching/internal/Get_dimension_tag.h \
+  /opt/homebrew/include/CGAL/Orthogonal_k_neighbor_search.h \
+  /opt/homebrew/include/CGAL/Spatial_searching/internal/K_neighbor_search.h \
+  /opt/homebrew/include/CGAL/Kd_tree_node.h \
+  /opt/homebrew/include/CGAL/Splitters.h \
+  /opt/homebrew/include/CGAL/Point_container.h \
+  /opt/homebrew/include/CGAL/Plane_separator.h \
+  /opt/homebrew/include/CGAL/Spatial_searching/internal/Search_helpers.h \
+  /opt/homebrew/include/CGAL/Kd_tree.h \
+  /opt/homebrew/include/boost/container/deque.hpp \
+  /opt/homebrew/include/CGAL/mutex.h \
+  /opt/homebrew/include/CGAL/Spatial_searching/internal/bounded_priority_queue.h \
   /Users/jiayu/Desktop/nas_ws/NAS/include/surface.hpp \
   /Users/jiayu/Desktop/nas_ws/NAS/include/geometry.hpp \
   /opt/homebrew/include/CGAL/linear_least_squares_fitting_3.h \

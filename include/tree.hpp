@@ -11,6 +11,7 @@
 #include <iostream>
 #include <queue>
 #include "node.hpp"
+#include <memory>
 
 namespace nas {
 
@@ -41,15 +42,20 @@ public:
     // Number of node counter
     int node_counter;
 
+    // KD-trees for spatial queries (one for each foot)
+    std::unique_ptr<KD_Tree> kd_tree_left_foot;
+    std::unique_ptr<KD_Tree> kd_tree_right_foot;
+
     //Constructor
     Tree();
-    // Destructor
-    // ~Tree();
 
     // Methods
     void expand(int depth);
     std::vector<Node*> get_children(Node* parent);
-    std::vector<Node*> find_nodes_containing_current_stance_foot(const bool foot_flag, const Point_3& foot_pos);
+    std::vector<Node*> find_nodes_containing_current_stance_foot_brute_force(const bool foot_flag, const Point_3& foot_pos);
+    
+    // KD-tree methods
+    void build_kd_trees();
 };
 
 } // namespace nas

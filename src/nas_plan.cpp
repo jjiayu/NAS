@@ -25,7 +25,7 @@ int main() {
                   << " nodes" << std::endl;
         
         // Print node IDs in this layer
-        std::cout << "Node IDs: ";
+        std::cout << "Node IDs: "<< std::endl;
         for (const auto& node : tree.layers[i]) {
             std::cout << node->node_id << " ";
             std::cout << "Stance Foot: " << node->stance_foot << std::endl;
@@ -34,7 +34,7 @@ int main() {
     }
 
     // Find nodes containing initial stance foot
-    std::vector<Node*> nodes = tree.find_nodes_containing_current_stance_foot(current_stance_foot_flag, current_foot_pos);
+    std::vector<Node*> nodes = tree.find_nodes_containing_current_stance_foot_brute_force(current_stance_foot_flag, current_foot_pos);
     std::cout << "Nodes containing current stance foot: ";
     for (const auto& node : nodes) {
         std::cout << node->node_id << " ";

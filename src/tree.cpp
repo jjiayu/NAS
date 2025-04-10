@@ -19,6 +19,8 @@ namespace nas {
 Tree::Tree() {
     std::cout << "\n=== Initialization code ===\n" << std::endl;
 
+    // KD-trees are automatically initialized to nullptr by std::unique_ptr
+
     // TODO(jiayu): Change to antecedant polytopes
     std::cout << "[ Loading Polytopes ]" << std::endl;
     load_obj(rf_in_lf_path, this->rf_in_lf_polytope);
@@ -170,7 +172,7 @@ std::vector<Node*> Tree::get_children(Node* parent) {
     return children;
 }
 
-std::vector<Node*> Tree::find_nodes_containing_current_stance_foot(const bool foot_flag, const Point_3& foot_pos) {
+std::vector<Node*> Tree::find_nodes_containing_current_stance_foot_brute_force(const bool foot_flag, const Point_3& foot_pos) {
     std::vector<Node*> nodes;
     // Start from index 1 to skip the root layer (goal)
     for (size_t layer_idx = 1; layer_idx < this->layers.size(); ++layer_idx) {
@@ -183,6 +185,41 @@ std::vector<Node*> Tree::find_nodes_containing_current_stance_foot(const bool fo
     return nodes;
 }
 
+// Build KD-trees for each foot
+void Tree::build_kd_trees() {
+    std::vector<Centroid_and_Node> left_foot_points;
+    std::vector<Centroid_and_Node> right_foot_points;
+    
+    // Collect points for each foot, skipping layer 0 (goal)
+    for (size_t layer_idx = 1; layer_idx < layers.size(); ++layer_idx) {
+        for (Node* node : layers[layer_idx]) {
+            Point_3 centroid = get_centroid(node->patch_vertices);
+            if (node->stance_foot == LEFT_FOOT) {
+                left_foot_points.push_back(std::make_pair(centroid, node));
+            } else {
+                right_foot_points.push_back(std::make_pair(centroid, node));
+            }
+        }
+    }
+
+    // Build left foot KD-tree
+    if (!left_foot_points.empty()) {
+        kd_tree_left_foot = std::make_unique<KD_Tree>(left_foot_points.begin(), left_foot_points.end());
+    } else {
+        kd_tree_left_foot.reset();  // Set to nullptr if no points
+    }
+
+    // Build right foot KD-tree
+    if (!right_foot_points.empty()) {
+        kd_tree_right_foot = std::make_unique<KD_Tree>(right_foot_points.begin(), right_foot_points.end());
+    } else {
+        kd_tree_right_foot.reset();  // Set to nullptr if no points
+    }
+
+    std::cout << "KD-trees built successfully." << std::endl;
+    std::cout << "Left foot points: " << left_foot_points.size() << std::endl;
+    std::cout << "Right foot points: " << right_foot_points.size() << std::endl;
+}
 
 
 } // namespace nas  
