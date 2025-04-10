@@ -34,22 +34,27 @@ int main() {
     }
 
     // Find nodes containing initial stance foot
-    std::vector<Node*> nodes = tree.find_nodes_containing_current_stance_foot_brute_force(current_stance_foot_flag, current_foot_pos);
-    std::cout << "Nodes containing current stance foot: ";
-    for (const auto& node : nodes) {
-        std::cout << node->node_id << " ";
+    std::cout << "\n=== Finding nodes containing initial stance foot (Brute Force Method) ===" << std::endl;
+    std::vector<Node*> nodes_brute_force_search = tree.find_nodes_containing_current_stance_foot_brute_force(current_stance_foot_flag, current_foot_pos);
+    std::cout << "Nodes containing current stance foot: "<< std::endl;
+    for (const auto& node : nodes_brute_force_search) {
+        std::cout << "\nNode ID: " << node->node_id << std::endl;
         std::cout << "Node depth: " << node->depth << std::endl;
         std::cout << "Stance Foot: " << node->stance_foot << std::endl;
         std::cout << "Surface ID: " << node->surface_id << std::endl;
     }
     std::cout << std::endl;
 
+    // Construct KD-trees for left and right foot
+    std::cout << "\n=== Constructing KD-trees for left and right foot ===" << std::endl;
     tree.construct_kd_trees_for_left_and_right_foot();
 
-    std::vector<Node*> nodes_left_foot = tree.find_nodes_containing_contact_location_kd_tree(LEFT_FOOT, current_foot_pos);
-    std::cout << "Nodes containing current stance foot: ";
-    for (const auto& node : nodes_left_foot) {
-        std::cout << node->node_id << " ";
+    // Find nodes containing initial stance foot using KD-tree method
+    std::cout << "\n=== Finding nodes containing initial stance foot (KD-tree Method) ===" << std::endl;
+    std::vector<Node*> nodes_kd_tree_search = tree.find_nodes_containing_contact_location_kd_tree(current_stance_foot_flag, current_foot_pos);
+    std::cout << "Nodes containing current stance foot: "<< std::endl;
+    for (const auto& node : nodes_kd_tree_search) {
+        std::cout << "\nNode ID: " << node->node_id << std::endl;
         std::cout << "Node depth: " << node->depth << std::endl;
         std::cout << "Stance Foot: " << node->stance_foot << std::endl;
         std::cout << "Surface ID: " << node->surface_id << std::endl;

@@ -307,7 +307,7 @@ std::vector<Node*> Tree::find_nodes_containing_contact_location_kd_tree(const bo
         return result_nodes;
     }
 
-    traverse_kd_tree(root, 0, contact_location, result_nodes);
+    traverse_kd_tree(root, 0, contact_location, result_nodes); //always start search from the root node
     return result_nodes;
 }
 
