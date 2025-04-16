@@ -24,7 +24,7 @@ const int current_stance_foot_flag = LEFT_FOOT;
 const Point_3 current_foot_pos(5.2, 0.5, 0.0);
 
 // Node similarity threshold (compare for centroid distance and/or perimeter distance)
-const double node_similarity_threshold = 0.01;
+const double node_similarity_threshold = 0.02;
 
 // Define Surfaces lists
 // Define the list of surfaces as a vector of vectors of Point_3

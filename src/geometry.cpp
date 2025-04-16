@@ -149,7 +149,9 @@ std::vector<Point_2> compute_2d_polygon_intersection(const std::vector<Point_2>&
 double compute_polygon_perimeter(const Polyhedron& polyhedron){
     double perimeter = 0.0;
     for (auto edge = polyhedron.edges_begin(); edge != polyhedron.edges_end(); ++edge) {
-        perimeter += CGAL::squared_distance(edge->vertex()->point(), edge->opposite()->vertex()->point());
+        // No need to check vertices as they are guaranteed to exist in a valid polyhedron
+        perimeter += CGAL::sqrt(CGAL::squared_distance(edge->vertex()->point(), 
+                                                     edge->opposite()->vertex()->point()));
     }
     return perimeter;
 }

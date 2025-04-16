@@ -59,5 +59,6 @@ int main() {
         std::cout << "Stance Foot: " << node->stance_foot << std::endl;
         std::cout << "Surface ID: " << node->surface_id << std::endl;
     }
+
     return 0;
 }
