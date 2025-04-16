@@ -53,9 +53,10 @@ Tree::Tree() {
     root_ptr->stance_foot = this->goal_stance_foot;
     root_ptr->surface_id = this->surfaces.back().surface_id;
     root_ptr->depth = 0;
-    root_ptr->patch_polygon = Polygon_2(); //NOTE: for now root node is just a point, so we initialize with an empty polygon
-    root_ptr->transform_to_2d = this->surfaces.back().transform; // Transformation to surface coordinate system
-    root_ptr->transform_to_3d = this->surfaces.back().transform_inverse; // Transformation from surface coordinate system to world coordinate system
+    root_ptr->patch_polygon_2d = Polygon_2(); //NOTE: for now root node is just a point, so we initialize with an empty polygon
+    root_ptr->patch_polyhedron_3d = Polyhedron(); //NOTE: for now root node is just a point, so we initialize with an empty polyhedron
+    root_ptr->transformation_to_2d = this->surfaces.back().transform; // Transformation to surface coordinate system
+    root_ptr->transformation_to_3d = this->surfaces.back().transform_inverse; // Transformation from surface coordinate system to world coordinate system
     std::cout << "\n[ Root Node (Goal) Information ]" << std::endl;
     std::cout << "  - Node ID: " << root_ptr->node_id << std::endl;
     std::cout << "  - Stance Foot: " << 
@@ -162,9 +163,10 @@ std::vector<Node*> Tree::get_children(Node* parent) {
                 child->stance_foot = parent->stance_foot == 0 ?  1 : 0; //Alternate stance foot
                 child->surface_id = surface.surface_id;
                 child->depth = parent->depth + 1;
-                child->patch_polygon = polygon_2d_intersect_result;
-                child->transform_to_2d = surface.transform;
-                child->transform_to_3d = surface.transform_inverse; 
+                child->patch_polygon_2d = polygon_2d_intersect_result;
+                child->patch_polyhedron_3d = polytope_surf_3d_intersect_polygon;
+                child->transformation_to_2d = surface.transform;
+                child->transformation_to_3d = surface.transform_inverse; 
                 children.push_back(child);
             }
         }
@@ -309,6 +311,27 @@ std::vector<Node*> Tree::find_nodes_containing_contact_location_kd_tree(const bo
 
     traverse_kd_tree(root, 0, contact_location, result_nodes); //always start search from the root node
     return result_nodes;
+}
+
+bool Tree::check_node_similarity(Node* node1, Node* node2){
+
+    // similarity flag
+    bool same_node_flag = false;
+
+    // Check the distance between the two centroids
+    double centroid_distance = CGAL::squared_distance(get_centroid(node1->patch_vertices), get_centroid(node2->patch_vertices));
+
+    // Compute Perimeter of the two nodes
+    double perimeter1 = compute_polygon_perimeter(node1->patch_polyhedron_3d);
+    double perimeter2 = compute_polygon_perimeter(node2->patch_polyhedron_3d);
+
+    double perimeter_distance = fabs(perimeter1 - perimeter2);
+
+    if ((centroid_distance < node_similarity_threshold) && (perimeter_distance < node_similarity_threshold)){
+        same_node_flag = true;
+    }
+
+    return same_node_flag;
 }
 
 } // namespace nas  

@@ -62,6 +62,8 @@ public:
     void traverse_kd_tree(Node* node, int depth, const Point_3& contact_location, std::vector<Node*>& result_nodes); //function to traverse the KD-tree
     std::vector<Node*> find_nodes_containing_contact_location_kd_tree(const bool foot_flag, const Point_3& contact_location); //function to find the nodes containing the contact location using the KD-tree    
 
+    // Check if two nodes are similar
+    bool check_node_similarity(Node* node1, Node* node2);
 };
 
 } // namespace nas

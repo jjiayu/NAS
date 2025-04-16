@@ -81,7 +81,6 @@ double is_leftside_of_edge(const Point_2& point, const Point_2& edge_start, cons
             (edge_end.y() - edge_start.y()) * (point.x() - edge_start.x()));
 }
 
-
 // Compute the intersection between two 2d polygons using Sutherland-Hodgman algorithm
 // Subject polygon is the interseciton result between the polytope and the plans in 2d), clipping polygon is the surface polygon in 2d
 std::vector<Point_2> compute_2d_polygon_intersection(const std::vector<Point_2>& subject_polygon, const std::vector<Point_2>& clip_polygon) {
@@ -145,6 +144,14 @@ std::vector<Point_2> compute_2d_polygon_intersection(const std::vector<Point_2>&
         }
     }
     return output_list;
+}
+
+double compute_polygon_perimeter(const Polyhedron& polyhedron){
+    double perimeter = 0.0;
+    for (auto edge = polyhedron.edges_begin(); edge != polyhedron.edges_end(); ++edge) {
+        perimeter += CGAL::squared_distance(edge->vertex()->point(), edge->opposite()->vertex()->point());
+    }
+    return perimeter;
 }
 
 

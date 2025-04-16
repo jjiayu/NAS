@@ -32,4 +32,10 @@ std::vector<Point_2> compute_2d_polygon_intersection(const std::vector<Point_2>&
 
 double is_leftside_of_edge(const Point_2& point, const Point_2& edge_start, const Point_2& edge_end);
 
+// Compute the perimeter of a polygon
+double compute_polygon_perimeter(const Polyhedron& polyhedron);
+
+//Compare polygons defined by vertices in 3D space
+double compare_polygon_similarity_3d(const std::vector<Point_3>& polygon1, const std::vector<Point_3>& polygon2);
+
 } // namespace nas
