@@ -5,7 +5,7 @@ using namespace nas;
 
 Node::Node() {    // surface_id = 0;
     node_id = 0;
-    parent_ptr = nullptr;
+    parent_ptrs = std::vector<Node*>();
 }
 
 bool Node::check_if_node_contains_point(const Point_3& point) {

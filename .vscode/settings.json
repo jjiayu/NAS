@@ -103,6 +103,7 @@
         "ranges": "cpp",
         "text_encoding": "cpp",
         "__config": "cpp",
-        "random": "cpp"
+        "random": "cpp",
+        "cinttypes": "cpp"
     }
 }

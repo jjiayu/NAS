@@ -7,8 +7,15 @@
 #include <CGAL/Gps_segment_traits_2.h>
 #include <CGAL/General_polygon_set_2.h>
 #include <CGAL/Polygon_with_holes_2.h>
+#include <CGAL/Search_traits_3.h>
+#include <CGAL/Search_traits_adapter.h>
+#include <CGAL/Orthogonal_k_neighbor_search.h>
+#include <CGAL/property_map.h>
 
 namespace nas {
+
+// Forward declaration
+class Node;
 
 // Basic kernel
 typedef CGAL::Simple_cartesian<double> Kernel;
@@ -28,5 +35,14 @@ typedef CGAL::General_polygon_set_2<Traits_2> Polygon_set_2;
 typedef Traits_2::Polygon_2 General_polygon_2;
 typedef CGAL::Polygon_with_holes_2<Kernel> Polygon_with_holes_2;
 typedef CGAL::Segment_2<Kernel> Segment_2;
+
+// KD-tree types for spatial searching
+typedef CGAL::Search_traits_3<Kernel> TreeTraits;
+typedef std::pair<Point_3, Node*> Centroid_and_Node;
+typedef CGAL::Search_traits_adapter<Centroid_and_Node,
+                                  CGAL::First_of_pair_property_map<Centroid_and_Node>,
+                                  TreeTraits> Search_traits_adapted;
+typedef CGAL::Orthogonal_k_neighbor_search<Search_traits_adapted> Neighbor_search;
+typedef Neighbor_search::Tree KD_Tree;
 
 } // namespace nas 

@@ -19,6 +19,8 @@ namespace nas {
 Tree::Tree() {
     std::cout << "\n=== Initialization code ===\n" << std::endl;
 
+    // KD-trees are automatically initialized to nullptr by std::unique_ptr
+
     // TODO(jiayu): Change to antecedant polytopes
     std::cout << "[ Loading Polytopes ]" << std::endl;
     load_obj(rf_in_lf_path, this->rf_in_lf_polytope);
@@ -45,7 +47,7 @@ Tree::Tree() {
 
     // Initialize the root node
     Node*  root_ptr = new Node();
-    root_ptr->parent_ptr = nullptr;
+    root_ptr->parent_ptrs.push_back(nullptr);
     root_ptr->node_id = this->node_counter++;
     root_ptr->patch_vertices = std::vector<Point_3>({this->goal_location});  // Already Point_3, no conversion needed
     root_ptr->stance_foot = this->goal_stance_foot;
@@ -154,7 +156,7 @@ std::vector<Node*> Tree::get_children(Node* parent) {
 
                 // Found intersection, create child node
                 Node* child = new Node();
-                child->parent_ptr = parent;
+                child->parent_ptrs.push_back(parent);
                 child->node_id = node_counter++;
                 child->patch_vertices = polytope_surf_3d_intersect_pts;
                 child->stance_foot = parent->stance_foot == 0 ?  1 : 0; //Alternate stance foot
@@ -167,20 +169,146 @@ std::vector<Node*> Tree::get_children(Node* parent) {
             }
         }
     }
-
     return children;
 }
 
-std::vector<Node*> Tree::find_nodes_containing_current_stance_foot(const bool foot_flag, const Point_3& foot_pos) {
+std::vector<Node*> Tree::find_nodes_containing_current_stance_foot_brute_force(const bool foot_flag, const Point_3& foot_pos) {
     std::vector<Node*> nodes;
-    for (const auto& layer : this->layers) {
-        for (const auto& node : layer) {
+    // Start from index 1 to skip the root layer (goal)
+    for (size_t layer_idx = 1; layer_idx < this->layers.size(); ++layer_idx) {
+        for (const auto& node : this->layers[layer_idx]) {
             if (node->stance_foot == foot_flag && node->check_if_node_contains_point(foot_pos)) {
                 nodes.push_back(node);
             }
         }
     }
     return nodes;
-}   
+}
+
+// Build KD-trees for both left and right foot
+void Tree::construct_kd_trees_for_left_and_right_foot() {
+
+    // Collect all nodes for both left and right foot
+    std::vector<Node*> all_left_foot_nodes;
+    std::vector<Node*> all_right_foot_nodes;
+    
+    // Collect nodes for each foot, skipping layer 0 (goal)
+    for (size_t layer_idx = 1; layer_idx < layers.size(); ++layer_idx) {
+        for (Node* node : layers[layer_idx]) {
+            if (node->stance_foot == LEFT_FOOT) {
+                all_left_foot_nodes.push_back(node);
+            } else {
+                all_right_foot_nodes.push_back(node);
+            }
+        }
+    }
+
+    // Build left foot KD-tree
+    if (!all_left_foot_nodes.empty()) {
+        kd_tree_left_foot_root = build_kd_tree_recursive(all_left_foot_nodes, 0);
+    } else {
+        kd_tree_left_foot_root = nullptr;
+    }
+
+    // Build right foot KD-tree
+    if (!all_right_foot_nodes.empty()) {
+        kd_tree_right_foot_root = build_kd_tree_recursive(all_right_foot_nodes, 0);
+    } else {
+        kd_tree_right_foot_root = nullptr;
+    }
+
+    std::cout << "KD-trees built successfully." << std::endl;
+    std::cout << "Left foot nodes: " << all_left_foot_nodes.size() << std::endl;
+    std::cout << "Right foot nodes: " << all_right_foot_nodes.size() << std::endl;
+}
+
+// Helper function to build KD-tree recursively
+Node* Tree::build_kd_tree_recursive(std::vector<Node*>& nodes, int depth) {
+    if (nodes.empty()) return nullptr;
+
+    // Determine splitting axis (x=0, y=1, z=2)
+    int axis = depth % 3;
+
+    // Sort nodes along current splitting axis
+    std::sort(nodes.begin(), nodes.end(), 
+        [axis](Node* a, Node* b) {
+            Point_3 centroid_a = get_centroid(a->patch_vertices);
+            Point_3 centroid_b = get_centroid(b->patch_vertices);
+            double a_coord = axis == 0 ? centroid_a.x() : 
+                           axis == 1 ? centroid_a.y() : 
+                                      centroid_a.z();
+            double b_coord = axis == 0 ? centroid_b.x() : 
+                           axis == 1 ? centroid_b.y() : 
+                                      centroid_b.z();
+            return a_coord < b_coord;
+        });
+
+    // Find median node
+    size_t median_idx = nodes.size() / 2;
+    Node* median_node = nodes[median_idx];
+
+    // Split nodes into left and right subtrees
+    std::vector<Node*> left_nodes(nodes.begin(), nodes.begin() + median_idx);
+    std::vector<Node*> right_nodes(nodes.begin() + median_idx + 1, nodes.end());
+
+    // Set left and right pointers
+    if (!left_nodes.empty()) {
+        median_node->kd_left_ptr = build_kd_tree_recursive(left_nodes, depth + 1);
+    }
+    if (!right_nodes.empty()) {
+        median_node->kd_right_ptr = build_kd_tree_recursive(right_nodes, depth + 1);
+    }
+
+    return median_node;
+}
+
+void Tree::traverse_kd_tree(Node* node, int depth, const Point_3& contact_location, 
+                           std::vector<Node*>& result_nodes) {
+    if (!node) return;
+
+    // Get the node's centroid
+    Point_3 centroid = get_centroid(node->patch_vertices);
+
+    // Check if the contact location is within the node's patch
+    if (node->check_if_node_contains_point(contact_location)) {
+        result_nodes.push_back(node);
+    }
+
+    // Determine which axis to split on (x=0, y=1, z=2)
+    int axis = depth % 3;
+
+    // Compare query point with centroid along the current splitting axis
+    double query_coord = axis == 0 ? contact_location.x() : 
+                       axis == 1 ? contact_location.y() : 
+                                  contact_location.z();
+    double centroid_coord = axis == 0 ? centroid.x() : 
+                          axis == 1 ? centroid.y() : 
+                                     centroid.z();
+
+    // Traverse left subtree if query point is less than or equal to centroid
+    if (query_coord <= centroid_coord) {
+        traverse_kd_tree(node->kd_left_ptr, depth + 1, contact_location, result_nodes);
+    }
+    
+    // Traverse right subtree if query point is greater than or equal to centroid
+    if (query_coord >= centroid_coord) {
+        traverse_kd_tree(node->kd_right_ptr, depth + 1, contact_location, result_nodes);
+    }
+}
+
+std::vector<Node*> Tree::find_nodes_containing_contact_location_kd_tree(const bool foot_flag, 
+                                                              const Point_3& contact_location) {
+    std::vector<Node*> result_nodes;
+    
+    // Get the root node for the appropriate foot
+    Node* root = foot_flag == LEFT_FOOT ? kd_tree_left_foot_root : kd_tree_right_foot_root;
+    
+    if (!root) {
+        return result_nodes;
+    }
+
+    traverse_kd_tree(root, 0, contact_location, result_nodes); //always start search from the root node
+    return result_nodes;
+}
 
 } // namespace nas  
