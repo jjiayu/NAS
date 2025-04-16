@@ -64,6 +64,10 @@ public:
 
     // Check if two nodes are similar
     bool check_node_similarity(Node* node1, Node* node2);
+
+    // Merge nodes
+    std::vector<Node*> merge_nodes(std::vector<Node*> existing_nodes, std::vector<Node*> new_nodes);
+    
 };
 
 } // namespace nas

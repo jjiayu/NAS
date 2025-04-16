@@ -90,6 +90,8 @@ void Tree::expand(int target_depth) {
 
             // Get children for current node
             auto children = get_children(current_node);
+
+            // Merge node if they are similar
             
             // Add children to the new layer and queue
             if (!children.empty()) {
@@ -332,6 +334,37 @@ bool Tree::check_node_similarity(Node* node1, Node* node2){
     }
 
     return same_node_flag;
+}
+
+// Node Merging
+std::vector<Node*> Tree::merge_nodes(std::vector<Node*> existing_nodes, std::vector<Node*> new_child_nodes){
+    std::vector<Node*> filtered_child_nodes = new_child_nodes;
+    std::vector<Node*> nodes_to_remove;  // Track nodes to remove
+
+    // First identify which nodes to remove and transfer parent pointers
+    for (Node* new_child_node : new_child_nodes) {
+        for (Node* existing_node : existing_nodes) {
+            if (check_node_similarity(existing_node, new_child_node)) {
+                // Transfer all parent pointers to the existing node
+                existing_node->parent_ptrs.insert(existing_node->parent_ptrs.end(),
+                                                new_child_node->parent_ptrs.begin(),
+                                                new_child_node->parent_ptrs.end());
+                nodes_to_remove.push_back(new_child_node);
+                break;  // Once we find a similar node, no need to check others
+            }
+        }
+    }
+
+    // Then remove all identified nodes at once
+    filtered_child_nodes.erase(
+        std::remove_if(filtered_child_nodes.begin(), filtered_child_nodes.end(),
+            [&](Node* node) { 
+                return std::find(nodes_to_remove.begin(), nodes_to_remove.end(), node) != nodes_to_remove.end();
+            }),
+        filtered_child_nodes.end()
+    );
+
+    return filtered_child_nodes;
 }
 
 } // namespace nas  
