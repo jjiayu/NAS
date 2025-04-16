@@ -47,7 +47,7 @@ Tree::Tree() {
 
     // Initialize the root node
     Node*  root_ptr = new Node();
-    root_ptr->parent_ptr = nullptr;
+    root_ptr->parent_ptrs.push_back(nullptr);
     root_ptr->node_id = this->node_counter++;
     root_ptr->patch_vertices = std::vector<Point_3>({this->goal_location});  // Already Point_3, no conversion needed
     root_ptr->stance_foot = this->goal_stance_foot;
@@ -156,7 +156,7 @@ std::vector<Node*> Tree::get_children(Node* parent) {
 
                 // Found intersection, create child node
                 Node* child = new Node();
-                child->parent_ptr = parent;
+                child->parent_ptrs.push_back(parent);
                 child->node_id = node_counter++;
                 child->patch_vertices = polytope_surf_3d_intersect_pts;
                 child->stance_foot = parent->stance_foot == 0 ?  1 : 0; //Alternate stance foot
