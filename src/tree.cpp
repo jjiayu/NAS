@@ -46,8 +46,8 @@ Tree::Tree() {
     std::cout << "  - Goal Location (World Frame): " << this->goal_location << std::endl;
 
     // Initialize the root node
-    Node*  root_ptr = new Node();
-    root_ptr->parent_ptrs.push_back(nullptr);
+    Node* root_ptr = new Node();
+    root_ptr->parent_ptrs = std::vector<Node*>();  // Empty vector for root node
     root_ptr->node_id = this->node_counter++;
     root_ptr->patch_vertices = std::vector<Point_3>({this->goal_location});  // Already Point_3, no conversion needed
     root_ptr->stance_foot = this->goal_stance_foot;
@@ -92,14 +92,15 @@ void Tree::expand(int target_depth) {
             auto children = get_children(current_node);
 
             // Merge node if they are similar
+            auto merged_children = merge_nodes(new_layer, children);
             
             // Add children to the new layer and queue
-            if (!children.empty()) {
-                new_layer.insert(new_layer.end(), children.begin(), children.end());
-                for (auto child : children) {
+            if (!merged_children.empty()) {
+                new_layer.insert(new_layer.end(), merged_children.begin(), merged_children.end());
+                for (auto child : merged_children) {
                     this->expansion_queue.push(child);
                 }
-                total_children += children.size();
+                total_children += merged_children.size();
             }
         }
 
@@ -338,33 +339,62 @@ bool Tree::check_node_similarity(Node* node1, Node* node2){
 
 // Node Merging
 std::vector<Node*> Tree::merge_nodes(std::vector<Node*> existing_nodes, std::vector<Node*> new_child_nodes){
-    std::vector<Node*> filtered_child_nodes = new_child_nodes;
-    std::vector<Node*> nodes_to_remove;  // Track nodes to remove
+    std::vector<Node*> filtered_child_nodes;
 
-    // First identify which nodes to remove and transfer parent pointers
+    // Check each new child node against existing nodes
     for (Node* new_child_node : new_child_nodes) {
+        bool is_similar = false;
+        
         for (Node* existing_node : existing_nodes) {
             if (check_node_similarity(existing_node, new_child_node)) {
-                // Transfer all parent pointers to the existing node
+                // Transfer parent pointers to the existing node
                 existing_node->parent_ptrs.insert(existing_node->parent_ptrs.end(),
-                                                new_child_node->parent_ptrs.begin(),
-                                                new_child_node->parent_ptrs.end());
-                nodes_to_remove.push_back(new_child_node);
-                break;  // Once we find a similar node, no need to check others
+                                                  new_child_node->parent_ptrs.begin(),
+                                                  new_child_node->parent_ptrs.end());
+                is_similar = true;
+                break;
             }
         }
+        
+        // Only add to filtered list if not similar to any existing node
+        if (!is_similar) {
+            filtered_child_nodes.push_back(new_child_node);
+        }
+
     }
 
-    // Then remove all identified nodes at once
-    filtered_child_nodes.erase(
-        std::remove_if(filtered_child_nodes.begin(), filtered_child_nodes.end(),
-            [&](Node* node) { 
-                return std::find(nodes_to_remove.begin(), nodes_to_remove.end(), node) != nodes_to_remove.end();
-            }),
-        filtered_child_nodes.end()
-    );
-
     return filtered_child_nodes;
+}
+
+std::vector<std::vector<Node*>> Tree::find_paths_to_root(Node* start_node) {
+    std::vector<std::vector<Node*>> all_paths;
+    std::vector<Node*> current_path;
+    
+    // Start recursive path finding
+    find_paths_recursive(start_node, current_path, all_paths);
+    
+    return all_paths;
+}
+
+void Tree::find_paths_recursive(Node* current_node, 
+                                std::vector<Node*>& current_path,
+                                std::vector<std::vector<Node*>>& all_paths) {
+    // Add current node to path
+    current_path.push_back(current_node);
+    
+    // If we've reached the root (node with no parents)
+    if (current_node->parent_ptrs.empty()) {
+        // Add a copy of the current path to all_paths
+        all_paths.push_back(current_path);
+    } else {
+        // For each parent, recursively find paths
+        for (Node* parent : current_node->parent_ptrs) {
+            find_paths_recursive(parent, current_path, all_paths);
+        }
+    }
+    
+    // Backtrack: remove current node from path
+    current_path.pop_back();
 }
 
 } // namespace nas  

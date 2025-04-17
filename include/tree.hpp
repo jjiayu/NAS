@@ -68,6 +68,13 @@ public:
     // Merge nodes
     std::vector<Node*> merge_nodes(std::vector<Node*> existing_nodes, std::vector<Node*> new_nodes);
     
+    // Find all paths from a given node to the root
+    std::vector<std::vector<Node*>> find_paths_to_root(Node* start_node);
+
+    // Helper function for path finding
+    void find_paths_recursive(Node* current_node, 
+                            std::vector<Node*>& current_path,
+                            std::vector<std::vector<Node*>>& all_paths);
 };
 
 } // namespace nas
