@@ -49,7 +49,7 @@ int main() {
     std::cout << "\n=== Constructing KD-trees for left and right foot ===" << std::endl;
     tree.construct_kd_trees_for_left_and_right_foot();
 
-    // Find nodes containing initial stance foot using KD-tree method
+    // Find nodes containing initial stance foot using KD-tree method and back track the paths
     std::cout << "\n=== Finding nodes containing initial stance foot (KD-tree Method) ===" << std::endl;
     std::vector<Node*> nodes_kd_tree_search = tree.find_nodes_containing_contact_location_kd_tree(current_stance_foot_flag, current_foot_pos);
     std::cout << "Nodes containing current stance foot: "<< std::endl;
@@ -58,6 +58,19 @@ int main() {
         std::cout << "Node depth: " << node->depth << std::endl;
         std::cout << "Stance Foot: " << node->stance_foot << std::endl;
         std::cout << "Surface ID: " << node->surface_id << std::endl;
+
+        // Find all paths from this node to root
+        std::vector<std::vector<Node*>> all_paths = tree.find_paths_to_root(node);
+        std::cout << "Number of paths to root: " << all_paths.size() << std::endl;
+        
+        // Print each path
+        for (size_t i = 0; i < all_paths.size(); ++i) {
+            std::cout << "Path " << i + 1 << ": ";
+            for (const auto& path_node : all_paths[i]) {
+                std::cout << path_node->node_id << " -> ";
+            }
+            std::cout << "Root" << std::endl;
+        }
     }
 
     return 0;
