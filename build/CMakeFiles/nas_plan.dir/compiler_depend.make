@@ -3005,6 +3005,7 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /opt/homebrew/include/vtk-9.4/vtkRenderWindow.h \
   /opt/homebrew/include/vtk-9.4/vtkRenderWindowInteractor.h \
   /opt/homebrew/include/vtk-9.4/vtkRenderer.h \
+  /opt/homebrew/include/vtk-9.4/vtkRendererCollection.h \
   /opt/homebrew/include/vtk-9.4/vtkRenderingCoreModule.h \
   /opt/homebrew/include/vtk-9.4/vtkSelection.h \
   /opt/homebrew/include/vtk-9.4/vtkSetGet.h \
@@ -3141,6 +3142,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/vtk-9.4/vtkSetGet.h:
 
 /opt/homebrew/include/vtk-9.4/vtkRenderingCoreModule.h:
+
+/opt/homebrew/include/vtk-9.4/vtkRendererCollection.h:
 
 /opt/homebrew/include/vtk-9.4/vtkRenderWindowInteractor.h:
 
