@@ -71,9 +71,8 @@ int main() {
             for (size_t i = 0; i < all_paths.size(); ++i) {
                 std::cout << "Path " << i + 1 << ": ";
                 for (const auto& path_node : all_paths[i]) {
-                    std::cout << path_node->node_id << " -> ";
+                    std::cout << path_node->node_id << " foot ID: " << path_node->stance_foot << " -> ";
                 }
-                std::cout << "Root" << std::endl;
             }
         }
     }
