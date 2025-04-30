@@ -18,8 +18,8 @@ public:
     Plane_3 plane;
     Vector_3 norm;
     Point_3 centroid;
-    Transformation transform; // Transformation to align with plane (center)
-    Transformation transform_inverse; // Cached inverse transformation
+    Transformation transform_to_3d; // Transformation from surface to the world (representing the surface coordinate system in the world coordinate system)
+    Transformation transform_to_surface; // Cached inverse transformation (from world to surface)
     Polyhedron polyhedron_3d;
     Polygon_2 polygon_2d;
 

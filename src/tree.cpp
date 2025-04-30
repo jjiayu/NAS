@@ -55,8 +55,8 @@ Tree::Tree() {
     root_ptr->depth = 0;
     root_ptr->patch_polygon_2d = Polygon_2(); //NOTE: for now root node is just a point, so we initialize with an empty polygon
     root_ptr->patch_polyhedron_3d = Polyhedron(); //NOTE: for now root node is just a point, so we initialize with an empty polyhedron
-    root_ptr->transformation_to_2d = this->surfaces.back().transform; // Transformation to surface coordinate system
-    root_ptr->transformation_to_3d = this->surfaces.back().transform_inverse; // Transformation from surface coordinate system to world coordinate system
+    root_ptr->transformation_to_2d = this->surfaces.back().transform_to_surface; // Transformation to surface coordinate system
+    root_ptr->transformation_to_3d = this->surfaces.back().transform_to_3d; // Transformation from surface coordinate system to world coordinate system
     std::cout << "\n[ Root Node (Goal) Information ]" << std::endl;
     std::cout << "  - Node ID: " << root_ptr->node_id << std::endl;
     std::cout << "  - Stance Foot: " << 
@@ -134,7 +134,7 @@ std::vector<Node*> Tree::get_children(Node* parent) {
         if (polytope_plane_intersect_pts_3d.size() > 2) {
 
             //convert 3d intersection points to 2d surface plane
-            std::vector<Point_2> polytope_plane_intersect_pts_2d = transform_3d_points_to_surface_plane(polytope_plane_intersect_pts_3d, surface.transform);
+            std::vector<Point_2> polytope_plane_intersect_pts_2d = transform_3d_points_to_surface_plane(polytope_plane_intersect_pts_3d, surface.transform_to_surface);
 
             //compute intersection between 2d intersection polygon (subject polygon) and the surface polygon (clipping polygon)
             std::vector<Point_2> polygon_2d_intersect_pts = compute_2d_polygon_intersection(polytope_plane_intersect_pts_2d, surface.vertices_2d);
@@ -145,18 +145,18 @@ std::vector<Node*> Tree::get_children(Node* parent) {
             
                 Polygon_2 polygon_2d_intersect_result;
                 CGAL::convex_hull_2(polygon_2d_intersect_pts.begin(), polygon_2d_intersect_pts.end(), std::back_inserter(polygon_2d_intersect_result));
-                std::vector<Point_3> polytope_surf_3d_intersect_pts = transform_2d_points_to_world(polygon_2d_intersect_pts, surface.transform_inverse);
+                std::vector<Point_3> polytope_surf_3d_intersect_pts = transform_2d_points_to_world(polygon_2d_intersect_pts, surface.transform_to_3d);
                 Polyhedron polytope_surf_3d_intersect_polygon;        // Create intersection polygon (just for visualization)
                 CGAL::convex_hull_3(polytope_surf_3d_intersect_pts.begin(), polytope_surf_3d_intersect_pts.end(), polytope_surf_3d_intersect_polygon);
                 
-                // // Visualization
-                // auto renderWindow = Visualizer::create_figure("3D Polytope-Surface Intersection Visualization"); 
-                // auto renderer = renderWindow->GetRenderers()->GetFirstRenderer();
-                // Visualizer::add_polyhedron(renderer, surface.polyhedron_3d, (double[]){0.7, 0.9, 1.0}, 0.3);  // Add Surface (light blue)
-                // Visualizer::add_polyhedron(renderer, P_union, (double[]){1.0, 0.7, 0.8}, 0.5);  // Add P_union (pink)
-                // Visualizer::add_polyhedron(renderer, polytope_surf_3d_intersect_polygon, (double[]){0.0, 1.0, 0.0}, 0.7);  // Add intersection polygon (green)
-                // Visualizer::add_points(renderer, polytope_surf_3d_intersect_pts, (double[]){1.0, 0.0, 0.0}, 0.05);  // Add intersection points (red)
-                // Visualizer::show(renderWindow);        // Show the 3D visualization
+                // Visualization
+                auto renderWindow = Visualizer::create_figure("3D Polytope-Surface Intersection Visualization"); 
+                auto renderer = renderWindow->GetRenderers()->GetFirstRenderer();
+                Visualizer::add_polyhedron(renderer, surface.polyhedron_3d, (double[]){0.7, 0.9, 1.0}, 0.3);  // Add Surface (light blue)
+                Visualizer::add_polyhedron(renderer, P_union, (double[]){1.0, 0.7, 0.8}, 0.5);  // Add P_union (pink)
+                Visualizer::add_polyhedron(renderer, polytope_surf_3d_intersect_polygon, (double[]){0.0, 1.0, 0.0}, 0.7);  // Add intersection polygon (green)
+                Visualizer::add_points(renderer, polytope_surf_3d_intersect_pts, (double[]){1.0, 0.0, 0.0}, 0.05);  // Add intersection points (red)
+                Visualizer::show(renderWindow);        // Show the 3D visualization
 
                 // Found intersection, create child node
                 Node* child = new Node();
@@ -168,8 +168,8 @@ std::vector<Node*> Tree::get_children(Node* parent) {
                 child->depth = parent->depth + 1;
                 child->patch_polygon_2d = polygon_2d_intersect_result;
                 child->patch_polyhedron_3d = polytope_surf_3d_intersect_polygon;
-                child->transformation_to_2d = surface.transform;
-                child->transformation_to_3d = surface.transform_inverse; 
+                child->transformation_to_2d = surface.transform_to_surface;
+                child->transformation_to_3d = surface.transform_to_3d; 
                 children.push_back(child);
             }
         }

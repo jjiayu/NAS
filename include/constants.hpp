@@ -22,8 +22,9 @@ const Vector_3 goal_offset(0.0, 0.0, 0.0); // goal offset applied to move in the
 const int total_num_steps = 8;
 
 // Define Current (Initial) Foot Position
-const int current_stance_foot_flag = LEFT_FOOT;
-const Point_3 current_foot_pos(5.2, 0.7, 0.0);
+const int current_stance_foot_flag = RIGHT_FOOT;
+// const Point_3 current_foot_pos(5.2, 0.7, 0.0); // starting point for two flat
+const Point_3 current_foot_pos(-0.3, 0.0, 0.0); // starting point for stairs
 
 // Node similarity threshold (compare for centroid distance and/or perimeter distance)
 const double node_similarity_threshold = 0.02;
@@ -38,60 +39,60 @@ const double node_similarity_threshold = 0.02;
 // 📌 TODO: shrink the surface by foot length and width
 const std::vector<std::vector<Point_3>> surf_list = {
     
-    // // Stairs
-    // // Floor
-    // {
-    //     Point_3(0.16, 1., 0.0),  // bottom left
-    //     Point_3(-1.8, 1., 0.0),  // bottom right
-    //     Point_3(-1.8, -1., 0.0),  // top right
-    //     Point_3(0.16, -1., 0.0)   // top left
-    // },
+    // Stairs
+    // Floor
+    {
+        Point_3(0.16, 1., 0.0),  // bottom left
+        Point_3(-1.8, 1., 0.0),  // bottom right
+        Point_3(-1.8, -1., 0.0),  // top right
+        Point_3(0.16, -1., 0.0)   // top left
+    },
 
-    // // Step 1
-    // {
-    //     Point_3(0.3, 0.6, 0.1),  // bottom left
-    //     Point_3(0.3, -0.16, 0.1),  // bottom right
-    //     Point_3(0.6, -0.16, 0.1),  // top right
-    //     Point_3(0.6, 0.6, 0.1)   // top left
-    // },
-    // // Step 2
-    // {
-    //     Point_3(0.6, 0.6, 0.2 ),  // bottom left
-    //     Point_3(0.6, -0.16, 0.2),  // bottom right
-    //     Point_3(0.9, -0.16, 0.2 ),  // top right
-    //     Point_3(0.9, 0.6, 0.2 )   // top left
-    // },
-    // // Step 3
-    // {
-    //     Point_3(0.9, 0.6, 0.3),  // bottom left
-    //     Point_3(0.9, -0.16, 0.3),  // bottom right
-    //     Point_3(1.2, -0.16, 0.3),  // top right
-    //     Point_3(1.2, 0.6, 0.3)   // top left
-    // },
-    // // Step 4
-    // {
-    //     Point_3(1.2, 0.6, 0.4 ),  // bottom left
-    //     Point_3(1.2, -0.16, 0.4 ),  // bottom right
-    //     Point_3(1.5, -0.16, 0.4 ),  // top right
-    //     Point_3(1.5, 0.6, 0.4 )   // top left
-    // },
+    // Step 1
+    {
+        Point_3(0.3, 0.6, 0.1),  // bottom left
+        Point_3(0.3, -0.16, 0.1),  // bottom right
+        Point_3(0.6, -0.16, 0.1),  // top right
+        Point_3(0.6, 0.6, 0.1)   // top left
+    },
+    // Step 2
+    {
+        Point_3(0.6, 0.6, 0.2 ),  // bottom left
+        Point_3(0.6, -0.16, 0.2),  // bottom right
+        Point_3(0.9, -0.16, 0.2 ),  // top right
+        Point_3(0.9, 0.6, 0.2 )   // top left
+    },
+    // Step 3
+    {
+        Point_3(0.9, 0.6, 0.3),  // bottom left
+        Point_3(0.9, -0.16, 0.3),  // bottom right
+        Point_3(1.2, -0.16, 0.3),  // top right
+        Point_3(1.2, 0.6, 0.3)   // top left
+    },
+    // Step 4
+    {
+        Point_3(1.2, 0.6, 0.4 ),  // bottom left
+        Point_3(1.2, -0.16, 0.4 ),  // bottom right
+        Point_3(1.5, -0.16, 0.4 ),  // top right
+        Point_3(1.5, 0.6, 0.4 )   // top left
+    },
     
-    // Two flat surfaces
-    // Surface 1
-    {
-        Point_3(0.0, 0.0, 0.0),  // bottom left
-        Point_3(5.45, 0.0, 0.0),  // bottom right
-        Point_3(5.45, 1.0, 0.0),  // top right
-        Point_3(0.0, 1.0, 0.0)   // top left
-    },
-    // Surface 2: Another rectangle or surface
-    {
-        Point_3(5.5,  0.0, 0.0),  // bottom left
-        Point_3(7.0, 0.0, 0.0),  // bottom right
-        Point_3(7.0, 1.0, 0.0),  // top right
-        Point_3(5.5,  1.0, 0.0)   // top left
-    },
-    // Add more surfaces as needed
+    // // Two flat surfaces
+    // // Surface 1
+    // {
+    //     Point_3(0.0, 0.0, 0.0),  // bottom left
+    //     Point_3(5.45, 0.0, 0.0),  // bottom right
+    //     Point_3(5.45, 1.0, 0.0),  // top right
+    //     Point_3(0.0, 1.0, 0.0)   // top left
+    // },
+    // // Surface 2: Another rectangle or surface
+    // {
+    //     Point_3(5.5,  0.0, 0.0),  // bottom left
+    //     Point_3(7.0, 0.0, 0.0),  // bottom right
+    //     Point_3(7.0, 1.0, 0.0),  // top right
+    //     Point_3(5.5,  1.0, 0.0)   // top left
+    // },
+    // // Add more surfaces as needed
 };
 
 }

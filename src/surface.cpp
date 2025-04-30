@@ -24,7 +24,7 @@ Surface::Surface(const std::vector<Point_3>& points, int& surface_idx) {
     establish_surface_coordinate_system(points);
 
     // Transform points to surface plane and get 2d polygon (also sort points counterclockwise with convex hull)
-    vertices_2d = transform_3d_points_to_surface_plane(points, transform); //Note: the vertices_2d are not sorted now
+    vertices_2d = transform_3d_points_to_surface_plane(points, transform_to_surface); //Note: the vertices_2d are not sorted now
     CGAL::convex_hull_2(vertices_2d.begin(), vertices_2d.end(), std::back_inserter(polygon_2d));
 
     // Update vertices_2d with sorted vertices from polygon_2d
@@ -34,7 +34,7 @@ Surface::Surface(const std::vector<Point_3>& points, int& surface_idx) {
     }
 
     // Convert back to 3D
-    vertices_3d = transform_2d_points_to_world(vertices_2d, transform_inverse);
+    vertices_3d = transform_2d_points_to_world(vertices_2d, transform_to_3d);
 
     // Create 3D polyhedron
     CGAL::convex_hull_3(vertices_3d.begin(), vertices_3d.end(), polyhedron_3d);
@@ -47,9 +47,9 @@ Surface::Surface(const std::vector<Point_3>& points, int& surface_idx) {
     std::cout << "  - Norm: " << norm << std::endl;
     std::cout << "  - Centroid: " << centroid << std::endl;
     std::cout << "  - Transform Matrix:" << std::endl;
-    std::cout << "    [" << std::setw(10) << transform.m(0,0) << " " << std::setw(10) << transform.m(0,1) << " " << std::setw(10) << transform.m(0,2) << " " << std::setw(10) << transform.m(0,3) << "]" << std::endl;
-    std::cout << "    [" << std::setw(10) << transform.m(1,0) << " " << std::setw(10) << transform.m(1,1) << " " << std::setw(10) << transform.m(1,2) << " " << std::setw(10) << transform.m(1,3) << "]" << std::endl;
-    std::cout << "    [" << std::setw(10) << transform.m(2,0) << " " << std::setw(10) << transform.m(2,1) << " " << std::setw(10) << transform.m(2,2) << " " << std::setw(10) << transform.m(2,3) << "]" << std::endl;
+    std::cout << "    [" << std::setw(10) << transform_to_3d.m(0,0) << " " << std::setw(10) << transform_to_3d.m(0,1) << " " << std::setw(10) << transform_to_3d.m(0,2) << " " << std::setw(10) << transform_to_3d.m(0,3) << "]" << std::endl;
+    std::cout << "    [" << std::setw(10) << transform_to_3d.m(1,0) << " " << std::setw(10) << transform_to_3d.m(1,1) << " " << std::setw(10) << transform_to_3d.m(1,2) << " " << std::setw(10) << transform_to_3d.m(1,3) << "]" << std::endl;
+    std::cout << "    [" << std::setw(10) << transform_to_3d.m(2,0) << " " << std::setw(10) << transform_to_3d.m(2,1) << " " << std::setw(10) << transform_to_3d.m(2,2) << " " << std::setw(10) << transform_to_3d.m(2,3) << "]" << std::endl;
     std::cout << "    [" << std::setw(10) << 0.0 << " " << std::setw(10) << 0.0 << " " << std::setw(10) << 0.0 << " " << std::setw(10) << 1.0 << "]" << std::endl;
     std::cout << "  - 3D Vertices:" << std::endl;
     for (const auto& vertex : vertices_3d) {
@@ -83,15 +83,15 @@ void Surface::establish_surface_coordinate_system(const std::vector<Point_3>& po
     Vector_3 y_axis = CGAL::cross_product(norm, x_axis);
     y_axis = y_axis / std::sqrt(y_axis.squared_length());
     
-    // Create transformation matrix from world to surface coordinates
-    transform = Transformation(
+    // Create transformation matrix from the surface coordinates to the world
+    transform_to_3d = Transformation(
         x_axis.x(), y_axis.x(), norm.x(), centroid.x(),
         x_axis.y(), y_axis.y(), norm.y(), centroid.y(),
         x_axis.z(), y_axis.z(), norm.z(), centroid.z()
     );
 
-    // Cache the inverse transformation
-    transform_inverse = transform.inverse();
+    // Cache the inverse transformation (from world to surface)
+    transform_to_surface = transform_to_3d.inverse();
 }
 
 } // namespace nas
