@@ -9,10 +9,10 @@ const int LEFT_FOOT = 0;   // Represents the left foot in stance
 const int RIGHT_FOOT = 1;  // Represents the right foot in stance
 
 // Define Kinematics Reachability Path
-// const std::string rf_in_lf_path = "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/RF_constraints_in_LF_quasi_flat_REDUCED.obj";
-// const std::string lf_in_rf_path = "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/LF_constraints_in_RF_quasi_flat_REDUCED.obj";
-const std::string rf_in_lf_path = "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/LF_antecedent_CUTZ.obj";
-const std::string lf_in_rf_path = "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/RF_antecedent_CUTZ.obj";
+// const std::string rf_in_lf_path = "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/RF_constraints_in_LF.obj";
+// const std::string lf_in_rf_path = "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/LF_constraints_in_RF.obj";
+const std::string rf_in_lf_path = "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/LF_antecedent.obj";
+const std::string lf_in_rf_path = "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/RF_antecedent.obj";
 
 // Define Goal Specificaitons
 const int stance_foot_at_goal = LEFT_FOOT;
@@ -24,7 +24,7 @@ const int total_num_steps = 8;
 // Define Current (Initial) Foot Position
 const int current_stance_foot_flag = RIGHT_FOOT;
 // const Point_3 current_foot_pos(5.2, 0.7, 0.0); // starting point for two flat
-const Point_3 current_foot_pos(-0.3, 0.0, 0.0); // starting point for stairs
+const Point_3 current_foot_pos(0.0, 0.0, 0.0); // starting point for stairs
 
 // Node similarity threshold (compare for centroid distance and/or perimeter distance)
 const double node_similarity_threshold = 0.02;
