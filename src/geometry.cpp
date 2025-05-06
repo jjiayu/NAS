@@ -143,6 +143,20 @@ std::vector<Point_2> compute_2d_polygon_intersection(const std::vector<Point_2>&
             }
         }
     }
+
+    for (const auto& clip_vertex : clip_polygon) {
+    if (CGAL::bounded_side_2(subject_polygon.begin(), subject_polygon.end(), clip_vertex, Kernel()) == CGAL::ON_BOUNDED_SIDE ||
+        CGAL::bounded_side_2(subject_polygon.begin(), subject_polygon.end(), clip_vertex, Kernel()) == CGAL::ON_BOUNDARY) {
+        // Insert the clip_vertex into the intersection_result at the best place
+        // For simplicity, you can just add it (optionally, you can insert it after the closest edge)
+            output_list.push_back(clip_vertex);
+        }
+    }
+
+    // Remove duplicates if needed
+    auto end = std::unique(output_list.begin(), output_list.end());
+    output_list.erase(end, output_list.end());
+
     return output_list;
 }
 
