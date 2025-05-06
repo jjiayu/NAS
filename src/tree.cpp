@@ -136,8 +136,16 @@ std::vector<Node*> Tree::get_children(Node* parent) {
             //convert 3d intersection points to 2d surface plane
             std::vector<Point_2> polytope_plane_intersect_pts_2d = transform_3d_points_to_surface_plane(polytope_plane_intersect_pts_3d, surface.transform_to_surface);
 
+            // Convert polytope plane intersection points into convex hull
+            Polygon_2 polytope_plane_intersect_convex_hull;
+            CGAL::convex_hull_2(polytope_plane_intersect_pts_2d.begin(), polytope_plane_intersect_pts_2d.end(), std::back_inserter(polytope_plane_intersect_convex_hull));
+            std::vector<Point_2> polytope_plane_intersect_convex_hull_pts;
+            for (auto it = polytope_plane_intersect_convex_hull.vertices_begin(); it != polytope_plane_intersect_convex_hull.vertices_end(); ++it) {
+                polytope_plane_intersect_convex_hull_pts.push_back(*it);
+            }
+
             //compute intersection between 2d intersection polygon (subject polygon) and the surface polygon (clipping polygon)
-            std::vector<Point_2> polygon_2d_intersect_pts = compute_2d_polygon_intersection(polytope_plane_intersect_pts_2d, surface.vertices_2d);
+            std::vector<Point_2> polygon_2d_intersect_pts = compute_2d_polygon_intersection(polytope_plane_intersect_convex_hull_pts, surface.vertices_2d);
             
             // Sub-Step 3: Convert the 2D intersection polygon to 3D (using the inverse transformation), only if we have polygon intersection result
             //             Also create the child node
