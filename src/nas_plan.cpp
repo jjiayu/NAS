@@ -56,6 +56,25 @@ int main() {
     std::cout << "\n=== Finding nodes containing initial stance foot (KD-tree Method) ===" << std::endl;
     std::vector<Node*> nodes_kd_tree_search = tree.find_nodes_containing_contact_location_kd_tree(current_stance_foot_flag, current_foot_pos);
     
+    // // Visualize all nodes returned by KD-tree search, each with a different color
+    // auto renderWindow = nas::Visualizer::create_figure("KD-tree Search Result Nodes");
+    // auto renderer = renderWindow->GetRenderers()->GetFirstRenderer();
+    // int color_idx = 0;
+    // for (const auto& node : nodes_kd_tree_search) {
+    //     // Generate a unique color for each patch (cycling through hues)
+    //     double r = 0.5 + 0.5 * std::sin(color_idx * 2.0 * M_PI / nodes_kd_tree_search.size());
+    //     double g = 0.5 + 0.5 * std::sin(color_idx * 2.0 * M_PI / nodes_kd_tree_search.size() + 2.0);
+    //     double b = 0.5 + 0.5 * std::sin(color_idx * 2.0 * M_PI / nodes_kd_tree_search.size() + 4.0);
+    //     double color[3] = {r, g, b};
+    //     // Visualize the patch polyhedron (3D)
+    //     nas::Visualizer::add_polyhedron(renderer, node->patch_polyhedron_3d, color, 0.5);
+    //     // Visualize the patch vertices (as points, same color but more opaque)
+    //     nas::Visualizer::add_points(renderer, node->patch_vertices, color, 0.10);
+    //     color_idx++;
+    // }
+    // nas::Visualizer::show(renderWindow);
+
+    // Back track the paths
     if (nodes_kd_tree_search.empty()) {
         std::cout << "No nodes found containing the current stance foot position." << std::endl;
     } else {
