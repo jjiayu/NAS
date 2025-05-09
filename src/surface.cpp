@@ -1,5 +1,6 @@
 #include "surface.hpp"
 #include <iomanip>
+#include "constants.hpp"
 
 namespace nas {
 
@@ -25,7 +26,22 @@ Surface::Surface(const std::vector<Point_3>& points, int& surface_idx) {
 
     // Transform points to surface plane and get 2d polygon (also sort points counterclockwise with convex hull)
     vertices_2d = transform_3d_points_to_surface_plane(points, transform_to_surface); //Note: the vertices_2d are not sorted now
-    CGAL::convex_hull_2(vertices_2d.begin(), vertices_2d.end(), std::back_inserter(polygon_2d));
+
+    // Shrink patches by foot_length and foot_width
+    std::vector<Point_2> vertices_2d_shrinked;
+    for (const auto& vertex : vertices_2d) {
+        double new_x = vertex.x();
+        double new_y = vertex.y();
+        // Example logic: shrink left/right edges along x, top/bottom along y
+        if (vertex.x() > 0) new_x -= foot_length/2.0;
+        if (vertex.x() < 0) new_x += foot_length/2.0;
+        if (vertex.y() > 0) new_y -= foot_width/2.0;
+        if (vertex.y() < 0) new_y += foot_width/2.0;
+        vertices_2d_shrinked.emplace_back(new_x, new_y);
+    }
+
+    // Sort with convex hull
+    CGAL::convex_hull_2(vertices_2d_shrinked.begin(), vertices_2d_shrinked.end(), std::back_inserter(polygon_2d));
 
     // Update vertices_2d with sorted vertices from polygon_2d
     vertices_2d.clear();  // Clear the unsorted vertices
@@ -61,26 +77,18 @@ Surface::Surface(const std::vector<Point_3>& points, int& surface_idx) {
 
 void Surface::establish_surface_coordinate_system(const std::vector<Point_3>& points) {
     // 1. Find the point furthest from centroid for robust X-axis
-    double max_dist = 0;
-    Vector_3 x_axis_candidate;
-    for (const auto& point : points) {
-        Vector_3 vec(point.x() - centroid.x(),
-                     point.y() - centroid.y(),
-                     point.z() - centroid.z());
-        // Project vector onto plane
-        Vector_3 projected = vec - (vec * norm) * norm;
-        double dist = projected.squared_length();
-        if (dist > max_dist) {
-            max_dist = dist;
-            x_axis_candidate = projected;
-        }
-    }
-    
-    // 2. Normalize X-axis
-    Vector_3 x_axis = x_axis_candidate / std::sqrt(x_axis_candidate.squared_length());
-    
-    // 3. Create Y-axis using cross product (ensures right-handed system)
-    Vector_3 y_axis = CGAL::cross_product(norm, x_axis);
+
+    // World axes
+    Vector_3 world_x(1, 0, 0);
+    Vector_3 world_y(0, 1, 0);
+
+    // Project world_x onto the plane
+    Vector_3 x_axis = world_x - (world_x * norm) * norm;
+    x_axis = x_axis / std::sqrt(x_axis.squared_length());
+
+    // Project world_y onto the plane
+    Vector_3 y_axis = world_y - (world_y * norm) * norm;
+    y_axis = y_axis - (x_axis * y_axis) * x_axis; // Gram-Schmidt
     y_axis = y_axis / std::sqrt(y_axis.squared_length());
     
     // Create transformation matrix from the surface coordinates to the world

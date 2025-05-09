@@ -26,6 +26,7 @@ typedef CGAL::Vector_3<Kernel> Vector_3;
 typedef CGAL::Point_3<Kernel> Point_3;
 typedef Kernel::Plane_3 Plane_3;
 typedef CGAL::Aff_transformation_3<Kernel> Transformation;
+typedef Kernel::Vector_2 Vector_2;
 
 // 2D types
 typedef CGAL::Polygon_2<Kernel> Polygon_2;

@@ -8,11 +8,15 @@ namespace nas {
 const int LEFT_FOOT = 0;   // Represents the left foot in stance
 const int RIGHT_FOOT = 1;  // Represents the right foot in stance
 
+// Foot size information
+const double foot_length = 0.22;
+const double foot_width = 0.12;
+
 // Define Kinematics Reachability Path
 // const std::string rf_in_lf_path = "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/RF_constraints_in_LF.obj";
 // const std::string lf_in_rf_path = "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/LF_constraints_in_RF.obj";
-const std::string rf_in_lf_path = "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/LF_antecedent.obj";
-const std::string lf_in_rf_path = "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/RF_antecedent.obj";
+const std::string rf_in_lf_path = "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/LF_antecedent_CUTZ.obj";
+const std::string lf_in_rf_path = "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/RF_antecedent_CUTZ.obj";
 
 // Define Goal Specificaitons
 const int stance_foot_at_goal = LEFT_FOOT;
@@ -42,39 +46,42 @@ const std::vector<std::vector<Point_3>> surf_list = {
     // Stairs
     // Floor
     {
-        Point_3(0.16, 1., 0.0),  // bottom left
-        Point_3(-1.8, 1., 0.0),  // bottom right
-        Point_3(-1.8, -1., 0.0),  // top right
-        Point_3(0.16, -1., 0.0)   // top left
+        Point_3(-1.8, -1., 0.0),   // bottom left
+        Point_3(0.3, -1., 0.0),   // bottom right
+        Point_3(0.3, 1., 0.0),    // top right
+        Point_3(-1.8, 1., 0.0)     // top left
     },
 
     // Step 1
     {
-        Point_3(0.3, 0.6, 0.1),  // bottom left
-        Point_3(0.3, -0.16, 0.1),  // bottom right
-        Point_3(0.6, -0.16, 0.1),  // top right
-        Point_3(0.6, 0.6, 0.1)   // top left
+        Point_3(0.3, -0.16, 0.1),   // bottom left
+        Point_3(0.6, -0.16, 0.1),    // bottom right
+        Point_3(0.6, 0.6, 0.1),      // top right
+        Point_3(0.3, 0.6, 0.1)      // top left
     },
+
     // Step 2
     {
-        Point_3(0.6, 0.6, 0.2 ),  // bottom left
-        Point_3(0.6, -0.16, 0.2),  // bottom right
-        Point_3(0.9, -0.16, 0.2 ),  // top right
-        Point_3(0.9, 0.6, 0.2 )   // top left
+        Point_3(0.6, -0.16, 0.2),    // bottom left
+        Point_3(0.9, -0.16, 0.2),    // bottom right
+        Point_3(0.9, 0.6, 0.2),      // top right
+        Point_3(0.6, 0.6, 0.2)       // top left
     },
+
     // Step 3
     {
-        Point_3(0.9, 0.6, 0.3),  // bottom left
-        Point_3(0.9, -0.16, 0.3),  // bottom right
-        Point_3(1.2, -0.16, 0.3),  // top right
-        Point_3(1.2, 0.6, 0.3)   // top left
+        Point_3(0.9, -0.16, 0.3),    // bottom left
+        Point_3(1.2, -0.16, 0.3),    // bottom right
+        Point_3(1.2, 0.6, 0.3),      // top right
+        Point_3(0.9, 0.6, 0.3)       // top left
     },
+
     // Step 4
     {
-        Point_3(1.2, 0.6, 0.4 ),  // bottom left
-        Point_3(1.2, -0.16, 0.4 ),  // bottom right
-        Point_3(1.5, -0.16, 0.4 ),  // top right
-        Point_3(1.5, 0.6, 0.4 )   // top left
+        Point_3(1.2, -0.16, 0.4),    // bottom left
+        Point_3(1.5, -0.16, 0.4),    // bottom right
+        Point_3(1.5, 0.6, 0.4),      // top right
+        Point_3(1.2, 0.6, 0.4)       // top left
     },
     
     // // Two flat surfaces
