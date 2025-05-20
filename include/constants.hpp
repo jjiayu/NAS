@@ -9,8 +9,8 @@ const int LEFT_FOOT = 0;   // Represents the left foot in stance
 const int RIGHT_FOOT = 1;  // Represents the right foot in stance
 
 // Foot size information
-const double foot_length = 0.22;
-const double foot_width = 0.12;
+const double foot_length = 0.0;
+const double foot_width = 0.0;
 
 // Define Kinematics Reachability Path
 // const std::string rf_in_lf_path = "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/RF_constraints_in_LF.obj";
