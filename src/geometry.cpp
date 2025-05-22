@@ -114,8 +114,8 @@ std::vector<Point_2> compute_2d_polygon_intersection(const std::vector<Point_2>&
             Point_2 prev_point = input_list[(i + input_list.size() - 1) % input_list.size()];//if current point is the first point, prev point is the last point
             
             // Create segments for intersection check
-            Segment_2 edge(edge_start, edge_end);
-            Segment_2 line(prev_point, current_point);
+            Line_2 line(edge_start, edge_end);
+            Segment_2 edge(prev_point, current_point);
 
             bool current_inside = is_leftside_of_edge(current_point, edge_start, edge_end) >= 0;
             bool prev_inside = is_leftside_of_edge(prev_point, edge_start, edge_end) >= 0;
