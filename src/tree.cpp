@@ -129,7 +129,7 @@ std::vector<Node*> Tree::get_children(Node* parent) {
         // Sub-Step 1: Compute intersection between P_union and current surface
         std::vector<Point_3> polytope_plane_intersect_pts_3d = compute_polytope_plane_intersection(surface.plane, P_union);
         
-        // Sub-Step 2: Compute intersection between P_union and current surface (if we have the polytope and the plane has intersection)
+        // Sub-Step 2: Compute intersection between polygons (if we have the polytope and the plane has intersection)
 
         if (polytope_plane_intersect_pts_3d.size() > 2) {
 

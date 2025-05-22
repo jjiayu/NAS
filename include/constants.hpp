@@ -9,8 +9,8 @@ const int LEFT_FOOT = 0;   // Represents the left foot in stance
 const int RIGHT_FOOT = 1;  // Represents the right foot in stance
 
 // Foot size information
-const double foot_length = 0.0;
-const double foot_width = 0.0;
+const double foot_length = 0.22;
+const double foot_width = 0.12;
 
 // Define Kinematics Reachability Path
 // const std::string rf_in_lf_path = "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/RF_constraints_in_LF.obj";
@@ -28,7 +28,7 @@ const int total_num_steps = 8;
 // Define Current (Initial) Foot Position
 const int current_stance_foot_flag = RIGHT_FOOT;
 // const Point_3 current_foot_pos(5.2, 0.7, 0.0); // starting point for two flat
-const Point_3 current_foot_pos(0.0, 0.0, 0.0); // starting point for stairs
+const Point_3 current_foot_pos(0.1, 0.0, 0.0); // starting point for stairs
 
 // Node similarity threshold (compare for centroid distance and/or perimeter distance)
 const double node_similarity_threshold = 0.02;

@@ -14,6 +14,7 @@
 using namespace nas;
 
 int main() {
+
     //Create the tree
     Tree tree;
 
