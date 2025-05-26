@@ -13,6 +13,7 @@
 #include <fstream>
 #include <algorithm>
 #include <chrono>
+#include <iomanip>
 
 namespace nas {
 
@@ -77,6 +78,7 @@ void Tree::expand(int target_depth) {
     // std::cout << "=== Expand the Tree (Depth = " << target_depth << ") ==="  << std::endl;
     
     auto start_time = std::chrono::high_resolution_clock::now();
+    int total_num_nodes = 0;  // Counter for total nodes
 
     while (!this->expansion_queue.empty() && this->layers.size() - 1 < static_cast<size_t>(target_depth)) { // -1 because we start from layer 0
         // std::cout << "[ Expanding Layer " << this->layers.size() - 1 << " ]" << std::endl;
@@ -85,7 +87,6 @@ void Tree::expand(int target_depth) {
         // Process all nodes at the current depth
         std::vector<Node*> new_layer;
         size_t nodes_at_current_depth = this->expansion_queue.size();
-        int total_children = 0;
 
         for (size_t i = 0; i < nodes_at_current_depth; ++i) {
             Node* current_node = this->expansion_queue.front();
@@ -103,20 +104,21 @@ void Tree::expand(int target_depth) {
                 for (auto child : merged_children) {
                     this->expansion_queue.push(child);
                 }
-                total_children += merged_children.size();
             }
         }
 
         // Add all children from this depth level as a new layer
         if (!new_layer.empty()) {
             this->layers.push_back(new_layer);
-            // std::cout << "  - New nodes created: " << total_children << std::endl;
+            total_num_nodes += new_layer.size();  // Add new nodes to total count
         }
     }
 
     auto end_time = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
-    std::cout << "=== Tree expansion===\nTook " << duration.count() << " milliseconds (ms)" << std::endl;
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time);
+    std::cout << "=== Tree expansion===\n";
+    std::cout << "Total number of nodes: " << total_num_nodes << std::endl;
+    std::cout << "Took " << std::fixed << std::setprecision(3) << duration.count()/1000.0 << " milliseconds (ms)" << std::endl;
 }
 
 std::vector<Node*> Tree::get_children(Node* parent) {
@@ -240,7 +242,7 @@ void Tree::construct_kd_trees_for_left_and_right_foot() {
 
     auto end_time = std::chrono::high_resolution_clock::now();
     auto total_duration = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time);
-    std::cout << "Total KD-tree construction took " << total_duration.count() << " microseconds (us)" << std::endl;
+    std::cout << "Total KD-tree construction took " << std::fixed << std::setprecision(3) << total_duration.count()/1000.0 << " milliseconds (ms)" << std::endl;
     std::cout << "Left foot nodes: " << all_left_foot_nodes.size() << std::endl;
     std::cout << "Right foot nodes: " << all_right_foot_nodes.size() << std::endl;
 }
@@ -336,7 +338,7 @@ std::vector<Node*> Tree::find_nodes_containing_contact_location_kd_tree(const bo
 
     auto end_time = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time);
-    std::cout << "KD-tree searching took " << duration.count() << " microseconds (us)" << std::endl;
+    std::cout << "KD-tree searching took " << std::fixed << std::setprecision(3) << duration.count()/1000.0 << " milliseconds (ms)" << std::endl;
     return result_nodes;
 }
 
