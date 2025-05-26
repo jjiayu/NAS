@@ -288,7 +288,7 @@ Node* Tree::build_kd_tree_recursive(std::vector<Node*>& nodes, int depth) {
 }
 
 void Tree::traverse_kd_tree(Node* node, int depth, const Point_3& contact_location, 
-                           std::vector<Node*>& result_nodes) {
+                           std::vector<Node*>& result_nodes, size_t& min_depth) {
     if (!node) return;
 
     // Get the node's centroid
@@ -296,7 +296,15 @@ void Tree::traverse_kd_tree(Node* node, int depth, const Point_3& contact_locati
 
     // Check if the contact location is within the node's patch
     if (node->check_if_node_contains_point(contact_location)) {
-        result_nodes.push_back(node);
+        if (node->depth < min_depth) {
+            // Found a shorter path, clear previous results and update min_depth
+            result_nodes.clear();
+            min_depth = node->depth;
+            result_nodes.push_back(node);
+        } else if (node->depth == min_depth) {
+            // Found another node with same minimum depth, add it
+            result_nodes.push_back(node);
+        }
     }
 
     // Determine which axis to split on (x=0, y=1, z=2)
@@ -312,12 +320,12 @@ void Tree::traverse_kd_tree(Node* node, int depth, const Point_3& contact_locati
 
     // Traverse left subtree if query point is less than or equal to centroid
     if (query_coord <= centroid_coord) {
-        traverse_kd_tree(node->kd_left_ptr, depth + 1, contact_location, result_nodes);
+        traverse_kd_tree(node->kd_left_ptr, depth + 1, contact_location, result_nodes, min_depth);
     }
     
     // Traverse right subtree if query point is greater than or equal to centroid
     if (query_coord >= centroid_coord) {
-        traverse_kd_tree(node->kd_right_ptr, depth + 1, contact_location, result_nodes);
+        traverse_kd_tree(node->kd_right_ptr, depth + 1, contact_location, result_nodes, min_depth);
     }
 }
 
@@ -326,15 +334,17 @@ std::vector<Node*> Tree::find_nodes_containing_contact_location_kd_tree(const bo
     auto start_time = std::chrono::high_resolution_clock::now();
     
     std::vector<Node*> result_nodes;
+    size_t min_depth = num_steps;  // Initialize with maximum possible depth
     
     // Get the root node for the appropriate foot
     Node* root = foot_flag == LEFT_FOOT ? kd_tree_left_foot_root : kd_tree_right_foot_root;
     
+    //make sure root is not nullptr
     if (!root) {
         return result_nodes;
     }
 
-    traverse_kd_tree(root, 0, contact_location, result_nodes); //always start search from the root node
+    traverse_kd_tree(root, 0, contact_location, result_nodes, min_depth);
 
     auto end_time = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time);
