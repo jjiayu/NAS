@@ -93,7 +93,7 @@ int main() {
                 std::cout << std::endl;
                 
                 // Show this path's window and wait for it to be closed
-                Visualizer::show(renderWindow);                
+                Visualizer::show(renderWindow);
             }
         }
     }
