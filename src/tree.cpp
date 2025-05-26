@@ -12,6 +12,7 @@
 #include <vtkRendererCollection.h>
 #include <fstream>
 #include <algorithm>
+#include <chrono>
 
 namespace nas {
 
@@ -73,11 +74,13 @@ Tree::Tree() {
 
 // Expand the tree to target depth
 void Tree::expand(int target_depth) {
-    std::cout << "=== Expand the Tree (Depth = " << target_depth << ") ==="  << std::endl;
+    // std::cout << "=== Expand the Tree (Depth = " << target_depth << ") ==="  << std::endl;
     
+    auto start_time = std::chrono::high_resolution_clock::now();
+
     while (!this->expansion_queue.empty() && this->layers.size() - 1 < static_cast<size_t>(target_depth)) { // -1 because we start from layer 0
-        std::cout << "[ Expanding Layer " << this->layers.size() - 1 << " ]" << std::endl;
-        std::cout << "  - Nodes to expand: " << this->expansion_queue.size() << std::endl;
+        // std::cout << "[ Expanding Layer " << this->layers.size() - 1 << " ]" << std::endl;
+        // std::cout << "  - Nodes to expand: " << this->expansion_queue.size() << std::endl;
         
         // Process all nodes at the current depth
         std::vector<Node*> new_layer;
@@ -107,11 +110,13 @@ void Tree::expand(int target_depth) {
         // Add all children from this depth level as a new layer
         if (!new_layer.empty()) {
             this->layers.push_back(new_layer);
-            std::cout << "  - New nodes created: " << total_children << std::endl;
+            // std::cout << "  - New nodes created: " << total_children << std::endl;
         }
     }
 
-    std::cout << "\n=== Tree Generation Finished ===\n" << std::endl;
+    auto end_time = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+    std::cout << "=== Tree expansion===\nTook " << duration.count() << " milliseconds (ms)" << std::endl;
 }
 
 std::vector<Node*> Tree::get_children(Node* parent) {
@@ -201,6 +206,9 @@ std::vector<Node*> Tree::find_nodes_containing_current_stance_foot_brute_force(c
 // Build KD-trees for both left and right foot
 void Tree::construct_kd_trees_for_left_and_right_foot() {
 
+    // Start timing
+    auto start_time = std::chrono::high_resolution_clock::now();
+
     // Collect all nodes for both left and right foot
     std::vector<Node*> all_left_foot_nodes;
     std::vector<Node*> all_right_foot_nodes;
@@ -230,7 +238,9 @@ void Tree::construct_kd_trees_for_left_and_right_foot() {
         kd_tree_right_foot_root = nullptr;
     }
 
-    std::cout << "KD-trees built successfully." << std::endl;
+    auto end_time = std::chrono::high_resolution_clock::now();
+    auto total_duration = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time);
+    std::cout << "Total KD-tree construction took " << total_duration.count() << " microseconds (us)" << std::endl;
     std::cout << "Left foot nodes: " << all_left_foot_nodes.size() << std::endl;
     std::cout << "Right foot nodes: " << all_right_foot_nodes.size() << std::endl;
 }
@@ -311,6 +321,8 @@ void Tree::traverse_kd_tree(Node* node, int depth, const Point_3& contact_locati
 
 std::vector<Node*> Tree::find_nodes_containing_contact_location_kd_tree(const bool foot_flag, 
                                                               const Point_3& contact_location) {
+    auto start_time = std::chrono::high_resolution_clock::now();
+    
     std::vector<Node*> result_nodes;
     
     // Get the root node for the appropriate foot
@@ -321,6 +333,10 @@ std::vector<Node*> Tree::find_nodes_containing_contact_location_kd_tree(const bo
     }
 
     traverse_kd_tree(root, 0, contact_location, result_nodes); //always start search from the root node
+
+    auto end_time = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time);
+    std::cout << "KD-tree searching took " << duration.count() << " microseconds (us)" << std::endl;
     return result_nodes;
 }
 
