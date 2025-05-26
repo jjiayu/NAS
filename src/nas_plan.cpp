@@ -32,8 +32,11 @@ int main() {
     std::cout << "\n=== Finding nodes containing initial stance foot (KD-tree Method) ===" << std::endl;
     std::vector<Node*> nodes_kd_tree_search = tree.find_nodes_containing_contact_location_kd_tree(current_stance_foot_flag, current_foot_pos);
 
-    // Back track the paths (find the shortest paths)
+    // //test with brute force search
+    // std::vector<Node*> nodes_brute_force_search = tree.find_nodes_containing_current_stance_foot_brute_force(current_stance_foot_flag, current_foot_pos);
+    // nodes_kd_tree_search = nodes_brute_force_search;
 
+    // Back track the paths (find the shortest paths)
     // Plot the shortest path nodes
     std::cout << "\n=== Printing the KD tree search result (already filtered with the shortest path) ===" << std::endl;
     if (nodes_kd_tree_search.empty()){

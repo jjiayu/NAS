@@ -193,12 +193,21 @@ std::vector<Node*> Tree::get_children(Node* parent) {
 }
 
 std::vector<Node*> Tree::find_nodes_containing_current_stance_foot_brute_force(const bool foot_flag, const Point_3& foot_pos) {
+    
     std::vector<Node*> nodes;
+    size_t min_depth = this->num_steps;  // Initialize with maximum possible depth
+
     // Start from index 1 to skip the root layer (goal)
     for (size_t layer_idx = 1; layer_idx < this->layers.size(); ++layer_idx) {
         for (const auto& node : this->layers[layer_idx]) {
             if (node->stance_foot == foot_flag && node->check_if_node_contains_point(foot_pos)) {
-                nodes.push_back(node);
+                if (node->depth < min_depth) {
+                    nodes.clear();
+                    min_depth = node->depth;
+                    nodes.push_back(node);
+                } else if (node->depth == min_depth) {
+                    nodes.push_back(node);
+                }
             }
         }
     }
