@@ -53,7 +53,7 @@ target_link_libraries(utils_lib PRIVATE
     visualizer_lib
     CGAL::CGAL
 )
-target_link_libraries(visualizer_lib PRIVATE 
+target_link_libraries(visualizer_lib PRIVATE
     ${VTK_LIBRARIES}
     CGAL::CGAL
 )
