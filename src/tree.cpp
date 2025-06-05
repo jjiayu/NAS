@@ -194,6 +194,8 @@ std::vector<Node*> Tree::get_children(Node* parent) {
 
 std::vector<Node*> Tree::find_nodes_containing_current_stance_foot_brute_force(const bool foot_flag, const Point_3& foot_pos) {
     
+    auto start_time = std::chrono::high_resolution_clock::now();
+
     std::vector<Node*> nodes;
     size_t min_depth = this->num_steps;  // Initialize with maximum possible depth
 
@@ -211,6 +213,11 @@ std::vector<Node*> Tree::find_nodes_containing_current_stance_foot_brute_force(c
             }
         }
     }
+
+    auto end_time = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time);
+    std::cout << "Brute force searching took " << std::fixed << std::setprecision(3) << duration.count()/1000.0 << " milliseconds (ms)" << std::endl;
+
     return nodes;
 }
 

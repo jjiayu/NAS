@@ -21,7 +21,7 @@ BUILD_SHARED_LIBS:BOOL=ON
 Boost_DEBUG:BOOL=OFF
 
 //The directory containing a CMake configuration file for Boost.
-Boost_DIR:PATH=/opt/homebrew/lib/cmake/Boost-1.87.0
+Boost_DIR:PATH=/opt/homebrew/lib/cmake/Boost-1.88.0
 
 //Path to a file.
 Boost_INCLUDE_DIR:PATH=/opt/homebrew/include
@@ -358,7 +358,7 @@ ZLIB_LIBRARY_DEBUG:FILEPATH=ZLIB_LIBRARY_DEBUG-NOTFOUND
 ZLIB_LIBRARY_RELEASE:FILEPATH=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/lib/libz.tbd
 
 //The directory containing a CMake configuration file for boost_headers.
-boost_headers_DIR:PATH=/opt/homebrew/lib/cmake/boost_headers-1.87.0
+boost_headers_DIR:PATH=/opt/homebrew/lib/cmake/boost_headers-1.88.0
 
 //double-conversion include directory
 double-conversion_INCLUDE_DIR:PATH=/opt/homebrew/include/double-conversion
@@ -546,9 +546,9 @@ EXPAT_LIBRARY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: Eigen3_INCLUDE_DIR
 Eigen3_INCLUDE_DIR-ADVANCED:INTERNAL=1
 //Details about finding Boost
-FIND_PACKAGE_MESSAGE_DETAILS_Boost:INTERNAL=[/opt/homebrew/lib/cmake/Boost-1.87.0/BoostConfig.cmake][c ][v1.87.0(1.72)]
+FIND_PACKAGE_MESSAGE_DETAILS_Boost:INTERNAL=[/opt/homebrew/lib/cmake/Boost-1.88.0/BoostConfig.cmake][c ][v1.88.0(1.72)]
 //Details about finding EXPAT
-FIND_PACKAGE_MESSAGE_DETAILS_EXPAT:INTERNAL=[/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/lib/libexpat.tbd][/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include][v2.6.3()]
+FIND_PACKAGE_MESSAGE_DETAILS_EXPAT:INTERNAL=[/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/lib/libexpat.tbd][/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include][v()]
 //Details about finding Eigen3
 FIND_PACKAGE_MESSAGE_DETAILS_Eigen3:INTERNAL=[/opt/homebrew/include/eigen3][v3.4.0(3.1.0)]
 //Details about finding Freetype
@@ -564,17 +564,17 @@ FIND_PACKAGE_MESSAGE_DETAILS_LZMA:INTERNAL=[/opt/homebrew/lib/liblzma.dylib][/op
 //Details about finding MPFR
 FIND_PACKAGE_MESSAGE_DETAILS_MPFR:INTERNAL=[/opt/homebrew/lib/libmpfr.dylib][/opt/homebrew/include][v()]
 //Details about finding PNG
-FIND_PACKAGE_MESSAGE_DETAILS_PNG:INTERNAL=[/opt/homebrew/lib/libpng.dylib][/opt/homebrew/include][v1.6.47()]
+FIND_PACKAGE_MESSAGE_DETAILS_PNG:INTERNAL=[/opt/homebrew/lib/libpng.dylib][/opt/homebrew/include][v1.6.48()]
 //Details about finding TIFF
 FIND_PACKAGE_MESSAGE_DETAILS_TIFF:INTERNAL=[/opt/homebrew/lib/libtiff.dylib][/opt/homebrew/include][c ][v4.7.0()]
 //Details about finding Threads
 FIND_PACKAGE_MESSAGE_DETAILS_Threads:INTERNAL=[TRUE][v()]
 //Details about finding ZLIB
-FIND_PACKAGE_MESSAGE_DETAILS_ZLIB:INTERNAL=[/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/lib/libz.tbd][/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include][c ][v1.2.12()]
+FIND_PACKAGE_MESSAGE_DETAILS_ZLIB:INTERNAL=[/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/lib/libz.tbd][/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include][c ][v()]
 //Details about finding double-conversion
 FIND_PACKAGE_MESSAGE_DETAILS_double-conversion:INTERNAL=[/opt/homebrew/lib/libdouble-conversion.dylib][/opt/homebrew/include/double-conversion][v()]
 //Details about finding nlohmann_json
-FIND_PACKAGE_MESSAGE_DETAILS_nlohmann_json:INTERNAL=[/opt/homebrew/share/cmake/nlohmann_json/nlohmann_jsonConfig.cmake][v3.11.3()]
+FIND_PACKAGE_MESSAGE_DETAILS_nlohmann_json:INTERNAL=[/opt/homebrew/share/cmake/nlohmann_json/nlohmann_jsonConfig.cmake][v3.12.0()]
 //Details about finding utf8cpp
 FIND_PACKAGE_MESSAGE_DETAILS_utf8cpp:INTERNAL=[/opt/homebrew/include/utf8cpp][v()]
 //ADVANCED property for variable: FREETYPE_INCLUDE_DIR_freetype2

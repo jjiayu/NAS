@@ -6,7 +6,7 @@ CXX_DEFINES = -DCGAL_USE_GMPXX=1 -DGLAD_API_CALL_EXPORT -DGL_SILENCE_DEPRECATION
 
 CXX_INCLUDES = -I/Users/jiayu/Desktop/nas_ws/NAS/include -isystem /opt/homebrew/include -isystem /opt/homebrew/opt/cgal/include -isystem /opt/homebrew/include/vtk-9.4 -isystem /opt/homebrew/include/vtk-9.4/token -isystem /opt/homebrew/include/vtk-9.4/vtkkissfft -isystem /opt/homebrew/include/vtk-9.4/vtkglad -isystem /opt/homebrew/include/freetype2
 
-CXX_FLAGSarm64 = -O3 -DNDEBUG -std=gnu++17 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk -mmacosx-version-min=15.3
+CXX_FLAGSarm64 = -O3 -DNDEBUG -std=gnu++17 -arch arm64 -mmacosx-version-min=15.3
 
-CXX_FLAGS = -O3 -DNDEBUG -std=gnu++17 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk -mmacosx-version-min=15.3
+CXX_FLAGS = -O3 -DNDEBUG -std=gnu++17 -arch arm64 -mmacosx-version-min=15.3
 

@@ -22,27 +22,26 @@ int main() {
     tree.expand(tree.num_steps);
 
     // Find nodes containing initial stance foot
-
-    // Construct KD-trees for left and right foot
-    std::cout << "\n=== Constructing KD-trees for left and right foot ===" << std::endl;
-
-    tree.construct_kd_trees_for_left_and_right_foot();
-
-    // Find nodes containing initial stance foot using KD-tree method and back track the paths
-    std::cout << "\n=== Finding nodes containing initial stance foot (KD-tree Method) ===" << std::endl;
-    std::vector<Node*> nodes_kd_tree_search = tree.find_nodes_containing_contact_location_kd_tree(current_stance_foot_flag, current_foot_pos);
-
-    // //test with brute force search
-    // std::vector<Node*> nodes_brute_force_search = tree.find_nodes_containing_current_stance_foot_brute_force(current_stance_foot_flag, current_foot_pos);
-    // nodes_kd_tree_search = nodes_brute_force_search;
+    std::vector<Node*> current_stance_foot_nodes;
+    if (node_search_method == "bruteforce") {
+        std::cout << "\n=== Finding nodes containing initial stance foot (Brute Force Method) ===" << std::endl;
+        current_stance_foot_nodes = tree.find_nodes_containing_current_stance_foot_brute_force(current_stance_foot_flag, current_foot_pos);
+    } else if (node_search_method == "kdtree") {
+        std::cout << "\n=== Finding nodes containing initial stance foot (KD-tree Method) ===" << std::endl;
+        std::cout << "\n=== Constructing KD-trees for left and right foot ===" << std::endl;
+        tree.construct_kd_trees_for_left_and_right_foot();
+        current_stance_foot_nodes = tree.find_nodes_containing_contact_location_kd_tree(current_stance_foot_flag, current_foot_pos);
+    } else if (node_search_method == "knn") {
+        std::cout << "\n=== Finding nodes containing initial stance foot (KNN Method) ===" << std::endl;
+    }
 
     // Back track the paths (find the shortest paths)
     // Plot the shortest path nodes
-    std::cout << "\n=== Printing the KD tree search result (already filtered with the shortest path) ===" << std::endl;
-    if (nodes_kd_tree_search.empty()){
+    std::cout << "\n=== Printing Node search result (already filtered with the shortest path) ===" << std::endl;
+    if (current_stance_foot_nodes.empty()){
         std::cout << "No shortest path nodes found." << std::endl;
     } else {
-        for (const auto& node : nodes_kd_tree_search){
+        for (const auto& node : current_stance_foot_nodes){
             std::cout << "\nNode ID: " << node->node_id << std::endl;
             std::cout << "Node depth: " << node->depth << std::endl;
             // Find all paths from this node to root
