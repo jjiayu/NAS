@@ -24,13 +24,13 @@ const int stance_foot_at_goal = LEFT_FOOT;
 const Vector_3 goal_offset(0.0, 0.0, 0.0); // goal offset applied to move in the local frame of the goal surface (last surface)
 
 // Define Number of Steps
-const int total_num_steps = 40;
+const int total_num_steps = 60;
 
 // Define Current (Initial) Foot Position
 const int current_stance_foot_flag = RIGHT_FOOT;
 // const Point_3 current_foot_pos(2.2, 0.7, 0.0); // starting point for two flat
-const Point_3 current_foot_pos(0.1, 0.0, 0.0); // starting point for stairs
-// const Point_3 current_foot_pos(0.0, 0.0, 0.0); // starting point for long stairs and longlong stairs
+// const Point_3 current_foot_pos(0.1, 0.0, 0.0); // starting point for stairs
+const Point_3 current_foot_pos(0.0, 0.0, 0.0); // starting point for long stairs and longlong stairs
 
 // Node similarity threshold (compare for centroid distance and/or perimeter distance)
 const double node_similarity_threshold = 0.02;
@@ -45,9 +45,9 @@ const std::string node_search_method = "bruteforce"; // "bruteforce", "kdtree", 
 // 1) bottom left, 2) bottom right, 3) top right, 4) top left
 
 // Flat Terrain for testing
-const std::vector<std::vector<Point_3>> surf_list = Stairs;
+// const std::vector<std::vector<Point_3>> surf_list = Stairs;
 // const std::vector<std::vector<Point_3>> surf_list = TwoFlatSurfaces;
 // const std::vector<std::vector<Point_3>> surf_list = LongStairs;
-// const std::vector<std::vector<Point_3>> surf_list = LongLongStairs;
+const std::vector<std::vector<Point_3>> surf_list = LongLongStairs;
 
 }

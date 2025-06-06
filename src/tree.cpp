@@ -23,7 +23,6 @@ Tree::Tree() {
 
     // KD-trees are automatically initialized to nullptr by std::unique_ptr
 
-    // TODO(jiayu): Change to antecedant polytopes
     std::cout << "[ Loading Polytopes ]" << std::endl;
     load_obj(rf_in_lf_path, this->rf_in_lf_polytope);
     load_obj(lf_in_rf_path, this->lf_in_rf_polytope);
