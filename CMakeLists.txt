@@ -67,10 +67,11 @@ target_link_libraries(surface_lib PRIVATE
     CGAL::CGAL
 )
 
-# Add executable
+# Add executables
 add_executable(nas_plan src/nas_plan.cpp)
+add_executable(astart_plan src/astart_plan.cpp)  # Add A* planning executable
 
-# Link libraries
+# Link libraries for first executable
 target_link_libraries(nas_plan PRIVATE 
     node_lib
     tree_lib
@@ -83,8 +84,21 @@ target_link_libraries(nas_plan PRIVATE
     yaml-cpp::yaml-cpp
 )
 
-# Enable VTK modules
+# Link libraries for A* planning executable
+target_link_libraries(astart_plan PRIVATE 
+    node_lib
+    tree_lib
+    surface_lib
+    utils_lib
+    visualizer_lib
+    geometry_lib
+    CGAL::CGAL
+    ${VTK_LIBRARIES}
+    yaml-cpp::yaml-cpp
+)
+
+# Enable VTK modules for all executables
 vtk_module_autoinit(
-  TARGETS nas_plan tree_lib utils_lib visualizer_lib
+  TARGETS nas_plan astart_plan tree_lib utils_lib visualizer_lib
   MODULES ${VTK_LIBRARIES}
 )

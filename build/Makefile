@@ -207,6 +207,43 @@ nas_plan/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/nas_plan.dir/build.make CMakeFiles/nas_plan.dir/build
 .PHONY : nas_plan/fast
 
+#=============================================================================
+# Target rules for targets named astart_plan
+
+# Build rule for target.
+astart_plan: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 astart_plan
+.PHONY : astart_plan
+
+# fast build rule for target.
+astart_plan/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astart_plan.dir/build.make CMakeFiles/astart_plan.dir/build
+.PHONY : astart_plan/fast
+
+src/astart_plan.o: src/astart_plan.cpp.o
+.PHONY : src/astart_plan.o
+
+# target to build an object file
+src/astart_plan.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astart_plan.dir/build.make CMakeFiles/astart_plan.dir/src/astart_plan.cpp.o
+.PHONY : src/astart_plan.cpp.o
+
+src/astart_plan.i: src/astart_plan.cpp.i
+.PHONY : src/astart_plan.i
+
+# target to preprocess a source file
+src/astart_plan.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astart_plan.dir/build.make CMakeFiles/astart_plan.dir/src/astart_plan.cpp.i
+.PHONY : src/astart_plan.cpp.i
+
+src/astart_plan.s: src/astart_plan.cpp.s
+.PHONY : src/astart_plan.s
+
+# target to generate assembly for a file
+src/astart_plan.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astart_plan.dir/build.make CMakeFiles/astart_plan.dir/src/astart_plan.cpp.s
+.PHONY : src/astart_plan.cpp.s
+
 src/geometry.o: src/geometry.cpp.o
 .PHONY : src/geometry.o
 
@@ -383,6 +420,7 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... astart_plan"
 	@echo "... geometry_lib"
 	@echo "... nas_plan"
 	@echo "... node_lib"
@@ -390,6 +428,9 @@ help:
 	@echo "... tree_lib"
 	@echo "... utils_lib"
 	@echo "... visualizer_lib"
+	@echo "... src/astart_plan.o"
+	@echo "... src/astart_plan.i"
+	@echo "... src/astart_plan.s"
 	@echo "... src/geometry.o"
 	@echo "... src/geometry.i"
 	@echo "... src/geometry.s"
