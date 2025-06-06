@@ -13,6 +13,9 @@ const int RIGHT_FOOT = 1;  // Represents the right foot in stance
 const double foot_length = 0.22;
 const double foot_width  = 0.12;
 
+// Merge Node Flag
+const bool merge_node_flag = true;
+
 // Define Kinematics Reachability Path
 // const std::string rf_in_lf_path = "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/RF_constraints_in_LF.obj";
 // const std::string lf_in_rf_path = "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/LF_constraints_in_RF.obj";
@@ -24,7 +27,7 @@ const int stance_foot_at_goal = LEFT_FOOT;
 const Vector_3 goal_offset(0.0, 0.0, 0.0); // goal offset applied to move in the local frame of the goal surface (last surface)
 
 // Define Number of Steps
-const int total_num_steps = 60;
+const int total_num_steps = 30;
 
 // Define Current (Initial) Foot Position
 const int current_stance_foot_flag = RIGHT_FOOT;

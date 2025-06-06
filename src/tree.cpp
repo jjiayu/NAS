@@ -93,14 +93,24 @@ void Tree::expand(int target_depth) {
 
             // Get children for current node
             auto children = get_children(current_node);
-
-            // Merge node if they are similar
-            auto merged_children = merge_nodes(new_layer, children);
             
-            // Add children to the new layer and queue
-            if (!merged_children.empty()) {
-                new_layer.insert(new_layer.end(), merged_children.begin(), merged_children.end());
-                for (auto child : merged_children) {
+            // Skip if no children
+            if (children.empty()) {
+                continue;
+            }
+
+            // Handle node merging and add children to new layer
+            if (merge_node_flag) {
+                auto merged_children = merge_nodes(new_layer, children);
+                if (!merged_children.empty()) {
+                    new_layer.insert(new_layer.end(), merged_children.begin(), merged_children.end());
+                    for (auto child : merged_children) {
+                        this->expansion_queue.push(child);
+                    }
+                }
+            } else {
+                new_layer.insert(new_layer.end(), children.begin(), children.end());
+                for (auto child : children) {
                     this->expansion_queue.push(child);
                 }
             }
