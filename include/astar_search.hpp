@@ -54,6 +54,9 @@ public:
 
     // Main search method
     void search();
+
+    // Get children method
+    std::vector<Node*> get_children(Node* current_node);
 };
 
 } // namespace nas

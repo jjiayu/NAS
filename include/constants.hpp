@@ -22,6 +22,11 @@ const bool merge_node_flag = true;
 const std::string rf_in_lf_path = "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/LF_antecedent_CUTZ.obj";
 const std::string lf_in_rf_path = "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/RF_antecedent_CUTZ.obj";
 
+// for a star we use forward polytopes
+const std::string rf_in_lf_path_astar = "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/RF_constraints_in_LF_quasi_flat_REDUCED.obj";
+const std::string lf_in_rf_path_astar = "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/LF_constraints_in_RF_quasi_flat_REDUCED.obj";
+
+
 // Define Goal Specificaitons
 const int stance_foot_at_goal = LEFT_FOOT;
 const Vector_3 goal_offset(0.0, 0.0, 0.0); // goal offset applied to move in the local frame of the goal surface (last surface)
@@ -31,9 +36,10 @@ const int total_num_steps = 30;
 
 // Define Current (Initial) Foot Position
 const int current_stance_foot_flag = RIGHT_FOOT;
-const Point_3 current_foot_pos(2.2, 0.7, 0.0); // starting point for two flat
+// const Point_3 current_foot_pos(2.2, 0.7, 0.0); // starting point for two flat
 // const Point_3 current_foot_pos(0.1, 0.0, 0.0); // starting point for stairs
-// const Point_3 current_foot_pos(0.0, 0.0, 0.0); // starting point for long stairs and longlong stairs
+const Point_3 current_foot_pos(0.0, 0.0, 0.0); // starting point for long stairs and longlong stairs
+// const Point_3 current_foot_pos(6.25, 0.5, 0.0);
 
 // Node similarity threshold (compare for centroid distance and/or perimeter distance)
 const double node_similarity_threshold = 0.02;
@@ -49,8 +55,8 @@ const std::string node_search_method = "bruteforce"; // "bruteforce", "kdtree", 
 
 // Flat Terrain for testing
 // const std::vector<std::vector<Point_3>> surf_list = Stairs;
-const std::vector<std::vector<Point_3>> surf_list = TwoFlatSurfaces;
-// const std::vector<std::vector<Point_3>> surf_list = LongStairs;
+// const std::vector<std::vector<Point_3>> surf_list = TwoFlatSurfaces;
+const std::vector<std::vector<Point_3>> surf_list = LongStairs;
 // const std::vector<std::vector<Point_3>> surf_list = LongLongStairs;
 
 }

@@ -12,13 +12,11 @@
 
 using namespace nas;
 
-int main() {
-    std::cout << "Starting A* Planning..." << std::endl;
-    
+int main() {    
     // Create A* search instance
     AstarSearch astar_search;
 
-    
+    astar_search.search();
     
     return 0;
 }

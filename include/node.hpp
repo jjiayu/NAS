@@ -27,6 +27,7 @@ public:
         int depth; // The depth of the node in the tree
 
         // For A* search
+        Node* parent; // Pointer to the parent node
         double g_score;      // Cost from start to current
         double h_score;      // Heuristic cost to goal
         double f_score;      // Total cost (g + h)

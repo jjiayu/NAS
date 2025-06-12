@@ -38,4 +38,6 @@ double compute_polygon_perimeter(const Polyhedron& polyhedron);
 //Compare polygons defined by vertices in 3D space
 double compare_polygon_similarity_3d(const std::vector<Point_3>& polygon1, const std::vector<Point_3>& polygon2);
 
+double compute_euclidean_distance(const Point_3& start_location, const Point_3& end_location);
+
 } // namespace nas

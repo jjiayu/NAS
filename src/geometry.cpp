@@ -170,5 +170,9 @@ double compute_polygon_perimeter(const Polyhedron& polyhedron){
     return perimeter;
 }
 
+double compute_euclidean_distance(const Point_3& start_location, const Point_3& end_location){
+    return CGAL::sqrt(CGAL::squared_distance(start_location, end_location));
+}
+
 
 } // namespace nas
