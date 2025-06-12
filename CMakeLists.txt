@@ -44,6 +44,7 @@ add_library(tree_lib src/tree.cpp)
 add_library(geometry_lib src/geometry.cpp)
 add_library(surface_lib src/surface.cpp)
 add_library(visualizer_lib src/visualizer.cpp)
+add_library(astar_search_lib src/astar_search.cpp)
 
 # Set library dependencies
 target_link_libraries(node_lib PRIVATE geometry_lib CGAL::CGAL)
@@ -66,39 +67,50 @@ target_link_libraries(surface_lib PRIVATE
     ${VTK_LIBRARIES}
     CGAL::CGAL
 )
+target_link_libraries(astar_search_lib PRIVATE
+    tree_lib
+    utils_lib
+    node_lib
+    surface_lib
+    geometry_lib
+    visualizer_lib
+    ${VTK_LIBRARIES}
+    CGAL::CGAL
+)
 
 # Add executables
 add_executable(nas_plan src/nas_plan.cpp)
-add_executable(astart_plan src/astart_plan.cpp)  # Add A* planning executable
+add_executable(astar_plan src/astar_plan.cpp)
 
 # Link libraries for first executable
-target_link_libraries(nas_plan PRIVATE 
-    node_lib
+target_link_libraries(nas_plan PRIVATE
     tree_lib
-    surface_lib
     utils_lib
-    visualizer_lib
+    node_lib
+    surface_lib
     geometry_lib
-    CGAL::CGAL
+    visualizer_lib
     ${VTK_LIBRARIES}
+    CGAL::CGAL
     yaml-cpp::yaml-cpp
 )
 
 # Link libraries for A* planning executable
-target_link_libraries(astart_plan PRIVATE 
-    node_lib
+target_link_libraries(astar_plan PRIVATE
+    astar_search_lib
     tree_lib
-    surface_lib
     utils_lib
-    visualizer_lib
+    node_lib
+    surface_lib
     geometry_lib
-    CGAL::CGAL
+    visualizer_lib
     ${VTK_LIBRARIES}
+    CGAL::CGAL
     yaml-cpp::yaml-cpp
 )
 
-# Enable VTK modules for all executables
+# Enable VTK module autoinit for both executables
 vtk_module_autoinit(
-  TARGETS nas_plan astart_plan tree_lib utils_lib visualizer_lib
+  TARGETS nas_plan astar_plan
   MODULES ${VTK_LIBRARIES}
 )

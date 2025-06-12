@@ -195,6 +195,19 @@ visualizer_lib/fast:
 .PHONY : visualizer_lib/fast
 
 #=============================================================================
+# Target rules for targets named astar_search_lib
+
+# Build rule for target.
+astar_search_lib: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 astar_search_lib
+.PHONY : astar_search_lib
+
+# fast build rule for target.
+astar_search_lib/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astar_search_lib.dir/build.make CMakeFiles/astar_search_lib.dir/build
+.PHONY : astar_search_lib/fast
+
+#=============================================================================
 # Target rules for targets named nas_plan
 
 # Build rule for target.
@@ -208,41 +221,65 @@ nas_plan/fast:
 .PHONY : nas_plan/fast
 
 #=============================================================================
-# Target rules for targets named astart_plan
+# Target rules for targets named astar_plan
 
 # Build rule for target.
-astart_plan: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 astart_plan
-.PHONY : astart_plan
+astar_plan: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 astar_plan
+.PHONY : astar_plan
 
 # fast build rule for target.
-astart_plan/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/astart_plan.dir/build.make CMakeFiles/astart_plan.dir/build
-.PHONY : astart_plan/fast
+astar_plan/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astar_plan.dir/build.make CMakeFiles/astar_plan.dir/build
+.PHONY : astar_plan/fast
 
-src/astart_plan.o: src/astart_plan.cpp.o
-.PHONY : src/astart_plan.o
+src/astar_plan.o: src/astar_plan.cpp.o
+.PHONY : src/astar_plan.o
 
 # target to build an object file
-src/astart_plan.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/astart_plan.dir/build.make CMakeFiles/astart_plan.dir/src/astart_plan.cpp.o
-.PHONY : src/astart_plan.cpp.o
+src/astar_plan.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astar_plan.dir/build.make CMakeFiles/astar_plan.dir/src/astar_plan.cpp.o
+.PHONY : src/astar_plan.cpp.o
 
-src/astart_plan.i: src/astart_plan.cpp.i
-.PHONY : src/astart_plan.i
+src/astar_plan.i: src/astar_plan.cpp.i
+.PHONY : src/astar_plan.i
 
 # target to preprocess a source file
-src/astart_plan.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/astart_plan.dir/build.make CMakeFiles/astart_plan.dir/src/astart_plan.cpp.i
-.PHONY : src/astart_plan.cpp.i
+src/astar_plan.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astar_plan.dir/build.make CMakeFiles/astar_plan.dir/src/astar_plan.cpp.i
+.PHONY : src/astar_plan.cpp.i
 
-src/astart_plan.s: src/astart_plan.cpp.s
-.PHONY : src/astart_plan.s
+src/astar_plan.s: src/astar_plan.cpp.s
+.PHONY : src/astar_plan.s
 
 # target to generate assembly for a file
-src/astart_plan.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/astart_plan.dir/build.make CMakeFiles/astart_plan.dir/src/astart_plan.cpp.s
-.PHONY : src/astart_plan.cpp.s
+src/astar_plan.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astar_plan.dir/build.make CMakeFiles/astar_plan.dir/src/astar_plan.cpp.s
+.PHONY : src/astar_plan.cpp.s
+
+src/astar_search.o: src/astar_search.cpp.o
+.PHONY : src/astar_search.o
+
+# target to build an object file
+src/astar_search.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astar_search_lib.dir/build.make CMakeFiles/astar_search_lib.dir/src/astar_search.cpp.o
+.PHONY : src/astar_search.cpp.o
+
+src/astar_search.i: src/astar_search.cpp.i
+.PHONY : src/astar_search.i
+
+# target to preprocess a source file
+src/astar_search.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astar_search_lib.dir/build.make CMakeFiles/astar_search_lib.dir/src/astar_search.cpp.i
+.PHONY : src/astar_search.cpp.i
+
+src/astar_search.s: src/astar_search.cpp.s
+.PHONY : src/astar_search.s
+
+# target to generate assembly for a file
+src/astar_search.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astar_search_lib.dir/build.make CMakeFiles/astar_search_lib.dir/src/astar_search.cpp.s
+.PHONY : src/astar_search.cpp.s
 
 src/geometry.o: src/geometry.cpp.o
 .PHONY : src/geometry.o
@@ -420,7 +457,8 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... astart_plan"
+	@echo "... astar_plan"
+	@echo "... astar_search_lib"
 	@echo "... geometry_lib"
 	@echo "... nas_plan"
 	@echo "... node_lib"
@@ -428,9 +466,12 @@ help:
 	@echo "... tree_lib"
 	@echo "... utils_lib"
 	@echo "... visualizer_lib"
-	@echo "... src/astart_plan.o"
-	@echo "... src/astart_plan.i"
-	@echo "... src/astart_plan.s"
+	@echo "... src/astar_plan.o"
+	@echo "... src/astar_plan.i"
+	@echo "... src/astar_plan.s"
+	@echo "... src/astar_search.o"
+	@echo "... src/astar_search.i"
+	@echo "... src/astar_search.s"
 	@echo "... src/geometry.o"
 	@echo "... src/geometry.i"
 	@echo "... src/geometry.s"

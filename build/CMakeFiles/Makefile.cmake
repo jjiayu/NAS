@@ -144,6 +144,7 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/geometry_lib.dir/DependInfo.cmake"
   "CMakeFiles/surface_lib.dir/DependInfo.cmake"
   "CMakeFiles/visualizer_lib.dir/DependInfo.cmake"
+  "CMakeFiles/astar_search_lib.dir/DependInfo.cmake"
   "CMakeFiles/nas_plan.dir/DependInfo.cmake"
-  "CMakeFiles/astart_plan.dir/DependInfo.cmake"
+  "CMakeFiles/astar_plan.dir/DependInfo.cmake"
   )

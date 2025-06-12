@@ -26,7 +26,7 @@ const std::string lf_in_rf_path = "/Users/jiayu/Desktop/nas_ws/NAS/data/constrai
 const int stance_foot_at_goal = LEFT_FOOT;
 const Vector_3 goal_offset(0.0, 0.0, 0.0); // goal offset applied to move in the local frame of the goal surface (last surface)
 
-// Define Number of Steps
+// Define Number of Steps (max number of steps)
 const int total_num_steps = 30;
 
 // Define Current (Initial) Foot Position
