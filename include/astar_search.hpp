@@ -21,6 +21,35 @@ struct CompareNodes {
     }
 };
 
+struct NodeHash {
+    size_t operator()(const Node* node) const {
+        // Compute centroid from the patch
+        Point_3 centroid = get_centroid(node->patch_vertices);
+        
+        // Hash the centroid coordinates and perimeter
+        size_t h1 = std::hash<double>()(centroid.x());
+        size_t h2 = std::hash<double>()(centroid.y());
+        size_t h3 = std::hash<double>()(centroid.z());
+        size_t h4 = std::hash<double>()(compute_polygon_perimeter(node->patch_polyhedron_3d));
+        return h1 ^ (h2 << 1) ^ (h3 << 2) ^ (h4 << 3);
+    }
+};
+
+struct NodeEqual {
+    bool operator()(const Node* a, const Node* b) const {
+        const double TOLERANCE = 0.02;
+        
+        // Compute centroids
+        Point_3 centroid_a = get_centroid(a->patch_vertices);
+        Point_3 centroid_b = get_centroid(b->patch_vertices);
+        
+        return (std::abs(CGAL::to_double(centroid_a.x()) - CGAL::to_double(centroid_b.x())) < TOLERANCE &&
+                std::abs(CGAL::to_double(centroid_a.y()) - CGAL::to_double(centroid_b.y())) < TOLERANCE &&
+                std::abs(CGAL::to_double(centroid_a.z()) - CGAL::to_double(centroid_b.z())) < TOLERANCE &&
+                std::abs(compute_polygon_perimeter(a->patch_polyhedron_3d) - compute_polygon_perimeter(b->patch_polyhedron_3d)) < TOLERANCE);
+    }
+};
+
 class AstarSearch {
 public:
     // Reachability Polytope
@@ -47,8 +76,8 @@ public:
     std::priority_queue<Node*, std::vector<Node*>, CompareNodes> open_set;
 
     // Close set
-    std::unordered_set<Node*> closed_set;
-
+    std::unordered_set<Node*, NodeHash, NodeEqual> closed_set;
+    
     // Constructor
     AstarSearch();
 

@@ -107,7 +107,7 @@ void AstarSearch::search() {
         // Loop over all the children
         for (Node* child : children) {
             // Check if the child is already in the closed set
-            if (closed_set.contains(child)) {   
+            if (closed_set.find(child) != closed_set.end()) {   
                 continue;
             }
             else{
@@ -119,7 +119,6 @@ void AstarSearch::search() {
                 open_set.push(child);
             }
         }
-
     }
 
     std::cout << "\n[ A* search completed ]" << std::endl;

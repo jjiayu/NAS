@@ -76,15 +76,15 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: CMakeFiles/nas_plan.dir/flags.make
 CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/nas_plan.cpp
 CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: CMakeFiles/nas_plan.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o -MF CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o.d -o CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o -c /Users/jiayu/Desktop/nas_ws/NAS/src/nas_plan.cpp
+	/opt/homebrew/opt/llvm/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o -MF CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o.d -o CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o -c /Users/jiayu/Desktop/nas_ws/NAS/src/nas_plan.cpp
 
 CMakeFiles/nas_plan.dir/src/nas_plan.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/nas_plan.dir/src/nas_plan.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/jiayu/Desktop/nas_ws/NAS/src/nas_plan.cpp > CMakeFiles/nas_plan.dir/src/nas_plan.cpp.i
+	/opt/homebrew/opt/llvm/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/jiayu/Desktop/nas_ws/NAS/src/nas_plan.cpp > CMakeFiles/nas_plan.dir/src/nas_plan.cpp.i
 
 CMakeFiles/nas_plan.dir/src/nas_plan.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/nas_plan.dir/src/nas_plan.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/jiayu/Desktop/nas_ws/NAS/src/nas_plan.cpp -o CMakeFiles/nas_plan.dir/src/nas_plan.cpp.s
+	/opt/homebrew/opt/llvm/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/jiayu/Desktop/nas_ws/NAS/src/nas_plan.cpp -o CMakeFiles/nas_plan.dir/src/nas_plan.cpp.s
 
 # Object files for target nas_plan
 nas_plan_OBJECTS = \

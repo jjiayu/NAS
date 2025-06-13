@@ -35,7 +35,7 @@ const Vector_3 goal_offset(0.0, 0.0, 0.0); // goal offset applied to move in the
 const int total_num_steps = 30;
 
 // Define Current (Initial) Foot Position
-const int current_stance_foot_flag = RIGHT_FOOT;
+const int current_stance_foot_flag = LEFT_FOOT;
 // const Point_3 current_foot_pos(2.2, 0.7, 0.0); // starting point for two flat
 // const Point_3 current_foot_pos(0.1, 0.0, 0.0); // starting point for stairs
 const Point_3 current_foot_pos(0.0, 0.0, 0.0); // starting point for long stairs and longlong stairs
