@@ -94,6 +94,46 @@ void AstarSearch::search() {
             for (Node* node : path) {
                 std::cout << "Node ID: " << node->node_id << ", Surface ID: " << node->surface_id << std::endl;
             }
+            // Plotting path
+            if (!path.empty()) {
+                std::cout << "A* Path found with " << path.size() << " nodes." << std::endl;
+
+                // Create a new window for the path
+                auto renderWindow = Visualizer::create_figure("A* Path");
+                auto renderer = renderWindow->GetRenderers()->GetFirstRenderer();
+
+                // Add coordinate axes
+                Visualizer::add_coordinate_axes(renderer);
+
+                // Add surfaces (if you want to show the environment)
+                for (const auto& surface : this->surfaces) {
+                    double surface_color[3] = {0.7, 0.9, 1.0};  // Light blue
+                    Visualizer::add_polyhedron(renderer, surface.polyhedron_3d, surface_color, 0.3);
+                }
+
+                // Optionally, add start and goal positions
+                double start_color[3] = {1.0, 0.0, 0.0};  // Red
+                double goal_color[3] = {0.0, 1.0, 0.0};   // Green
+                Visualizer::add_points(renderer, {path.front()->patch_vertices[0]}, start_color, 0.1);
+                Visualizer::add_points(renderer, {path.back()->patch_vertices[0]}, goal_color, 0.1);
+
+                // Add patches along the path
+                for (const auto& node : path) {
+                    double patch_color[3];
+                    if (node->stance_foot == LEFT_FOOT) {
+                        patch_color[0] = 1.0; patch_color[1] = 0.0; patch_color[2] = 0.0; // Red
+                    } else {
+                        patch_color[0] = 0.0; patch_color[1] = 0.0; patch_color[2] = 1.0; // Blue
+                    }
+                    Visualizer::add_polyhedron(renderer, node->patch_polyhedron_3d, patch_color, 0.5);
+                }
+
+                // Show the window and wait for it to be closed
+                Visualizer::show(renderWindow);
+            } else {
+                std::cout << "No path found by A* search." << std::endl;
+            }
+
             break;
         }
 
@@ -117,6 +157,7 @@ void AstarSearch::search() {
                 child->f_score = child->g_score + child->h_score;
                 child->parent = current_node;
                 open_set.push(child);
+                // this->closed_set.insert(child);
             }
         }
     }
@@ -125,6 +166,8 @@ void AstarSearch::search() {
     std::cout << "Total nodes expanded: " << this->node_counter << std::endl;
     std::cout << "Total nodes in closed set: " << this->closed_set.size() << std::endl;
     std::cout << "Total nodes in open set: " << this->open_set.size() << std::endl;
+
+
 
 }
 

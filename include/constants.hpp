@@ -37,8 +37,8 @@ const int total_num_steps = 30;
 // Define Current (Initial) Foot Position
 const int current_stance_foot_flag = LEFT_FOOT;
 // const Point_3 current_foot_pos(2.2, 0.7, 0.0); // starting point for two flat
-// const Point_3 current_foot_pos(0.1, 0.0, 0.0); // starting point for stairs
-const Point_3 current_foot_pos(0.0, 0.0, 0.0); // starting point for long stairs and longlong stairs
+const Point_3 current_foot_pos(0.1, 0.0, 0.0); // starting point for stairs
+// const Point_3 current_foot_pos(0.0, 0.0, 0.0); // starting point for long stairs and longlong stairs
 // const Point_3 current_foot_pos(6.25, 0.5, 0.0);
 
 // Node similarity threshold (compare for centroid distance and/or perimeter distance)
@@ -54,9 +54,9 @@ const std::string node_search_method = "bruteforce"; // "bruteforce", "kdtree", 
 // 1) bottom left, 2) bottom right, 3) top right, 4) top left
 
 // Flat Terrain for testing
-// const std::vector<std::vector<Point_3>> surf_list = Stairs;
+const std::vector<std::vector<Point_3>> surf_list = Stairs;
 // const std::vector<std::vector<Point_3>> surf_list = TwoFlatSurfaces;
-const std::vector<std::vector<Point_3>> surf_list = LongStairs;
+// const std::vector<std::vector<Point_3>> surf_list = LongStairs;
 // const std::vector<std::vector<Point_3>> surf_list = LongLongStairs;
 
 }
