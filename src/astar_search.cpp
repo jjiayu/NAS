@@ -92,8 +92,9 @@ void AstarSearch::search() {
             std::cout << "Path Found:  "<< std::endl;
             std::reverse(path.begin(), path.end());
             for (Node* node : path) {
-                std::cout << "Node ID: " << node->node_id << ", Surface ID: " << node->surface_id << std::endl;
+                std::cout << "Node ID: " << node->node_id << ", Surface ID: " << node->surface_id << ", Stance Foot: " << node->stance_foot << std::endl;
             }
+
             // Plotting path
             if (!path.empty()) {
                 std::cout << "A* Path found with " << path.size() << " nodes." << std::endl;
@@ -114,8 +115,8 @@ void AstarSearch::search() {
                 // Optionally, add start and goal positions
                 double start_color[3] = {1.0, 0.0, 0.0};  // Red
                 double goal_color[3] = {0.0, 1.0, 0.0};   // Green
-                Visualizer::add_points(renderer, {path.front()->patch_vertices[0]}, start_color, 0.1);
-                Visualizer::add_points(renderer, {path.back()->patch_vertices[0]}, goal_color, 0.1);
+                Visualizer::add_points(renderer, {current_foot_pos}, start_color, 0.1);
+                Visualizer::add_points(renderer, {this->goal_location}, goal_color, 0.1);
 
                 // Add patches along the path
                 for (const auto& node : path) {
@@ -157,7 +158,7 @@ void AstarSearch::search() {
                 child->f_score = child->g_score + child->h_score;
                 child->parent = current_node;
                 open_set.push(child);
-                // this->closed_set.insert(child);
+                this->closed_set.insert(child);
             }
         }
     }
