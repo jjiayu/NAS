@@ -203,7 +203,7 @@ std::vector<Node*> AstarSearch::get_children(Node* parent){
 void AstarSearch::plot_path(){
     // Plotting path
     if (!this->result_path.empty()) {
-        std::cout << "A* Path found with " << this->result_path.size() << " nodes." << std::endl;
+        std::cout << "A* Path found with " << this->result_path.size() << " nodes (including the root)." << std::endl;
 
         // Create a new window for the path
         auto renderWindow = Visualizer::create_figure("A* Path");

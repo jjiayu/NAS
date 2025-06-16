@@ -12,7 +12,7 @@
 
 using namespace nas;
 
-int main() {    
+int main() {
     // Create A* search instance
     AstarSearch astar_search;
 

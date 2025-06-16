@@ -43,7 +43,7 @@ int main() {
     } else {
         for (const auto& node : current_stance_foot_nodes){
             std::cout << "\nNode ID: " << node->node_id << std::endl;
-            std::cout << "Node depth: " << node->depth << std::endl;
+            std::cout << "Node depth (excluding the root): " << node->depth << std::endl;
             // Find all paths from this node to root
             std::vector<std::vector<Node*>> all_paths = tree.find_paths_to_root(node);
             std::cout << "Number of paths to root: " << all_paths.size() << std::endl;
