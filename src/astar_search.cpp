@@ -83,56 +83,15 @@ void AstarSearch::search() {
 
             //reconstruct the path
             std::cout << "Goal reached!" << std::endl;
-            std::vector<Node*> path;
             Node* current = current_node;
             while (current != nullptr) {
-                path.push_back(current);
+                this->result_path.push_back(current);
                 current = current->parent;
             }
             std::cout << "Path Found:  "<< std::endl;
-            std::reverse(path.begin(), path.end());
-            for (Node* node : path) {
+            std::reverse(this->result_path.begin(), this->result_path.end());
+            for (Node* node : this->result_path) {
                 std::cout << "Node ID: " << node->node_id << ", Surface ID: " << node->surface_id << ", Stance Foot: " << node->stance_foot << std::endl;
-            }
-
-            // Plotting path
-            if (!path.empty()) {
-                std::cout << "A* Path found with " << path.size() << " nodes." << std::endl;
-
-                // Create a new window for the path
-                auto renderWindow = Visualizer::create_figure("A* Path");
-                auto renderer = renderWindow->GetRenderers()->GetFirstRenderer();
-
-                // Add coordinate axes
-                Visualizer::add_coordinate_axes(renderer);
-
-                // Add surfaces (if you want to show the environment)
-                for (const auto& surface : this->surfaces) {
-                    double surface_color[3] = {0.7, 0.9, 1.0};  // Light blue
-                    Visualizer::add_polyhedron(renderer, surface.polyhedron_3d, surface_color, 0.3);
-                }
-
-                // Optionally, add start and goal positions
-                double start_color[3] = {1.0, 0.0, 0.0};  // Red
-                double goal_color[3] = {0.0, 1.0, 0.0};   // Green
-                Visualizer::add_points(renderer, {current_foot_pos}, start_color, 0.1);
-                Visualizer::add_points(renderer, {this->goal_location}, goal_color, 0.1);
-
-                // Add patches along the path
-                for (const auto& node : path) {
-                    double patch_color[3];
-                    if (node->stance_foot == LEFT_FOOT) {
-                        patch_color[0] = 1.0; patch_color[1] = 0.0; patch_color[2] = 0.0; // Red
-                    } else {
-                        patch_color[0] = 0.0; patch_color[1] = 0.0; patch_color[2] = 1.0; // Blue
-                    }
-                    Visualizer::add_polyhedron(renderer, node->patch_polyhedron_3d, patch_color, 0.5);
-                }
-
-                // Show the window and wait for it to be closed
-                Visualizer::show(renderWindow);
-            } else {
-                std::cout << "No path found by A* search." << std::endl;
             }
 
             break;
@@ -167,8 +126,6 @@ void AstarSearch::search() {
     std::cout << "Total nodes expanded: " << this->node_counter << std::endl;
     std::cout << "Total nodes in closed set: " << this->closed_set.size() << std::endl;
     std::cout << "Total nodes in open set: " << this->open_set.size() << std::endl;
-
-
 
 }
 
@@ -241,6 +198,48 @@ std::vector<Node*> AstarSearch::get_children(Node* parent){
         }
     }
     return children;
+}
+
+void AstarSearch::plot_path(){
+    // Plotting path
+    if (!this->result_path.empty()) {
+        std::cout << "A* Path found with " << this->result_path.size() << " nodes." << std::endl;
+
+        // Create a new window for the path
+        auto renderWindow = Visualizer::create_figure("A* Path");
+        auto renderer = renderWindow->GetRenderers()->GetFirstRenderer();
+
+        // Add coordinate axes
+        Visualizer::add_coordinate_axes(renderer);
+
+        // Add surfaces (if you want to show the environment)
+        for (const auto& surface : this->surfaces) {
+            double surface_color[3] = {0.7, 0.9, 1.0};  // Light blue
+            Visualizer::add_polyhedron(renderer, surface.polyhedron_3d, surface_color, 0.3);
+        }
+
+        // Optionally, add start and goal positions
+        double start_color[3] = {1.0, 0.0, 0.0};  // Red
+        double goal_color[3] = {0.0, 1.0, 0.0};   // Green
+        Visualizer::add_points(renderer, {current_foot_pos}, start_color, 0.1);
+        Visualizer::add_points(renderer, {this->goal_location}, goal_color, 0.1);
+
+        // Add patches along the path
+        for (const auto& node : this->result_path) {
+            double patch_color[3];
+            if (node->stance_foot == LEFT_FOOT) {
+                patch_color[0] = 1.0; patch_color[1] = 0.0; patch_color[2] = 0.0; // Red
+            } else {
+                patch_color[0] = 0.0; patch_color[1] = 0.0; patch_color[2] = 1.0; // Blue
+            }
+            Visualizer::add_polyhedron(renderer, node->patch_polyhedron_3d, patch_color, 0.5);
+        }
+
+        // Show the window and wait for it to be closed
+        Visualizer::show(renderWindow);
+    } else {
+        std::cout << "No path found by A* search." << std::endl;
+    }
 }
 
 

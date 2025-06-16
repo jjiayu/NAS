@@ -72,12 +72,15 @@ public:
     // Number of node counter
     int node_counter;
 
+    // Path found
+    std::vector<Node*> result_path = {};
+
     // Open Set
     std::priority_queue<Node*, std::vector<Node*>, CompareNodes> open_set;
 
     // Close set
     std::unordered_set<Node*, NodeHash, NodeEqual> closed_set;
-    
+
     // Constructor
     AstarSearch();
 
@@ -86,6 +89,9 @@ public:
 
     // Get children method
     std::vector<Node*> get_children(Node* current_node);
+
+    // Plot path method
+    void plot_path();
 };
 
 } // namespace nas
