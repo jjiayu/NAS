@@ -107,7 +107,7 @@ void AstarSearch::search() {
         // Loop over all the children
         for (Node* child : children) {
             // Check if the child is already in the closed set
-            if (closed_set.find(child) != closed_set.end()) {   
+            if (closed_set.find(child) != closed_set.end()) {
                 continue;
             }
             else{
