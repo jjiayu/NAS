@@ -233,6 +233,19 @@ astar_plan/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/astar_plan.dir/build.make CMakeFiles/astar_plan.dir/build
 .PHONY : astar_plan/fast
 
+#=============================================================================
+# Target rules for targets named casadi_test
+
+# Build rule for target.
+casadi_test: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 casadi_test
+.PHONY : casadi_test
+
+# fast build rule for target.
+casadi_test/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/casadi_test.dir/build.make CMakeFiles/casadi_test.dir/build
+.PHONY : casadi_test/fast
+
 src/astar_plan.o: src/astar_plan.cpp.o
 .PHONY : src/astar_plan.o
 
@@ -280,6 +293,30 @@ src/astar_search.s: src/astar_search.cpp.s
 src/astar_search.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/astar_search_lib.dir/build.make CMakeFiles/astar_search_lib.dir/src/astar_search.cpp.s
 .PHONY : src/astar_search.cpp.s
+
+src/casadi_test.o: src/casadi_test.cpp.o
+.PHONY : src/casadi_test.o
+
+# target to build an object file
+src/casadi_test.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/casadi_test.dir/build.make CMakeFiles/casadi_test.dir/src/casadi_test.cpp.o
+.PHONY : src/casadi_test.cpp.o
+
+src/casadi_test.i: src/casadi_test.cpp.i
+.PHONY : src/casadi_test.i
+
+# target to preprocess a source file
+src/casadi_test.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/casadi_test.dir/build.make CMakeFiles/casadi_test.dir/src/casadi_test.cpp.i
+.PHONY : src/casadi_test.cpp.i
+
+src/casadi_test.s: src/casadi_test.cpp.s
+.PHONY : src/casadi_test.s
+
+# target to generate assembly for a file
+src/casadi_test.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/casadi_test.dir/build.make CMakeFiles/casadi_test.dir/src/casadi_test.cpp.s
+.PHONY : src/casadi_test.cpp.s
 
 src/geometry.o: src/geometry.cpp.o
 .PHONY : src/geometry.o
@@ -459,6 +496,7 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... astar_plan"
 	@echo "... astar_search_lib"
+	@echo "... casadi_test"
 	@echo "... geometry_lib"
 	@echo "... nas_plan"
 	@echo "... node_lib"
@@ -472,6 +510,9 @@ help:
 	@echo "... src/astar_search.o"
 	@echo "... src/astar_search.i"
 	@echo "... src/astar_search.s"
+	@echo "... src/casadi_test.o"
+	@echo "... src/casadi_test.i"
+	@echo "... src/casadi_test.s"
 	@echo "... src/geometry.o"
 	@echo "... src/geometry.i"
 	@echo "... src/geometry.s"

@@ -19,6 +19,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "/opt/homebrew/opt/cgal")
 set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "/opt/homebrew/opt/vtk@9.2")
 
+# Set custom path for CasADi
+set(CMAKE_PREFIX_PATH "/Users/jiayu/local" ${CMAKE_PREFIX_PATH})
+
 # Find required packages
 find_package(CGAL REQUIRED)
 find_package(Boost REQUIRED)
@@ -32,6 +35,7 @@ find_package(VTK 9.2 REQUIRED COMPONENTS
   RenderingFreeType
 )
 find_package(yaml-cpp REQUIRED)
+find_package(CasADi REQUIRED)
 
 # Add the include directory
 include_directories(include)
@@ -83,6 +87,7 @@ target_link_libraries(astar_search_lib PRIVATE
 # Add executables
 add_executable(nas_plan src/nas_plan.cpp)
 add_executable(astar_plan src/astar_plan.cpp)
+add_executable(casadi_test src/casadi_test.cpp)
 
 # Link libraries for first executable
 target_link_libraries(nas_plan PRIVATE
@@ -110,6 +115,9 @@ target_link_libraries(astar_plan PRIVATE
     CGAL::CGAL
     yaml-cpp::yaml-cpp
 )
+
+# Link libraries for CasADi test executable
+target_link_libraries(casadi_test PRIVATE casadi::casadi)
 
 # Enable VTK module autoinit for both executables
 vtk_module_autoinit(

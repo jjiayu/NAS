@@ -57,6 +57,10 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/Users/jiayu/Desktop/nas_ws/NAS/CMakeLists.txt"
   "CMakeFiles/3.31.4/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.31.4/CMakeSystem.cmake"
+  "/Users/jiayu/local/lib/cmake/casadi/casadi-config-version.cmake"
+  "/Users/jiayu/local/lib/cmake/casadi/casadi-config.cmake"
+  "/Users/jiayu/local/lib/cmake/casadi/casadi-targets-release.cmake"
+  "/Users/jiayu/local/lib/cmake/casadi/casadi-targets.cmake"
   "/opt/homebrew/lib/cmake/Boost-1.88.0/BoostConfig.cmake"
   "/opt/homebrew/lib/cmake/Boost-1.88.0/BoostConfigVersion.cmake"
   "/opt/homebrew/lib/cmake/boost_headers-1.88.0/boost_headers-config-version.cmake"
@@ -146,4 +150,5 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/astar_search_lib.dir/DependInfo.cmake"
   "CMakeFiles/nas_plan.dir/DependInfo.cmake"
   "CMakeFiles/astar_plan.dir/DependInfo.cmake"
+  "CMakeFiles/casadi_test.dir/DependInfo.cmake"
   )
