@@ -10,6 +10,7 @@
 #include <queue>
 #include "node.hpp"
 #include <memory>
+#include <boost/heap/fibonacci_heap.hpp>
 
 namespace nas {
 
@@ -75,8 +76,12 @@ public:
     // Path found
     std::vector<Node*> result_path = {};
 
-    // Open Set
-    std::priority_queue<Node*, std::vector<Node*>, CompareNodes> open_set;
+    // Open Set - using Boost.Heap for efficient decrease-key operations
+    typedef boost::heap::fibonacci_heap<Node*, boost::heap::compare<CompareNodes>> OpenSet;
+    OpenSet open_set;
+
+    // Track handles for each node in open set (needed for decrease-key)
+    std::unordered_map<Node*, OpenSet::handle_type, NodeHash, NodeEqual> node_handles;
 
     // Close set
     std::unordered_set<Node*, NodeHash, NodeEqual> closed_set;

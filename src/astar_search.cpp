@@ -56,7 +56,7 @@ AstarSearch::AstarSearch() {
     start_node->parent = nullptr;
 
     // Initialize the open set
-    this->open_set.push(start_node);
+    this->node_handles[start_node] = this->open_set.push(start_node);
 
 }
 
@@ -71,6 +71,9 @@ void AstarSearch::search() {
         // Get the node with the lowest f_score
         Node* current_node = open_set.top();
         open_set.pop();
+        
+        // Remove from handles map since we're processing it
+        node_handles.erase(current_node);
 
         // Check if we reached the goal
         if (current_node->stance_foot == goal_stance_foot && 
@@ -110,13 +113,35 @@ void AstarSearch::search() {
             if (closed_set.find(child) != closed_set.end()) {
                 continue;
             }
-            else{
-                // Add the child to the open set and update the g_score, h_score, and f_score
-                child->g_score = current_node->g_score + compute_euclidean_distance(get_centroid(current_node->patch_vertices), get_centroid(child->patch_vertices));
-                child->h_score = compute_euclidean_distance(get_centroid(child->patch_vertices), this->goal_location);
-                child->f_score = child->g_score + child->h_score;
+            
+            // Calculate the tentative g_score for this child
+            double tentative_g_score = current_node->g_score + compute_euclidean_distance(get_centroid(current_node->patch_vertices), get_centroid(child->patch_vertices));
+            double tentative_h_score = compute_euclidean_distance(get_centroid(child->patch_vertices), this->goal_location);
+            double tentative_f_score = tentative_g_score + tentative_h_score;
+            
+            // Check if this node is already in the open set
+            auto handle_it = node_handles.find(child);
+            if (handle_it == node_handles.end()) {
+                // New node - add to open set
+                child->g_score = tentative_g_score;
+                child->h_score = tentative_h_score;
+                child->f_score = tentative_f_score;
                 child->parent = current_node;
-                open_set.push(child);
+                
+                // Add to open set and store handle
+                node_handles[child] = open_set.push(child);
+            } else {
+                // Node exists in open set - check if this path is better
+                if (tentative_f_score < child->f_score) {
+                    // Better path found - update the node
+                    child->g_score = tentative_g_score;
+                    child->h_score = tentative_h_score;
+                    child->f_score = tentative_f_score;
+                    child->parent = current_node;
+                    
+                    // Update the heap (decrease-key operation)
+                    open_set.increase(handle_it->second);
+                }
             }
         }
     }
@@ -192,6 +217,13 @@ std::vector<Node*> AstarSearch::get_children(Node* parent){
                 child->patch_polyhedron_3d = polytope_surf_3d_intersect_polygon;
                 child->transformation_to_2d = surface.transform_to_surface;
                 child->transformation_to_3d = surface.transform_to_3d; 
+                
+                // Initialize scores for A* search
+                child->g_score = std::numeric_limits<double>::infinity();
+                child->h_score = 0.0; // Will be computed when needed
+                child->f_score = std::numeric_limits<double>::infinity();
+                child->parent = nullptr; // Will be set during search
+                
                 children.push_back(child);
             }
         }

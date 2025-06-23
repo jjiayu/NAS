@@ -21,6 +21,7 @@ set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "/opt/homebrew/opt/vtk@9.2")
 
 # Find required packages
 find_package(CGAL REQUIRED)
+find_package(Boost REQUIRED)
 find_package(VTK 9.2 REQUIRED COMPONENTS 
   CommonCore
   CommonDataModel
@@ -76,6 +77,7 @@ target_link_libraries(astar_search_lib PRIVATE
     visualizer_lib
     ${VTK_LIBRARIES}
     CGAL::CGAL
+    Boost::boost
 )
 
 # Add executables
