@@ -8,6 +8,12 @@ Node::Node() {    // surface_id = 0;
     parent_ptrs = std::vector<Node*>();
 }
 
+Node::~Node() {
+    // Destructor implementation
+    // Note: We don't delete parent_ptrs, kd_left_ptr, kd_right_ptr, or parent
+    // as these are managed by the tree/A* search algorithm
+}
+
 bool Node::check_if_node_contains_point(const Point_3& point) {
 
     // Transform the point to the surface coordinate system

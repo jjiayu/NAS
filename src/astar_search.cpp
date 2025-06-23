@@ -43,21 +43,21 @@ AstarSearch::AstarSearch() {
          goal_stance_foot == 1 ? "RIGHT FOOT (1)" : "INVALID") << std::endl;
     std::cout << "  - Goal Location (World Frame): " << this->goal_location << std::endl;
 
-
     // Initialize the start node
     Node* start_node = new Node();
     start_node->parent_ptrs = std::vector<Node*>();  // Empty vector for root node
     start_node->node_id = this->node_counter++;
     start_node->patch_vertices = std::vector<Point_3>({current_foot_pos});  // Already Point_3, no conversion needed
     start_node->stance_foot = current_stance_foot_flag;
+    start_node->centroid = current_foot_pos;
+    start_node->perimeter = 0.0;
     start_node->g_score = 0;
     start_node->h_score = compute_euclidean_distance(current_foot_pos, this->goal_location);
-    start_node->f_score = 0;
+    start_node->f_score = start_node->g_score + start_node->h_score;
     start_node->parent = nullptr;
 
     // Initialize the open set
     this->node_handles[start_node] = this->open_set.push(start_node);
-
 }
 
 void AstarSearch::search() {
@@ -101,7 +101,6 @@ void AstarSearch::search() {
         }
 
         // Add the current node to the closed set
-        // TODO: this part need more care to compare if two patches are the same
         this->closed_set.insert(current_node);
 
         // Expand the current node
@@ -115,8 +114,8 @@ void AstarSearch::search() {
             }
             
             // Calculate the tentative g_score for this child
-            double tentative_g_score = current_node->g_score + compute_euclidean_distance(get_centroid(current_node->patch_vertices), get_centroid(child->patch_vertices));
-            double tentative_h_score = compute_euclidean_distance(get_centroid(child->patch_vertices), this->goal_location);
+            double tentative_g_score = current_node->g_score + compute_euclidean_distance(current_node->centroid, child->centroid);
+            double tentative_h_score = compute_euclidean_distance(child->centroid, this->goal_location);
             double tentative_f_score = tentative_g_score + tentative_h_score;
             
             // Check if this node is already in the open set
@@ -132,16 +131,20 @@ void AstarSearch::search() {
                 node_handles[child] = open_set.push(child);
             } else {
                 // Node exists in open set - check if this path is better
-                if (tentative_f_score < child->f_score) {
-                    // Better path found - update the node
-                    child->g_score = tentative_g_score;
-                    child->h_score = tentative_h_score;
-                    child->f_score = tentative_f_score;
-                    child->parent = current_node;
+                Node* existing_node = handle_it->first;
+                OpenSet::handle_type existing_handle = handle_it->second;
+                
+                if (tentative_g_score < existing_node->g_score) {
+                    // Better path found - update the existing node
+                    existing_node->g_score = tentative_g_score;
+                    existing_node->h_score = tentative_h_score;
+                    existing_node->f_score = tentative_f_score;
+                    existing_node->parent = current_node;
                     
                     // Update the heap (decrease-key operation)
-                    open_set.increase(handle_it->second);
+                    open_set.increase(existing_handle);
                 }
+                // Note: The 'child' node can be discarded since we updated the existing one
             }
         }
     }
@@ -217,6 +220,8 @@ std::vector<Node*> AstarSearch::get_children(Node* parent){
                 child->patch_polyhedron_3d = polytope_surf_3d_intersect_polygon;
                 child->transformation_to_2d = surface.transform_to_surface;
                 child->transformation_to_3d = surface.transform_to_3d; 
+                child->perimeter = compute_polygon_perimeter(polytope_surf_3d_intersect_polygon);
+                child->centroid = get_centroid(polytope_surf_3d_intersect_pts);
                 
                 // Initialize scores for A* search
                 child->g_score = std::numeric_limits<double>::infinity();
@@ -272,6 +277,5 @@ void AstarSearch::plot_path(){
         std::cout << "No path found by A* search." << std::endl;
     }
 }
-
 
 } // namespace nas
