@@ -11,6 +11,7 @@
 #include "node.hpp"
 #include <memory>
 #include <boost/heap/fibonacci_heap.hpp>
+#include <boost/functional/hash.hpp>
 
 namespace nas {
 
@@ -24,30 +25,50 @@ struct CompareNodes {
 
 struct NodeHash {
     size_t operator()(const Node* node) const {
-        // Compute centroid from the patch
-        Point_3 centroid = get_centroid(node->patch_vertices);
         
-        // Hash the centroid coordinates and perimeter
-        size_t h1 = std::hash<double>()(centroid.x());
-        size_t h2 = std::hash<double>()(centroid.y());
-        size_t h3 = std::hash<double>()(centroid.z());
-        size_t h4 = std::hash<double>()(compute_polygon_perimeter(node->patch_polyhedron_3d));
-        return h1 ^ (h2 << 1) ^ (h3 << 2) ^ (h4 << 3);
+        // Quantize coordinates to reduce floating point precision issues
+        int x = static_cast<int>(node->centroid.x() / node_similarity_threshold);
+        int y = static_cast<int>(node->centroid.y() / node_similarity_threshold);
+        int z = static_cast<int>(node->centroid.z() / node_similarity_threshold);
+        
+        // Compute and quantize perimeter
+        int quantized_perimeter = static_cast<int>(node->perimeter / node_similarity_threshold);
+        
+        // Use Boost's hash_combine for better distribution
+        size_t seed = 0;
+        boost::hash_combine(seed, x);
+        boost::hash_combine(seed, y);
+        boost::hash_combine(seed, z);
+        boost::hash_combine(seed, quantized_perimeter);
+        boost::hash_combine(seed, node->surface_id);
+        boost::hash_combine(seed, node->stance_foot);
+        
+        return seed;
     }
 };
 
 struct NodeEqual {
     bool operator()(const Node* a, const Node* b) const {
-        const double TOLERANCE = 0.02;
         
-        // Compute centroids
-        Point_3 centroid_a = get_centroid(a->patch_vertices);
-        Point_3 centroid_b = get_centroid(b->patch_vertices);
+        // Quantize coordinates using same method as hash
+        int x_a = static_cast<int>(a->centroid.x() / node_similarity_threshold);
+        int y_a = static_cast<int>(a->centroid.y() / node_similarity_threshold);
+        int z_a = static_cast<int>(a->centroid.z() / node_similarity_threshold);
         
-        return (std::abs(CGAL::to_double(centroid_a.x()) - CGAL::to_double(centroid_b.x())) < TOLERANCE &&
-                std::abs(CGAL::to_double(centroid_a.y()) - CGAL::to_double(centroid_b.y())) < TOLERANCE &&
-                std::abs(CGAL::to_double(centroid_a.z()) - CGAL::to_double(centroid_b.z())) < TOLERANCE &&
-                std::abs(compute_polygon_perimeter(a->patch_polyhedron_3d) - compute_polygon_perimeter(b->patch_polyhedron_3d)) < TOLERANCE);
+        int x_b = static_cast<int>(b->centroid.x() / node_similarity_threshold);
+        int y_b = static_cast<int>(b->centroid.y() / node_similarity_threshold);
+        int z_b = static_cast<int>(b->centroid.z() / node_similarity_threshold);
+        
+        int quantized_perimeter_a = static_cast<int>(a->perimeter / node_similarity_threshold);
+        int quantized_perimeter_b = static_cast<int>(b->perimeter / node_similarity_threshold);
+        
+        // Compare quantized coordinates, perimeter, and other properties
+        return (x_a == x_b && 
+                y_a == y_b && 
+                z_a == z_b && 
+                quantized_perimeter_a == quantized_perimeter_b &&
+                a->surface_id == b->surface_id && 
+                a->stance_foot == b->stance_foot);
     }
 };
 
@@ -97,6 +118,7 @@ public:
 
     // Plot path method
     void plot_path();
+
 };
 
 } // namespace nas

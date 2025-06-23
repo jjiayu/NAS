@@ -25,6 +25,8 @@ public:
         int stance_foot; // The foot that is on the ground
         int surface_id; // The surface ID that the node belongs to
         int depth; // The depth of the node in the tree
+        double perimeter; // The perimeter of the patch
+        Point_3 centroid; // The centroid of the patch
 
         // For A* search
         Node* parent; // Pointer to the parent node
