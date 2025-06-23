@@ -117,7 +117,6 @@ void AstarSearch::search() {
                 child->f_score = child->g_score + child->h_score;
                 child->parent = current_node;
                 open_set.push(child);
-                this->closed_set.insert(child);
             }
         }
     }
