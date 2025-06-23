@@ -120,7 +120,7 @@ void AstarSearch::search() {
             
             // Check if this node is already in the open set
             auto handle_it = node_handles.find(child);
-            if (handle_it == node_handles.end()) { //not found in the open set
+            if (handle_it == node_handles.end()) {
                 // New node - add to open set
                 child->g_score = tentative_g_score;
                 child->h_score = tentative_h_score;
@@ -131,16 +131,20 @@ void AstarSearch::search() {
                 node_handles[child] = open_set.push(child);
             } else {
                 // Node exists in open set - check if this path is better
-                if (tentative_f_score < child->f_score) {
-                    // Better path found - update the node
-                    child->g_score = tentative_g_score;
-                    child->h_score = tentative_h_score;
-                    child->f_score = tentative_f_score;
-                    child->parent = current_node;
+                Node* existing_node = handle_it->first;
+                OpenSet::handle_type existing_handle = handle_it->second;
+                
+                if (tentative_g_score < existing_node->g_score) {
+                    // Better path found - update the existing node
+                    existing_node->g_score = tentative_g_score;
+                    existing_node->h_score = tentative_h_score;
+                    existing_node->f_score = tentative_f_score;
+                    existing_node->parent = current_node;
                     
                     // Update the heap (decrease-key operation)
-                    open_set.increase(handle_it->second);
+                    open_set.increase(existing_handle);
                 }
+                // Note: The 'child' node can be discarded since we updated the existing one
             }
         }
     }
