@@ -144,7 +144,7 @@ void AstarSearch::search() {
                     // Update the heap (decrease-key operation)
                     open_set.increase(existing_handle);
 
-                    // delete child node
+                    // delete child node as it is not needed anymore
                     delete child;
                 }
             }
