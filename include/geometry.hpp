@@ -14,7 +14,7 @@
 
 namespace nas {
 
-class Surface;
+class Node;  // Forward declaration
 
 std::vector<Point_2> transform_3d_points_to_surface_plane(const std::vector<Point_3>& points, const Transformation& transformation);
 
@@ -31,5 +31,13 @@ std::vector<Point_2> compute_2d_polygon_intersection(const std::vector<Point_2>&
 std::vector<Point_2> compute_2d_polygon_intersection(const std::vector<Point_2>& subject_polygon, const std::vector<Point_2>& clip_polygon);
 
 double is_leftside_of_edge(const Point_2& point, const Point_2& edge_start, const Point_2& edge_end);
+
+// Compute the perimeter of a polygon
+double compute_polygon_perimeter(const Polyhedron& polyhedron);
+
+//Compare polygons defined by vertices in 3D space
+double compare_polygon_similarity_3d(const std::vector<Point_3>& polygon1, const std::vector<Point_3>& polygon2);
+
+double compute_euclidean_distance(const Point_3& start_location, const Point_3& end_location);
 
 } // namespace nas
