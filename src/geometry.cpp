@@ -1,6 +1,6 @@
 #include "types.hpp"
 #include "geometry.hpp"
-
+#include "node.hpp"
 namespace nas {
 
 std::vector<Point_2> transform_3d_points_to_surface_plane(const std::vector<Point_3>& points, const Transformation& transformation) {
@@ -81,7 +81,6 @@ double is_leftside_of_edge(const Point_2& point, const Point_2& edge_start, cons
             (edge_end.y() - edge_start.y()) * (point.x() - edge_start.x()));
 }
 
-
 // Compute the intersection between two 2d polygons using Sutherland-Hodgman algorithm
 // Subject polygon is the interseciton result between the polytope and the plans in 2d), clipping polygon is the surface polygon in 2d
 std::vector<Point_2> compute_2d_polygon_intersection(const std::vector<Point_2>& subject_polygon, const std::vector<Point_2>& clip_polygon) {
@@ -115,8 +114,8 @@ std::vector<Point_2> compute_2d_polygon_intersection(const std::vector<Point_2>&
             Point_2 prev_point = input_list[(i + input_list.size() - 1) % input_list.size()];//if current point is the first point, prev point is the last point
             
             // Create segments for intersection check
-            Segment_2 edge(edge_start, edge_end);
-            Segment_2 line(prev_point, current_point);
+            Line_2 line(edge_start, edge_end);
+            Segment_2 edge(prev_point, current_point);
 
             bool current_inside = is_leftside_of_edge(current_point, edge_start, edge_end) >= 0;
             bool prev_inside = is_leftside_of_edge(prev_point, edge_start, edge_end) >= 0;
@@ -144,7 +143,35 @@ std::vector<Point_2> compute_2d_polygon_intersection(const std::vector<Point_2>&
             }
         }
     }
+
+    for (const auto& clip_vertex : clip_polygon) {
+    if (CGAL::bounded_side_2(subject_polygon.begin(), subject_polygon.end(), clip_vertex, Kernel()) == CGAL::ON_BOUNDED_SIDE ||
+        CGAL::bounded_side_2(subject_polygon.begin(), subject_polygon.end(), clip_vertex, Kernel()) == CGAL::ON_BOUNDARY) {
+        // Insert the clip_vertex into the intersection_result at the best place
+        // For simplicity, you can just add it (optionally, you can insert it after the closest edge)
+            output_list.push_back(clip_vertex);
+        }
+    }
+
+    // Remove duplicates if needed
+    auto end = std::unique(output_list.begin(), output_list.end());
+    output_list.erase(end, output_list.end());
+
     return output_list;
+}
+
+double compute_polygon_perimeter(const Polyhedron& polyhedron){
+    double perimeter = 0.0;
+    for (auto edge = polyhedron.edges_begin(); edge != polyhedron.edges_end(); ++edge) {
+        // No need to check vertices as they are guaranteed to exist in a valid polyhedron
+        perimeter += CGAL::sqrt(CGAL::squared_distance(edge->vertex()->point(), 
+                                                     edge->opposite()->vertex()->point()));
+    }
+    return perimeter;
+}
+
+double compute_euclidean_distance(const Point_3& start_location, const Point_3& end_location){
+    return CGAL::sqrt(CGAL::squared_distance(start_location, end_location));
 }
 
 

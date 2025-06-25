@@ -12,15 +12,19 @@ project(
 )
 
 # Set C++ standard
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Set Homebrew paths for Apple Silicon
 set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "/opt/homebrew/opt/cgal")
 set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "/opt/homebrew/opt/vtk@9.2")
 
+# Set custom path for CasADi
+set(CMAKE_PREFIX_PATH "/Users/jiayu/local" ${CMAKE_PREFIX_PATH})
+
 # Find required packages
 find_package(CGAL REQUIRED)
+find_package(Boost REQUIRED)
 find_package(VTK 9.2 REQUIRED COMPONENTS 
   CommonCore
   CommonDataModel
@@ -30,6 +34,8 @@ find_package(VTK 9.2 REQUIRED COMPONENTS
   RenderingOpenGL2
   RenderingFreeType
 )
+find_package(yaml-cpp REQUIRED)
+find_package(CasADi REQUIRED)
 
 # Add the include directory
 include_directories(include)
@@ -43,15 +49,17 @@ add_library(tree_lib src/tree.cpp)
 add_library(geometry_lib src/geometry.cpp)
 add_library(surface_lib src/surface.cpp)
 add_library(visualizer_lib src/visualizer.cpp)
+add_library(astar_search_lib src/astar_search.cpp)
 
 # Set library dependencies
+target_link_libraries(node_lib PRIVATE geometry_lib CGAL::CGAL)
 target_link_libraries(tree_lib PRIVATE utils_lib node_lib surface_lib geometry_lib visualizer_lib ${VTK_LIBRARIES})
 target_link_libraries(utils_lib PRIVATE 
     ${VTK_LIBRARIES}
     visualizer_lib
     CGAL::CGAL
 )
-target_link_libraries(visualizer_lib PRIVATE 
+target_link_libraries(visualizer_lib PRIVATE
     ${VTK_LIBRARIES}
     CGAL::CGAL
 )
@@ -64,23 +72,55 @@ target_link_libraries(surface_lib PRIVATE
     ${VTK_LIBRARIES}
     CGAL::CGAL
 )
-
-# Add executable
-add_executable(nas_plan src/nas_plan.cpp)
-
-# Link libraries
-target_link_libraries(nas_plan PRIVATE 
-    node_lib
+target_link_libraries(astar_search_lib PRIVATE
     tree_lib
-    surface_lib
     utils_lib
+    node_lib
+    surface_lib
+    geometry_lib
     visualizer_lib
-    CGAL::CGAL
     ${VTK_LIBRARIES}
+    CGAL::CGAL
+    Boost::boost
 )
 
-# Enable VTK modules
+# Add executables
+add_executable(nas_plan src/nas_plan.cpp)
+add_executable(astar_plan src/astar_plan.cpp)
+add_executable(casadi_test src/casadi_test.cpp)
+
+# Link libraries for first executable
+target_link_libraries(nas_plan PRIVATE
+    tree_lib
+    utils_lib
+    node_lib
+    surface_lib
+    geometry_lib
+    visualizer_lib
+    ${VTK_LIBRARIES}
+    CGAL::CGAL
+    yaml-cpp::yaml-cpp
+)
+
+# Link libraries for A* planning executable
+target_link_libraries(astar_plan PRIVATE
+    astar_search_lib
+    tree_lib
+    utils_lib
+    node_lib
+    surface_lib
+    geometry_lib
+    visualizer_lib
+    ${VTK_LIBRARIES}
+    CGAL::CGAL
+    yaml-cpp::yaml-cpp
+)
+
+# Link libraries for CasADi test executable
+target_link_libraries(casadi_test PRIVATE casadi::casadi)
+
+# Enable VTK module autoinit for both executables
 vtk_module_autoinit(
-  TARGETS nas_plan tree_lib utils_lib visualizer_lib
+  TARGETS nas_plan astar_plan
   MODULES ${VTK_LIBRARIES}
 )
