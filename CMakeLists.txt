@@ -25,6 +25,7 @@ set(CMAKE_PREFIX_PATH "/Users/jiayu/local" ${CMAKE_PREFIX_PATH})
 # Find required packages
 find_package(CGAL REQUIRED)
 find_package(Boost REQUIRED)
+find_package(Eigen3 REQUIRED)
 find_package(VTK 9.2 REQUIRED COMPONENTS 
   CommonCore
   CommonDataModel
@@ -41,6 +42,7 @@ find_package(CasADi REQUIRED)
 include_directories(include)
 include_directories(${VTK_INCLUDE_DIRS})
 include_directories("/opt/homebrew/include")  # For CGAL headers
+include_directories(${EIGEN3_INCLUDE_DIR})  # For Eigen3 headers
 
 # Add library with source files
 add_library(utils_lib src/utils.cpp)

@@ -1088,6 +1088,10 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /opt/homebrew/Cellar/llvm/20.1.6/lib/clang/20/include/__stddef_rsize_t.h \
   /opt/homebrew/Cellar/llvm/20.1.6/lib/clang/20/include/__stddef_size_t.h \
   /opt/homebrew/Cellar/llvm/20.1.6/lib/clang/20/include/__stddef_wchar_t.h \
+  /opt/homebrew/Cellar/llvm/20.1.6/lib/clang/20/include/arm_bf16.h \
+  /opt/homebrew/Cellar/llvm/20.1.6/lib/clang/20/include/arm_fp16.h \
+  /opt/homebrew/Cellar/llvm/20.1.6/lib/clang/20/include/arm_neon.h \
+  /opt/homebrew/Cellar/llvm/20.1.6/lib/clang/20/include/arm_vector_types.h \
   /opt/homebrew/Cellar/llvm/20.1.6/lib/clang/20/include/float.h \
   /opt/homebrew/Cellar/llvm/20.1.6/lib/clang/20/include/immintrin.h \
   /opt/homebrew/Cellar/llvm/20.1.6/lib/clang/20/include/inttypes.h \
@@ -1288,7 +1292,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /opt/homebrew/include/CGAL/Convex_hull_vertex_base_2.h \
   /opt/homebrew/include/CGAL/Default.h \
   /opt/homebrew/include/CGAL/Default_diagonalize_traits.h \
-  /opt/homebrew/include/CGAL/Diagonalize_traits.h \
   /opt/homebrew/include/CGAL/Dimension.h \
   /opt/homebrew/include/CGAL/Direction_2.h \
   /opt/homebrew/include/CGAL/Direction_3.h \
@@ -1331,6 +1334,7 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /opt/homebrew/include/CGAL/Distance_3/internal/squared_distance_utils_3.h \
   /opt/homebrew/include/CGAL/Dummy_tds_2.h \
   /opt/homebrew/include/CGAL/Dynamic_property_map.h \
+  /opt/homebrew/include/CGAL/Eigen_diagonalize_traits.h \
   /opt/homebrew/include/CGAL/Enum_converter.h \
   /opt/homebrew/include/CGAL/Epic_converter.h \
   /opt/homebrew/include/CGAL/Euclidean_distance.h \
@@ -1722,6 +1726,7 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /opt/homebrew/include/CGAL/Origin_impl.h \
   /opt/homebrew/include/CGAL/Orthogonal_k_neighbor_search.h \
   /opt/homebrew/include/CGAL/PCA_util.h \
+  /opt/homebrew/include/CGAL/PCA_util_Eigen.h \
   /opt/homebrew/include/CGAL/Plane_3.h \
   /opt/homebrew/include/CGAL/Plane_separator.h \
   /opt/homebrew/include/CGAL/Point_2.h \
@@ -3121,6 +3126,195 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /opt/homebrew/include/boost/utility/enable_if.hpp \
   /opt/homebrew/include/boost/utility/identity_type.hpp \
   /opt/homebrew/include/boost/version.hpp \
+  /opt/homebrew/include/eigen3/Eigen/Cholesky \
+  /opt/homebrew/include/eigen3/Eigen/Core \
+  /opt/homebrew/include/eigen3/Eigen/Dense \
+  /opt/homebrew/include/eigen3/Eigen/Eigenvalues \
+  /opt/homebrew/include/eigen3/Eigen/Geometry \
+  /opt/homebrew/include/eigen3/Eigen/Householder \
+  /opt/homebrew/include/eigen3/Eigen/Jacobi \
+  /opt/homebrew/include/eigen3/Eigen/LU \
+  /opt/homebrew/include/eigen3/Eigen/QR \
+  /opt/homebrew/include/eigen3/Eigen/SVD \
+  /opt/homebrew/include/eigen3/Eigen/src/Cholesky/LDLT.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Cholesky/LLT.h \
+  /opt/homebrew/include/eigen3/Eigen/src/plugins/ArrayCwiseBinaryOps.h \
+  /opt/homebrew/include/eigen3/Eigen/src/plugins/ArrayCwiseUnaryOps.h \
+  /opt/homebrew/include/eigen3/Eigen/src/plugins/BlockMethods.h \
+  /opt/homebrew/include/eigen3/Eigen/src/plugins/CommonCwiseBinaryOps.h \
+  /opt/homebrew/include/eigen3/Eigen/src/plugins/CommonCwiseUnaryOps.h \
+  /opt/homebrew/include/eigen3/Eigen/src/plugins/IndexedViewMethods.h \
+  /opt/homebrew/include/eigen3/Eigen/src/plugins/MatrixCwiseBinaryOps.h \
+  /opt/homebrew/include/eigen3/Eigen/src/plugins/MatrixCwiseUnaryOps.h \
+  /opt/homebrew/include/eigen3/Eigen/src/plugins/ReshapedMethods.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/ArithmeticSequence.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/Array.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/ArrayBase.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/ArrayWrapper.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/Assign.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/AssignEvaluator.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/BandMatrix.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/Block.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/BooleanRedux.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/CommaInitializer.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/ConditionEstimator.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/CoreEvaluators.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/CoreIterators.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/CwiseBinaryOp.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/CwiseNullaryOp.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/CwiseTernaryOp.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/CwiseUnaryOp.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/CwiseUnaryView.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/DenseBase.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/DenseCoeffsBase.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/DenseStorage.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/Diagonal.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/DiagonalMatrix.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/DiagonalProduct.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/Dot.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/EigenBase.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/Fuzzy.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/GeneralProduct.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/GenericPacketMath.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/GlobalFunctions.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/IO.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/IndexedView.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/Inverse.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/Map.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/MapBase.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/MathFunctions.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/MathFunctionsImpl.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/Matrix.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/MatrixBase.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/NestByValue.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/NoAlias.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/NumTraits.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/PartialReduxEvaluator.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/PermutationMatrix.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/PlainObjectBase.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/Product.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/ProductEvaluators.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/Random.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/Redux.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/Ref.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/Replicate.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/Reshaped.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/ReturnByValue.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/Reverse.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/Select.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/SelfAdjointView.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/SelfCwiseBinaryOp.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/Solve.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/SolveTriangular.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/SolverBase.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/StableNorm.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/StlIterators.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/Stride.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/Swap.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/Transpose.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/Transpositions.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/TriangularMatrix.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/VectorBlock.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/VectorwiseOp.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/Visitor.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/arch/Default/BFloat16.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/arch/Default/ConjHelper.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/arch/Default/GenericPacketMathFunctions.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/arch/Default/GenericPacketMathFunctionsFwd.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/arch/Default/Half.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/arch/Default/Settings.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/arch/Default/TypeCasting.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/arch/NEON/Complex.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/arch/NEON/GeneralBlockPanelKernel.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/arch/NEON/MathFunctions.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/arch/NEON/PacketMath.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/arch/NEON/TypeCasting.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/functors/AssignmentFunctors.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/functors/BinaryFunctors.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/functors/NullaryFunctors.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/functors/StlFunctors.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/functors/TernaryFunctors.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/functors/UnaryFunctors.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/products/GeneralBlockPanelKernel.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/products/GeneralMatrixMatrix.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/products/GeneralMatrixMatrixTriangular.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/products/GeneralMatrixVector.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/products/Parallelizer.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/products/SelfadjointMatrixMatrix.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/products/SelfadjointMatrixVector.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/products/SelfadjointProduct.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/products/SelfadjointRank2Update.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/products/TriangularMatrixMatrix.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/products/TriangularMatrixVector.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/products/TriangularSolverMatrix.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/products/TriangularSolverVector.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/util/BlasUtil.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/util/ConfigureVectorization.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/util/Constants.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/util/DisableStupidWarnings.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/util/ForwardDeclarations.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/util/IndexedViewHelper.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/util/IntegralConstant.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/util/MKL_support.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/util/Macros.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/util/Memory.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/util/Meta.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/util/ReenableStupidWarnings.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/util/ReshapedHelper.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/util/StaticAssert.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/util/SymbolicIndex.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Core/util/XprHelper.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Eigenvalues/ComplexSchur.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Eigenvalues/HessenbergDecomposition.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Eigenvalues/RealQZ.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Eigenvalues/RealSchur.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Eigenvalues/Tridiagonalization.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Eigenvalues/ComplexEigenSolver.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Eigenvalues/ComplexSchur.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Eigenvalues/EigenSolver.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Eigenvalues/GeneralizedEigenSolver.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Eigenvalues/GeneralizedSelfAdjointEigenSolver.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Eigenvalues/HessenbergDecomposition.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Eigenvalues/MatrixBaseEigenvalues.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Eigenvalues/RealQZ.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Eigenvalues/RealSchur.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Eigenvalues/SelfAdjointEigenSolver.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Eigenvalues/Tridiagonalization.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Geometry/AlignedBox.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Geometry/AngleAxis.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Geometry/EulerAngles.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Geometry/Homogeneous.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Geometry/Hyperplane.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Geometry/OrthoMethods.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Geometry/ParametrizedLine.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Geometry/Quaternion.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Geometry/Rotation2D.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Geometry/RotationBase.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Geometry/Scaling.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Geometry/Transform.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Geometry/Translation.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Geometry/Umeyama.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Geometry/arch/Geometry_SIMD.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Householder/BlockHouseholder.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Householder/Householder.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Householder/HouseholderSequence.h \
+  /opt/homebrew/include/eigen3/Eigen/src/Jacobi/Jacobi.h \
+  /opt/homebrew/include/eigen3/Eigen/src/LU/Determinant.h \
+  /opt/homebrew/include/eigen3/Eigen/src/LU/FullPivLU.h \
+  /opt/homebrew/include/eigen3/Eigen/src/LU/InverseImpl.h \
+  /opt/homebrew/include/eigen3/Eigen/src/LU/PartialPivLU.h \
+  /opt/homebrew/include/eigen3/Eigen/src/LU/arch/InverseSize4.h \
+  /opt/homebrew/include/eigen3/Eigen/src/QR/ColPivHouseholderQR.h \
+  /opt/homebrew/include/eigen3/Eigen/src/QR/CompleteOrthogonalDecomposition.h \
+  /opt/homebrew/include/eigen3/Eigen/src/QR/FullPivHouseholderQR.h \
+  /opt/homebrew/include/eigen3/Eigen/src/QR/HouseholderQR.h \
+  /opt/homebrew/include/eigen3/Eigen/src/SVD/BDCSVD.h \
+  /opt/homebrew/include/eigen3/Eigen/src/SVD/JacobiSVD.h \
+  /opt/homebrew/include/eigen3/Eigen/src/SVD/SVDBase.h \
+  /opt/homebrew/include/eigen3/Eigen/src/SVD/UpperBidiagonalization.h \
+  /opt/homebrew/include/eigen3/Eigen/src/misc/Image.h \
+  /opt/homebrew/include/eigen3/Eigen/src/misc/Kernel.h \
+  /opt/homebrew/include/eigen3/Eigen/src/misc/RealSvd2x2.h \
   /opt/homebrew/include/gmp.h \
   /opt/homebrew/include/gmpxx.h \
   /opt/homebrew/include/mpfr.h \
@@ -3387,23 +3581,33 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/vtk-9.4/vtkPolyDataInternals.h:
 
-/opt/homebrew/include/boost/type_traits/integral_constant.hpp:
+/opt/homebrew/include/vtk-9.4/vtkPolyDataAlgorithm.h:
 
-/opt/homebrew/include/vtk-9.4/vtkPoints.h:
+/opt/homebrew/include/vtk-9.4/vtkPolyData.h:
 
 /opt/homebrew/include/vtk-9.4/vtkPointSet.h:
 
+/opt/homebrew/include/vtk-9.4/vtkPlatform.h:
+
 /opt/homebrew/include/vtk-9.4/vtkOptions.h:
+
+/opt/homebrew/include/vtk-9.4/vtkObjectBase.h:
+
+/opt/homebrew/include/vtk-9.4/vtkObject.h:
+
+/opt/homebrew/include/vtk-9.4/vtkMeta.h:
+
+/opt/homebrew/include/vtk-9.4/vtkMathPrivate.hxx:
 
 /opt/homebrew/include/vtk-9.4/vtkMath.h:
 
-/opt/homebrew/include/CGAL/Intersections_3/internal/Point_3_Sphere_3_do_intersect.h:
+/opt/homebrew/include/vtk-9.4/vtkMapper.h:
 
-/opt/homebrew/include/vtk-9.4/vtkLongLongArray.h:
+/opt/homebrew/include/vtk-9.4/vtkLine.h:
 
-/opt/homebrew/include/CGAL/Polyhedron_items_3.h:
+/opt/homebrew/include/vtk-9.4/vtkIndent.h:
 
-/opt/homebrew/include/vtk-9.4/vtkIntArray.h:
+/opt/homebrew/include/vtk-9.4/vtkIdTypeArray.h:
 
 /opt/homebrew/include/vtk-9.4/vtkIdList.h:
 
@@ -3413,67 +3617,325 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/vtk-9.4/vtkGenericDataArray.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__new/exceptions.h:
+/opt/homebrew/include/vtk-9.4/vtkFiltersCoreModule.h:
 
-/opt/homebrew/include/vtk-9.4/vtkFiltersSourcesModule.h:
+/opt/homebrew/include/vtk-9.4/vtkEventData.h:
+
+/opt/homebrew/include/vtk-9.4/vtkDeprecation.h:
 
 /opt/homebrew/include/vtk-9.4/vtkDebugRangeIterators.h:
+
+/opt/homebrew/include/vtk-9.4/vtkDebugLeaksManager.h:
 
 /opt/homebrew/include/vtk-9.4/vtkDataSet.h:
 
 /opt/homebrew/include/vtk-9.4/vtkDataObject.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_unique_copy.h:
-
-/opt/homebrew/include/vtk-9.4/vtkDataArrayValueRange_Generic.h:
+/opt/homebrew/include/vtk-9.4/vtkDataArrayTupleRange_Generic.h:
 
 /opt/homebrew/include/vtk-9.4/vtkDataArrayTupleRange_AOS.h:
+
+/opt/homebrew/include/vtk-9.4/vtkDataArrayRange.h:
+
+/opt/homebrew/include/vtk-9.4/vtkDataArrayMeta.h:
+
+/opt/homebrew/include/vtk-9.4/vtkDataArrayAccessor.h:
+
+/opt/homebrew/include/vtk-9.4/vtkCoordinate.h:
 
 /opt/homebrew/include/vtk-9.4/vtkCommonDataModelModule.h:
 
 /opt/homebrew/include/vtk-9.4/vtkCommonCoreModule.h:
 
+/opt/homebrew/include/vtk-9.4/vtkCommand.h:
+
+/opt/homebrew/include/vtk-9.4/vtkCellType.h:
+
+/opt/homebrew/include/vtk-9.4/vtkCellLinks.h:
+
 /opt/homebrew/include/vtk-9.4/vtkCellArray.h:
 
 /opt/homebrew/include/vtk-9.4/vtkCell.h:
 
-/opt/homebrew/include/boost/math/tools/big_constant.hpp:
+/opt/homebrew/include/vtk-9.4/vtkBuild.h:
 
-/opt/homebrew/include/vtk-9.4/vtkCamera.h:
+/opt/homebrew/include/vtk-9.4/vtkBuffer.h:
 
 /opt/homebrew/include/vtk-9.4/vtkBoundingBox.h:
 
 /opt/homebrew/include/vtk-9.4/vtkAutoInit.h:
 
+/opt/homebrew/include/vtk-9.4/vtkAssume.h:
+
 /opt/homebrew/include/vtk-9.4/vtkAlgorithm.h:
 
 /opt/homebrew/include/vtk-9.4/vtkActorCollection.h:
 
-/opt/homebrew/include/boost/predef/compiler/nvcc.h:
+/opt/homebrew/include/vtk-9.4/vtkActor2D.h:
 
-/opt/homebrew/include/vtk-9.4/vtkActor.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/bitset:
-
-/opt/homebrew/include/vtk-9.4/vtkAbstractCellArray.h:
+/opt/homebrew/include/vtk-9.4/vtkAbstractCellLinks.h:
 
 /opt/homebrew/include/vtk-9.4/vtkAbstractArray.h:
 
-/opt/homebrew/include/CGAL/Homogeneous/LineH2.h:
-
-/opt/homebrew/include/boost/multiprecision/traits/extract_exponent_type.hpp:
-
-/opt/homebrew/include/nlohmann/json_fwd.hpp:
-
-/opt/homebrew/include/vtk-9.4/vtkMapper.h:
+/opt/homebrew/include/vtk-9.4/vtkAOSDataArrayTemplate.h:
 
 /opt/homebrew/include/nlohmann/detail/abi_macros.hpp:
 
 /opt/homebrew/include/mpfr.h:
 
-/opt/homebrew/include/vtk-9.4/vtkIdTypeArray.h:
-
 /opt/homebrew/include/gmpxx.h:
+
+/opt/homebrew/include/gmp.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/misc/RealSvd2x2.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/SVD/UpperBidiagonalization.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/SVD/SVDBase.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/QR/HouseholderQR.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/QR/FullPivHouseholderQR.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/QR/CompleteOrthogonalDecomposition.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/LU/PartialPivLU.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/LU/InverseImpl.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/LU/FullPivLU.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/LU/Determinant.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Jacobi/Jacobi.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Householder/HouseholderSequence.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Householder/Householder.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Householder/BlockHouseholder.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Geometry/Translation.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Geometry/Scaling.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Geometry/RotationBase.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Geometry/Rotation2D.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Geometry/Quaternion.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Geometry/ParametrizedLine.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Geometry/Hyperplane.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Geometry/Homogeneous.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Geometry/EulerAngles.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Geometry/AngleAxis.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Geometry/AlignedBox.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Eigenvalues/GeneralizedSelfAdjointEigenSolver.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Eigenvalues/EigenSolver.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Eigenvalues/Tridiagonalization.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Eigenvalues/ComplexSchur.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/util/ReshapedHelper.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/util/Macros.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/util/MKL_support.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/util/IndexedViewHelper.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/util/ForwardDeclarations.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/util/Constants.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/util/ConfigureVectorization.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/products/TriangularSolverVector.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/products/TriangularSolverMatrix.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/products/TriangularMatrixMatrix.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/products/SelfadjointProduct.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/products/SelfadjointMatrixVector.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/products/SelfadjointMatrixMatrix.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/products/Parallelizer.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/products/GeneralMatrixVector.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/products/GeneralMatrixMatrixTriangular.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/products/GeneralMatrixMatrix.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/functors/StlFunctors.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/functors/NullaryFunctors.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/functors/AssignmentFunctors.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/arch/NEON/PacketMath.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/arch/NEON/MathFunctions.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/arch/NEON/GeneralBlockPanelKernel.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/arch/NEON/Complex.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/arch/Default/Settings.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/arch/Default/Half.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/arch/Default/GenericPacketMathFunctionsFwd.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/arch/Default/GenericPacketMathFunctions.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/arch/Default/BFloat16.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/Visitor.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/VectorwiseOp.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/VectorBlock.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/TriangularMatrix.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/Swap.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/Stride.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/StlIterators.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/StableNorm.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/SolverBase.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/SolveTriangular.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/Solve.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/Select.h:
+
+/opt/homebrew/include/boost/multiprecision/cpp_int/limits.hpp:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/Reverse.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Geometry/OrthoMethods.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__concepts/relation.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/Replicate.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/has_unique_object_representation.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_constant_evaluated.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/Redux.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/Product.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/PlainObjectBase.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_signed_integer.h:
+
+/opt/homebrew/include/boost/math/tools/toms748_solve.hpp:
+
+/opt/homebrew/include/boost/predef/language/cuda.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/PermutationMatrix.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/NumTraits.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/lexicographical_compare.h:
+
+/opt/homebrew/include/boost/random/subtract_with_carry.hpp:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/NestByValue.h:
+
+/opt/homebrew/include/CGAL/Intersections_3/Bbox_3_Tetrahedron_3.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/Map.h:
+
+/opt/homebrew/include/CGAL/Distance_2/Line_2_Triangle_2.h:
+
+/opt/homebrew/include/CGAL/Intersections_3/Ray_3_Ray_3.h:
+
+/opt/homebrew/include/boost/config/platform/macos.hpp:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/IO.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_rotate_copy.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/Fuzzy.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/EigenBase.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_execution_policy.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/make_32_64_or_128_bit.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/Dot.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/DenseCoeffsBase.h:
+
+/opt/homebrew/include/CGAL/Modifier_base.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/CwiseNullaryOp.h:
+
+/opt/homebrew/include/vtk-9.4/vtkkwiml/abi.h:
+
+/opt/homebrew/include/boost/predef/os/ios.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/ConditionEstimator.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/BandMatrix.h:
+
+/opt/homebrew/include/boost/random/uniform_real_distribution.hpp:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/Assign.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/projected.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/ArrayWrapper.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/Array.h:
+
+/opt/homebrew/include/boost/type_traits/detail/is_swappable_cxx_11.hpp:
+
+/opt/homebrew/include/eigen3/Eigen/src/plugins/MatrixCwiseBinaryOps.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/allocator_arg_t.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/plugins/CommonCwiseUnaryOps.h:
+
+/opt/homebrew/include/CGAL/Kd_tree.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/plugins/CommonCwiseBinaryOps.h:
+
+/opt/homebrew/include/eigen3/Eigen/LU:
+
+/opt/homebrew/include/boost/move/algo/detail/adaptive_sort_merge.hpp:
+
+/opt/homebrew/include/eigen3/Eigen/Jacobi:
+
+/opt/homebrew/include/eigen3/Eigen/Householder:
+
+/opt/homebrew/include/eigen3/Eigen/Geometry:
+
+/opt/homebrew/include/vtk-9.4/vtkCompiler.h:
+
+/opt/homebrew/include/eigen3/Eigen/Cholesky:
 
 /opt/homebrew/include/CGAL/Intersections_2/Line_2_Segment_2.h:
 
@@ -3521,6 +3983,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/ch_selected_extreme_points_2.h:
 
+/opt/homebrew/include/eigen3/Eigen/src/Core/GlobalFunctions.h:
+
 /opt/homebrew/include/boost/type_traits/is_unsigned.hpp:
 
 /opt/homebrew/include/boost/type_traits/is_stateless.hpp:
@@ -3530,6 +3994,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__format/indic_conjunct_break_table.h:
 
 /opt/homebrew/include/boost/type_traits/is_same.hpp:
+
+/opt/homebrew/include/eigen3/Eigen/SVD:
 
 /opt/homebrew/include/boost/mpl/vector/vector10.hpp:
 
@@ -3613,6 +4079,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/type_traits/has_plus.hpp:
 
+/opt/homebrew/include/eigen3/Eigen/src/LU/arch/InverseSize4.h:
+
 /opt/homebrew/include/CGAL/CORE/CoreAux_impl.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_nothrow_convertible.h:
@@ -3634,6 +4102,10 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/type_traits/has_logical_and.hpp:
 
 /opt/homebrew/include/boost/type_traits/has_less_equal.hpp:
+
+/opt/homebrew/include/boost/preprocessor/list/limits/fold_left_256.hpp:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/SelfAdjointView.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/remove_extent.h:
 
@@ -3672,8 +4144,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/type_traits/detail/yes_no_type.hpp:
 
 /opt/homebrew/include/boost/type_traits/detail/mp_defer.hpp:
-
-/opt/homebrew/include/boost/type_traits/detail/is_swappable_cxx_11.hpp:
 
 /opt/homebrew/include/boost/type_traits/detail/is_member_function_pointer_cxx_11.hpp:
 
@@ -3735,6 +4205,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/range/detail/sfinae.hpp:
 
+/opt/homebrew/include/eigen3/Eigen/src/Core/DiagonalMatrix.h:
+
 /opt/homebrew/include/yaml-cpp/node/type.h:
 
 /opt/homebrew/include/boost/range/detail/common.hpp:
@@ -3763,8 +4235,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/random/uniform_01.hpp:
 
-/opt/homebrew/include/vtk-9.4/vtkDataArrayRange.h:
-
 /opt/homebrew/include/boost/random/traits.hpp:
 
 /opt/homebrew/include/boost/random/shuffle_output.hpp:
@@ -3772,8 +4242,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/random/seed_seq.hpp:
 
 /opt/homebrew/include/boost/random/random_number_generator.hpp:
-
-/opt/homebrew/include/vtk-9.4/vtkCommand.h:
 
 /opt/homebrew/include/boost/random/piecewise_constant_distribution.hpp:
 
@@ -3785,9 +4253,9 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/random/linear_feedback_shift.hpp:
 
-/opt/homebrew/include/CGAL/Filtered_kernel.h:
-
 /opt/homebrew/include/vtk-9.4/vtkOStreamWrapper.h:
+
+/opt/homebrew/include/CGAL/Filtered_kernel.h:
 
 /opt/homebrew/include/boost/random/laplace_distribution.hpp:
 
@@ -3855,11 +4323,15 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/preprocessor/variadic/elem.hpp:
 
+/opt/homebrew/include/eigen3/Eigen/src/Core/CommaInitializer.h:
+
 /opt/homebrew/include/vtk-9.4/vtkIOStream.h:
 
 /opt/homebrew/include/boost/preprocessor/variadic/detail/has_opt.hpp:
 
 /opt/homebrew/include/boost/preprocessor/tuple/eat.hpp:
+
+/opt/homebrew/include/eigen3/Eigen/src/Eigenvalues/MatrixBaseEigenvalues.h:
 
 /opt/homebrew/include/boost/preprocessor/seq/limits/size_256.hpp:
 
@@ -3901,9 +4373,9 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/preprocessor/logical/bitand.hpp:
 
-/opt/homebrew/include/boost/type_traits/has_new_operator.hpp:
+/opt/homebrew/include/eigen3/Eigen/Eigenvalues:
 
-/opt/homebrew/include/boost/preprocessor/list/limits/fold_left_256.hpp:
+/opt/homebrew/include/boost/type_traits/has_new_operator.hpp:
 
 /opt/homebrew/include/boost/preprocessor/list/fold_right.hpp:
 
@@ -3922,6 +4394,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/preprocessor/detail/check.hpp:
 
 /opt/homebrew/include/boost/preprocessor/control/while.hpp:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/Matrix.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_final.h:
 
@@ -3945,10 +4419,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/preprocessor/comparison/not_equal.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/prev_permutation.h:
-
-/opt/homebrew/include/vtk-9.4/vtkDataArray.h:
-
 /opt/homebrew/include/boost/multiprecision/cpp_int/intel_intrinsics.hpp:
 
 /opt/homebrew/include/boost/preprocessor/comparison/limits/not_equal_256.hpp:
@@ -3960,6 +4430,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/preprocessor/array/data.hpp:
 
 /opt/homebrew/include/boost/preprocessor/arithmetic/limits/inc_256.hpp:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/SelfCwiseBinaryOp.h:
 
 /opt/homebrew/include/boost/preprocessor/arithmetic/detail/maximum_number.hpp:
 
@@ -4007,10 +4479,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/predef/os/linux.h:
 
-/opt/homebrew/include/vtk-9.4/vtkkwiml/abi.h:
-
-/opt/homebrew/include/boost/predef/os/ios.h:
-
 /opt/homebrew/include/boost/predef/os/haiku.h:
 
 /opt/homebrew/include/boost/predef/os/cygwin.h:
@@ -4055,12 +4523,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/predef/language/stdc.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_signed_integer.h:
-
-/opt/homebrew/include/boost/math/tools/toms748_solve.hpp:
-
-/opt/homebrew/include/boost/predef/language/cuda.h:
-
 /opt/homebrew/include/boost/predef/language.h:
 
 /opt/homebrew/include/boost/type_traits/has_pre_increment.hpp:
@@ -4089,8 +4551,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/predef/detail/_cassert.h:
 
-/opt/homebrew/include/vtk-9.4/vtkCompiler.h:
-
 /opt/homebrew/include/boost/random/bernoulli_distribution.hpp:
 
 /opt/homebrew/include/boost/predef/compiler/visualc.h:
@@ -4116,8 +4576,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/predef/compiler/metaware.h:
 
 /opt/homebrew/include/boost/predef/compiler/hp_acc.h:
-
-/opt/homebrew/include/vtk-9.4/vtkActor2D.h:
 
 /opt/homebrew/include/boost/predef/compiler/gcc_xml.h:
 
@@ -4167,11 +4625,11 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/predef/architecture/parisc.h:
 
-/opt/homebrew/include/vtk-9.4/vtkIndent.h:
-
 /opt/homebrew/include/CGAL/Spatial_searching/internal/K_neighbor_search.h:
 
 /opt/homebrew/include/boost/predef/architecture/m68k.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/arch/NEON/TypeCasting.h:
 
 /opt/homebrew/include/boost/integer/integer_mask.hpp:
 
@@ -4207,6 +4665,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/multiprecision/traits/is_backend.hpp:
 
+/opt/homebrew/include/eigen3/Eigen/src/Core/NoAlias.h:
+
 /opt/homebrew/include/boost/type_traits/is_function.hpp:
 
 /opt/homebrew/include/boost/multiprecision/number.hpp:
@@ -4223,8 +4683,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/multiprecision/detail/ublas_interop.hpp:
 
-/opt/homebrew/include/vtk-9.4/vtkBuffer.h:
-
 /opt/homebrew/include/CGAL/Cartesian/Circle_3.h:
 
 /opt/homebrew/include/boost/multiprecision/detail/standalone_config.hpp:
@@ -4236,6 +4694,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/multiprecision/debug_adaptor.hpp:
 
 /opt/homebrew/include/boost/multiprecision/detail/no_exceptions_support.hpp:
+
+/opt/homebrew/include/eigen3/Eigen/src/Eigenvalues/ComplexEigenSolver.h:
 
 /opt/homebrew/include/boost/multiprecision/detail/no_et_ops.hpp:
 
@@ -4249,13 +4709,15 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/multiprecision/detail/min_max.hpp:
 
-/opt/homebrew/include/vtk-9.4/vtkCoordinate.h:
-
 /opt/homebrew/include/boost/multiprecision/detail/generic_interconvert.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/stat.h:
 
 /opt/homebrew/include/boost/multiprecision/detail/functions/trunc.hpp:
+
+/opt/homebrew/include/CGAL/Arrangement_2/Arrangement_on_surface_2_global.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/PartialReduxEvaluator.h:
 
 /opt/homebrew/include/boost/multiprecision/detail/functions/trig.hpp:
 
@@ -4282,6 +4744,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/multiprecision/cpp_int/literals.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/partition_point.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/DenseStorage.h:
 
 /opt/homebrew/include/boost/multiprecision/cpp_int/divide.hpp:
 
@@ -4311,6 +4775,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/mpl/void_fwd.hpp:
 
+/opt/homebrew/include/eigen3/Eigen/src/Core/GenericPacketMath.h:
+
 /opt/homebrew/include/boost/mpl/vector/vector0.hpp:
 
 /opt/homebrew/include/boost/mpl/vector/aux_/vector0.hpp:
@@ -4319,6 +4785,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/mpl/vector/aux_/push_front.hpp:
 
+/opt/homebrew/include/eigen3/Eigen/src/plugins/ReshapedMethods.h:
+
 /opt/homebrew/include/boost/mpl/vector/aux_/preprocessed/typeof_based/vector10.hpp:
 
 /opt/homebrew/include/boost/mpl/vector/aux_/pop_back.hpp:
@@ -4326,6 +4794,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/mpl/vector/aux_/iterator.hpp:
 
 /opt/homebrew/include/boost/mpl/vector/aux_/include_preprocessed.hpp:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/ReturnByValue.h:
 
 /opt/homebrew/include/CGAL/boost/graph/copy_face_graph.h:
 
@@ -4359,15 +4829,11 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/mpl/quote.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__functional/binder1st.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_posix_vdisable.h:
-
-/opt/homebrew/include/boost/random/discard_block.hpp:
-
 /opt/homebrew/include/CGAL/Polygon_2/Polygon_2_vertex_circulator.h:
 
 /opt/homebrew/include/boost/predef/platform/windows_server.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/arch/Default/TypeCasting.h:
 
 /opt/homebrew/include/boost/mpl/push_back_fwd.hpp:
 
@@ -4376,6 +4842,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/CGAL/Intersections_2/Iso_rectangle_2_Point_2.h:
 
 /opt/homebrew/include/boost/mpl/prior.hpp:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/CoreIterators.h:
 
 /opt/homebrew/include/boost/predef/compiler/metrowerks.h:
 
@@ -4463,12 +4931,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/mpl/clear_fwd.hpp:
 
-/opt/homebrew/include/boost/type_traits/copy_cv.hpp:
-
-/opt/homebrew/include/boost/type_traits/remove_pointer.hpp:
-
-/opt/homebrew/include/vtk-9.4/vtkDataArrayValueRange_AOS.h:
-
 /opt/homebrew/include/CGAL/Arr_geometry_traits/Segment_assertions.h:
 
 /opt/homebrew/include/boost/mpl/clear.hpp:
@@ -4525,8 +4987,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/plus.hpp:
 
-/opt/homebrew/include/vtk-9.4/vtkDataArrayMeta.h:
-
 /opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/minus.hpp:
 
 /opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/bind_fwd.hpp:
@@ -4548,8 +5008,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/CGAL/Cartesian/Translation_rep_2.h:
 
 /opt/homebrew/include/boost/mpl/aux_/include_preprocessed.hpp:
-
-/opt/homebrew/include/vtk-9.4/vtkLine.h:
 
 /opt/homebrew/include/boost/mpl/vector/aux_/pop_front.hpp:
 
@@ -4659,17 +5117,11 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/mpl/O1_size_fwd.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/lexicographical_compare.h:
-
-/opt/homebrew/include/boost/random/subtract_with_carry.hpp:
+/opt/homebrew/include/eigen3/Eigen/src/plugins/ArrayCwiseUnaryOps.h:
 
 /opt/homebrew/include/boost/range/detail/implementation_help.hpp:
 
 /opt/homebrew/include/boost/mp11/set.hpp:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/in_found_result.h:
-
-/opt/homebrew/include/vtk-9.4/vtkMathConfigure.h:
 
 /opt/homebrew/include/boost/mp11/function.hpp:
 
@@ -4682,6 +5134,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/mpl/transform.hpp:
 
 /opt/homebrew/include/boost/mp11/detail/mp_value.hpp:
+
+/opt/homebrew/include/eigen3/Eigen/src/Eigenvalues/RealSchur.h:
 
 /opt/homebrew/include/boost/mp11/detail/mp_rename.hpp:
 
@@ -4775,13 +5229,15 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/move/algo/detail/merge_sort.hpp:
 
-/opt/homebrew/include/boost/move/algo/detail/adaptive_sort_merge.hpp:
+/opt/homebrew/include/eigen3/Eigen/src/Core/DenseBase.h:
 
 /opt/homebrew/include/CGAL/Arr_topology_traits/Arr_bounded_planar_overlay_helper.h:
 
 /opt/homebrew/include/boost/config/helper_macros.hpp:
 
 /opt/homebrew/include/boost/predef/library/c/gnu.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/lib/clang/20/include/arm_vector_types.h:
 
 /opt/homebrew/include/boost/move/adl_move_swap.hpp:
 
@@ -4799,8 +5255,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/predef/detail/comp_detected.h:
 
-/opt/homebrew/include/vtk-9.4/vtkBuild.h:
-
 /opt/homebrew/include/boost/math/tools/real_cast.hpp:
 
 /opt/homebrew/include/CGAL/Dynamic_property_map.h:
@@ -4813,11 +5267,19 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/math/tools/is_detected.hpp:
 
+/opt/homebrew/include/eigen3/Eigen/src/plugins/BlockMethods.h:
+
 /opt/homebrew/include/boost/math/tools/cxx03_warn.hpp:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/util/ReenableStupidWarnings.h:
 
 /opt/homebrew/include/boost/math/tools/convert_from_string.hpp:
 
 /opt/homebrew/include/boost/predef/architecture/loongarch.h:
+
+/opt/homebrew/include/vtk-9.4/vtkCamera.h:
+
+/opt/homebrew/include/boost/math/tools/big_constant.hpp:
 
 /opt/homebrew/include/boost/mpl/aux_/config/lambda.hpp:
 
@@ -4859,13 +5321,9 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/math/special_functions/lanczos.hpp:
 
-/opt/homebrew/include/boost/multiprecision/cpp_int/limits.hpp:
-
 /opt/homebrew/include/CGAL/IO/Arr_text_formatter.h:
 
 /opt/homebrew/include/boost/math/special_functions/hypot.hpp:
-
-/opt/homebrew/include/vtk-9.4/vtkPlatform.h:
 
 /opt/homebrew/include/boost/math/special_functions/gamma.hpp:
 
@@ -4907,6 +5365,12 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/math/special_functions/detail/bernoulli_details.hpp:
 
+/opt/homebrew/include/vtk-9.4/vtkCommonExecutionModelModule.h:
+
+/opt/homebrew/include/CGAL/Cartesian/point_constructions_3.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/GeneralProduct.h:
+
 /opt/homebrew/include/boost/predef/compiler/tendra.h:
 
 /opt/homebrew/include/boost/math/special_functions/cbrt.hpp:
@@ -4945,7 +5409,13 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/lexical_cast/try_lexical_convert.hpp:
 
+/Users/jiayu/Desktop/nas_ws/NAS/include/visualizer.hpp:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/CwiseBinaryOp.h:
+
 /opt/homebrew/include/boost/lexical_cast/detail/widest_char.hpp:
+
+/opt/homebrew/include/eigen3/Eigen/Dense:
 
 /opt/homebrew/include/boost/mpl/and.hpp:
 
@@ -5038,6 +5508,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/CGAL/Intersections_3/internal/Ray_3_Ray_3_do_intersect.h:
 
 /opt/homebrew/include/boost/describe/members.hpp:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/AssignEvaluator.h:
 
 /opt/homebrew/include/boost/describe/detail/config.hpp:
 
@@ -5181,11 +5653,15 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/container/detail/advanced_insert_int.hpp:
 
+/opt/homebrew/include/eigen3/Eigen/src/Core/MatrixBase.h:
+
 /opt/homebrew/include/boost/container/detail/value_functors.hpp:
 
 /opt/homebrew/include/boost/container/deque.hpp:
 
 /opt/homebrew/include/boost/container/container_fwd.hpp:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/Block.h:
 
 /opt/homebrew/include/boost/utility/enable_if.hpp:
 
@@ -5193,15 +5669,11 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/container/allocator_traits.hpp:
 
+/opt/homebrew/include/eigen3/Eigen/src/Eigenvalues/GeneralizedEigenSolver.h:
+
 /opt/homebrew/include/boost/config/stdlib/libcpp.hpp:
 
 /opt/homebrew/include/boost/config/pragma_message.hpp:
-
-/opt/homebrew/include/CGAL/Distance_2/Line_2_Triangle_2.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/Ray_3_Ray_3.h:
-
-/opt/homebrew/include/boost/config/platform/macos.hpp:
 
 /opt/homebrew/include/boost/preprocessor/repetition/repeat_from_to.hpp:
 
@@ -5279,6 +5751,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/rational_rotation.h:
 
+/opt/homebrew/include/eigen3/Eigen/src/Core/Random.h:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/copy_cv.h:
 
 /opt/homebrew/include/CGAL/predicates/kernel_ftC2.h:
@@ -5331,6 +5805,10 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/license/Polyhedron.h:
 
+/opt/homebrew/include/vtk-9.4/vtkActor.h:
+
+/opt/homebrew/include/boost/predef/compiler/nvcc.h:
+
 /opt/homebrew/include/CGAL/license/Arrangement_on_surface_2.h:
 
 /opt/homebrew/include/CGAL/license.h:
@@ -5382,8 +5860,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/CGAL/float.h:
 
 /opt/homebrew/include/CGAL/extended_euclidean_algorithm.h:
-
-/opt/homebrew/include/vtk-9.4/vtkMeta.h:
 
 /opt/homebrew/include/CGAL/export/helpers.h:
 
@@ -5589,13 +6065,15 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Static_filtered_predicate.h:
 
-/opt/homebrew/include/vtk-9.4/vtkDataArrayAccessor.h:
-
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_find_end.h:
 
 /opt/homebrew/include/boost/mpl/lambda_fwd.hpp:
 
 /opt/homebrew/include/boost/mpl/aux_/iter_fold_impl.hpp:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/products/SelfadjointRank2Update.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/CwiseUnaryOp.h:
 
 /opt/homebrew/include/CGAL/Sqrt_extension_fwd.h:
 
@@ -5606,8 +6084,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/predef/os/macos.h:
 
 /opt/homebrew/include/CGAL/Sqrt_extension/io.h:
-
-/opt/homebrew/include/vtk-9.4/vtkAssume.h:
 
 /opt/homebrew/include/boost/iterator/detail/type_traits/conjunction.hpp:
 
@@ -5691,6 +6167,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Segment_2.h:
 
+/opt/homebrew/include/eigen3/Eigen/src/plugins/MatrixCwiseUnaryOps.h:
+
 /opt/homebrew/include/CGAL/Search_traits_adapter.h:
 
 /opt/homebrew/include/boost/container/throw_exception.hpp:
@@ -5773,9 +6251,13 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Plane_3.h:
 
+/opt/homebrew/include/CGAL/PCA_util_Eigen.h:
+
 /opt/homebrew/include/CGAL/ch_akl_toussaint.h:
 
 /opt/homebrew/include/CGAL/Orthogonal_k_neighbor_search.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/MapBase.h:
 
 /opt/homebrew/include/boost/mpl/aux_/yes_no.hpp:
 
@@ -5785,17 +6267,9 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/N_step_adaptor_derived.h:
 
-/opt/homebrew/include/yaml-cpp/traits.h:
-
-/opt/homebrew/include/boost/random/geometric_distribution.hpp:
-
-/opt/homebrew/include/vtk-9.4/vtkFeatures.h:
-
 /opt/homebrew/include/boost/mp11/list.hpp:
 
 /opt/homebrew/include/CGAL/NT_converter.h:
-
-/opt/homebrew/include/vtk-9.4/vtkDebugLeaksManager.h:
 
 /opt/homebrew/include/boost/move/detail/destruct_n.hpp:
 
@@ -5807,8 +6281,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Triangle_2.h:
 
-/opt/homebrew/include/CGAL/Modifier_base.h:
-
 /opt/homebrew/include/boost/random/fisher_f_distribution.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/Availability.h:
@@ -5818,10 +6290,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/CGAL/MP_Float_arithmetic_kernel.h:
 
 /opt/homebrew/include/CGAL/MP_Float.h:
-
-/opt/homebrew/include/CGAL/Cartesian/point_constructions_3.h:
-
-/opt/homebrew/include/vtk-9.4/vtkCommonExecutionModelModule.h:
 
 /opt/homebrew/include/boost/math/special_functions/bernoulli.hpp:
 
@@ -5849,11 +6317,15 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Kernel_d/debug.h:
 
+/opt/homebrew/include/eigen3/Eigen/src/Core/ArithmeticSequence.h:
+
 /opt/homebrew/include/CGAL/Kernel_d/Linear_algebraCd_impl.h:
 
 /opt/homebrew/include/boost/smart_ptr/detail/local_sp_deleter.hpp:
 
 /opt/homebrew/include/CGAL/Kernel_d/Cartesian_const_iterator_d.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/util/Memory.h:
 
 /opt/homebrew/include/CGAL/Kernel_23/internal/Has_boolean_tags.h:
 
@@ -5891,8 +6363,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Surface_sweep_2/Arr_overlay_traits_2.h:
 
-/opt/homebrew/include/CGAL/Kd_tree.h:
-
 /opt/homebrew/include/boost/mpl/vector/aux_/size.hpp:
 
 /opt/homebrew/include/CGAL/Iterator_project.h:
@@ -5927,7 +6397,11 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Intersections_3/internal/Triangle_3_Triangle_3_do_intersect.h:
 
+/opt/homebrew/include/eigen3/Eigen/src/Core/DiagonalProduct.h:
+
 /opt/homebrew/include/CGAL/Intersections_3/internal/Tetrahedron_3_Unbounded_3_do_intersect.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/plugins/IndexedViewMethods.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__ranges/subrange.h:
 
@@ -5942,8 +6416,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/CGAL/Intersections_3/internal/Segment_3_Tetrahedron_3_do_intersect.h:
 
 /opt/homebrew/include/CGAL/Intersections_3/internal/Segment_3_Segment_3_intersection.h:
-
-/opt/homebrew/include/vtk-9.4/vtkObjectBase.h:
 
 /opt/homebrew/include/CGAL/Intersections_3/internal/Segment_3_Segment_3_do_intersect.h:
 
@@ -5978,6 +6450,10 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/CGAL/Intersections_3/internal/Point_3_Sphere_3_intersection.h:
 
 /opt/homebrew/include/boost/type_traits/is_object.hpp:
+
+/opt/homebrew/include/vtk-9.4/vtkLongLongArray.h:
+
+/opt/homebrew/include/CGAL/Intersections_3/internal/Point_3_Sphere_3_do_intersect.h:
 
 /opt/homebrew/include/boost/predef/library/std/sgi.h:
 
@@ -6071,6 +6547,18 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Intersections_3/internal/Line_3_Ray_3_do_intersect.h:
 
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/new:
+
+/opt/homebrew/include/boost/type_traits/is_trivially_copyable.hpp:
+
+/opt/homebrew/include/boost/predef/library/c/vms.h:
+
+/opt/homebrew/include/CGAL/Intersections_3/internal/Bbox_3_Segment_3_do_intersect.h:
+
+/opt/homebrew/include/boost/predef/architecture.h:
+
+/opt/homebrew/include/CGAL/Intersections_3/internal/Line_3_Point_3_intersection.h:
+
 /opt/homebrew/include/boost/mpl/or.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_equal_range.h:
@@ -6123,6 +6611,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/iterator/detail/type_traits/negation.hpp:
 
+/opt/homebrew/include/eigen3/Eigen/src/Core/util/StaticAssert.h:
+
 /opt/homebrew/include/CGAL/Intersections_3/internal/Bbox_3_Ray_3_do_intersect.h:
 
 /opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_agg_op_surface_sweep_2.h:
@@ -6159,23 +6649,13 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Intersections_3/Ray_3_Triangle_3.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/new:
-
-/opt/homebrew/include/boost/type_traits/is_trivially_copyable.hpp:
-
-/opt/homebrew/include/boost/predef/library/c/vms.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/internal/Bbox_3_Segment_3_do_intersect.h:
-
-/opt/homebrew/include/boost/predef/architecture.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/internal/Line_3_Point_3_intersection.h:
-
 /opt/homebrew/include/boost/predef/os.h:
 
 /opt/homebrew/include/vtk-9.4/vtkCellTypes.h:
 
 /opt/homebrew/include/boost/predef/architecture/x86/32.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/functors/BinaryFunctors.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/sort.h:
 
@@ -6241,8 +6721,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/property_map.h:
 
-/opt/homebrew/include/CGAL/Intersections_3/Bbox_3_Tetrahedron_3.h:
-
 /opt/homebrew/include/CGAL/Intersections_3/Bbox_3_Iso_cuboid_3.h:
 
 /opt/homebrew/include/CGAL/CORE/Expr_impl.h:
@@ -6279,6 +6757,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/type_traits/conjunction.hpp:
 
+/opt/homebrew/include/eigen3/Eigen/src/Eigenvalues/HessenbergDecomposition.h:
+
 /opt/homebrew/include/boost/multiprecision/detail/functions/pow.hpp:
 
 /opt/homebrew/include/CGAL/Intersections_2/Line_2_Ray_2.h:
@@ -6302,10 +6782,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/CGAL/Intersections_2/Circle_2_Line_2.h:
 
 /opt/homebrew/include/CGAL/Intersections_2/Circle_2_Circle_2.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__ranges/dangling.h:
-
-/opt/homebrew/include/vtk-9.4/vtkABINamespace.h:
 
 /opt/homebrew/include/CGAL/CORE/RefCount.h:
 
@@ -6383,6 +6859,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/IO/Arr_iostream.h:
 
+/opt/homebrew/include/eigen3/Eigen/src/Core/util/BlasUtil.h:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/string.h:
 
 /opt/homebrew/include/boost/iterator/counting_iterator.hpp:
@@ -6429,6 +6907,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Has_member.h:
 
+/opt/homebrew/include/eigen3/Eigen/src/Core/util/Meta.h:
+
 /opt/homebrew/include/CGAL/Has_conversion.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__utility/exception_guard.h:
@@ -6465,8 +6945,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Fraction_traits.h:
 
-/opt/homebrew/include/vtk-9.4/vtkAOSDataArrayTemplate.h:
-
 /opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Static_filters.h:
 
 /opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Static_filter_error.h:
@@ -6484,6 +6962,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Do_intersect_2.h:
 
 /opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Compare_y_2.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/QR/ColPivHouseholderQR.h:
 
 /opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/vector.hpp:
 
@@ -6535,6 +7015,14 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Euclidean_distance.h:
 
+/opt/homebrew/include/vtk-9.4/vtkWeakPointerBase.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/copy.h:
+
+/opt/homebrew/include/CGAL/Eigen_diagonalize_traits.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/lib/clang/20/include/arm_bf16.h:
+
 /opt/homebrew/include/CGAL/Exact_predicates_inexact_constructions_kernel.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__vector/comparison.h:
@@ -6565,6 +7053,10 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Distance_3/Point_3_Point_3.h:
 
+/opt/homebrew/include/boost/predef/architecture/ppc.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/IndexedView.h:
+
 /opt/homebrew/include/boost/type_traits/has_plus_assign.hpp:
 
 /opt/homebrew/include/CGAL/Distance_3/Point_3_Line_3.h:
@@ -6578,6 +7070,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/CGAL/Distance_3/Line_3_Line_3.h:
 
 /opt/homebrew/include/boost/preprocessor/seq/fold_left.hpp:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/util/SymbolicIndex.h:
 
 /opt/homebrew/include/CGAL/GMP/Gmpfr_type_static.h:
 
@@ -6597,15 +7091,11 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Distance_2/Segment_2_Segment_2.h:
 
-/opt/homebrew/include/CGAL/convexity_check_3.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_base_of.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/internal/Line_3_Segment_3_do_intersect.h:
-
 /opt/homebrew/include/CGAL/IO/OFF/File_header_OFF.h:
 
 /opt/homebrew/include/CGAL/Distance_2/Segment_2_Ray_2.h:
+
+/opt/homebrew/include/eigen3/Eigen/Core:
 
 /opt/homebrew/include/boost/container_hash/detail/hash_range.hpp:
 
@@ -6633,6 +7123,12 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__concepts/derived_from.h:
 
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/AvailabilityInternalLegacy.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__chrono/month_weekday.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/BooleanRedux.h:
+
 /opt/homebrew/include/boost/preprocessor/seq/limits/fold_left_256.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/default_sentinel.h:
@@ -6641,7 +7137,11 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Direction_2.h:
 
+/opt/homebrew/include/eigen3/Eigen/src/Core/Transpositions.h:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/exception:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/util/IntegralConstant.h:
 
 /opt/homebrew/include/CGAL/Intersections_3/Tetrahedron_3_Triangle_3.h:
 
@@ -6853,6 +7353,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Cartesian/Direction_2.h:
 
+/opt/homebrew/include/eigen3/Eigen/src/Geometry/arch/Geometry_SIMD.h:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_inplace_merge.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/find_end.h:
@@ -6904,6 +7406,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/allocate_at_least.h:
 
 /opt/homebrew/include/CGAL/Intersections_3/internal/Iso_cuboid_3_Plane_3_intersection.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/SVD/JacobiSVD.h:
 
 /opt/homebrew/include/CGAL/IO/Color.h:
 
@@ -7021,10 +7525,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_agg_meta_traits.h:
 
-/opt/homebrew/include/vtk-9.4/vtkWeakPointerBase.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/copy.h:
-
 /opt/homebrew/include/boost/math/special_functions/detail/igamma_large.hpp:
 
 /opt/homebrew/include/CGAL/Boolean_set_operations_2/Ccb_curve_iterator.h:
@@ -7069,6 +7569,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Arrangement_2/Arrangement_2_iterators.h:
 
+/opt/homebrew/include/eigen3/Eigen/src/plugins/ArrayCwiseBinaryOps.h:
+
 /opt/homebrew/include/boost/mpl/long.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/extent.h:
@@ -7090,6 +7592,10 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__charconv/from_chars_result.h:
 
 /opt/homebrew/include/CGAL/Arr_topology_traits/Arr_unb_planar_construction_helper.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__bit/invert_if.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Cholesky/LDLT.h:
 
 /opt/homebrew/include/CGAL/Arr_topology_traits/Arr_planar_topology_traits_base_2.h:
 
@@ -7197,6 +7703,10 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/Cellar/llvm/20.1.6/lib/clang/20/include/inttypes.h:
 
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_mbstate_t.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_gid_t.h:
+
 /opt/homebrew/include/boost/multiprecision/detail/atomic.hpp:
 
 /opt/homebrew/include/vtk-9.4/vtkRenderWindow.h:
@@ -7283,6 +7793,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_symbol_aliasing.h:
 
+/opt/homebrew/include/eigen3/Eigen/src/Core/ProductEvaluators.h:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/source_location:
 
 /opt/homebrew/include/CGAL/Aff_transformation_3.h:
@@ -7337,6 +7849,16 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/list:
 
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__functional/binder1st.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_posix_vdisable.h:
+
+/opt/homebrew/include/boost/random/discard_block.hpp:
+
+/opt/homebrew/include/CGAL/Surface_sweep_2/Arr_overlay_ss_visitor.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/lib/clang/20/include/arm_neon.h:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/iterator:
 
 /opt/homebrew/include/boost/mp11/detail/mp_with_index.hpp:
@@ -7360,8 +7882,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/inttypes.h:
 
 /opt/homebrew/include/CGAL/Homogeneous/DirectionH2.h:
-
-/opt/homebrew/include/vtk-9.4/vtkPolyData.h:
 
 /opt/homebrew/include/boost/type_traits/rank.hpp:
 
@@ -7411,6 +7931,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__format/format_parse_context.h:
 
+/opt/homebrew/include/eigen3/Eigen/src/Core/Reshaped.h:
+
 /opt/homebrew/include/CGAL/Intersections_3/Sphere_3_Sphere_3.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/chrono:
@@ -7434,6 +7956,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/algorithm:
 
 /opt/homebrew/include/CGAL/Weighted_point_2.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/lib/clang/20/include/arm_fp16.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__vector/vector_bool.h:
 
@@ -7489,10 +8013,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__utility/is_pointer_in_range.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/limits:
-
-/opt/homebrew/include/vtk-9.4/vtkMatrixUtilities.h:
-
 /opt/homebrew/include/boost/predef/library/std/_prefix.h:
 
 /opt/homebrew/include/CGAL/is_convertible.h:
@@ -7504,6 +8024,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__utility/integer_sequence.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__utility/forward_like.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/CoreEvaluators.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/_stdio.h:
 
@@ -7553,6 +8075,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/mpl/vector/aux_/at.hpp:
 
+/opt/homebrew/include/eigen3/Eigen/src/misc/Kernel.h:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/add_lvalue_reference.h:
 
 /opt/homebrew/include/boost/predef/compiler/greenhills.h:
@@ -7594,6 +8118,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/CGAL/CORE_BigFloat.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_object.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/CwiseTernaryOp.h:
 
 /opt/homebrew/include/CGAL/Kernel/Return_base_tag.h:
 
@@ -7651,9 +8177,7 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_convertible.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/has_unique_object_representation.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_constant_evaluated.h:
+/opt/homebrew/include/eigen3/Eigen/src/Core/CwiseUnaryView.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_class.h:
 
@@ -7669,6 +8193,12 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_bounded_array.h:
 
+/opt/homebrew/include/CGAL/convexity_check_3.h:
+
+/opt/homebrew/include/CGAL/Intersections_3/internal/Line_3_Segment_3_do_intersect.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_base_of.h:
+
 /opt/homebrew/include/boost/intrusive/detail/minimal_less_equal_header.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_array.h:
@@ -7678,8 +8208,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__concepts/common_reference_with.h:
 
 /opt/homebrew/include/CGAL/Algebraic_extension_traits.h:
-
-/opt/homebrew/include/vtk-9.4/vtkCellLinks.h:
 
 /opt/homebrew/include/boost/type_traits/add_rvalue_reference.hpp:
 
@@ -7719,9 +8247,13 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/detected_or.h:
 
+/opt/homebrew/include/eigen3/Eigen/src/Core/MathFunctionsImpl.h:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/datasizeof.h:
 
 /opt/homebrew/include/boost/container/detail/version_type.hpp:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/Ref.h:
 
 /opt/homebrew/include/CGAL/Intersections_2/internal/Straight_2.h:
 
@@ -7729,9 +8261,13 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Aos_observer.h:
 
+/opt/homebrew/include/eigen3/Eigen/src/Core/products/TriangularMatrixVector.h:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/deque:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/container_traits.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Cholesky/LLT.h:
 
 /opt/homebrew/include/CGAL/Cartesian/ConicCPA2.h:
 
@@ -7800,8 +8336,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/type_traits/is_convertible.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__tuple/tuple_indices.h:
-
-/opt/homebrew/include/vtk-9.4/vtkFiltersCoreModule.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__cstddef/size_t.h:
 
@@ -7905,6 +8439,10 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Surface_sweep_2/Event_comparer.h:
 
+/opt/homebrew/include/vtk-9.4/vtkMatrixUtilities.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/limits:
+
 /opt/homebrew/include/CGAL/Intersections_3/internal/Line_3_Segment_3_intersection.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__ranges/enable_view.h:
@@ -7917,13 +8455,13 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__std_mbstate_t.h:
 
+/opt/homebrew/include/vtk-9.4/vtkABINamespace.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__ranges/dangling.h:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/aligned_storage.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/uniform_random_bit_generator.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_pthread/_pthread_cond_t.h:
-
-/opt/homebrew/include/vtk-9.4/vtkGenericCell.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/_printf.h:
 
@@ -7951,6 +8489,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/any/bad_any_cast.hpp:
 
+/opt/homebrew/include/eigen3/Eigen/src/Core/functors/TernaryFunctors.h:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/simd_utils.h:
 
 /opt/homebrew/include/boost/multiprecision/traits/max_digits10.hpp:
@@ -7958,6 +8498,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/in_out_out_result.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__configuration/abi.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/misc/Image.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/lib/clang/20/include/__stddef_wchar_t.h:
 
@@ -7970,6 +8512,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/CGAL/Intersections_3/Iso_cuboid_3_Point_3.h:
 
 /opt/homebrew/include/boost/detail/workaround.hpp:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/Transpose.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/equal_range.h:
 
@@ -8060,8 +8604,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/lexical_cast/bad_lexical_cast.hpp:
 
 /opt/homebrew/include/CGAL/CORE_arithmetic_kernel.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/allocator_arg_t.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/wctype.h:
 
@@ -8165,7 +8707,15 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/min_element.h:
 
+/opt/homebrew/include/vtk-9.4/vtkDataArrayValueRange_AOS.h:
+
+/opt/homebrew/include/boost/type_traits/copy_cv.hpp:
+
+/opt/homebrew/include/boost/type_traits/remove_pointer.hpp:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/unreachable_sentinel.h:
+
+/opt/homebrew/include/eigen3/Eigen/QR:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/static_bounded_iter.h:
 
@@ -8188,8 +8738,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__format/extended_grapheme_cluster_table.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/rank.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/projected.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__fwd/ios.h:
 
@@ -8286,10 +8834,6 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/strip_signature.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/lib/clang/20/include/__stdarg_header_macro.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_execution_policy.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/make_32_64_or_128_bit.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/sample.h:
 
@@ -8401,6 +8945,10 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__functional/default_searcher.h:
 
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__compare/synth_three_way.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/MathFunctions.h:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__functional/bind_front.h:
 
 /opt/homebrew/include/boost/type_traits/is_assignable.hpp:
@@ -8457,15 +9005,11 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /opt/homebrew/include/CGAL/CORE/extLong_impl.h:
 
-/opt/homebrew/include/gmp.h:
-
 /opt/homebrew/include/boost/preprocessor/tuple/elem.hpp:
 
 /opt/homebrew/include/CGAL/Origin_impl.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/set_symmetric_difference.h:
-
-/opt/homebrew/include/CGAL/Surface_sweep_2/Arr_overlay_ss_visitor.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__functional/function.h:
 
@@ -8597,8 +9141,6 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__cstddef/ptrdiff_t.h:
 
-/opt/homebrew/include/vtk-9.4/vtkObject.h:
-
 /opt/homebrew/include/CGAL/Intersections_2/Point_2_Point_2.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__configuration/language.h:
@@ -8621,7 +9163,7 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/_types/_wctrans_t.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__concepts/relation.h:
+/opt/homebrew/include/eigen3/Eigen/src/Core/products/GeneralBlockPanelKernel.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__concepts/different_from.h:
 
@@ -8641,8 +9183,6 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_pthread/_pthread_t.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__compare/synth_three_way.h:
-
 /opt/homebrew/include/boost/type_traits/conditional.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__atomic/kill_dependency.h:
@@ -8660,6 +9200,10 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__chrono/system_clock.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__chrono/year_month.h:
+
+/opt/homebrew/include/vtk-9.4/vtkIntArray.h:
+
+/opt/homebrew/include/CGAL/Polyhedron_items_3.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/fenv.h:
 
@@ -8713,8 +9257,6 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__atomic/aliases.h:
 
-/opt/homebrew/include/boost/random/uniform_real_distribution.hpp:
-
 /opt/homebrew/include/boost/mpl/equal_to.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/comp.h:
@@ -8763,6 +9305,8 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /opt/homebrew/include/CGAL/test_FPU_rounding_mode_impl.h:
 
+/opt/homebrew/include/eigen3/Eigen/src/Core/util/XprHelper.h:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__charconv/from_chars_integral.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_is_heap.h:
@@ -8785,8 +9329,6 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__filesystem/copy_options.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__bit/invert_if.h:
-
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__bit/has_single_bit.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/unique_temporary_buffer.h:
@@ -8800,8 +9342,6 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_min.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__locale_dir/locale_base_api.h:
-
-/opt/homebrew/include/vtk-9.4/vtkEventData.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__bit/bit_cast.h:
 
@@ -8869,7 +9409,19 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/transform.h:
 
+/opt/homebrew/include/eigen3/Eigen/src/Eigenvalues/SelfAdjointEigenSolver.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_caddr_t.h:
+
+/opt/homebrew/include/vtk-9.4/vtkGenericCell.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_pthread/_pthread_cond_t.h:
+
+/opt/homebrew/include/nlohmann/json_fwd.hpp:
+
+/opt/homebrew/include/CGAL/Homogeneous/LineH2.h:
+
+/opt/homebrew/include/boost/multiprecision/traits/extract_exponent_type.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/charconv:
 
@@ -8965,15 +9517,11 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__bit/blsr.h:
 
-/opt/homebrew/include/CGAL/Diagonalize_traits.h:
-
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_trivially_assignable.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/replace_copy_if.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/__endian.h:
-
-/opt/homebrew/include/vtk-9.4/vtkDataArrayTupleRange_Generic.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_upper_bound.h:
 
@@ -8984,8 +9532,6 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 /opt/homebrew/include/boost/container_hash/hash_fwd.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_transform.h:
-
-/opt/homebrew/include/vtk-9.4/vtkCellType.h:
 
 /opt/homebrew/include/CGAL/Intersections_3/internal/Plane_3_Plane_3_Plane_3_do_intersect.h:
 
@@ -9000,6 +9546,10 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 /opt/homebrew/include/CGAL/Intersections_3/Bbox_3_Plane_3.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/swap_allocator.h:
+
+/opt/homebrew/include/vtk-9.4/vtkMathConfigure.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/in_found_result.h:
 
 /opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/placeholders.hpp:
 
@@ -9032,8 +9582,6 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_set_difference.h:
 
 /opt/homebrew/include/boost/random/non_central_chi_squared_distribution.hpp:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_rotate_copy.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/resource.h:
 
@@ -9097,19 +9645,17 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/xlocale/_time.h:
 
-/Users/jiayu/Desktop/nas_ws/NAS/include/visualizer.hpp:
-
 /opt/homebrew/include/boost/random/inversive_congruential.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/is_sorted_until.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_move.h:
 
+/opt/homebrew/include/eigen3/Eigen/src/Core/Inverse.h:
+
 /opt/homebrew/include/boost/multiprecision/detail/string_helpers.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_mismatch.h:
-
-/opt/homebrew/include/vtk-9.4/vtkMathPrivate.hxx:
 
 /opt/homebrew/include/CGAL/Point_container.h:
 
@@ -9117,9 +9663,13 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_timeval.h:
 
+/opt/homebrew/include/eigen3/Eigen/src/Geometry/Transform.h:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__ranges/data.h:
 
 /opt/homebrew/include/boost/iterator/function_output_iterator.hpp:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/arch/Default/ConjHelper.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/half_positive.h:
 
@@ -9235,6 +9785,12 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/move_backward.h:
 
+/opt/homebrew/include/yaml-cpp/traits.h:
+
+/opt/homebrew/include/vtk-9.4/vtkFeatures.h:
+
+/opt/homebrew/include/boost/random/geometric_distribution.hpp:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/machine/_types.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/fenv.h:
@@ -9345,6 +9901,8 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/is_sorted.h:
 
+/opt/homebrew/include/eigen3/Eigen/src/Core/ArrayBase.h:
+
 /opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/fold_impl.hpp:
 
 /opt/homebrew/include/boost/mpl/aux_/na_assert.hpp:
@@ -9365,6 +9923,8 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/xlocale/_ctype.h:
 
+/opt/homebrew/include/eigen3/Eigen/src/Geometry/Umeyama.h:
+
 /opt/homebrew/include/boost/container/detail/value_init.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__bit/bit_width.h:
@@ -9376,6 +9936,10 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/in_in_result.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__mutex/unique_lock.h:
+
+/opt/homebrew/include/vtk-9.4/vtkDataArray.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/prev_permutation.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/for_each_n.h:
 
@@ -9409,7 +9973,9 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/compressed_pair.h:
 
-/opt/homebrew/include/vtk-9.4/vtkPolyDataAlgorithm.h:
+/opt/homebrew/include/vtk-9.4/vtkAbstractCellArray.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/bitset:
 
 /opt/homebrew/Cellar/llvm/20.1.6/lib/clang/20/include/__stddef_header_macro.h:
 
@@ -9545,9 +10111,9 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__filesystem/filesystem_error.h:
 
-/opt/homebrew/include/CGAL/Arrangement_2/Arrangement_on_surface_2_global.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/_string.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/functors/UnaryFunctors.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__format/formatter_pointer.h:
 
@@ -9603,6 +10169,8 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_key_t.h:
 
+/opt/homebrew/include/eigen3/Eigen/src/SVD/BDCSVD.h:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__utility/piecewise_construct.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__utility/convert_to_integral.h:
@@ -9623,8 +10191,6 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /opt/homebrew/include/CGAL/Enum_converter.h:
 
-/opt/homebrew/include/boost/predef/architecture/ppc.h:
-
 /opt/homebrew/include/CGAL/Arr_point_location/Arr_naive_point_location_impl.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/replace_copy.h:
@@ -9637,23 +10203,15 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/arm/endian.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_mbstate_t.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_gid_t.h:
-
 /opt/homebrew/include/CGAL/Intersections_3/Iso_cuboid_3_Plane_3.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Eigenvalues/RealQZ.h:
 
 /opt/homebrew/include/boost/preprocessor/arithmetic/detail/is_minimum_number.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/concepts:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__exception/nested_exception.h:
-
-/opt/homebrew/include/vtk-9.4/vtkDeprecation.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/AvailabilityInternalLegacy.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__chrono/month_weekday.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__charconv/to_chars.h:
 
@@ -9699,9 +10257,15 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__fwd/complex.h:
 
+/opt/homebrew/include/eigen3/Eigen/src/Core/util/DisableStupidWarnings.h:
+
 /opt/homebrew/include/boost/predef/compiler.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_va_list.h:
+
+/opt/homebrew/include/vtk-9.4/vtkPoints.h:
+
+/opt/homebrew/include/boost/type_traits/integral_constant.hpp:
 
 /opt/homebrew/include/CGAL/IO/binary_file_io.h:
 
@@ -9720,8 +10284,6 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 /opt/homebrew/include/boost/preprocessor/repetition/enum.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/binary_search.h:
-
-/opt/homebrew/include/vtk-9.4/vtkAbstractCellLinks.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__math/logarithms.h:
 
@@ -9779,6 +10341,10 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /opt/homebrew/include/CGAL/Arr_extended_dcel.h:
 
+/opt/homebrew/include/vtk-9.4/vtkFiltersSourcesModule.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__new/exceptions.h:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/lexicographical_compare_three_way.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/pop_heap.h:
@@ -9835,11 +10401,17 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/mismatch.h:
 
+/opt/homebrew/include/eigen3/Eigen/src/Core/Diagonal.h:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__configuration/platform.h:
 
 /opt/homebrew/include/CGAL/enable_warnings.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__concepts/predicate.h:
+
+/opt/homebrew/include/vtk-9.4/vtkDataArrayValueRange_Generic.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_unique_copy.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/_mb_cur_max.h:
 

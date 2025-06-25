@@ -119,6 +119,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/opt/homebrew/opt/cgal/lib/cmake/CGAL/CGAL_enable_end_of_configuration_hook.cmake"
   "/opt/homebrew/opt/cgal/lib/cmake/CGAL/CGAL_setup_target_dependencies.cmake"
   "/opt/homebrew/opt/cgal/lib/cmake/CGAL/CGAL_target_use_TBB.cmake"
+  "/opt/homebrew/opt/cgal/lib/cmake/CGAL/FindEigen3.cmake"
   "/opt/homebrew/opt/cgal/lib/cmake/CGAL/FindGMP.cmake"
   "/opt/homebrew/opt/cgal/lib/cmake/CGAL/FindGMPXX.cmake"
   "/opt/homebrew/opt/cgal/lib/cmake/CGAL/FindMPFR.cmake"

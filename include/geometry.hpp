@@ -11,8 +11,15 @@
 #include <CGAL/convex_hull_3.h>
 #include <CGAL/convex_hull_2.h>
 #include <CGAL/Aff_transformation_3.h>
+#include <Eigen/Dense>
 
 namespace nas {
+
+// Half-space polytope constraint representation
+struct HalfSpacePolytopeConstraint{
+    Eigen::MatrixXd A;
+    Eigen::VectorXd b;
+};
 
 class Node;  // Forward declaration
 
@@ -39,5 +46,8 @@ double compute_polygon_perimeter(const Polyhedron& polyhedron);
 double compare_polygon_similarity_3d(const std::vector<Point_3>& polygon1, const std::vector<Point_3>& polygon2);
 
 double compute_euclidean_distance(const Point_3& start_location, const Point_3& end_location);
+
+// Convert half-space polytope constraint to H-representation
+HalfSpacePolytopeConstraint convert_polytope_to_half_space_constraint(const Polyhedron& polytope);
 
 } // namespace nas
