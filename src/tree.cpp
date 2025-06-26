@@ -187,6 +187,8 @@ std::vector<Node*> Tree::get_children(Node* parent) {
                 child->parent_ptrs.push_back(parent);
                 child->node_id = node_counter++;
                 child->patch_vertices = polytope_surf_3d_intersect_pts;
+                child->centroid = get_centroid(child->patch_vertices);
+                child->perimeter = compute_polygon_perimeter(polytope_surf_3d_intersect_polygon);
                 child->stance_foot = parent->stance_foot == 0 ?  1 : 0; //Alternate stance foot
                 child->surface_id = surface.surface_id;
                 child->depth = parent->depth + 1;

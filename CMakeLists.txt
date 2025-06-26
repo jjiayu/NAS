@@ -115,6 +115,7 @@ target_link_libraries(nas_plan PRIVATE
     ${VTK_LIBRARIES}
     CGAL::CGAL
     yaml-cpp::yaml-cpp
+    casadi::casadi
 )
 
 # Link libraries for A* planning executable
@@ -130,6 +131,7 @@ target_link_libraries(astar_plan PRIVATE
     ${VTK_LIBRARIES}
     CGAL::CGAL
     yaml-cpp::yaml-cpp
+    casadi::casadi
 )
 
 # Link libraries for CasADi test executable

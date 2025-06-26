@@ -27,7 +27,10 @@ int main() {
     astar_search.plot_path();
 
     // Plan the footstep
-    footstep_planner.plan(astar_search.result_path);
+    footstep_planner.plan(current_stance_foot_flag, current_foot_pos, 
+                          astar_search.goal_stance_foot, 
+                          astar_search.goal_location,
+                          astar_search.result_path);
     
     return 0;
 }

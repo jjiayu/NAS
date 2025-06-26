@@ -102,6 +102,7 @@ nas_plan: libnode_lib.dylib
 nas_plan: libsurface_lib.dylib
 nas_plan: libgeometry_lib.dylib
 nas_plan: /opt/homebrew/lib/libyaml-cpp.0.8.0.dylib
+nas_plan: /Users/jiayu/local/lib/libcasadi.3.7.dylib
 nas_plan: libutils_lib.dylib
 nas_plan: libvisualizer_lib.dylib
 nas_plan: /opt/homebrew/lib/libvtkInteractionStyle-9.4.9.4.dylib

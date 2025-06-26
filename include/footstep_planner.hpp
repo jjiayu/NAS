@@ -11,6 +11,7 @@
 #include <queue>
 #include <unordered_map>
 #include <vector>
+#include <casadi/casadi.hpp>
 
 namespace nas {
 
@@ -24,10 +25,21 @@ class FootstepPlanner {
         HalfSpacePolytopeConstraint rf_in_lf_constraint;
         HalfSpacePolytopeConstraint lf_in_rf_constraint;
 
+        // CasADi matrices will be created in the implementation file
+        // No need to expose CasADi types in the header
+        casadi::SX A_rf_in_lf_casadi;
+        casadi::SX b_rf_in_lf_casadi;
+        casadi::SX A_lf_in_rf_casadi;
+        casadi::SX b_lf_in_rf_casadi;
+
         FootstepPlanner();
         ~FootstepPlanner();
 
-        void plan(const std::vector<Node*>& path_nodes);
+        void plan(const int& stance_foot_flag_at_start, 
+                  const Point_3& stance_foot_position_at_start, 
+                  const int& stance_foot_flag_at_goal,
+                  const Point_3& stance_foot_position_at_goal,
+                  const std::vector<Node*>& path_nodes);
 
 };
 
