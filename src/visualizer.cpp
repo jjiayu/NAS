@@ -152,6 +152,75 @@ void Visualizer::add_points(vtkSmartPointer<vtkRenderer> renderer,
     }
 }
 
+void Visualizer::add_footsteps(vtkSmartPointer<vtkRenderer> renderer,
+                              const std::vector<Point_3>& footstep_positions,
+                              const double color[3],
+                              double foot_length,
+                              double foot_width) {
+    // Default color if none provided (blue for footsteps)
+    double default_color[3] = {0.0, 0.5, 1.0};
+    const double* final_color = color ? color : default_color;
+
+    for (size_t i = 0; i < footstep_positions.size(); ++i) {
+        const auto& pos = footstep_positions[i];
+        double x = CGAL::to_double(pos.x());
+        double y = CGAL::to_double(pos.y());
+        double z = CGAL::to_double(pos.z());
+
+        // Create a rectangular footstep representation
+        auto footstepPoints = vtkSmartPointer<vtkPoints>::New();
+        
+        // Define 4 corners of the foot rectangle (assuming foot aligned with x-axis)
+        double half_length = foot_length / 2.0;
+        double half_width = foot_width / 2.0;
+        
+        footstepPoints->InsertNextPoint(x - half_length, y - half_width, z + 0.01); // Bottom-left
+        footstepPoints->InsertNextPoint(x + half_length, y - half_width, z + 0.01); // Bottom-right
+        footstepPoints->InsertNextPoint(x + half_length, y + half_width, z + 0.01); // Top-right
+        footstepPoints->InsertNextPoint(x - half_length, y + half_width, z + 0.01); // Top-left
+
+        // Create the rectangular face
+        auto footstepFace = vtkSmartPointer<vtkCellArray>::New();
+        auto face = vtkSmartPointer<vtkIdList>::New();
+        face->InsertNextId(0);
+        face->InsertNextId(1);
+        face->InsertNextId(2);
+        face->InsertNextId(3);
+        footstepFace->InsertNextCell(face);
+
+        // Create polydata for the footstep
+        auto footstepPolyData = vtkSmartPointer<vtkPolyData>::New();
+        footstepPolyData->SetPoints(footstepPoints);
+        footstepPolyData->SetPolys(footstepFace);
+
+        // Create mapper and actor
+        auto mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+        mapper->SetInputData(footstepPolyData);
+
+        auto actor = vtkSmartPointer<vtkActor>::New();
+        actor->SetMapper(mapper);
+        actor->GetProperty()->SetColor(final_color[0], final_color[1], final_color[2]);
+        actor->GetProperty()->SetOpacity(0.8);
+
+        renderer->AddActor(actor);
+
+        // Add a center point to show the exact footstep position
+        auto sphereSource = vtkSmartPointer<vtkSphereSource>::New();
+        sphereSource->SetCenter(x, y, z);
+        sphereSource->SetRadius(0.03);
+        sphereSource->Update();
+
+        auto pointMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+        pointMapper->SetInputConnection(sphereSource->GetOutputPort());
+
+        auto pointActor = vtkSmartPointer<vtkActor>::New();
+        pointActor->SetMapper(pointMapper);
+        pointActor->GetProperty()->SetColor(1.0, 0.0, 0.0);  // Red center point
+
+        renderer->AddActor(pointActor);
+    }
+}
+
 void Visualizer::add_coordinate_axes(vtkSmartPointer<vtkRenderer> renderer) {
     // X-axis (red)
     auto xAxisPoints = vtkSmartPointer<vtkPoints>::New();

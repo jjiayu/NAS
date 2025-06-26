@@ -49,6 +49,12 @@ public:
                           const double color[3] = nullptr,
                           double radius = 0.02);
     
+    static void add_footsteps(vtkSmartPointer<vtkRenderer> renderer,
+                             const std::vector<Point_3>& footstep_positions,
+                             const double color[3] = nullptr,
+                             double foot_length = 0.22,
+                             double foot_width = 0.12);
+    
     static void add_coordinate_axes(vtkSmartPointer<vtkRenderer> renderer);
     
     // Show the current figure

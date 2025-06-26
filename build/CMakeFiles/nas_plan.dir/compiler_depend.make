@@ -192,8 +192,10 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/xlocale/_wchar.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/xlocale/_wctype.h \
   CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h \
+  /Users/jiayu/Desktop/nas_ws/NAS/include/astar_search.hpp \
   /Users/jiayu/Desktop/nas_ws/NAS/include/constants.hpp \
   /Users/jiayu/Desktop/nas_ws/NAS/include/environments.hpp \
+  /Users/jiayu/Desktop/nas_ws/NAS/include/footstep_planner.hpp \
   /Users/jiayu/Desktop/nas_ws/NAS/include/geometry.hpp \
   /Users/jiayu/Desktop/nas_ws/NAS/include/nas_plan.hpp \
   /Users/jiayu/Desktop/nas_ws/NAS/include/node.hpp \
@@ -202,6 +204,149 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /Users/jiayu/Desktop/nas_ws/NAS/include/types.hpp \
   /Users/jiayu/Desktop/nas_ws/NAS/include/utils.hpp \
   /Users/jiayu/Desktop/nas_ws/NAS/include/visualizer.hpp \
+  /Users/jiayu/local/include/casadi/casadi.hpp \
+  /Users/jiayu/local/include/casadi/core/archiver.hpp \
+  /Users/jiayu/local/include/casadi/core/blazing_spline.hpp \
+  /Users/jiayu/local/include/casadi/core/calculus.hpp \
+  /Users/jiayu/local/include/casadi/core/callback.hpp \
+  /Users/jiayu/local/include/casadi/core/casadi_common.hpp \
+  /Users/jiayu/local/include/casadi/core/casadi_enum.hpp \
+  /Users/jiayu/local/include/casadi/core/casadi_export.h \
+  /Users/jiayu/local/include/casadi/core/casadi_interrupt.hpp \
+  /Users/jiayu/local/include/casadi/core/casadi_limits.hpp \
+  /Users/jiayu/local/include/casadi/core/casadi_logger.hpp \
+  /Users/jiayu/local/include/casadi/core/casadi_meta.hpp \
+  /Users/jiayu/local/include/casadi/core/casadi_misc.hpp \
+  /Users/jiayu/local/include/casadi/core/casadi_types.hpp \
+  /Users/jiayu/local/include/casadi/core/code_generator.hpp \
+  /Users/jiayu/local/include/casadi/core/conic.hpp \
+  /Users/jiayu/local/include/casadi/core/core.hpp \
+  /Users/jiayu/local/include/casadi/core/dae_builder.hpp \
+  /Users/jiayu/local/include/casadi/core/dm.hpp \
+  /Users/jiayu/local/include/casadi/core/dm_fwd.hpp \
+  /Users/jiayu/local/include/casadi/core/dple.hpp \
+  /Users/jiayu/local/include/casadi/core/exception.hpp \
+  /Users/jiayu/local/include/casadi/core/expm.hpp \
+  /Users/jiayu/local/include/casadi/core/external.hpp \
+  /Users/jiayu/local/include/casadi/core/filesystem.hpp \
+  /Users/jiayu/local/include/casadi/core/function.hpp \
+  /Users/jiayu/local/include/casadi/core/generic_expression.hpp \
+  /Users/jiayu/local/include/casadi/core/generic_matrix.hpp \
+  /Users/jiayu/local/include/casadi/core/generic_shared.hpp \
+  /Users/jiayu/local/include/casadi/core/generic_shared_internal.hpp \
+  /Users/jiayu/local/include/casadi/core/generic_type.hpp \
+  /Users/jiayu/local/include/casadi/core/global_options.hpp \
+  /Users/jiayu/local/include/casadi/core/im.hpp \
+  /Users/jiayu/local/include/casadi/core/im_fwd.hpp \
+  /Users/jiayu/local/include/casadi/core/importer.hpp \
+  /Users/jiayu/local/include/casadi/core/integration_tools.hpp \
+  /Users/jiayu/local/include/casadi/core/integrator.hpp \
+  /Users/jiayu/local/include/casadi/core/interpolant.hpp \
+  /Users/jiayu/local/include/casadi/core/linsol.hpp \
+  /Users/jiayu/local/include/casadi/core/matrix_decl.hpp \
+  /Users/jiayu/local/include/casadi/core/matrix_fwd.hpp \
+  /Users/jiayu/local/include/casadi/core/mx.hpp \
+  /Users/jiayu/local/include/casadi/core/nlp_builder.hpp \
+  /Users/jiayu/local/include/casadi/core/nlp_tools.hpp \
+  /Users/jiayu/local/include/casadi/core/nlpsol.hpp \
+  /Users/jiayu/local/include/casadi/core/nonzeros.hpp \
+  /Users/jiayu/local/include/casadi/core/options.hpp \
+  /Users/jiayu/local/include/casadi/core/optistack.hpp \
+  /Users/jiayu/local/include/casadi/core/polynomial.hpp \
+  /Users/jiayu/local/include/casadi/core/printable.hpp \
+  /Users/jiayu/local/include/casadi/core/resource.hpp \
+  /Users/jiayu/local/include/casadi/core/rootfinder.hpp \
+  /Users/jiayu/local/include/casadi/core/calculus.hpp \
+  /Users/jiayu/local/include/casadi/core/casadi_misc.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_axpy.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_bfgs.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_bilin.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_bound_consistency.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_cache.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_clear.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_clip_max.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_clip_min.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_convexify.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_copy.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_cvx.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_de_boor.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_dense_lsqr.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_densify.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_dot.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_feasiblesqpmethod.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_file_slurp.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_fill.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_finite_diff.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_flip.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_iamax.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_interpn.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_interpn_grad.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_interpn_interpolate.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_interpn_weights.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_ipqp.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_jac.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_kkt.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_kron.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_ldl.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_logsumexp.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_low.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_lsqr.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_masked_norm_inf.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_max_viol.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_mmax.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_mmin.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_mtimes.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_mv.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_mv_dense.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_nd_boor_dual_eval.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_nd_boor_eval.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_newton.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_nlp.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_norm_1.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_norm_2.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_norm_inf.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_norm_inf_mul.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_ocp_block.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_oracle.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_oracle_callback.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_polyval.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_project.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_qp.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_qr.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_qrqp.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_rank1.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_regularize.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_runtime.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_scal.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_scaled_copy.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_sparsify.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_sparsity.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_sqpmethod.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_sum.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_sum_viol.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_swap.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_trans.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_tri_project.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_trilsolve.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_triusolve.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_vector_fmax.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_vector_fmin.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_vfmax.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/casadi_vfmin.hpp \
+  /Users/jiayu/local/include/casadi/core/runtime/shared.hpp \
+  /Users/jiayu/local/include/casadi/core/serializer.hpp \
+  /Users/jiayu/local/include/casadi/core/serializing_stream.hpp \
+  /Users/jiayu/local/include/casadi/core/shared_object.hpp \
+  /Users/jiayu/local/include/casadi/core/slice.hpp \
+  /Users/jiayu/local/include/casadi/core/sparsity.hpp \
+  /Users/jiayu/local/include/casadi/core/sparsity_interface.hpp \
+  /Users/jiayu/local/include/casadi/core/submatrix.hpp \
+  /Users/jiayu/local/include/casadi/core/sx.hpp \
+  /Users/jiayu/local/include/casadi/core/sx_elem.hpp \
+  /Users/jiayu/local/include/casadi/core/sx_fwd.hpp \
+  /Users/jiayu/local/include/casadi/core/tools.hpp \
+  /Users/jiayu/local/include/casadi/core/xml_file.hpp \
+  /Users/jiayu/local/include/casadi/core/xml_node.hpp \
   /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/adjacent_find.h \
   /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/all_of.h \
   /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/any_of.h \
@@ -766,10 +911,43 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__numeric/transform_reduce.h \
   /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__ostream/basic_ostream.h \
   /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__ostream/put_character_sequence.h \
+  /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/bernoulli_distribution.h \
+  /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/binomial_distribution.h \
+  /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/cauchy_distribution.h \
+  /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/chi_squared_distribution.h \
+  /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/clamp_to_integral.h \
+  /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/default_random_engine.h \
+  /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/discard_block_engine.h \
+  /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/discrete_distribution.h \
+  /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/exponential_distribution.h \
+  /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/extreme_value_distribution.h \
+  /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/fisher_f_distribution.h \
+  /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/gamma_distribution.h \
+  /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/generate_canonical.h \
+  /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/geometric_distribution.h \
+  /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/independent_bits_engine.h \
+  /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/is_seed_sequence.h \
   /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/is_valid.h \
+  /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/knuth_b.h \
+  /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/linear_congruential_engine.h \
   /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/log2.h \
+  /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/lognormal_distribution.h \
+  /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/mersenne_twister_engine.h \
+  /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/negative_binomial_distribution.h \
+  /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/normal_distribution.h \
+  /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/piecewise_constant_distribution.h \
+  /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/piecewise_linear_distribution.h \
+  /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/poisson_distribution.h \
+  /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/random_device.h \
+  /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/ranlux.h \
+  /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/seed_seq.h \
+  /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/shuffle_order_engine.h \
+  /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/student_t_distribution.h \
+  /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/subtract_with_carry_engine.h \
   /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/uniform_int_distribution.h \
   /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/uniform_random_bit_generator.h \
+  /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/uniform_real_distribution.h \
+  /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/weibull_distribution.h \
   /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__ranges/access.h \
   /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__ranges/concepts.h \
   /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__ranges/container_compatible_range.h \
@@ -1039,6 +1217,7 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/ostream \
   /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/print \
   /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/queue \
+  /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/random \
   /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/ranges \
   /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/ratio \
   /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/semaphore \
@@ -2073,6 +2252,7 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /opt/homebrew/include/boost/container_hash/is_tuple_like.hpp \
   /opt/homebrew/include/boost/container_hash/is_unordered_range.hpp \
   /opt/homebrew/include/boost/core/addressof.hpp \
+  /opt/homebrew/include/boost/core/allocator_access.hpp \
   /opt/homebrew/include/boost/core/bit.hpp \
   /opt/homebrew/include/boost/core/checked_delete.hpp \
   /opt/homebrew/include/boost/core/cmath.hpp \
@@ -2086,6 +2266,7 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /opt/homebrew/include/boost/core/no_exceptions_support.hpp \
   /opt/homebrew/include/boost/core/noncopyable.hpp \
   /opt/homebrew/include/boost/core/nvp.hpp \
+  /opt/homebrew/include/boost/core/pointer_traits.hpp \
   /opt/homebrew/include/boost/core/ref.hpp \
   /opt/homebrew/include/boost/core/snprintf.hpp \
   /opt/homebrew/include/boost/core/use_default.hpp \
@@ -2110,6 +2291,14 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /opt/homebrew/include/boost/graph/properties.hpp \
   /opt/homebrew/include/boost/graph/property_maps/constant_property_map.hpp \
   /opt/homebrew/include/boost/graph/property_maps/null_property_map.hpp \
+  /opt/homebrew/include/boost/heap/detail/heap_comparison.hpp \
+  /opt/homebrew/include/boost/heap/detail/heap_node.hpp \
+  /opt/homebrew/include/boost/heap/detail/stable_heap.hpp \
+  /opt/homebrew/include/boost/heap/detail/tree_iterator.hpp \
+  /opt/homebrew/include/boost/heap/fibonacci_heap.hpp \
+  /opt/homebrew/include/boost/heap/heap_concepts.hpp \
+  /opt/homebrew/include/boost/heap/heap_merge.hpp \
+  /opt/homebrew/include/boost/heap/policies.hpp \
   /opt/homebrew/include/boost/integer.hpp \
   /opt/homebrew/include/boost/integer/common_factor_rt.hpp \
   /opt/homebrew/include/boost/integer/integer_log2.hpp \
@@ -2117,18 +2306,46 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /opt/homebrew/include/boost/integer/static_log2.hpp \
   /opt/homebrew/include/boost/integer_fwd.hpp \
   /opt/homebrew/include/boost/integer_traits.hpp \
+  /opt/homebrew/include/boost/intrusive/circular_list_algorithms.hpp \
+  /opt/homebrew/include/boost/intrusive/detail/algo_type.hpp \
   /opt/homebrew/include/boost/intrusive/detail/algorithm.hpp \
+  /opt/homebrew/include/boost/intrusive/detail/array_initializer.hpp \
+  /opt/homebrew/include/boost/intrusive/detail/assert.hpp \
   /opt/homebrew/include/boost/intrusive/detail/config_begin.hpp \
   /opt/homebrew/include/boost/intrusive/detail/config_end.hpp \
+  /opt/homebrew/include/boost/intrusive/detail/default_header_holder.hpp \
+  /opt/homebrew/include/boost/intrusive/detail/ebo_functor_holder.hpp \
+  /opt/homebrew/include/boost/intrusive/detail/equal_to_value.hpp \
+  /opt/homebrew/include/boost/intrusive/detail/exception_disposer.hpp \
+  /opt/homebrew/include/boost/intrusive/detail/function_detector.hpp \
+  /opt/homebrew/include/boost/intrusive/detail/generic_hook.hpp \
+  /opt/homebrew/include/boost/intrusive/detail/get_value_traits.hpp \
   /opt/homebrew/include/boost/intrusive/detail/has_member_function_callable_with.hpp \
+  /opt/homebrew/include/boost/intrusive/detail/hook_traits.hpp \
+  /opt/homebrew/include/boost/intrusive/detail/iiterator.hpp \
+  /opt/homebrew/include/boost/intrusive/detail/is_stateful_value_traits.hpp \
   /opt/homebrew/include/boost/intrusive/detail/iterator.hpp \
+  /opt/homebrew/include/boost/intrusive/detail/key_nodeptr_comp.hpp \
+  /opt/homebrew/include/boost/intrusive/detail/list_iterator.hpp \
+  /opt/homebrew/include/boost/intrusive/detail/list_node.hpp \
   /opt/homebrew/include/boost/intrusive/detail/minimal_less_equal_header.hpp \
   /opt/homebrew/include/boost/intrusive/detail/minimal_pair_header.hpp \
   /opt/homebrew/include/boost/intrusive/detail/mpl.hpp \
+  /opt/homebrew/include/boost/intrusive/detail/node_holder.hpp \
+  /opt/homebrew/include/boost/intrusive/detail/parent_from_member.hpp \
   /opt/homebrew/include/boost/intrusive/detail/reverse_iterator.hpp \
+  /opt/homebrew/include/boost/intrusive/detail/simple_disposers.hpp \
+  /opt/homebrew/include/boost/intrusive/detail/size_holder.hpp \
   /opt/homebrew/include/boost/intrusive/detail/std_fwd.hpp \
+  /opt/homebrew/include/boost/intrusive/detail/tree_value_compare.hpp \
+  /opt/homebrew/include/boost/intrusive/detail/uncast.hpp \
   /opt/homebrew/include/boost/intrusive/detail/value_functors.hpp \
   /opt/homebrew/include/boost/intrusive/detail/workaround.hpp \
+  /opt/homebrew/include/boost/intrusive/intrusive_fwd.hpp \
+  /opt/homebrew/include/boost/intrusive/link_mode.hpp \
+  /opt/homebrew/include/boost/intrusive/list.hpp \
+  /opt/homebrew/include/boost/intrusive/list_hook.hpp \
+  /opt/homebrew/include/boost/intrusive/options.hpp \
   /opt/homebrew/include/boost/intrusive/pack_options.hpp \
   /opt/homebrew/include/boost/intrusive/pointer_rebind.hpp \
   /opt/homebrew/include/boost/intrusive/pointer_traits.hpp \
@@ -2322,6 +2539,7 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /opt/homebrew/include/boost/mpl/O1_size_fwd.hpp \
   /opt/homebrew/include/boost/mpl/advance.hpp \
   /opt/homebrew/include/boost/mpl/advance_fwd.hpp \
+  /opt/homebrew/include/boost/mpl/always.hpp \
   /opt/homebrew/include/boost/mpl/and.hpp \
   /opt/homebrew/include/boost/mpl/apply.hpp \
   /opt/homebrew/include/boost/mpl/apply_fwd.hpp \
@@ -2369,6 +2587,7 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /opt/homebrew/include/boost/mpl/aux_/config/typeof.hpp \
   /opt/homebrew/include/boost/mpl/aux_/config/use_preprocessed.hpp \
   /opt/homebrew/include/boost/mpl/aux_/config/workaround.hpp \
+  /opt/homebrew/include/boost/mpl/aux_/find_if_pred.hpp \
   /opt/homebrew/include/boost/mpl/aux_/fold_impl.hpp \
   /opt/homebrew/include/boost/mpl/aux_/full_lambda.hpp \
   /opt/homebrew/include/boost/mpl/aux_/has_apply.hpp \
@@ -2380,6 +2599,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /opt/homebrew/include/boost/mpl/aux_/inserter_algorithm.hpp \
   /opt/homebrew/include/boost/mpl/aux_/integral_wrapper.hpp \
   /opt/homebrew/include/boost/mpl/aux_/is_msvc_eti_arg.hpp \
+  /opt/homebrew/include/boost/mpl/aux_/iter_apply.hpp \
+  /opt/homebrew/include/boost/mpl/aux_/iter_fold_if_impl.hpp \
   /opt/homebrew/include/boost/mpl/aux_/iter_fold_impl.hpp \
   /opt/homebrew/include/boost/mpl/aux_/lambda_arity_param.hpp \
   /opt/homebrew/include/boost/mpl/aux_/lambda_spec.hpp \
@@ -2408,6 +2629,7 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/equal_to.hpp \
   /opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/fold_impl.hpp \
   /opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/full_lambda.hpp \
+  /opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/iter_fold_if_impl.hpp \
   /opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/iter_fold_impl.hpp \
   /opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/less.hpp \
   /opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/minus.hpp \
@@ -2442,15 +2664,19 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /opt/homebrew/include/boost/mpl/bool_fwd.hpp \
   /opt/homebrew/include/boost/mpl/clear.hpp \
   /opt/homebrew/include/boost/mpl/clear_fwd.hpp \
+  /opt/homebrew/include/boost/mpl/count_fwd.hpp \
   /opt/homebrew/include/boost/mpl/deref.hpp \
   /opt/homebrew/include/boost/mpl/distance.hpp \
   /opt/homebrew/include/boost/mpl/distance_fwd.hpp \
   /opt/homebrew/include/boost/mpl/empty_fwd.hpp \
   /opt/homebrew/include/boost/mpl/equal_to.hpp \
   /opt/homebrew/include/boost/mpl/eval_if.hpp \
+  /opt/homebrew/include/boost/mpl/find.hpp \
+  /opt/homebrew/include/boost/mpl/find_if.hpp \
   /opt/homebrew/include/boost/mpl/fold.hpp \
   /opt/homebrew/include/boost/mpl/front_fwd.hpp \
   /opt/homebrew/include/boost/mpl/front_inserter.hpp \
+  /opt/homebrew/include/boost/mpl/has_key_fwd.hpp \
   /opt/homebrew/include/boost/mpl/has_xxx.hpp \
   /opt/homebrew/include/boost/mpl/identity.hpp \
   /opt/homebrew/include/boost/mpl/if.hpp \
@@ -2462,9 +2688,11 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /opt/homebrew/include/boost/mpl/integral_c_tag.hpp \
   /opt/homebrew/include/boost/mpl/is_sequence.hpp \
   /opt/homebrew/include/boost/mpl/iter_fold.hpp \
+  /opt/homebrew/include/boost/mpl/iter_fold_if.hpp \
   /opt/homebrew/include/boost/mpl/iterator_category.hpp \
   /opt/homebrew/include/boost/mpl/iterator_range.hpp \
   /opt/homebrew/include/boost/mpl/iterator_tags.hpp \
+  /opt/homebrew/include/boost/mpl/key_type_fwd.hpp \
   /opt/homebrew/include/boost/mpl/lambda.hpp \
   /opt/homebrew/include/boost/mpl/lambda_fwd.hpp \
   /opt/homebrew/include/boost/mpl/less.hpp \
@@ -2481,6 +2709,7 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /opt/homebrew/include/boost/mpl/not.hpp \
   /opt/homebrew/include/boost/mpl/numeric_cast.hpp \
   /opt/homebrew/include/boost/mpl/or.hpp \
+  /opt/homebrew/include/boost/mpl/order_fwd.hpp \
   /opt/homebrew/include/boost/mpl/pair.hpp \
   /opt/homebrew/include/boost/mpl/pair_view.hpp \
   /opt/homebrew/include/boost/mpl/placeholders.hpp \
@@ -2503,6 +2732,7 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /opt/homebrew/include/boost/mpl/size_fwd.hpp \
   /opt/homebrew/include/boost/mpl/tag.hpp \
   /opt/homebrew/include/boost/mpl/transform.hpp \
+  /opt/homebrew/include/boost/mpl/value_type_fwd.hpp \
   /opt/homebrew/include/boost/mpl/vector.hpp \
   /opt/homebrew/include/boost/mpl/vector/aux_/O1_size.hpp \
   /opt/homebrew/include/boost/mpl/vector/aux_/at.hpp \
@@ -2595,6 +2825,60 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /opt/homebrew/include/boost/none.hpp \
   /opt/homebrew/include/boost/none_t.hpp \
   /opt/homebrew/include/boost/operators.hpp \
+  /opt/homebrew/include/boost/parameter/aux_/always_true_predicate.hpp \
+  /opt/homebrew/include/boost/parameter/aux_/arg_list.hpp \
+  /opt/homebrew/include/boost/parameter/aux_/augment_predicate.hpp \
+  /opt/homebrew/include/boost/parameter/aux_/default.hpp \
+  /opt/homebrew/include/boost/parameter/aux_/has_nested_template_fn.hpp \
+  /opt/homebrew/include/boost/parameter/aux_/is_maybe.hpp \
+  /opt/homebrew/include/boost/parameter/aux_/is_placeholder.hpp \
+  /opt/homebrew/include/boost/parameter/aux_/is_tagged_argument.hpp \
+  /opt/homebrew/include/boost/parameter/aux_/lambda_tag.hpp \
+  /opt/homebrew/include/boost/parameter/aux_/name.hpp \
+  /opt/homebrew/include/boost/parameter/aux_/pack/as_parameter_requirements.hpp \
+  /opt/homebrew/include/boost/parameter/aux_/pack/deduce_tag.hpp \
+  /opt/homebrew/include/boost/parameter/aux_/pack/deduced_item.hpp \
+  /opt/homebrew/include/boost/parameter/aux_/pack/insert_tagged.hpp \
+  /opt/homebrew/include/boost/parameter/aux_/pack/is_named_argument.hpp \
+  /opt/homebrew/include/boost/parameter/aux_/pack/item.hpp \
+  /opt/homebrew/include/boost/parameter/aux_/pack/make_arg_list.hpp \
+  /opt/homebrew/include/boost/parameter/aux_/pack/make_deduced_items.hpp \
+  /opt/homebrew/include/boost/parameter/aux_/pack/make_items.hpp \
+  /opt/homebrew/include/boost/parameter/aux_/pack/make_parameter_spec_items.hpp \
+  /opt/homebrew/include/boost/parameter/aux_/pack/parameter_requirements.hpp \
+  /opt/homebrew/include/boost/parameter/aux_/pack/predicate.hpp \
+  /opt/homebrew/include/boost/parameter/aux_/pack/satisfies.hpp \
+  /opt/homebrew/include/boost/parameter/aux_/pack/tag_deduced.hpp \
+  /opt/homebrew/include/boost/parameter/aux_/pack/tag_keyword_arg.hpp \
+  /opt/homebrew/include/boost/parameter/aux_/pack/tag_template_keyword_arg.hpp \
+  /opt/homebrew/include/boost/parameter/aux_/pack/tag_type.hpp \
+  /opt/homebrew/include/boost/parameter/aux_/pack/unmatched_argument.hpp \
+  /opt/homebrew/include/boost/parameter/aux_/parameter_requirements.hpp \
+  /opt/homebrew/include/boost/parameter/aux_/preprocessor/is_binary.hpp \
+  /opt/homebrew/include/boost/parameter/aux_/preprocessor/nullptr.hpp \
+  /opt/homebrew/include/boost/parameter/aux_/preprocessor/qualifier.hpp \
+  /opt/homebrew/include/boost/parameter/aux_/result_of0.hpp \
+  /opt/homebrew/include/boost/parameter/aux_/set.hpp \
+  /opt/homebrew/include/boost/parameter/aux_/tag.hpp \
+  /opt/homebrew/include/boost/parameter/aux_/tagged_argument.hpp \
+  /opt/homebrew/include/boost/parameter/aux_/tagged_argument_fwd.hpp \
+  /opt/homebrew/include/boost/parameter/aux_/template_keyword.hpp \
+  /opt/homebrew/include/boost/parameter/aux_/unwrap_cv_reference.hpp \
+  /opt/homebrew/include/boost/parameter/aux_/use_default.hpp \
+  /opt/homebrew/include/boost/parameter/aux_/use_default_tag.hpp \
+  /opt/homebrew/include/boost/parameter/aux_/void.hpp \
+  /opt/homebrew/include/boost/parameter/aux_/yesno.hpp \
+  /opt/homebrew/include/boost/parameter/binding.hpp \
+  /opt/homebrew/include/boost/parameter/config.hpp \
+  /opt/homebrew/include/boost/parameter/deduced.hpp \
+  /opt/homebrew/include/boost/parameter/keyword.hpp \
+  /opt/homebrew/include/boost/parameter/keyword_fwd.hpp \
+  /opt/homebrew/include/boost/parameter/name.hpp \
+  /opt/homebrew/include/boost/parameter/optional.hpp \
+  /opt/homebrew/include/boost/parameter/parameters.hpp \
+  /opt/homebrew/include/boost/parameter/required.hpp \
+  /opt/homebrew/include/boost/parameter/template_keyword.hpp \
+  /opt/homebrew/include/boost/parameter/value_type.hpp \
   /opt/homebrew/include/boost/pending/detail/property.hpp \
   /opt/homebrew/include/boost/pending/property.hpp \
   /opt/homebrew/include/boost/predef.h \
@@ -2780,6 +3064,7 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /opt/homebrew/include/boost/preprocessor/facilities/empty.hpp \
   /opt/homebrew/include/boost/preprocessor/facilities/expand.hpp \
   /opt/homebrew/include/boost/preprocessor/facilities/identity.hpp \
+  /opt/homebrew/include/boost/preprocessor/facilities/is_empty.hpp \
   /opt/homebrew/include/boost/preprocessor/facilities/is_empty_variadic.hpp \
   /opt/homebrew/include/boost/preprocessor/facilities/overload.hpp \
   /opt/homebrew/include/boost/preprocessor/identity.hpp \
@@ -3123,8 +3408,10 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /opt/homebrew/include/boost/utility/addressof.hpp \
   /opt/homebrew/include/boost/utility/base_from_member.hpp \
   /opt/homebrew/include/boost/utility/binary.hpp \
+  /opt/homebrew/include/boost/utility/detail/result_of_variadic.hpp \
   /opt/homebrew/include/boost/utility/enable_if.hpp \
   /opt/homebrew/include/boost/utility/identity_type.hpp \
+  /opt/homebrew/include/boost/utility/result_of.hpp \
   /opt/homebrew/include/boost/version.hpp \
   /opt/homebrew/include/eigen3/Eigen/Cholesky \
   /opt/homebrew/include/eigen3/Eigen/Core \
@@ -3495,8 +3782,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/yaml-cpp/node/parse.h:
 
-/opt/homebrew/include/yaml-cpp/node/impl.h:
-
 /opt/homebrew/include/yaml-cpp/node/emit.h:
 
 /opt/homebrew/include/yaml-cpp/node/detail/node_ref.h:
@@ -3557,8 +3842,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/vtk-9.4/vtkSphereSource.h:
 
-/opt/homebrew/include/vtk-9.4/vtkSmartPointerBase.h:
-
 /opt/homebrew/include/vtk-9.4/vtkSmartPointer.h:
 
 /opt/homebrew/include/vtk-9.4/vtkSetGet.h:
@@ -3580,8 +3863,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/vtk-9.4/vtkPolyDataMapper.h:
 
 /opt/homebrew/include/vtk-9.4/vtkPolyDataInternals.h:
-
-/opt/homebrew/include/vtk-9.4/vtkPolyDataAlgorithm.h:
 
 /opt/homebrew/include/vtk-9.4/vtkPolyData.h:
 
@@ -3614,8 +3895,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/vtk-9.4/vtkGenericDataArrayLookupHelper.h:
 
 /opt/homebrew/include/vtk-9.4/vtkGenericDataArray.txx:
-
-/opt/homebrew/include/vtk-9.4/vtkGenericDataArray.h:
 
 /opt/homebrew/include/vtk-9.4/vtkFiltersCoreModule.h:
 
@@ -3739,8 +4018,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/eigen3/Eigen/src/Eigenvalues/GeneralizedSelfAdjointEigenSolver.h:
 
-/opt/homebrew/include/eigen3/Eigen/src/Eigenvalues/EigenSolver.h:
-
 /opt/homebrew/include/eigen3/Eigen/src/Eigenvalues/Tridiagonalization.h:
 
 /opt/homebrew/include/eigen3/Eigen/src/Eigenvalues/ComplexSchur.h:
@@ -3827,295 +4104,205 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/eigen3/Eigen/src/Core/Select.h:
 
-/opt/homebrew/include/boost/multiprecision/cpp_int/limits.hpp:
+/opt/homebrew/include/eigen3/Eigen/src/Core/ReturnByValue.h:
 
-/opt/homebrew/include/eigen3/Eigen/src/Core/Reverse.h:
-
-/opt/homebrew/include/eigen3/Eigen/src/Geometry/OrthoMethods.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__concepts/relation.h:
-
-/opt/homebrew/include/eigen3/Eigen/src/Core/Replicate.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/has_unique_object_representation.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_constant_evaluated.h:
-
-/opt/homebrew/include/eigen3/Eigen/src/Core/Redux.h:
+/opt/homebrew/include/eigen3/Eigen/src/Core/Random.h:
 
 /opt/homebrew/include/eigen3/Eigen/src/Core/Product.h:
 
 /opt/homebrew/include/eigen3/Eigen/src/Core/PlainObjectBase.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_signed_integer.h:
-
-/opt/homebrew/include/boost/math/tools/toms748_solve.hpp:
-
-/opt/homebrew/include/boost/predef/language/cuda.h:
-
-/opt/homebrew/include/eigen3/Eigen/src/Core/PermutationMatrix.h:
-
 /opt/homebrew/include/eigen3/Eigen/src/Core/NumTraits.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/lexicographical_compare.h:
+/opt/homebrew/include/eigen3/Eigen/src/Core/MatrixBase.h:
 
-/opt/homebrew/include/boost/random/subtract_with_carry.hpp:
+/opt/homebrew/include/eigen3/Eigen/src/Core/Matrix.h:
 
-/opt/homebrew/include/eigen3/Eigen/src/Core/NestByValue.h:
+/opt/homebrew/include/eigen3/Eigen/src/Core/MathFunctionsImpl.h:
 
-/opt/homebrew/include/CGAL/Intersections_3/Bbox_3_Tetrahedron_3.h:
+/opt/homebrew/include/eigen3/Eigen/src/Core/MapBase.h:
 
-/opt/homebrew/include/eigen3/Eigen/src/Core/Map.h:
+/opt/homebrew/include/eigen3/Eigen/src/Core/Inverse.h:
 
-/opt/homebrew/include/CGAL/Distance_2/Line_2_Triangle_2.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/Ray_3_Ray_3.h:
-
-/opt/homebrew/include/boost/config/platform/macos.hpp:
-
-/opt/homebrew/include/eigen3/Eigen/src/Core/IO.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_rotate_copy.h:
-
-/opt/homebrew/include/eigen3/Eigen/src/Core/Fuzzy.h:
+/opt/homebrew/include/eigen3/Eigen/src/Core/GenericPacketMath.h:
 
 /opt/homebrew/include/eigen3/Eigen/src/Core/EigenBase.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_execution_policy.h:
+/opt/homebrew/include/eigen3/Eigen/src/Core/DiagonalMatrix.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/make_32_64_or_128_bit.h:
-
-/opt/homebrew/include/eigen3/Eigen/src/Core/Dot.h:
+/opt/homebrew/include/eigen3/Eigen/src/Core/Diagonal.h:
 
 /opt/homebrew/include/eigen3/Eigen/src/Core/DenseCoeffsBase.h:
 
-/opt/homebrew/include/CGAL/Modifier_base.h:
+/opt/homebrew/include/eigen3/Eigen/src/Core/DenseBase.h:
 
-/opt/homebrew/include/eigen3/Eigen/src/Core/CwiseNullaryOp.h:
+/opt/homebrew/include/eigen3/Eigen/src/Core/CwiseUnaryView.h:
 
-/opt/homebrew/include/vtk-9.4/vtkkwiml/abi.h:
+/opt/homebrew/include/eigen3/Eigen/src/Core/CwiseTernaryOp.h:
 
-/opt/homebrew/include/boost/predef/os/ios.h:
+/opt/homebrew/include/eigen3/Eigen/src/Core/CoreIterators.h:
 
-/opt/homebrew/include/eigen3/Eigen/src/Core/ConditionEstimator.h:
+/opt/homebrew/include/eigen3/Eigen/src/Core/CommaInitializer.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/Block.h:
 
 /opt/homebrew/include/eigen3/Eigen/src/Core/BandMatrix.h:
 
-/opt/homebrew/include/boost/random/uniform_real_distribution.hpp:
-
-/opt/homebrew/include/eigen3/Eigen/src/Core/Assign.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/projected.h:
-
-/opt/homebrew/include/eigen3/Eigen/src/Core/ArrayWrapper.h:
+/opt/homebrew/include/eigen3/Eigen/src/Core/ArrayBase.h:
 
 /opt/homebrew/include/eigen3/Eigen/src/Core/Array.h:
 
-/opt/homebrew/include/boost/type_traits/detail/is_swappable_cxx_11.hpp:
+/opt/homebrew/include/eigen3/Eigen/src/Core/ArithmeticSequence.h:
 
-/opt/homebrew/include/eigen3/Eigen/src/plugins/MatrixCwiseBinaryOps.h:
+/opt/homebrew/include/eigen3/Eigen/src/plugins/ReshapedMethods.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/allocator_arg_t.h:
+/opt/homebrew/include/eigen3/Eigen/src/plugins/IndexedViewMethods.h:
 
-/opt/homebrew/include/eigen3/Eigen/src/plugins/CommonCwiseUnaryOps.h:
+/opt/homebrew/include/eigen3/Eigen/src/plugins/ArrayCwiseUnaryOps.h:
 
-/opt/homebrew/include/CGAL/Kd_tree.h:
+/opt/homebrew/include/eigen3/Eigen/src/plugins/ArrayCwiseBinaryOps.h:
 
-/opt/homebrew/include/eigen3/Eigen/src/plugins/CommonCwiseBinaryOps.h:
+/opt/homebrew/include/eigen3/Eigen/src/Cholesky/LLT.h:
 
-/opt/homebrew/include/eigen3/Eigen/LU:
+/opt/homebrew/include/eigen3/Eigen/SVD:
 
-/opt/homebrew/include/boost/move/algo/detail/adaptive_sort_merge.hpp:
-
-/opt/homebrew/include/eigen3/Eigen/Jacobi:
+/opt/homebrew/include/eigen3/Eigen/QR:
 
 /opt/homebrew/include/eigen3/Eigen/Householder:
 
 /opt/homebrew/include/eigen3/Eigen/Geometry:
 
+/opt/homebrew/include/eigen3/Eigen/Eigenvalues:
+
+/opt/homebrew/include/eigen3/Eigen/Dense:
+
+/opt/homebrew/include/eigen3/Eigen/Core:
+
 /opt/homebrew/include/vtk-9.4/vtkCompiler.h:
 
 /opt/homebrew/include/eigen3/Eigen/Cholesky:
 
-/opt/homebrew/include/CGAL/Intersections_2/Line_2_Segment_2.h:
-
-/opt/homebrew/include/boost/utility/identity_type.hpp:
+/opt/homebrew/include/boost/utility/detail/result_of_variadic.hpp:
 
 /opt/homebrew/include/boost/utility/binary.hpp:
 
-/opt/homebrew/include/CGAL/Arrangement_on_surface_2.h:
-
-/opt/homebrew/include/boost/utility.hpp:
+/opt/homebrew/include/boost/utility/base_from_member.hpp:
 
 /opt/homebrew/include/boost/type_traits/type_with_alignment.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_shuffle.h:
-
-/opt/homebrew/include/boost/type_traits/type_identity.hpp:
-
 /opt/homebrew/include/boost/type_traits/remove_volatile.hpp:
 
-/opt/homebrew/include/boost/move/algo/detail/search.hpp:
-
-/opt/homebrew/include/boost/type_traits/remove_extent.hpp:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__compare/is_eq.h:
-
-/opt/homebrew/include/boost/iterator/iterator_categories.hpp:
-
-/opt/homebrew/include/boost/type_traits/remove_cv_ref.hpp:
+/opt/homebrew/include/boost/type_traits/remove_reference.hpp:
 
 /opt/homebrew/include/boost/type_traits/remove_const.hpp:
 
 /opt/homebrew/include/boost/type_traits/remove_bounds.hpp:
 
-/opt/homebrew/include/boost/mpl/aux_/has_type.hpp:
+/opt/homebrew/include/boost/type_traits/rank.hpp:
 
-/opt/homebrew/include/boost/type_traits/make_void.hpp:
+/opt/homebrew/include/boost/type_traits/promote.hpp:
+
+/opt/homebrew/include/boost/type_traits/make_unsigned.hpp:
 
 /opt/homebrew/include/boost/type_traits/make_signed.hpp:
 
+/opt/homebrew/include/boost/type_traits/is_volatile.hpp:
+
 /opt/homebrew/include/boost/type_traits/is_void.hpp:
 
-/opt/homebrew/include/CGAL/Kernel/global_functions.h:
+/opt/homebrew/include/boost/type_traits/is_unscoped_enum.hpp:
 
-/opt/homebrew/include/boost/type_traits/is_virtual_base_of.hpp:
+/opt/homebrew/include/boost/type_traits/is_union.hpp:
 
-/opt/homebrew/include/CGAL/ch_selected_extreme_points_2.h:
-
-/opt/homebrew/include/eigen3/Eigen/src/Core/GlobalFunctions.h:
-
-/opt/homebrew/include/boost/type_traits/is_unsigned.hpp:
+/opt/homebrew/include/boost/type_traits/is_swappable.hpp:
 
 /opt/homebrew/include/boost/type_traits/is_stateless.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/clamp.h:
+/opt/homebrew/include/boost/type_traits/is_signed.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__format/indic_conjunct_break_table.h:
-
-/opt/homebrew/include/boost/type_traits/is_same.hpp:
-
-/opt/homebrew/include/eigen3/Eigen/SVD:
-
-/opt/homebrew/include/boost/mpl/vector/vector10.hpp:
-
-/opt/homebrew/include/boost/predef/compiler/watcom.h:
-
-/opt/homebrew/include/boost/type_traits/is_rvalue_reference.hpp:
-
-/opt/homebrew/include/CGAL/Distance_3/Point_3_Triangle_3.h:
-
-/opt/homebrew/include/boost/type_traits/is_polymorphic.hpp:
+/opt/homebrew/include/boost/type_traits/is_scoped_enum.hpp:
 
 /opt/homebrew/include/boost/type_traits/is_pointer.hpp:
 
-/opt/homebrew/include/CGAL/Intersections_2/Iso_rectangle_2_Iso_rectangle_2.h:
+/opt/homebrew/include/boost/type_traits/is_object.hpp:
 
-/opt/homebrew/include/boost/type_traits/has_post_increment.hpp:
+/opt/homebrew/include/boost/type_traits/is_nothrow_move_constructible.hpp:
 
-/opt/homebrew/include/boost/type_traits/is_pod.hpp:
-
-/opt/homebrew/include/CGAL/Polyhedron_3_fwd.h:
-
-/opt/homebrew/include/boost/type_traits/is_nothrow_swappable.hpp:
-
-/opt/homebrew/Cellar/llvm/20.1.6/lib/clang/20/include/__stddef_ptrdiff_t.h:
-
-/opt/homebrew/include/boost/type_traits/is_member_function_pointer.hpp:
+/opt/homebrew/include/boost/type_traits/is_nothrow_move_assignable.hpp:
 
 /opt/homebrew/include/boost/type_traits/is_list_constructible.hpp:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_errno_t.h:
+/opt/homebrew/include/eigen3/Eigen/src/Core/NoAlias.h:
 
-/opt/homebrew/include/boost/math/tools/detail/polynomial_horner3_20.hpp:
+/opt/homebrew/include/boost/type_traits/is_function.hpp:
 
-/opt/homebrew/include/CGAL/Distance_2/Segment_2_Line_2.h:
+/opt/homebrew/include/boost/type_traits/is_float.hpp:
 
-/opt/homebrew/include/boost/predef/platform/windows_desktop.h:
+/opt/homebrew/include/boost/type_traits/is_empty.hpp:
 
-/opt/homebrew/include/boost/type_traits/is_integral.hpp:
+/opt/homebrew/include/boost/type_traits/is_constructible.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__format/range_default_formatter.h:
-
-/opt/homebrew/include/boost/type_traits/is_final.hpp:
-
-/opt/homebrew/include/CGAL/Intersections_3/Iso_cuboid_3_Sphere_3.h:
-
-/opt/homebrew/include/boost/type_traits/is_default_constructible.hpp:
-
-/opt/homebrew/include/boost/mpl/advance.hpp:
-
-/opt/homebrew/include/boost/type_traits/is_copy_constructible.hpp:
+/opt/homebrew/include/boost/type_traits/is_complex.hpp:
 
 /opt/homebrew/include/boost/type_traits/is_complete.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_trivially_lexicographically_comparable.h:
-
-/opt/homebrew/include/boost/predef/library/c/uc.h:
-
-/opt/homebrew/include/boost/type_traits/is_class.hpp:
+/opt/homebrew/include/boost/type_traits/is_assignable.hpp:
 
 /opt/homebrew/include/boost/type_traits/is_array.hpp:
 
-/opt/homebrew/include/CGAL/squared_distance_3.h:
-
-/opt/homebrew/include/boost/type_traits/has_virtual_destructor.hpp:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_fsblkcnt_t.h:
-
-/opt/homebrew/include/boost/type_traits/has_unary_plus.hpp:
+/opt/homebrew/include/boost/type_traits/is_arithmetic.hpp:
 
 /opt/homebrew/include/boost/type_traits/has_unary_minus.hpp:
 
 /opt/homebrew/include/boost/type_traits/has_trivial_move_constructor.hpp:
 
-/opt/homebrew/include/boost/math/tools/atomic.hpp:
+/opt/homebrew/include/boost/type_traits/has_trivial_destructor.hpp:
 
-/opt/homebrew/include/boost/type_traits/has_trivial_move_assign.hpp:
+/opt/homebrew/include/boost/type_traits/has_trivial_copy.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__new/destroying_delete_t.h:
+/opt/homebrew/include/boost/type_traits/has_trivial_constructor.hpp:
 
-/opt/homebrew/include/boost/type_traits/has_pre_decrement.hpp:
+/opt/homebrew/include/boost/type_traits/has_trivial_assign.hpp:
+
+/opt/homebrew/include/boost/type_traits/is_noncopyable.hpp:
+
+/opt/homebrew/include/boost/type_traits/has_right_shift_assign.hpp:
+
+/opt/homebrew/include/boost/type_traits/has_right_shift.hpp:
+
+/opt/homebrew/include/boost/type_traits/has_pre_increment.hpp:
+
+/opt/homebrew/include/boost/type_traits/has_post_decrement.hpp:
+
+/opt/homebrew/include/boost/type_traits/has_plus_assign.hpp:
 
 /opt/homebrew/include/boost/type_traits/has_plus.hpp:
 
-/opt/homebrew/include/eigen3/Eigen/src/LU/arch/InverseSize4.h:
-
-/opt/homebrew/include/CGAL/CORE/CoreAux_impl.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_nothrow_convertible.h:
-
-/opt/homebrew/include/boost/type_traits/has_nothrow_constructor.hpp:
-
 /opt/homebrew/include/boost/type_traits/has_nothrow_assign.hpp:
+
+/opt/homebrew/include/boost/type_traits/has_not_equal_to.hpp:
+
+/opt/homebrew/include/boost/type_traits/has_new_operator.hpp:
 
 /opt/homebrew/include/boost/type_traits/has_negate.hpp:
 
+/opt/homebrew/include/boost/type_traits/has_multiplies.hpp:
+
+/opt/homebrew/include/boost/type_traits/has_modulus_assign.hpp:
+
 /opt/homebrew/include/boost/type_traits/has_modulus.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__tuple/tuple_size.h:
+/opt/homebrew/include/boost/type_traits/has_minus_assign.hpp:
 
-/opt/homebrew/include/boost/type_traits/has_minus.hpp:
-
-/opt/homebrew/include/boost/type_traits/has_logical_or.hpp:
+/opt/homebrew/include/boost/type_traits/has_logical_not.hpp:
 
 /opt/homebrew/include/boost/type_traits/has_logical_and.hpp:
 
-/opt/homebrew/include/boost/type_traits/has_less_equal.hpp:
-
-/opt/homebrew/include/boost/preprocessor/list/limits/fold_left_256.hpp:
-
-/opt/homebrew/include/eigen3/Eigen/src/Core/SelfAdjointView.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/remove_extent.h:
-
-/opt/homebrew/include/boost/type_traits/has_left_shift_assign.hpp:
-
 /opt/homebrew/include/boost/type_traits/has_left_shift.hpp:
 
-/opt/homebrew/include/boost/mp11/detail/mp_is_value_list.hpp:
+/opt/homebrew/include/boost/type_traits/has_greater.hpp:
 
-/opt/homebrew/include/boost/type_traits/has_greater_equal.hpp:
+/opt/homebrew/include/boost/type_traits/has_equal_to.hpp:
 
 /opt/homebrew/include/boost/type_traits/has_divides_assign.hpp:
 
@@ -4123,55 +4310,55 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/type_traits/has_complement.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__fwd/queue.h:
+/opt/homebrew/include/boost/type_traits/has_bit_xor.hpp:
 
-/opt/homebrew/include/boost/type_traits/has_bit_xor_assign.hpp:
+/opt/homebrew/include/boost/type_traits/has_bit_or_assign.hpp:
 
 /opt/homebrew/include/boost/type_traits/has_bit_and_assign.hpp:
 
 /opt/homebrew/include/boost/type_traits/has_bit_and.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/set_intersection.h:
-
-/opt/homebrew/include/boost/type_traits/function_traits.hpp:
-
 /opt/homebrew/include/boost/type_traits/floating_point_promotion.hpp:
+
+/opt/homebrew/include/boost/type_traits/extent.hpp:
+
+/opt/homebrew/include/boost/type_traits/enable_if.hpp:
 
 /opt/homebrew/include/boost/type_traits/disjunction.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/includes.h:
-
-/opt/homebrew/include/boost/type_traits/detail/yes_no_type.hpp:
-
 /opt/homebrew/include/boost/type_traits/detail/mp_defer.hpp:
+
+/opt/homebrew/include/eigen3/Eigen/src/plugins/MatrixCwiseBinaryOps.h:
+
+/opt/homebrew/include/boost/type_traits/detail/is_swappable_cxx_11.hpp:
 
 /opt/homebrew/include/boost/type_traits/detail/is_member_function_pointer_cxx_11.hpp:
 
-/opt/homebrew/include/boost/type_traits/detail/has_prefix_operator.hpp:
+/opt/homebrew/include/boost/type_traits/detail/is_function_cxx_11.hpp:
 
 /opt/homebrew/include/boost/type_traits/detail/has_postfix_operator.hpp:
 
 /opt/homebrew/include/boost/type_traits/detail/config.hpp:
 
-/opt/homebrew/include/CGAL/boost/graph/graph_traits_HalfedgeDS_default.h:
+/opt/homebrew/include/boost/type_traits/cv_traits.hpp:
 
-/opt/homebrew/include/boost/type_traits/declval.hpp:
+/opt/homebrew/include/boost/type_traits/copy_reference.hpp:
 
-/opt/homebrew/include/boost/math/special_functions/detail/igamma_inverse.hpp:
+/opt/homebrew/include/vtk-9.4/vtkDataArrayValueRange_AOS.h:
 
-/opt/homebrew/include/boost/type_traits/decay.hpp:
+/opt/homebrew/include/boost/type_traits/remove_pointer.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/cstdlib:
+/opt/homebrew/include/boost/type_traits/copy_cv.hpp:
 
-/opt/homebrew/include/boost/core/detail/sp_thread_yield.hpp:
+/opt/homebrew/include/boost/type_traits/conditional.hpp:
 
-/opt/homebrew/include/boost/type_traits/copy_cv_ref.hpp:
+/opt/homebrew/include/boost/type_traits/alignment_of.hpp:
 
-/opt/homebrew/include/boost/type_traits/conversion_traits.hpp:
+/opt/homebrew/include/boost/type_traits/aligned_storage.hpp:
 
 /opt/homebrew/include/boost/type_traits/add_volatile.hpp:
 
-/opt/homebrew/include/boost/type_traits/add_reference.hpp:
+/opt/homebrew/include/boost/type_traits/add_lvalue_reference.hpp:
 
 /opt/homebrew/include/boost/type_index/type_index_facade.hpp:
 
@@ -4181,21 +4368,45 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/tuple/tuple.hpp:
 
-/opt/homebrew/include/CGAL/Distance_3/Line_3_Plane_3.h:
+/opt/homebrew/include/boost/throw_exception.hpp:
 
-/opt/homebrew/include/boost/tuple/detail/tuple_basic.hpp:
+/opt/homebrew/include/boost/static_assert.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/syncstream:
+/opt/homebrew/include/boost/smart_ptr/shared_ptr.hpp:
 
-/opt/homebrew/include/boost/smart_ptr/detail/spinlock_pool.hpp:
+/opt/homebrew/include/boost/smart_ptr/detail/spinlock.hpp:
 
-/opt/homebrew/include/CGAL/CORE/BigInt.h:
+/opt/homebrew/include/boost/smart_ptr/detail/sp_has_sync_intrinsics.hpp:
 
-/opt/homebrew/include/boost/smart_ptr/detail/sp_counted_impl.hpp:
+/opt/homebrew/include/boost/smart_ptr/detail/sp_has_gcc_intrinsics.hpp:
+
+/opt/homebrew/include/boost/smart_ptr/detail/sp_disable_deprecated.hpp:
+
+/opt/homebrew/include/boost/smart_ptr/detail/sp_counted_base_gcc_atomic.hpp:
 
 /opt/homebrew/include/boost/smart_ptr/detail/sp_counted_base.hpp:
 
 /opt/homebrew/include/boost/smart_ptr/detail/sp_convertible.hpp:
+
+/opt/homebrew/include/boost/smart_ptr/detail/shared_count.hpp:
+
+/opt/homebrew/include/boost/smart_ptr/detail/local_sp_deleter.hpp:
+
+/opt/homebrew/include/boost/smart_ptr/detail/local_counted_base.hpp:
+
+/opt/homebrew/include/boost/smart_ptr/detail/deprecated_macros.hpp:
+
+/opt/homebrew/include/boost/smart_ptr/bad_weak_ptr.hpp:
+
+/opt/homebrew/include/boost/range/value_type.hpp:
+
+/opt/homebrew/include/boost/range/reverse_iterator.hpp:
+
+/opt/homebrew/include/boost/range/rbegin.hpp:
+
+/opt/homebrew/include/boost/range/range_fwd.hpp:
+
+/opt/homebrew/include/boost/range/mutable_iterator.hpp:
 
 /opt/homebrew/include/boost/range/iterator.hpp:
 
@@ -4205,7 +4416,7 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/range/detail/sfinae.hpp:
 
-/opt/homebrew/include/eigen3/Eigen/src/Core/DiagonalMatrix.h:
+/opt/homebrew/include/boost/range/detail/extract_optional_type.hpp:
 
 /opt/homebrew/include/yaml-cpp/node/type.h:
 
@@ -4216,12 +4427,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/random/xoshiro.hpp:
 
 /opt/homebrew/include/boost/random/xor_combine.hpp:
-
-/opt/homebrew/include/boost/lexical_cast/detail/lcast_char_constants.hpp:
-
-/opt/homebrew/include/boost/mpl/vector/aux_/preprocessed/typeof_based/vector20.hpp:
-
-/opt/homebrew/include/boost/random/weibull_distribution.hpp:
 
 /opt/homebrew/include/boost/multiprecision/detail/precision.hpp:
 
@@ -4235,17 +4440,11 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/random/uniform_01.hpp:
 
-/opt/homebrew/include/boost/random/traits.hpp:
-
 /opt/homebrew/include/boost/random/shuffle_output.hpp:
 
 /opt/homebrew/include/boost/random/seed_seq.hpp:
 
 /opt/homebrew/include/boost/random/random_number_generator.hpp:
-
-/opt/homebrew/include/boost/random/piecewise_constant_distribution.hpp:
-
-/opt/homebrew/include/boost/type_traits/has_logical_not.hpp:
 
 /opt/homebrew/include/boost/random/lognormal_distribution.hpp:
 
@@ -4287,8 +4486,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/random/detail/polynomial.hpp:
 
-/opt/homebrew/include/boost/random/detail/operators.hpp:
-
 /opt/homebrew/include/boost/random/detail/large_arithmetic.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/back_insert_iterator.h:
@@ -4301,9 +4498,9 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/random/detail/config.hpp:
 
-/opt/homebrew/include/boost/random/additive_combine.hpp:
-
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/partial_sort_copy.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/gamma_distribution.h:
 
 /opt/homebrew/include/CGAL/export/CGAL.h:
 
@@ -4315,19 +4512,13 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/preprocessor/variadic/limits/size_64.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/mutex:
-
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/equal.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/mutex:
 
 /opt/homebrew/include/CGAL/Kernel/Type_mapper.h:
 
 /opt/homebrew/include/boost/preprocessor/variadic/elem.hpp:
-
-/opt/homebrew/include/eigen3/Eigen/src/Core/CommaInitializer.h:
-
-/opt/homebrew/include/vtk-9.4/vtkIOStream.h:
-
-/opt/homebrew/include/boost/preprocessor/variadic/detail/has_opt.hpp:
 
 /opt/homebrew/include/boost/preprocessor/tuple/eat.hpp:
 
@@ -4357,25 +4548,21 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/preprocessor/logical/compl.hpp:
 
-/opt/homebrew/include/boost/preprocessor/logical/bool.hpp:
-
 /opt/homebrew/include/CGAL/Circle_3.h:
 
 /opt/homebrew/include/boost/preprocessor/variadic/limits/elem_64.hpp:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/xlocale/_stdlib.h:
-
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__atomic/atomic_lock_free.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/xlocale/_stdlib.h:
 
 /opt/homebrew/include/CGAL/Quotient.h:
 
 /opt/homebrew/include/boost/preprocessor/logical/bitor.hpp:
 
+/opt/homebrew/include/boost/heap/heap_merge.hpp:
+
 /opt/homebrew/include/boost/preprocessor/logical/bitand.hpp:
-
-/opt/homebrew/include/eigen3/Eigen/Eigenvalues:
-
-/opt/homebrew/include/boost/type_traits/has_new_operator.hpp:
 
 /opt/homebrew/include/boost/preprocessor/list/fold_right.hpp:
 
@@ -4395,8 +4582,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/preprocessor/control/while.hpp:
 
-/opt/homebrew/include/eigen3/Eigen/src/Core/Matrix.h:
-
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_final.h:
 
 /opt/homebrew/include/boost/preprocessor/control/if.hpp:
@@ -4404,12 +4589,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/inplace_merge.h:
 
 /opt/homebrew/include/boost/preprocessor/control/expr_iif.hpp:
-
-/opt/homebrew/include/CGAL/CORE/Real.h:
-
-/opt/homebrew/include/boost/concept/detail/general.hpp:
-
-/opt/homebrew/include/boost/range/detail/msvc_has_iterator_workaround.hpp:
 
 /opt/homebrew/include/boost/preprocessor/control/detail/limits/while_256.hpp:
 
@@ -4449,10 +4628,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/predef/platform/windows_phone.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__functional/unary_negate.h:
-
-/opt/homebrew/include/boost/predef/platform/mingw32.h:
-
 /opt/homebrew/include/boost/predef/platform/mingw.h:
 
 /opt/homebrew/include/boost/type_traits/is_floating_point.hpp:
@@ -4479,15 +4654,17 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/predef/os/linux.h:
 
+/opt/homebrew/include/vtk-9.4/vtkkwiml/abi.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/ConditionEstimator.h:
+
+/opt/homebrew/include/boost/predef/os/ios.h:
+
 /opt/homebrew/include/boost/predef/os/haiku.h:
 
 /opt/homebrew/include/boost/predef/os/cygwin.h:
 
-/opt/homebrew/include/boost/predef/os/amigaos.h:
-
 /opt/homebrew/include/boost/predef/library/std/vacpp.h:
-
-/opt/homebrew/include/boost/predef/library/std/stlport.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_remove.h:
 
@@ -4504,6 +4681,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/predef/library/std/cxx.h:
 
 /opt/homebrew/include/boost/predef/library/c/zos.h:
+
+/Users/jiayu/local/include/casadi/core/submatrix.hpp:
 
 /opt/homebrew/include/CGAL/linear_least_squares_fitting_3.h:
 
@@ -4523,9 +4702,15 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/predef/language/stdc.h:
 
-/opt/homebrew/include/boost/predef/language.h:
+/opt/homebrew/include/eigen3/Eigen/src/Core/PermutationMatrix.h:
 
-/opt/homebrew/include/boost/type_traits/has_pre_increment.hpp:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_signed_integer.h:
+
+/opt/homebrew/include/boost/math/tools/toms748_solve.hpp:
+
+/opt/homebrew/include/boost/predef/language/cuda.h:
+
+/opt/homebrew/include/boost/predef/language.h:
 
 /opt/homebrew/include/boost/predef/hardware/simd/x86/versions.h:
 
@@ -4547,9 +4732,13 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/predef/hardware/simd.h:
 
-/opt/homebrew/include/boost/type_traits/add_lvalue_reference.hpp:
-
 /opt/homebrew/include/boost/predef/detail/_cassert.h:
+
+/opt/homebrew/include/boost/type_traits/is_rvalue_reference.hpp:
+
+/opt/homebrew/include/boost/mpl/vector/vector10.hpp:
+
+/opt/homebrew/include/boost/predef/compiler/watcom.h:
 
 /opt/homebrew/include/boost/random/bernoulli_distribution.hpp:
 
@@ -4563,12 +4752,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/predef/compiler/pgi.h:
 
-/opt/homebrew/include/CGAL/Intersections_3/internal/Ray_3_Segment_3_do_intersect.h:
-
-/opt/homebrew/include/boost/type_traits/is_base_and_derived.hpp:
-
-/opt/homebrew/include/boost/type_traits/has_right_shift.hpp:
-
 /opt/homebrew/include/boost/predef/compiler/mpw.h:
 
 /opt/homebrew/include/boost/predef/compiler/microtec.h:
@@ -4578,10 +4761,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/predef/compiler/hp_acc.h:
 
 /opt/homebrew/include/boost/predef/compiler/gcc_xml.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_ucontext.h:
-
-/opt/homebrew/include/boost/type_traits/is_enum.hpp:
 
 /opt/homebrew/include/boost/core/ref.hpp:
 
@@ -4600,10 +4779,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/predef/architecture/z.h:
 
 /opt/homebrew/include/boost/predef/architecture/x86.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/limits.h:
-
-/opt/homebrew/include/boost/type_traits/is_compound.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/type_identity.h:
 
@@ -4645,13 +4820,77 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/pending/property.hpp:
 
+/opt/homebrew/include/boost/preprocessor/logical/not.hpp:
+
+/opt/homebrew/include/boost/parameter/value_type.hpp:
+
+/opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/apply.hpp:
+
+/opt/homebrew/include/boost/parameter/name.hpp:
+
+/Users/jiayu/local/include/casadi/core/global_options.hpp:
+
+/opt/homebrew/include/boost/parameter/keyword.hpp:
+
+/opt/homebrew/include/boost/parameter/deduced.hpp:
+
+/opt/homebrew/include/boost/preprocessor/logical/bool.hpp:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/Reshaped.h:
+
+/opt/homebrew/include/CGAL/Intersections_3/Sphere_3_Sphere_3.h:
+
+/opt/homebrew/include/boost/parameter/config.hpp:
+
+/opt/homebrew/include/boost/random/piecewise_constant_distribution.hpp:
+
+/opt/homebrew/include/boost/parameter/aux_/void.hpp:
+
+/opt/homebrew/include/CGAL/double.h:
+
+/opt/homebrew/include/boost/parameter/aux_/use_default_tag.hpp:
+
+/opt/homebrew/include/boost/parameter/aux_/unwrap_cv_reference.hpp:
+
+/opt/homebrew/include/boost/parameter/aux_/template_keyword.hpp:
+
+/opt/homebrew/include/boost/intrusive/detail/hook_traits.hpp:
+
+/opt/homebrew/include/boost/parameter/aux_/preprocessor/qualifier.hpp:
+
+/opt/homebrew/include/boost/parameter/aux_/preprocessor/nullptr.hpp:
+
+/opt/homebrew/include/boost/parameter/aux_/pack/tag_keyword_arg.hpp:
+
+/opt/homebrew/include/boost/parameter/aux_/pack/tag_deduced.hpp:
+
+/opt/homebrew/include/boost/parameter/aux_/pack/satisfies.hpp:
+
+/opt/homebrew/include/eigen3/Eigen/LU:
+
+/opt/homebrew/include/boost/parameter/aux_/pack/predicate.hpp:
+
+/opt/homebrew/include/boost/parameter/aux_/pack/make_parameter_spec_items.hpp:
+
+/opt/homebrew/include/boost/parameter/aux_/pack/make_arg_list.hpp:
+
+/opt/homebrew/include/CGAL/Intersections_3/Bbox_3_Iso_cuboid_3.h:
+
+/opt/homebrew/include/boost/parameter/aux_/pack/is_named_argument.hpp:
+
+/opt/homebrew/include/boost/parameter/aux_/pack/insert_tagged.hpp:
+
+/opt/homebrew/include/CGAL/Iterator_range.h:
+
+/opt/homebrew/include/boost/parameter/aux_/pack/deduced_item.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/min_max_result.h:
+
+/opt/homebrew/include/boost/parameter/aux_/pack/deduce_tag.hpp:
+
 /opt/homebrew/include/boost/operators.hpp:
 
-/opt/homebrew/include/boost/utility/base_from_member.hpp:
-
 /opt/homebrew/include/boost/none.hpp:
-
-/opt/homebrew/include/boost/noncopyable.hpp:
 
 /opt/homebrew/include/boost/multiprecision/traits/std_integer_traits.hpp:
 
@@ -4664,10 +4903,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__condition_variable/condition_variable.h:
 
 /opt/homebrew/include/boost/multiprecision/traits/is_backend.hpp:
-
-/opt/homebrew/include/eigen3/Eigen/src/Core/NoAlias.h:
-
-/opt/homebrew/include/boost/type_traits/is_function.hpp:
 
 /opt/homebrew/include/boost/multiprecision/number.hpp:
 
@@ -4687,8 +4922,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/multiprecision/detail/standalone_config.hpp:
 
-/opt/homebrew/include/boost/type_traits/is_unscoped_enum.hpp:
-
 /opt/homebrew/include/boost/multiprecision/detail/rebind.hpp:
 
 /opt/homebrew/include/boost/multiprecision/debug_adaptor.hpp:
@@ -4699,9 +4932,11 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/multiprecision/detail/no_et_ops.hpp:
 
-/opt/homebrew/include/CGAL/Intersections_3/Plane_3_Sphere_3.h:
-
 /opt/homebrew/include/CGAL/Cartesian/Direction_3.h:
+
+/Users/jiayu/local/include/casadi/core/code_generator.hpp:
+
+/opt/homebrew/include/CGAL/Intersections_3/Plane_3_Sphere_3.h:
 
 /opt/homebrew/include/boost/predef/detail/_exception.h:
 
@@ -4711,13 +4946,7 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/multiprecision/detail/generic_interconvert.hpp:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/stat.h:
-
-/opt/homebrew/include/boost/multiprecision/detail/functions/trunc.hpp:
-
-/opt/homebrew/include/CGAL/Arrangement_2/Arrangement_on_surface_2_global.h:
-
-/opt/homebrew/include/eigen3/Eigen/src/Core/PartialReduxEvaluator.h:
+/Users/jiayu/local/include/casadi/core/calculus.hpp:
 
 /opt/homebrew/include/boost/multiprecision/detail/functions/trig.hpp:
 
@@ -4741,13 +4970,13 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/multiprecision/cpp_int/misc.hpp:
 
-/opt/homebrew/include/boost/multiprecision/cpp_int/literals.hpp:
+/opt/homebrew/include/eigen3/Eigen/src/Core/DenseStorage.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/partition_point.h:
 
-/opt/homebrew/include/eigen3/Eigen/src/Core/DenseStorage.h:
-
 /opt/homebrew/include/boost/multiprecision/cpp_int/divide.hpp:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_clip_max.hpp:
 
 /opt/homebrew/include/boost/predef/other/workaround.h:
 
@@ -4765,27 +4994,29 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/multiprecision/cpp_int.hpp:
 
-/opt/homebrew/include/CGAL/Number_types/internal/Exact_type_selector.h:
-
-/opt/homebrew/include/boost/type_traits/is_scalar.hpp:
-
 /opt/homebrew/include/boost/preprocessor/repetition/repeat.hpp:
 
 /opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_agg_op_visitor.h:
 
 /opt/homebrew/include/boost/mpl/void_fwd.hpp:
 
-/opt/homebrew/include/eigen3/Eigen/src/Core/GenericPacketMath.h:
-
 /opt/homebrew/include/boost/mpl/vector/vector0.hpp:
 
 /opt/homebrew/include/boost/mpl/vector/aux_/vector0.hpp:
+
+/opt/homebrew/include/CGAL/Intersections_3/internal/Line_3_Triangle_3_intersection.h:
+
+/opt/homebrew/include/boost/preprocessor/facilities/is_empty.hpp:
 
 /opt/homebrew/include/boost/mp11/detail/mp_plus.hpp:
 
 /opt/homebrew/include/boost/mpl/vector/aux_/push_front.hpp:
 
-/opt/homebrew/include/eigen3/Eigen/src/plugins/ReshapedMethods.h:
+/opt/homebrew/include/boost/lexical_cast/detail/lcast_char_constants.hpp:
+
+/opt/homebrew/include/boost/random/weibull_distribution.hpp:
+
+/opt/homebrew/include/boost/mpl/vector/aux_/preprocessed/typeof_based/vector20.hpp:
 
 /opt/homebrew/include/boost/mpl/vector/aux_/preprocessed/typeof_based/vector10.hpp:
 
@@ -4793,19 +5024,19 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/mpl/vector/aux_/iterator.hpp:
 
+/opt/homebrew/include/boost/parameter/aux_/pack/parameter_requirements.hpp:
+
 /opt/homebrew/include/boost/mpl/vector/aux_/include_preprocessed.hpp:
-
-/opt/homebrew/include/eigen3/Eigen/src/Core/ReturnByValue.h:
-
-/opt/homebrew/include/CGAL/boost/graph/copy_face_graph.h:
-
-/opt/homebrew/include/boost/type_traits/has_multiplies_assign.hpp:
 
 /opt/homebrew/include/CGAL/boost/graph/iterator.h:
 
 /opt/homebrew/include/boost/mpl/vector/aux_/front.hpp:
 
 /opt/homebrew/include/boost/mpl/vector/aux_/O1_size.hpp:
+
+/opt/homebrew/include/boost/random/detail/operators.hpp:
+
+/opt/homebrew/include/boost/mpl/value_type_fwd.hpp:
 
 /opt/homebrew/include/boost/mpl/tag.hpp:
 
@@ -4843,8 +5074,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/mpl/prior.hpp:
 
-/opt/homebrew/include/eigen3/Eigen/src/Core/CoreIterators.h:
-
 /opt/homebrew/include/boost/predef/compiler/metrowerks.h:
 
 /opt/homebrew/include/boost/mpl/pop_back_fwd.hpp:
@@ -4857,6 +5086,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/mpl/pair.hpp:
 
+/opt/homebrew/include/boost/mpl/order_fwd.hpp:
+
 /opt/homebrew/include/boost/preprocessor/facilities/overload.hpp:
 
 /opt/homebrew/include/boost/container/detail/iterators.hpp:
@@ -4866,6 +5097,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/mpl/next_prior.hpp:
 
 /opt/homebrew/include/boost/mpl/next.hpp:
+
+/Users/jiayu/local/include/casadi/core/exception.hpp:
 
 /opt/homebrew/include/boost/mpl/negate.hpp:
 
@@ -4881,17 +5114,11 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/mpl/lambda.hpp:
 
-/opt/homebrew/include/vtk-9.4/vtkTypeTraits.h:
-
-/opt/homebrew/include/boost/mpl/iterator_tags.hpp:
-
 /opt/homebrew/include/boost/predef/compiler/diab.h:
 
 /opt/homebrew/include/boost/mpl/iterator_range.hpp:
 
 /opt/homebrew/include/boost/mpl/iterator_category.hpp:
-
-/opt/homebrew/include/boost/mpl/is_sequence.hpp:
 
 /opt/homebrew/include/boost/mpl/int_fwd.hpp:
 
@@ -4903,11 +5130,19 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/yaml-cpp/emittermanip.h:
 
+/opt/homebrew/include/boost/parameter/aux_/is_placeholder.hpp:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_primary_template.h:
 
 /opt/homebrew/include/boost/predef/language/objc.h:
 
 /opt/homebrew/include/boost/mpl/fold.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/sortable.h:
+
+/opt/homebrew/include/CGAL/Intersections_3/internal/Triangle_3_Triangle_3_do_intersect.h:
+
+/opt/homebrew/include/boost/mpl/find_if.hpp:
 
 /opt/homebrew/include/boost/mpl/eval_if.hpp:
 
@@ -4920,12 +5155,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/mpl/empty_fwd.hpp:
 
 /opt/homebrew/include/boost/mpl/deref.hpp:
-
-/opt/homebrew/include/CGAL/Cartesian/Aff_transformation_rep_3.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/internal/Ray_3_Triangle_3_intersection.h:
-
-/opt/homebrew/include/boost/type_traits/remove_all_extents.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__charconv/chars_format.h:
 
@@ -4947,8 +5176,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/mpl/back_fwd.hpp:
 
-/opt/homebrew/include/boost/range/rbegin.hpp:
-
 /opt/homebrew/include/boost/mpl/aux_/preprocessor/params.hpp:
 
 /opt/homebrew/include/boost/random/hyperexponential_distribution.hpp:
@@ -4963,6 +5190,16 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/mpl/aux_/static_cast.hpp:
 
+/opt/homebrew/include/boost/type_traits/is_integral.hpp:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_errno_t.h:
+
+/opt/homebrew/include/boost/math/tools/detail/polynomial_horner3_20.hpp:
+
+/opt/homebrew/include/CGAL/Distance_2/Segment_2_Line_2.h:
+
+/opt/homebrew/include/boost/predef/platform/windows_desktop.h:
+
 /opt/homebrew/include/boost/container/detail/container_or_allocator_rebind.hpp:
 
 /opt/homebrew/include/boost/mpl/aux_/reverse_fold_impl.hpp:
@@ -4972,8 +5209,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/mpl/aux_/push_back_impl.hpp:
 
 /opt/homebrew/include/boost/mpl/aux_/preprocessor/enum.hpp:
-
-/opt/homebrew/include/boost/mpl/aux_/preprocessor/def_params_tail.hpp:
 
 /opt/homebrew/include/CGAL/Kernel/Same_uncertainty.h:
 
@@ -4987,15 +5222,19 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/plus.hpp:
 
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/out_ptr.h:
+
+/opt/homebrew/include/boost/parameter/aux_/pack/make_items.hpp:
+
 /opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/minus.hpp:
 
 /opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/bind_fwd.hpp:
 
+/opt/homebrew/include/boost/parameter/aux_/pack/make_deduced_items.hpp:
+
 /opt/homebrew/include/boost/mpl/aux_/nttp_decl.hpp:
 
 /opt/homebrew/include/boost/mpl/aux_/na_spec.hpp:
-
-/opt/homebrew/include/boost/mpl/aux_/na_fwd.hpp:
 
 /opt/homebrew/include/boost/mpl/aux_/msvc_eti_base.hpp:
 
@@ -5005,9 +5244,9 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/mpl/aux_/integral_wrapper.hpp:
 
-/opt/homebrew/include/CGAL/Cartesian/Translation_rep_2.h:
+/opt/homebrew/include/boost/type_traits/make_void.hpp:
 
-/opt/homebrew/include/boost/mpl/aux_/include_preprocessed.hpp:
+/opt/homebrew/include/boost/mpl/aux_/has_type.hpp:
 
 /opt/homebrew/include/boost/mpl/vector/aux_/pop_front.hpp:
 
@@ -5034,8 +5273,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/predef/platform/windows_system.h:
 
 /opt/homebrew/include/boost/mpl/aux_/config/use_preprocessed.hpp:
-
-/opt/homebrew/include/boost/mpl/aux_/config/static_constant.hpp:
 
 /opt/homebrew/include/vtk-9.4/vtkNew.h:
 
@@ -5070,6 +5307,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/mpl/aux_/config/gcc.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__fwd/ostream.h:
+
+/opt/homebrew/include/boost/mpl/has_key_fwd.hpp:
 
 /opt/homebrew/include/boost/mpl/aux_/config/eti.hpp:
 
@@ -5115,9 +5354,17 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/multiprecision/detail/integer_ops.hpp:
 
+/opt/homebrew/include/boost/type_traits/is_copy_constructible.hpp:
+
+/opt/homebrew/include/boost/mpl/advance.hpp:
+
 /opt/homebrew/include/boost/mpl/O1_size_fwd.hpp:
 
-/opt/homebrew/include/eigen3/Eigen/src/plugins/ArrayCwiseUnaryOps.h:
+/opt/homebrew/include/eigen3/Eigen/src/Core/NestByValue.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/lexicographical_compare.h:
+
+/opt/homebrew/include/boost/random/subtract_with_carry.hpp:
 
 /opt/homebrew/include/boost/range/detail/implementation_help.hpp:
 
@@ -5129,7 +5376,11 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/_xlocale.h:
 
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/fisher_f_distribution.h:
+
 /opt/homebrew/include/CGAL/Kernel_traits.h:
+
+/opt/homebrew/include/boost/intrusive/detail/generic_hook.hpp:
 
 /opt/homebrew/include/boost/mpl/transform.hpp:
 
@@ -5149,15 +5400,13 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/mp11/detail/mp_list.hpp:
 
+/opt/homebrew/include/boost/type_traits/has_greater_equal.hpp:
+
+/opt/homebrew/include/boost/mp11/detail/mp_is_value_list.hpp:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/access.h:
 
 /opt/homebrew/include/boost/mp11/detail/mp_front.hpp:
-
-/opt/homebrew/include/CGAL/Homogeneous/VectorH3.h:
-
-/opt/homebrew/include/CGAL/IO/Arrangement_2_writer.h:
-
-/opt/homebrew/include/boost/mp11/detail/mp_fold.hpp:
 
 /opt/homebrew/include/boost/mp11/detail/mp_defer.hpp:
 
@@ -5203,14 +5452,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/move/detail/fwd_macros.hpp:
 
-/opt/homebrew/include/boost/preprocessor/facilities/expand.hpp:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__math/modulo.h:
-
-/opt/homebrew/include/boost/move/detail/config_end.hpp:
-
-/opt/homebrew/include/boost/type_traits/has_equal_to.hpp:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_uid_t.h:
 
 /opt/homebrew/include/boost/move/detail/config_begin.hpp:
@@ -5225,11 +5466,15 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/apply_wrap.hpp:
 
-/opt/homebrew/include/boost/move/algo/detail/pdqsort.hpp:
+/opt/homebrew/include/boost/type_traits/remove_extent.hpp:
+
+/opt/homebrew/include/boost/move/algo/detail/search.hpp:
 
 /opt/homebrew/include/boost/move/algo/detail/merge_sort.hpp:
 
-/opt/homebrew/include/eigen3/Eigen/src/Core/DenseBase.h:
+/opt/homebrew/include/eigen3/Eigen/Jacobi:
+
+/opt/homebrew/include/boost/move/algo/detail/adaptive_sort_merge.hpp:
 
 /opt/homebrew/include/CGAL/Arr_topology_traits/Arr_bounded_planar_overlay_helper.h:
 
@@ -5242,6 +5487,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/move/adl_move_swap.hpp:
 
 /opt/homebrew/include/boost/math/tools/type_traits.hpp:
+
+/opt/homebrew/include/boost/parameter/aux_/augment_predicate.hpp:
 
 /opt/homebrew/include/CGAL/Intersections_3/Bbox_3_Line_3.h:
 
@@ -5303,7 +5550,7 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/math/special_functions/sqrt1pm1.hpp:
 
-/opt/homebrew/include/boost/type_traits/is_union.hpp:
+/opt/homebrew/include/boost/mpl/count_fwd.hpp:
 
 /opt/homebrew/include/boost/move/algo/detail/insertion_sort.hpp:
 
@@ -5321,13 +5568,15 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/math/special_functions/lanczos.hpp:
 
+/opt/homebrew/include/eigen3/Eigen/src/Core/Reverse.h:
+
+/opt/homebrew/include/boost/multiprecision/cpp_int/limits.hpp:
+
 /opt/homebrew/include/CGAL/IO/Arr_text_formatter.h:
 
 /opt/homebrew/include/boost/math/special_functions/hypot.hpp:
 
 /opt/homebrew/include/boost/math/special_functions/gamma.hpp:
-
-/opt/homebrew/include/boost/math/special_functions/expm1.hpp:
 
 /opt/homebrew/include/boost/random/mixmax.hpp:
 
@@ -5351,10 +5600,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/math/special_functions/detail/gamma_inva.hpp:
 
-/opt/homebrew/include/CGAL/Distance_3/internal/squared_distance_utils_3.h:
-
-/opt/homebrew/include/boost/type_traits/integral_promotion.hpp:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/_wctype.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__chrono/monthday.h:
@@ -5364,12 +5609,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/math/special_functions/detail/erf_inv.hpp:
 
 /opt/homebrew/include/boost/math/special_functions/detail/bernoulli_details.hpp:
-
-/opt/homebrew/include/vtk-9.4/vtkCommonExecutionModelModule.h:
-
-/opt/homebrew/include/CGAL/Cartesian/point_constructions_3.h:
-
-/opt/homebrew/include/eigen3/Eigen/src/Core/GeneralProduct.h:
 
 /opt/homebrew/include/boost/predef/compiler/tendra.h:
 
@@ -5409,13 +5648,7 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/lexical_cast/try_lexical_convert.hpp:
 
-/Users/jiayu/Desktop/nas_ws/NAS/include/visualizer.hpp:
-
-/opt/homebrew/include/eigen3/Eigen/src/Core/CwiseBinaryOp.h:
-
 /opt/homebrew/include/boost/lexical_cast/detail/widest_char.hpp:
-
-/opt/homebrew/include/eigen3/Eigen/Dense:
 
 /opt/homebrew/include/boost/mpl/and.hpp:
 
@@ -5424,8 +5657,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/lexical_cast/detail/lcast_unsigned_converters.hpp:
 
 /opt/homebrew/include/boost/lexical_cast/detail/lcast_basic_unlockedbuf.hpp:
-
-/opt/homebrew/include/boost/iterator_adaptors.hpp:
 
 /opt/homebrew/include/boost/iterator/iterator_facade.hpp:
 
@@ -5447,7 +5678,19 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/io/ios_state.hpp:
 
-/opt/homebrew/include/boost/intrusive/pack_options.hpp:
+/opt/homebrew/include/boost/predef/library/std/stlport.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__fwd/fstream.h:
+
+/opt/homebrew/include/CGAL/Intersections_3/internal/Line_3_Tetrahedron_3_intersection.h:
+
+/opt/homebrew/include/boost/intrusive/list_hook.hpp:
+
+/opt/homebrew/include/boost/type_traits/is_final.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__format/range_default_formatter.h:
+
+/opt/homebrew/include/boost/intrusive/intrusive_fwd.hpp:
 
 /opt/homebrew/include/boost/type_traits/intrinsics.hpp:
 
@@ -5459,11 +5702,29 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/intrusive/detail/value_functors.hpp:
 
+/opt/homebrew/include/vtk-9.4/vtkPolyDataAlgorithm.h:
+
+/opt/homebrew/include/boost/intrusive/detail/uncast.hpp:
+
+/opt/homebrew/include/boost/type_traits/is_member_object_pointer.hpp:
+
+/opt/homebrew/include/boost/intrusive/detail/tree_value_compare.hpp:
+
+/opt/homebrew/include/CGAL/Intersections_2/Point_2_Point_2.h:
+
+/opt/homebrew/include/boost/intrusive/detail/parent_from_member.hpp:
+
+/opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/or.hpp:
+
+/opt/homebrew/include/boost/intrusive/detail/node_holder.hpp:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__fwd/array.h:
 
 /opt/homebrew/include/boost/move/algo/detail/is_sorted.hpp:
 
 /opt/homebrew/include/boost/intrusive/detail/mpl.hpp:
+
+/opt/homebrew/include/boost/intrusive/detail/key_nodeptr_comp.hpp:
 
 /opt/homebrew/include/boost/mpl/limits/vector.hpp:
 
@@ -5473,11 +5734,39 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/intrusive/detail/has_member_function_callable_with.hpp:
 
-/opt/homebrew/include/boost/intrusive/detail/config_end.hpp:
+/opt/homebrew/include/boost/random/traits.hpp:
+
+/opt/homebrew/include/boost/type_traits/has_logical_or.hpp:
+
+/opt/homebrew/include/boost/intrusive/detail/function_detector.hpp:
+
+/opt/homebrew/include/boost/intrusive/detail/equal_to_value.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/distance.h:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_copy.hpp:
+
+/opt/homebrew/include/CGAL/convex_hull_3.h:
+
+/opt/homebrew/include/boost/intrusive/detail/assert.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/iterator_operations.h:
 
 /opt/homebrew/include/boost/intrusive/detail/algorithm.hpp:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/xlocale/_wchar.h:
+
+/opt/homebrew/include/boost/intrusive/detail/algo_type.hpp:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/stat.h:
+
+/opt/homebrew/include/boost/multiprecision/detail/functions/trunc.hpp:
+
+/opt/homebrew/include/boost/math/tools/throw_exception.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_is_sorted.h:
+
+/opt/homebrew/include/boost/intrusive/circular_list_algorithms.hpp:
 
 /opt/homebrew/include/boost/integer_fwd.hpp:
 
@@ -5487,7 +5776,31 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/iterator/is_iterator.hpp:
 
+/opt/homebrew/include/boost/type_traits/has_dereference.hpp:
+
+/opt/homebrew/include/boost/container/detail/min_max.hpp:
+
+/opt/homebrew/include/boost/intrusive/detail/ebo_functor_holder.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/aliasing_iterator.h:
+
+/opt/homebrew/include/boost/heap/heap_concepts.hpp:
+
+/opt/homebrew/include/CGAL/Polygon_2/Polygon_2_simplicity.h:
+
+/opt/homebrew/include/boost/heap/fibonacci_heap.hpp:
+
+/opt/homebrew/include/boost/heap/detail/heap_node.hpp:
+
+/opt/homebrew/include/boost/mpl/not.hpp:
+
+/opt/homebrew/include/boost/heap/detail/heap_comparison.hpp:
+
 /opt/homebrew/include/boost/preprocessor/control/limits/while_256.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/remove_cvref.h:
+
+/opt/homebrew/include/boost/parameter/aux_/has_nested_template_fn.hpp:
 
 /opt/homebrew/include/boost/graph/properties.hpp:
 
@@ -5496,8 +5809,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/graph/graph_traits.hpp:
 
 /opt/homebrew/include/boost/functional/hash.hpp:
-
-/opt/homebrew/include/boost/exception/exception.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/iomanip:
 
@@ -5527,6 +5838,10 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/predef/architecture/sys370.h:
 
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/generate.h:
+
+/opt/homebrew/include/boost/core/pointer_traits.hpp:
+
 /opt/homebrew/include/vtk-9.4/vtkABI.h:
 
 /opt/homebrew/include/boost/move/algo/detail/basic_op.hpp:
@@ -5534,6 +5849,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/core/nvp.hpp:
 
 /opt/homebrew/include/boost/core/noncopyable.hpp:
+
+/opt/homebrew/include/boost/parameter/binding.hpp:
 
 /opt/homebrew/include/boost/multiprecision/integer.hpp:
 
@@ -5553,7 +5870,15 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/core/invoke_swap.hpp:
 
+/opt/homebrew/include/boost/type_traits/copy_cv_ref.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/cstdlib:
+
+/opt/homebrew/include/boost/core/detail/sp_thread_yield.hpp:
+
 /opt/homebrew/include/boost/core/detail/sp_thread_sleep.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/default_random_engine.h:
 
 /opt/homebrew/include/boost/core/detail/sp_thread_pause.hpp:
 
@@ -5563,17 +5888,21 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/core/checked_delete.hpp:
 
+/opt/homebrew/include/boost/mpl/aux_/config/static_constant.hpp:
+
+/opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_base_functor.h:
+
+/opt/homebrew/include/boost/core/allocator_access.hpp:
+
 /opt/homebrew/include/boost/container_hash/is_unordered_range.hpp:
 
 /opt/homebrew/include/boost/container_hash/is_tuple_like.hpp:
 
-/opt/homebrew/include/boost/type_traits/is_nothrow_move_constructible.hpp:
-
 /opt/homebrew/include/boost/integer/integer_log2.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__utility/in_place.h:
-
 /opt/homebrew/include/CGAL/Surface_sweep_2/No_intersection_surface_sweep_2_impl.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__utility/in_place.h:
 
 /opt/homebrew/include/boost/container_hash/hash.hpp:
 
@@ -5589,37 +5918,13 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/container/options.hpp:
 
-/opt/homebrew/include/boost/range/detail/extract_optional_type.hpp:
-
 /opt/homebrew/include/boost/container/new_allocator.hpp:
-
-/opt/homebrew/include/boost/range/reverse_iterator.hpp:
-
-/opt/homebrew/include/boost/predef/os/bsd/bsdi.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/Iso_cuboid_3_Line_3.h:
-
-/opt/homebrew/include/boost/range/rend.hpp:
-
-/opt/homebrew/include/CGAL/Distance_3/Ray_3_Ray_3.h:
-
-/opt/homebrew/include/boost/random/uniform_on_sphere.hpp:
-
-/opt/homebrew/include/boost/container/flat_map.hpp:
 
 /opt/homebrew/include/CGAL/Homogeneous/PlaneH3.h:
 
 /opt/homebrew/include/boost/container/detail/workaround.hpp:
 
 /opt/homebrew/include/boost/container/detail/std_fwd.hpp:
-
-/opt/homebrew/include/boost/random/binomial_distribution.hpp:
-
-/opt/homebrew/include/boost/container/detail/pair.hpp:
-
-/opt/homebrew/include/boost/mpl/aux_/numeric_op.hpp:
-
-/opt/homebrew/include/boost/type_traits.hpp:
 
 /opt/homebrew/include/boost/next_prior.hpp:
 
@@ -5653,15 +5958,15 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/container/detail/advanced_insert_int.hpp:
 
-/opt/homebrew/include/eigen3/Eigen/src/Core/MatrixBase.h:
-
 /opt/homebrew/include/boost/container/detail/value_functors.hpp:
 
 /opt/homebrew/include/boost/container/deque.hpp:
 
 /opt/homebrew/include/boost/container/container_fwd.hpp:
 
-/opt/homebrew/include/eigen3/Eigen/src/Core/Block.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/seed_seq.h:
+
+/opt/homebrew/include/boost/parameter/aux_/default.hpp:
 
 /opt/homebrew/include/boost/utility/enable_if.hpp:
 
@@ -5674,6 +5979,14 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/config/stdlib/libcpp.hpp:
 
 /opt/homebrew/include/boost/config/pragma_message.hpp:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/IO.h:
+
+/opt/homebrew/include/CGAL/Distance_2/Line_2_Triangle_2.h:
+
+/opt/homebrew/include/CGAL/Intersections_3/Ray_3_Ray_3.h:
+
+/opt/homebrew/include/boost/config/platform/macos.hpp:
 
 /opt/homebrew/include/boost/preprocessor/repetition/repeat_from_to.hpp:
 
@@ -5691,7 +6004,11 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/concept_archetype.hpp:
 
-/opt/homebrew/include/boost/type_traits/is_swappable.hpp:
+/opt/homebrew/include/boost/range/detail/msvc_has_iterator_workaround.hpp:
+
+/opt/homebrew/include/CGAL/CORE/Real.h:
+
+/opt/homebrew/include/boost/concept/detail/general.hpp:
 
 /opt/homebrew/include/yaml-cpp/node/detail/node.h:
 
@@ -5707,13 +6024,13 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/assert.hpp:
 
+/Users/jiayu/local/include/casadi/core/runtime/casadi_trilsolve.hpp:
+
 /opt/homebrew/include/boost/move/algo/unique.hpp:
 
 /opt/homebrew/include/boost/math/special_functions/sign.hpp:
 
 /opt/homebrew/include/boost/any/fwd.hpp:
-
-/opt/homebrew/include/boost/any/detail/placeholder.hpp:
 
 /opt/homebrew/include/boost/any.hpp:
 
@@ -5729,6 +6046,10 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/utility.h:
 
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/chrono:
+
+/opt/homebrew/include/boost/parameter/aux_/tag.hpp:
+
 /opt/homebrew/include/CGAL/user_classes.h:
 
 /opt/homebrew/include/boost/mpl/aux_/has_size.hpp:
@@ -5739,25 +6060,25 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/use.h:
 
+/Users/jiayu/local/include/casadi/core/runtime/casadi_vfmin.hpp:
+
 /opt/homebrew/include/CGAL/type_traits.h:
 
 /opt/homebrew/include/CGAL/Bbox_3.h:
 
 /opt/homebrew/include/CGAL/transforming_iterator.h:
 
-/opt/homebrew/include/boost/smart_ptr/detail/sp_counted_base_gcc_atomic.hpp:
-
 /opt/homebrew/include/CGAL/Quotient_fwd.h:
 
 /opt/homebrew/include/CGAL/rational_rotation.h:
-
-/opt/homebrew/include/eigen3/Eigen/src/Core/Random.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/copy_cv.h:
 
 /opt/homebrew/include/CGAL/predicates/kernel_ftC2.h:
 
 /opt/homebrew/include/CGAL/number_utils.h:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_low.hpp:
 
 /opt/homebrew/include/CGAL/number_type_config.h:
 
@@ -5766,6 +6087,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/CGAL/mpz_class.h:
 
 /opt/homebrew/include/boost/preprocessor/cat.hpp:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_norm_inf.hpp:
 
 /opt/homebrew/include/CGAL/mpq_class.h:
 
@@ -5791,15 +6114,9 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/linear_least_squares_fitting_points_3.h:
 
-/opt/homebrew/include/CGAL/linear_least_squares_fitting_cuboids_3.h:
-
 /opt/homebrew/include/boost/random/beta_distribution.hpp:
 
 /opt/homebrew/include/CGAL/license/Principal_component_analysis.h:
-
-/opt/homebrew/include/CGAL/Default.h:
-
-/opt/homebrew/include/boost/type_traits/same_traits.hpp:
 
 /opt/homebrew/include/boost/mpl/vector/vector20.hpp:
 
@@ -5817,25 +6134,11 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/kernel_config.h:
 
-/opt/homebrew/include/boost/type_traits/has_modulus_assign.hpp:
-
-/opt/homebrew/include/boost/random/detail/enable_warnings.hpp:
-
-/opt/homebrew/include/boost/type_traits/has_less.hpp:
-
-/opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/apply.hpp:
-
-/opt/homebrew/include/CGAL/kernel_basic.h:
-
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__utility/no_destroy.h:
 
 /opt/homebrew/include/CGAL/Intersections_3/internal/tetrahedron_lines_intersections_3.h:
 
 /opt/homebrew/include/CGAL/kernel_assertions.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_u_int8_t.h:
-
-/opt/homebrew/include/CGAL/intersections.h:
 
 /opt/homebrew/include/CGAL/intersection_3.h:
 
@@ -5853,9 +6156,9 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/function_objects.h:
 
-/opt/homebrew/include/CGAL/Surface_sweep_2/Arr_construction_subcurve.h:
-
 /opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Equal_3.h:
+
+/opt/homebrew/include/CGAL/Surface_sweep_2/Arr_construction_subcurve.h:
 
 /opt/homebrew/include/CGAL/float.h:
 
@@ -5879,10 +6182,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/preprocessor/repetition/detail/limits/for_256.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/distance.h:
-
-/opt/homebrew/include/CGAL/convex_hull_3.h:
-
 /opt/homebrew/include/CGAL/Convex_hull_2/ch_selected_extreme_points_2_impl.h:
 
 /opt/homebrew/include/CGAL/convex_hull_2.h:
@@ -5896,8 +6195,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__exception/terminate.h:
 
 /opt/homebrew/include/CGAL/constructions/kernel_ftC2.h:
-
-/opt/homebrew/include/CGAL/constant.h:
 
 /opt/homebrew/include/CGAL/config.h:
 
@@ -5919,13 +6216,9 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/boost/graph/property_maps.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/invoke.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/unwrap_ref.h:
-
-/opt/homebrew/include/boost/range/empty.hpp:
-
 /opt/homebrew/include/CGAL/boost/graph/properties_Polyhedron_3_time_stamp.h:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_vfmax.hpp:
 
 /opt/homebrew/include/CGAL/boost/graph/properties_Polyhedron_3_features.h:
 
@@ -5934,6 +6227,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/CGAL/Intersections_3/internal/Sphere_3_Sphere_3_intersection.h:
 
 /opt/homebrew/include/CGAL/boost/graph/properties.h:
+
+/opt/homebrew/include/boost/parameter/aux_/name.hpp:
 
 /opt/homebrew/include/CGAL/boost/graph/internal/initialized_index_maps_helpers.h:
 
@@ -5946,16 +6241,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/CGAL/boost/graph/internal/Has_member_id.h:
 
 /opt/homebrew/include/CGAL/boost/graph/halfedge_graph_traits.h:
-
-/opt/homebrew/include/CGAL/boost/graph/graph_traits_HalfedgeDS.h:
-
-/opt/homebrew/include/boost/mpl/aux_/begin_end_impl.hpp:
-
-/opt/homebrew/include/CGAL/boost/graph/IO/OFF.h:
-
-/opt/homebrew/include/CGAL/exceptions.h:
-
-/opt/homebrew/include/CGAL/boost/graph/IO/Generic_facegraph_builder.h:
 
 /opt/homebrew/include/CGAL/basic_classes.h:
 
@@ -5971,11 +6256,11 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/aff_transformation_tags_impl.h:
 
-/opt/homebrew/include/boost/smart_ptr/detail/shared_count.hpp:
-
 /opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/quote.hpp:
 
 /opt/homebrew/include/CGAL/Weighted_point_3.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/random:
 
 /opt/homebrew/include/CGAL/determinant.h:
 
@@ -6025,6 +6310,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Surface_sweep_2/Default_visitor.h:
 
+/opt/homebrew/include/boost/parameter/aux_/yesno.hpp:
+
 /opt/homebrew/include/CGAL/Surface_sweep_2/Default_subcurve.h:
 
 /opt/homebrew/include/CGAL/Surface_sweep_2/Default_event_base.h:
@@ -6039,9 +6326,9 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Surface_sweep_2/Curve_comparer.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/set:
-
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__compare/strong_order.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/set:
 
 /opt/homebrew/include/CGAL/Surface_sweep_2/Arr_default_overlay_traits_base.h:
 
@@ -6055,9 +6342,9 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Surface_sweep_2/Arr_basic_insertion_traits_2.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__functional/binary_negate.h:
-
 /opt/homebrew/include/boost/type_traits/add_const.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__functional/binary_negate.h:
 
 /opt/homebrew/include/CGAL/Surface_sweep_2.h:
 
@@ -6085,19 +6372,19 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Sqrt_extension/io.h:
 
-/opt/homebrew/include/boost/iterator/detail/type_traits/conjunction.hpp:
-
-/opt/homebrew/include/CGAL/Sqrt_extension/convert_to_bfi.h:
-
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/map:
 
 /opt/homebrew/include/CGAL/Sqrt_extension/Wang_traits.h:
 
-/opt/homebrew/include/boost/smart_ptr/detail/sp_has_sync_intrinsics.hpp:
-
 /opt/homebrew/include/CGAL/Intersections_2/Point_2_Ray_2.h:
 
 /opt/homebrew/include/CGAL/Sqrt_extension/Sqrt_extension_type.h:
+
+/opt/homebrew/include/boost/type_traits/is_class.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_trivially_lexicographically_comparable.h:
+
+/opt/homebrew/include/boost/predef/library/c/uc.h:
 
 /opt/homebrew/include/boost/mpl/aux_/msvc_never_true.hpp:
 
@@ -6110,8 +6397,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/CGAL/Sqrt_extension/Modular_traits.h:
 
 /opt/homebrew/include/CGAL/Sqrt_extension/Fraction_traits.h:
-
-/opt/homebrew/include/boost/type_traits/is_volatile.hpp:
 
 /opt/homebrew/include/CGAL/Sqrt_extension/Eigen_NumTraits.h:
 
@@ -6139,11 +6424,7 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Sqrt_extension.h:
 
-/opt/homebrew/include/boost/type_traits/detail/is_function_cxx_11.hpp:
-
 /opt/homebrew/include/CGAL/Sphere_3.h:
-
-/opt/homebrew/include/boost/type_traits/remove_reference.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/typeindex:
 
@@ -6154,16 +6435,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/CGAL/Simple_homogeneous.h:
 
 /opt/homebrew/include/CGAL/Simple_cartesian.h:
-
-/opt/homebrew/include/boost/preprocessor/comparison/less_equal.hpp:
-
-/opt/homebrew/include/CGAL/Segment_3.h:
-
-/opt/homebrew/include/boost/type_traits/is_member_object_pointer.hpp:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__debug_utils/randomize_range.h:
-
-/opt/homebrew/include/boost/type_traits/add_pointer.hpp:
 
 /opt/homebrew/include/CGAL/Segment_2.h:
 
@@ -6177,27 +6448,19 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Search_traits_3.h:
 
-/opt/homebrew/include/CGAL/Scalar_factor_traits.h:
-
-/opt/homebrew/include/CGAL/STL_Extension/internal/parameters_interface.h:
-
-/opt/homebrew/include/boost/type_traits/has_trivial_constructor.hpp:
-
 /opt/homebrew/include/CGAL/STL_Extension/internal/mesh_parameters_interface.h:
 
 /Users/jiayu/Desktop/nas_ws/NAS/include/node.hpp:
 
 /opt/homebrew/include/boost/predef/hardware/simd/x86_amd/versions.h:
 
+/Users/jiayu/local/include/casadi/core/runtime/casadi_clip_min.hpp:
+
 /opt/homebrew/include/CGAL/Residue.h:
 
 /opt/homebrew/include/boost/math/tools/numeric_limits.hpp:
 
-/opt/homebrew/include/boost/type_traits/has_bit_or_assign.hpp:
-
 /opt/homebrew/include/CGAL/Ray_3.h:
-
-/opt/homebrew/include/CGAL/Ray_2.h:
 
 /opt/homebrew/include/CGAL/Rational_traits.h:
 
@@ -6235,13 +6498,15 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Polygon_2_algorithms.h:
 
-/opt/homebrew/include/CGAL/Polygon_2/Polygon_2_simplicity.h:
-
 /opt/homebrew/include/CGAL/Polygon_2/Polygon_2_edge_iterator.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/semaphore:
 
 /opt/homebrew/include/CGAL/Polygon_2/Polygon_2_algorithms_impl.h:
+
+/opt/homebrew/include/CGAL/Intersections_3/Bbox_3_Sphere_3.h:
+
+/opt/homebrew/include/boost/parameter/aux_/arg_list.hpp:
 
 /opt/homebrew/include/CGAL/Polygon_2.h:
 
@@ -6257,8 +6522,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Orthogonal_k_neighbor_search.h:
 
-/opt/homebrew/include/eigen3/Eigen/src/Core/MapBase.h:
-
 /opt/homebrew/include/boost/mpl/aux_/yes_no.hpp:
 
 /opt/homebrew/include/CGAL/Origin.h:
@@ -6271,15 +6534,15 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/NT_converter.h:
 
-/opt/homebrew/include/boost/move/detail/destruct_n.hpp:
-
-/opt/homebrew/include/CGAL/Multiset.h:
-
 /opt/homebrew/include/CGAL/boost/iterator/counting_iterator.hpp:
 
 /opt/homebrew/include/CGAL/Mpzf.h:
 
 /opt/homebrew/include/CGAL/Triangle_2.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/CwiseNullaryOp.h:
+
+/opt/homebrew/include/CGAL/Modifier_base.h:
 
 /opt/homebrew/include/boost/random/fisher_f_distribution.hpp:
 
@@ -6294,10 +6557,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/math/special_functions/bernoulli.hpp:
 
 /opt/homebrew/include/CGAL/Linear_algebraCd.h:
-
-/opt/homebrew/include/boost/type_traits/copy_reference.hpp:
-
-/opt/homebrew/include/boost/type_traits/alignment_of.hpp:
 
 /opt/homebrew/include/CGAL/Intersections_3/Bbox_3_Ray_3.h:
 
@@ -6317,11 +6576,7 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Kernel_d/debug.h:
 
-/opt/homebrew/include/eigen3/Eigen/src/Core/ArithmeticSequence.h:
-
 /opt/homebrew/include/CGAL/Kernel_d/Linear_algebraCd_impl.h:
-
-/opt/homebrew/include/boost/smart_ptr/detail/local_sp_deleter.hpp:
 
 /opt/homebrew/include/CGAL/Kernel_d/Cartesian_const_iterator_d.h:
 
@@ -6333,19 +6588,27 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Kernel/interface_macros.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/ranges_uninitialized_algorithms.h:
-
-/opt/homebrew/include/CGAL/Kernel/hash_functions.h:
-
 /opt/homebrew/include/CGAL/Kernel/global_functions_2.h:
+
+/opt/homebrew/include/boost/type_traits/is_virtual_base_of.hpp:
+
+/opt/homebrew/include/CGAL/Kernel/global_functions.h:
 
 /opt/homebrew/include/CGAL/Kernel/function_objects.h:
 
 /opt/homebrew/include/CGAL/Kernel/Wutils.h:
 
+/opt/homebrew/include/boost/random/inversive_congruential.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/is_sorted_until.h:
+
+/opt/homebrew/include/boost/parameter/aux_/pack/item.hpp:
+
 /opt/homebrew/include/boost/type_traits/has_bit_or.hpp:
 
 /opt/homebrew/include/boost/move/detail/launder.hpp:
+
+/opt/homebrew/include/boost/parameter/aux_/pack/tag_template_keyword_arg.hpp:
 
 /opt/homebrew/include/boost/mpl/numeric_cast.hpp:
 
@@ -6363,6 +6626,10 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Surface_sweep_2/Arr_overlay_traits_2.h:
 
+/opt/homebrew/include/eigen3/Eigen/src/plugins/CommonCwiseBinaryOps.h:
+
+/opt/homebrew/include/CGAL/Kd_tree.h:
+
 /opt/homebrew/include/boost/mpl/vector/aux_/size.hpp:
 
 /opt/homebrew/include/CGAL/Iterator_project.h:
@@ -6377,33 +6644,15 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Iso_cuboid_3.h:
 
-/opt/homebrew/include/boost/type_traits/detail/has_binary_operator.hpp:
-
-/opt/homebrew/include/boost/mpl/aux_/push_front_impl.hpp:
-
-/opt/homebrew/include/CGAL/Interval_nt.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_fd_clr.h:
-
-/opt/homebrew/include/CGAL/license/Spatial_searching.h:
-
-/opt/homebrew/include/boost/type_traits/has_dereference.hpp:
-
-/opt/homebrew/include/boost/container/detail/min_max.hpp:
-
 /opt/homebrew/include/CGAL/Intersections_3/internal/Triangle_3_Triangle_3_intersection.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/sortable.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/internal/Triangle_3_Triangle_3_do_intersect.h:
 
 /opt/homebrew/include/eigen3/Eigen/src/Core/DiagonalProduct.h:
 
 /opt/homebrew/include/CGAL/Intersections_3/internal/Tetrahedron_3_Unbounded_3_do_intersect.h:
 
-/opt/homebrew/include/eigen3/Eigen/src/plugins/IndexedViewMethods.h:
-
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__ranges/subrange.h:
+
+/Users/jiayu/local/include/casadi/core/generic_type.hpp:
 
 /opt/homebrew/include/CGAL/Intersections_3/internal/Tetrahedron_3_Triangle_3_do_intersect.h:
 
@@ -6423,15 +6672,15 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Intersections_3/internal/Ray_3_Triangle_3_do_intersect.h:
 
-/opt/homebrew/include/CGAL/Intersections_3/Segment_3_Segment_3.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/internal/Ray_3_Tetrahedron_3_do_intersect.h:
-
 /opt/homebrew/include/boost/predef/library/std/libcomo.h:
 
 /opt/homebrew/include/CGAL/Intersections_3/internal/Ray_3_Segment_3_intersection.h:
 
 /opt/homebrew/include/boost/concept/usage.hpp:
+
+/opt/homebrew/include/boost/type_traits/is_base_and_derived.hpp:
+
+/opt/homebrew/include/CGAL/Intersections_3/internal/Ray_3_Segment_3_do_intersect.h:
 
 /opt/homebrew/include/CGAL/Intersections_3/internal/Ray_3_Ray_3_intersection.h:
 
@@ -6448,8 +6697,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/CGAL/Intersections_3/internal/Point_3_Tetrahedron_3_intersection.h:
 
 /opt/homebrew/include/CGAL/Intersections_3/internal/Point_3_Sphere_3_intersection.h:
-
-/opt/homebrew/include/boost/type_traits/is_object.hpp:
 
 /opt/homebrew/include/vtk-9.4/vtkLongLongArray.h:
 
@@ -6473,8 +6720,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Intersections_3/internal/Point_3_Ray_3_do_intersect.h:
 
-/opt/homebrew/include/CGAL/Intersections_3/internal/Plane_3_Triangle_3_intersection.h:
-
 /opt/homebrew/include/CGAL/Intersections_3/internal/Plane_3_Tetrahedron_3_intersection.h:
 
 /opt/homebrew/include/CGAL/Intersections_3/internal/Plane_3_Sphere_3_intersection.h:
@@ -6486,12 +6731,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/CGAL/Intersections_3/internal/Plane_3_Sphere_3_do_intersect.h:
 
 /opt/homebrew/include/CGAL/Intersections_3/internal/Plane_3_Segment_3_do_intersect.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/inout_ptr.h:
-
-/opt/homebrew/include/boost/random/piecewise_linear_distribution.hpp:
-
-/opt/homebrew/include/CGAL/Intersections_3/internal/Plane_3_Ray_3_intersection.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__tuple/sfinae_helpers.h:
 
@@ -6505,8 +6744,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Intersections_3/internal/Plane_3_Plane_3_intersection.h:
 
-/opt/homebrew/include/CGAL/Intersections_3/internal/Plane_3_Plane_3_do_intersect.h:
-
 /opt/homebrew/include/CGAL/boost/graph/internal/Has_member_clear.h:
 
 /opt/homebrew/include/boost/random/detail/size.hpp:
@@ -6518,10 +6755,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/CGAL/Intersections_3/internal/Line_3_Triangle_3_do_intersect.h:
 
 /opt/homebrew/include/CGAL/Point_3.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__fwd/fstream.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/internal/Line_3_Tetrahedron_3_intersection.h:
 
 /opt/homebrew/include/boost/predef/os/beos.h:
 
@@ -6547,9 +6780,9 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Intersections_3/internal/Line_3_Ray_3_do_intersect.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/new:
-
 /opt/homebrew/include/boost/type_traits/is_trivially_copyable.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/new:
 
 /opt/homebrew/include/boost/predef/library/c/vms.h:
 
@@ -6559,53 +6792,61 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Intersections_3/internal/Line_3_Point_3_intersection.h:
 
-/opt/homebrew/include/boost/mpl/or.hpp:
+/opt/homebrew/include/boost/predef/platform/windows_uwp.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_equal_range.h:
+/opt/homebrew/include/CGAL/Intersections_3/internal/Line_3_Plane_3_intersection.h:
 
-/opt/homebrew/include/CGAL/Intersections_3/internal/Line_3_Point_3_do_intersect.h:
+/opt/homebrew/include/boost/preprocessor/inc.hpp:
 
-/opt/homebrew/include/CGAL/Intersections_3/internal/Iso_cuboid_3_Segment_3_intersection.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_u_short.h:
+
+/opt/homebrew/include/boost/predef/os/solaris.h:
+
+/opt/homebrew/include/boost/describe/detail/void_t.hpp:
+
+/opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_bfs_base_visitor.h:
+
+/opt/homebrew/include/CGAL/linear_least_squares_fitting_tetrahedra_3.h:
+
+/opt/homebrew/include/boost/intrusive/pointer_traits.hpp:
+
+/opt/homebrew/include/CGAL/Intersections_3/internal/Line_3_Line_3_do_intersect.h:
+
+/opt/homebrew/include/CGAL/Intersections_3/internal/Iso_cuboid_3_Triangle_3_intersection.h:
+
+/opt/homebrew/include/boost/move/algo/detail/heap_sort.hpp:
+
+/opt/homebrew/include/boost/random/mersenne_twister.hpp:
+
+/opt/homebrew/include/boost/move/detail/reverse_iterator.hpp:
+
+/opt/homebrew/include/CGAL/Intersections_3/internal/Iso_cuboid_3_Triangle_3_do_intersect.h:
+
+/opt/homebrew/include/CGAL/Intersections_3/internal/Iso_cuboid_3_Tetrahedron_3_do_intersect.h:
 
 /opt/homebrew/include/CGAL/Intersections_3/internal/Iso_cuboid_3_Segment_3_do_intersect.h:
 
-/opt/homebrew/include/boost/assert/source_location.hpp:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/syslimits.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/make_const_lvalue_ref.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/internal/Iso_cuboid_3_Ray_3_intersection.h:
+/opt/homebrew/include/CGAL/Intersections_3/internal/Iso_cuboid_3_Ray_3_do_intersect.h:
 
 /opt/homebrew/include/CGAL/Intersections_3/internal/Iso_cuboid_3_Point_3_intersection.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_abstract.h:
+/opt/homebrew/include/CGAL/Intersections_3/internal/Iso_cuboid_3_Point_3_do_intersect.h:
 
-/opt/homebrew/include/CGAL/Intersections_3/internal/Bbox_3_Triangle_3_do_intersect.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_for_each.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory_resource/polymorphic_allocator.h:
+/opt/homebrew/include/CGAL/Intersections_3/internal/Iso_cuboid_3_Plane_3_do_intersect.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__new/nothrow_t.h:
+/opt/homebrew/include/CGAL/Intersections_3/internal/Ray_3_Sphere_3_do_intersect.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/generate.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__charconv/tables.h:
 
-/opt/homebrew/include/CGAL/Homogeneous/distance_predicatesH2.h:
+/opt/homebrew/include/CGAL/Intersections_3/internal/Iso_cuboid_3_Line_3_intersection.h:
 
-/opt/homebrew/include/CGAL/Intersections_3/internal/Bbox_3_Tetrahedron_3_do_intersect.h:
+/opt/homebrew/include/CGAL/Intersections_3/internal/Iso_cuboid_3_Iso_cuboid_3_intersection.h:
+
+/opt/homebrew/include/CGAL/Intersections_3/internal/Iso_cuboid_3_Iso_cuboid_3_do_intersect.h:
 
 /opt/homebrew/include/CGAL/Intersections_3/internal/Bbox_3_Sphere_3_do_intersect.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/libkern/arm/_OSByteOrder.h:
-
-/opt/homebrew/include/vtk-9.4/vtkVersionQuick.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/internal/Bbox_3_Segment_3_intersection.h:
-
-/opt/homebrew/include/boost/container/detail/destroyers.hpp:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/count.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/internal/Bbox_3_Ray_3_intersection.h:
 
 /opt/homebrew/include/CGAL/Distance_2/Line_2_Line_2.h:
 
@@ -6627,53 +6868,39 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Intersections_3/internal/Bbox_3_Iso_cuboid_3_intersection.h:
 
-/opt/homebrew/include/CGAL/Distance_3/Weighted_point_3_Weighted_point_3.h:
+/opt/homebrew/include/CGAL/Intersections_3/internal/Bbox_3_Iso_cuboid_3_do_intersect.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_copy_if.h:
+/opt/homebrew/include/boost/math/cstdfloat/cstdfloat_complex.hpp:
 
-/opt/homebrew/include/CGAL/Intersections_3/Sphere_3_Triangle_3.h:
+/opt/homebrew/include/CGAL/Intersections_3/Triangle_3_Triangle_3.h:
+
+/opt/homebrew/include/CGAL/boost/graph/properties_HalfedgeDS_default.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/string.h:
+
+/opt/homebrew/include/CGAL/boost/graph/properties_Triangulation_data_structure_2.h:
+
+/opt/homebrew/include/CGAL/Intersections_3/Segment_3_Triangle_3.h:
+
+/opt/homebrew/include/CGAL/Intersections_3/Segment_3_Tetrahedron_3.h:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_mtimes.hpp:
 
 /opt/homebrew/include/boost/mpl/less.hpp:
 
 /opt/homebrew/include/CGAL/Intersections_3/Segment_3_Sphere_3.h:
 
-/opt/homebrew/include/boost/multiprecision/traits/is_restricted_conversion.hpp:
+/opt/homebrew/include/CGAL/Intersections_3/internal/Ray_3_Tetrahedron_3_do_intersect.h:
 
-/opt/homebrew/include/CGAL/Distance_3/Segment_3_Line_3.h:
+/opt/homebrew/include/CGAL/Intersections_3/Segment_3_Segment_3.h:
 
-/opt/homebrew/include/CGAL/Kernel_d/Vector__.h:
+/opt/homebrew/include/CGAL/Homogeneous/PointH3.h:
 
-/opt/homebrew/include/CGAL/Arr_topology_traits/Arr_unb_planar_insertion_helper.h:
-
-/opt/homebrew/include/boost/version.hpp:
-
-/opt/homebrew/include/CGAL/Intersections_3/Ray_3_Triangle_3.h:
-
-/opt/homebrew/include/boost/predef/os.h:
-
-/opt/homebrew/include/vtk-9.4/vtkCellTypes.h:
-
-/opt/homebrew/include/boost/predef/architecture/x86/32.h:
-
-/opt/homebrew/include/eigen3/Eigen/src/Core/functors/BinaryFunctors.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/sort.h:
-
-/opt/homebrew/include/boost/predef/architecture/e2k.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/typeinfo:
-
-/opt/homebrew/include/CGAL/Intersections_3/Point_3_Triangle_3.h:
+/opt/homebrew/include/CGAL/Intersections_3/Ray_3_Sphere_3.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/count_if.h:
 
 /opt/homebrew/include/CGAL/Intersections_3/Point_3_Tetrahedron_3.h:
-
-/opt/homebrew/include/boost/predef/platform/mingw64.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__functional/is_transparent.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/Point_3_Sphere_3.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/istream_iterator.h:
 
@@ -6681,67 +6908,91 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Intersections_3/Point_3_Segment_3.h:
 
-/opt/homebrew/include/CGAL/Surface_sweep_2/Arr_overlay_subcurve.h:
+/opt/homebrew/include/CGAL/Intersections_3/Point_3_Point_3.h:
 
-/opt/homebrew/include/CGAL/CORE_Expr.h:
+/opt/homebrew/include/boost/predef/platform/android.h:
 
-/opt/homebrew/include/CGAL/Intersections_3/Point_3_Ray_3.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/discard_block_engine.h:
 
-/opt/homebrew/include/CGAL/Handle_for_virtual.h:
+/opt/homebrew/include/CGAL/Intersections_3/Plane_3_Triangle_3.h:
 
-/opt/homebrew/include/CGAL/Intersections_3/Plane_3_Point_3.h:
+/opt/homebrew/include/boost/mpl/assert.hpp:
 
-/opt/homebrew/include/CGAL/Intersections_3/internal/Point_3_Triangle_3_do_intersect.h:
+/opt/homebrew/Cellar/llvm/20.1.6/lib/clang/20/include/__stdarg___gnuc_va_list.h:
 
-/opt/homebrew/include/CGAL/linear_least_squares_fitting_segments_3.h:
+/opt/homebrew/include/CGAL/Intersections_3/Plane_3_Segment_3.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_fd_isset.h:
+/opt/homebrew/include/CGAL/Intersections_3/Plane_3_Ray_3.h:
 
-/opt/homebrew/include/CGAL/Intersections_3/Plane_3_Plane_3_Plane_3.h:
+/opt/homebrew/include/CGAL/Intersections_3/Line_3_Tetrahedron_3.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_rsize_t.h:
+/opt/homebrew/include/boost/type_traits/has_less.hpp:
 
-/opt/homebrew/include/CGAL/Intersections_3/Line_3_Triangle_3.h:
+/opt/homebrew/include/boost/random/detail/enable_warnings.hpp:
 
 /opt/homebrew/include/CGAL/Intersections_3/Line_3_Sphere_3.h:
 
+/opt/homebrew/include/CGAL/CORE_BigRat.h:
+
+/opt/homebrew/include/boost/predef/compiler/compaq.h:
+
+/opt/homebrew/include/boost/mp11/version.hpp:
+
+/opt/homebrew/include/CGAL/Intersections_3/Line_3_Point_3.h:
+
 /opt/homebrew/include/CGAL/Intersections_3/Line_3_Line_3.h:
 
-/opt/homebrew/include/CGAL/Vector_2.h:
+/opt/homebrew/include/CGAL/Intersections_3/Iso_cuboid_3_Triangle_3.h:
 
-/opt/homebrew/include/boost/smart_ptr/detail/spinlock_gcc_atomic.hpp:
+/opt/homebrew/include/boost/type_traits/is_default_constructible.hpp:
 
-/opt/homebrew/include/CGAL/Surface_sweep_2/No_overlap_subcurve.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/lib/clang/20/include/stddef.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/Iso_cuboid_3_Segment_3.h:
+/opt/homebrew/include/CGAL/Intersections_3/Iso_cuboid_3_Sphere_3.h:
 
 /opt/homebrew/include/CGAL/Intersections_3/Iso_cuboid_3_Ray_3.h:
 
+/opt/homebrew/include/CGAL/Intersections_3/Iso_cuboid_3_Point_3.h:
+
+/opt/homebrew/include/CGAL/Intersections_3/Iso_cuboid_3_Plane_3.h:
+
 /opt/homebrew/include/CGAL/property_map.h:
 
-/opt/homebrew/include/CGAL/Intersections_3/Bbox_3_Iso_cuboid_3.h:
+/opt/homebrew/include/boost/range/rend.hpp:
 
-/opt/homebrew/include/CGAL/CORE/Expr_impl.h:
+/opt/homebrew/include/boost/predef/os/bsd/bsdi.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_mach_port_t.h:
+/opt/homebrew/include/CGAL/Intersections_3/Iso_cuboid_3_Line_3.h:
 
-/opt/homebrew/include/CGAL/Intersections_2/internal/Triangle_2_Triangle_2_intersection_impl.h:
+/opt/homebrew/include/boost/random/generalized_inverse_gaussian_distribution.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__charconv/to_chars_base_10.h:
+/opt/homebrew/include/vtk-9.4/vtkCollection.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/wait.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/sift_down.h:
 
-/opt/homebrew/include/CGAL/Intersections_2/Segment_2_Triangle_2.h:
+/opt/homebrew/include/CGAL/Intersections_3/Iso_cuboid_3_Iso_cuboid_3.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/uses_allocator.h:
+/opt/homebrew/include/CGAL/Intersections_3/Bbox_3_Triangle_3.h:
 
-/opt/homebrew/include/CGAL/IO/OFF/File_header_OFF_impl.h:
+/opt/homebrew/include/eigen3/Eigen/src/Core/Map.h:
 
-/opt/homebrew/include/CGAL/CORE/Config.h:
+/opt/homebrew/include/CGAL/Intersections_3/Bbox_3_Tetrahedron_3.h:
 
-/opt/homebrew/include/CGAL/Intersections_2/Segment_2_Segment_2.h:
+/opt/homebrew/include/CGAL/Intersections_3/Bbox_3_Plane_3.h:
+
+/opt/homebrew/include/boost/mpl/aux_/advance_forward.hpp:
+
+/opt/homebrew/include/CGAL/Intersections_2/internal/Triangle_2_Triangle_2_do_intersect_impl.h:
+
+/opt/homebrew/include/boost/container/detail/version_type.hpp:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/Ref.h:
+
+/opt/homebrew/include/CGAL/Intersections_2/internal/Straight_2.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/extreme_value_distribution.h:
+
+/opt/homebrew/include/CGAL/boost/graph/IO/Generic_facegraph_printer.h:
+
+/opt/homebrew/include/CGAL/Intersections_2/Triangle_2_Triangle_2.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/iterator.h:
 
@@ -6753,81 +7004,27 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Intersections_2/Ray_2_Segment_2.h:
 
+/opt/homebrew/include/boost/random/gamma_distribution.hpp:
+
+/opt/homebrew/include/CGAL/Intersections_2/Ray_2_Ray_2.h:
+
 /opt/homebrew/include/CGAL/Intersections_2/Point_2_Triangle_2.h:
 
-/opt/homebrew/include/boost/type_traits/conjunction.hpp:
+/opt/homebrew/include/CGAL/Intersections_2/Line_2_Line_2.h:
 
-/opt/homebrew/include/eigen3/Eigen/src/Eigenvalues/HessenbergDecomposition.h:
+/opt/homebrew/include/boost/type_traits/declval.hpp:
 
-/opt/homebrew/include/boost/multiprecision/detail/functions/pow.hpp:
+/opt/homebrew/include/CGAL/boost/graph/graph_traits_HalfedgeDS_default.h:
 
-/opt/homebrew/include/CGAL/Intersections_2/Line_2_Ray_2.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/Segment_3_Tetrahedron_3.h:
-
-/opt/homebrew/include/boost/range/begin.hpp:
-
-/opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_do_intersect_functor.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__utility/element_count.h:
-
-/opt/homebrew/include/CGAL/Intersections_2/Iso_rectangle_2_Ray_2.h:
+/opt/homebrew/include/CGAL/Intersections_2/Iso_rectangle_2_Triangle_2.h:
 
 /opt/homebrew/include/CGAL/boost/graph/internal/graph_traits_2D_TDS_helper.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__fwd/byte.h:
+/opt/homebrew/include/boost/type_traits/is_pod.hpp:
 
-/opt/homebrew/include/CGAL/Intersections_2/Circle_2_Segment_2.h:
+/opt/homebrew/include/boost/type_traits/has_post_increment.hpp:
 
-/opt/homebrew/include/CGAL/Intersections_2/Circle_2_Line_2.h:
-
-/opt/homebrew/include/CGAL/Intersections_2/Circle_2_Circle_2.h:
-
-/opt/homebrew/include/CGAL/CORE/RefCount.h:
-
-/opt/homebrew/include/CGAL/Intersection_traits.h:
-
-/opt/homebrew/include/CGAL/Intersections_2/Bbox_2_Ray_2.h:
-
-/opt/homebrew/include/boost/mpl/int.hpp:
-
-/opt/homebrew/include/CGAL/IO/scan_OFF.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_is_permutation.h:
-
-/opt/homebrew/include/CGAL/IO/io_tags.h:
-
-/opt/homebrew/include/boost/iterator/iterator_traits.hpp:
-
-/opt/homebrew/include/CGAL/IO/helpers.h:
-
-/opt/homebrew/include/CGAL/IO/Verbose_ostream.h:
-
-/opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Do_intersect_3.h:
-
-/opt/homebrew/include/CGAL/IO/VRML/VRML_2_ostream.h:
-
-/opt/homebrew/include/CGAL/IO/VRML/VRML_1_ostream.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/internal/Tetrahedron_3_Triangle_3_intersection.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_ino_t.h:
-
-/opt/homebrew/include/CGAL/IO/VRML.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__format/enable_insertable.h:
-
-/opt/homebrew/include/CGAL/IO/Polyhedron_iostream.h:
-
-/opt/homebrew/include/CGAL/IO/Polyhedron_inventor_ostream.h:
-
-/Users/jiayu/Desktop/nas_ws/NAS/src/nas_plan.cpp:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__thread/poll_with_backoff.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/latch:
-
-/opt/homebrew/include/CGAL/IO/Polyhedron_VRML_2_ostream.h:
+/opt/homebrew/include/CGAL/Intersections_2/Iso_rectangle_2_Iso_rectangle_2.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__locale_dir/support/apple.h:
 
@@ -6837,15 +7034,131 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Intersections_2/Circle_2_Ray_2.h:
 
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__functional/ranges_operations.h:
+
+/opt/homebrew/include/CGAL/Intersections_2/Circle_2_Point_2.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/lib/clang/20/include/stddef.h:
+
+/opt/homebrew/include/CGAL/Surface_sweep_2/No_overlap_subcurve.h:
+
+/opt/homebrew/include/CGAL/Intersections_2/Circle_2_Line_2.h:
+
+/opt/homebrew/include/boost/predef/architecture/sparc.h:
+
+/opt/homebrew/include/CGAL/Intersections_2/Circle_2_Circle_2.h:
+
+/opt/homebrew/include/CGAL/Intersections_2/Bbox_2_Ray_2.h:
+
+/opt/homebrew/include/CGAL/Intersections_2/Bbox_2_Point_2.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_stable_partition.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__chrono/weekday.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__numeric/iota.h:
+
+/opt/homebrew/include/boost/predef/library/c/_prefix.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/insert_iterator.h:
+
+/opt/homebrew/include/CGAL/Intersections_2/Bbox_2_Line_2.h:
+
+/opt/homebrew/include/vtk-9.4/vtkTexturedActor2D.h:
+
+/opt/homebrew/include/CGAL/Unique_hash_map.h:
+
+/opt/homebrew/include/CGAL/Intersections_2/Bbox_2_Circle_2.h:
+
+/opt/homebrew/include/CGAL/CORE/RefCount.h:
+
+/opt/homebrew/include/CGAL/Intersection_traits.h:
+
+/opt/homebrew/include/CGAL/Installation/internal/enable_third_party_libraries.h:
+
+/opt/homebrew/include/boost/mpl/int.hpp:
+
+/opt/homebrew/include/CGAL/IO/scan_OFF.h:
+
+/opt/homebrew/include/CGAL/Distance_3/Point_3_Ray_3.h:
+
+/opt/homebrew/include/CGAL/IO/print_OFF.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_is_permutation.h:
+
+/opt/homebrew/include/CGAL/IO/io_tags.h:
+
+/opt/homebrew/include/boost/iterator/iterator_traits.hpp:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_sparsify.hpp:
+
+/opt/homebrew/include/CGAL/IO/helpers.h:
+
+/opt/homebrew/include/CGAL/IO/binary_file_io.h:
+
+/opt/homebrew/include/CGAL/IO/Verbose_ostream.h:
+
+/opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Do_intersect_3.h:
+
+/opt/homebrew/include/CGAL/IO/VRML/VRML_2_ostream.h:
+
+/opt/homebrew/include/CGAL/IO/VRML/VRML_1_ostream.h:
+
+/opt/homebrew/include/boost/mpl/void.hpp:
+
+/opt/homebrew/include/CGAL/IO/VRML/File_writer_VRML_2.h:
+
+/opt/homebrew/include/CGAL/IO/Polyhedron_scan_OFF.h:
+
+/opt/homebrew/include/CGAL/IO/Polyhedron_inventor_ostream.h:
+
 /opt/homebrew/include/CGAL/IO/Polyhedron_VRML_1_ostream.h:
 
-/opt/homebrew/include/boost/predef/platform/android.h:
+/opt/homebrew/include/vtk-9.4/vtkViewport.h:
 
-/opt/homebrew/include/CGAL/Intersections_3/Plane_3_Triangle_3.h:
+/opt/homebrew/include/CGAL/Arrangement_2/Arrangement_zone_2_impl.h:
+
+/opt/homebrew/include/CGAL/In_place_list.h:
+
+/opt/homebrew/include/CGAL/IO/Polyhedron_OFF_iostream.h:
 
 /opt/homebrew/include/CGAL/IO/OI/File_writer_inventor.h:
 
-/opt/homebrew/include/CGAL/IO/OFF/File_header_extended_OFF.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__utility/cmp.h:
+
+/opt/homebrew/include/CGAL/IO/OFF/generic_copy_OFF.h:
+
+/opt/homebrew/include/boost/preprocessor/seq/size.hpp:
+
+/opt/homebrew/include/boost/preprocessor/seq/seq.hpp:
+
+/opt/homebrew/include/CGAL/IO/OFF/Scanner_OFF.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/unique_ptr.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/chi_squared_distribution.h:
+
+/opt/homebrew/include/CGAL/Homogeneous/DirectionH3.h:
+
+/opt/homebrew/include/CGAL/IO/OFF/File_scanner_OFF.h:
+
+/opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_merge.h:
+
+/opt/homebrew/include/CGAL/IO/OFF/File_header_extended_OFF_impl.h:
+
+/opt/homebrew/include/CGAL/Distance_2/Segment_2_Ray_2.h:
+
+/opt/homebrew/include/CGAL/IO/OFF/File_header_OFF.h:
+
+/opt/homebrew/include/boost/random/poisson_distribution.hpp:
+
+/opt/homebrew/include/CGAL/Kernel_d/Vector__.h:
+
+/opt/homebrew/include/CGAL/Distance_3/Segment_3_Line_3.h:
+
+/opt/homebrew/include/boost/multiprecision/traits/is_restricted_conversion.hpp:
+
+/opt/homebrew/include/CGAL/IO/OFF.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__format/formatter_bool.h:
 
@@ -6853,57 +7166,67 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/IO/Generic_writer.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__format/formatter.h:
+/opt/homebrew/include/eigen3/Eigen/src/SVD/JacobiSVD.h:
 
-/opt/homebrew/include/boost/config/detail/suffix.hpp:
+/opt/homebrew/include/CGAL/IO/Color.h:
 
-/opt/homebrew/include/CGAL/IO/Arr_iostream.h:
+/opt/homebrew/include/CGAL/Kernel/solve.h:
 
-/opt/homebrew/include/eigen3/Eigen/src/Core/util/BlasUtil.h:
+/opt/homebrew/include/CGAL/Cartesian/Line_2.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/string.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__fwd/memory_resource.h:
 
-/opt/homebrew/include/boost/iterator/counting_iterator.hpp:
+/opt/homebrew/include/CGAL/IO/Arrangement_2_reader.h:
 
-/opt/homebrew/include/vtk-9.4/vtkVector.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/numbers:
-
-/opt/homebrew/include/CGAL/Homogeneous/predicates_on_pointsH3.h:
+/opt/homebrew/include/CGAL/Homogeneous_converter.h:
 
 /opt/homebrew/include/CGAL/Homogeneous/predicates_on_pointsH2.h:
 
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__bit/countl.h:
+
+/opt/homebrew/include/CGAL/Homogeneous/predicates_on_directionsH2.h:
+
+/opt/homebrew/include/boost/preprocessor/punctuation/is_begin_parens.hpp:
+
+/opt/homebrew/include/CGAL/CORE/Expr.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_nothrow_constructible.h:
+
+/opt/homebrew/include/CGAL/Homogeneous/function_objects.h:
+
 /opt/homebrew/include/CGAL/tuple.h:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_triusolve.hpp:
 
 /opt/homebrew/include/CGAL/Homogeneous/distance_predicatesH3.h:
 
+/opt/homebrew/include/CGAL/Intersections_3/internal/Bbox_3_Tetrahedron_3_do_intersect.h:
+
+/opt/homebrew/include/CGAL/Homogeneous/distance_predicatesH2.h:
+
 /opt/homebrew/include/CGAL/Homogeneous/basic_constructionsH3.h:
 
-/opt/homebrew/include/boost/mpl/aux_/na.hpp:
+/Users/jiayu/local/include/casadi/core/runtime/casadi_sparsity.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_trivially_copyable.h:
+/opt/homebrew/include/boost/foreach.hpp:
 
-/opt/homebrew/include/CGAL/Homogeneous/Weighted_point_3.h:
+/opt/homebrew/include/boost/predef/compiler/edg.h:
 
-/opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/apply_fwd.hpp:
+/opt/homebrew/include/CGAL/Homogeneous/basic_constructionsH2.h:
 
-/opt/homebrew/include/CGAL/Homogeneous/RayH3.h:
+/opt/homebrew/include/CGAL/Homogeneous/Weighted_point_2.h:
 
-/opt/homebrew/include/CGAL/IO/OFF/File_scanner_OFF.h:
+/opt/homebrew/include/boost/parameter/aux_/pack/as_parameter_requirements.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/unique_ptr.h:
+/opt/homebrew/include/CGAL/IO/Arrangement_2_writer.h:
 
-/opt/homebrew/include/CGAL/Homogeneous/DirectionH3.h:
+/opt/homebrew/include/boost/mp11/detail/mp_fold.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_copy.h:
-
-/opt/homebrew/include/CGAL/Kernel_d/Matrix__.h:
-
-/opt/homebrew/include/CGAL/Homogeneous/Data_accessorH2.h:
-
-/opt/homebrew/include/CGAL/Hash_map/internal/chained_map.h:
+/opt/homebrew/include/CGAL/Homogeneous/VectorH3.h:
 
 /opt/homebrew/include/CGAL/assertions_behaviour.h:
+
+/opt/homebrew/include/boost/parameter/aux_/tagged_argument_fwd.hpp:
 
 /opt/homebrew/include/CGAL/Has_member.h:
 
@@ -6915,11 +7238,9 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Handle_for.h:
 
-/opt/homebrew/include/boost/predef/platform/windows_store.h:
+/opt/homebrew/include/boost/type_traits/has_less_equal.hpp:
 
-/opt/homebrew/include/boost/mpl/vector.hpp:
-
-/opt/homebrew/include/CGAL/HalfedgeDS_iterator.h:
+/Users/jiayu/local/include/casadi/core/nlp_tools.hpp:
 
 /opt/homebrew/include/CGAL/HalfedgeDS_halfedge_base.h:
 
@@ -6930,6 +7251,10 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__math/hyperbolic_functions.h:
 
 /opt/homebrew/include/CGAL/Gmpz.h:
+
+/opt/homebrew/include/CGAL/Intersections_3/Plane_3_Point_3.h:
+
+/opt/homebrew/include/CGAL/Handle_for_virtual.h:
 
 /opt/homebrew/include/CGAL/Gmpq.h:
 
@@ -6945,19 +7270,13 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Fraction_traits.h:
 
+/Users/jiayu/local/include/casadi/core/runtime/casadi_vector_fmin.hpp:
+
 /opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Static_filters.h:
 
 /opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Static_filter_error.h:
 
 /opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Power_side_of_oriented_power_circle_2.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/internal/Segment_3_Sphere_3_do_intersect.h:
-
-/opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Orientation_3.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/internal/Line_3_Line_3_do_intersect.h:
-
-/opt/homebrew/include/boost/intrusive/pointer_traits.hpp:
 
 /opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Do_intersect_2.h:
 
@@ -6967,15 +7286,13 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/vector.hpp:
 
+/Users/jiayu/local/include/casadi/core/integrator.hpp:
+
 /opt/homebrew/include/boost/mpl/aux_/numeric_cast_utils.hpp:
 
 /opt/homebrew/include/CGAL/Surface_sweep_2/Arr_insertion_ss_visitor.h:
 
 /opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Compare_weighted_squared_radius_3.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/malloc/_ptrcheck.h:
-
-/opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Compare_distance_3.h:
 
 /opt/homebrew/include/boost/type_traits/has_nothrow_copy.hpp:
 
@@ -6984,8 +7301,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__mutex/mutex.h:
 
 /opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Angle_3.h:
-
-/opt/homebrew/include/boost/preprocessor/logical/not.hpp:
 
 /opt/homebrew/include/CGAL/Filtered_kernel/Cartesian_coordinate_iterator_2.h:
 
@@ -6997,9 +7312,7 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Exact_predicates_exact_constructions_kernel.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__functional/ranges_operations.h:
-
-/opt/homebrew/include/CGAL/Intersections_2/Circle_2_Point_2.h:
+/opt/homebrew/include/boost/heap/detail/stable_heap.hpp:
 
 /opt/homebrew/include/boost/detail/numeric_traits.hpp:
 
@@ -7009,9 +7322,9 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Homogeneous/ConicHPA2.h:
 
-/opt/homebrew/include/CGAL/Distance_3/Triangle_3_Triangle_3.h:
-
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_set_intersection.h:
+
+/opt/homebrew/include/CGAL/Distance_3/Triangle_3_Triangle_3.h:
 
 /opt/homebrew/include/CGAL/Euclidean_distance.h:
 
@@ -7025,12 +7338,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Exact_predicates_inexact_constructions_kernel.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__vector/comparison.h:
-
-/opt/homebrew/include/boost/mpl/integral_c_fwd.hpp:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__format/formatter_floating_point.h:
-
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/replace_if.h:
 
 /opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_traits_adaptor.h:
@@ -7043,29 +7350,21 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Distance_3/Ray_3_Plane_3.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/climits:
-
-/opt/homebrew/include/boost/move/detail/addressof.hpp:
-
-/opt/homebrew/include/CGAL/Conic_2.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/remove_cv.h:
-
-/opt/homebrew/include/CGAL/Distance_3/Point_3_Point_3.h:
-
-/opt/homebrew/include/boost/predef/architecture/ppc.h:
-
-/opt/homebrew/include/eigen3/Eigen/src/Core/IndexedView.h:
-
-/opt/homebrew/include/boost/type_traits/has_plus_assign.hpp:
-
 /opt/homebrew/include/CGAL/Distance_3/Point_3_Line_3.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/copy_move_common.h:
 
 /opt/homebrew/include/boost/math/special_functions/acosh.hpp:
 
+/opt/homebrew/include/boost/type_traits/has_virtual_destructor.hpp:
+
+/opt/homebrew/include/CGAL/squared_distance_3.h:
+
 /opt/homebrew/include/CGAL/Distance_3/Plane_3_Plane_3.h:
+
+/opt/homebrew/include/boost/type_traits/decay.hpp:
+
+/opt/homebrew/include/boost/math/special_functions/detail/igamma_inverse.hpp:
 
 /opt/homebrew/include/CGAL/Distance_3/Line_3_Line_3.h:
 
@@ -7075,15 +7374,7 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/GMP/Gmpfr_type_static.h:
 
-/opt/homebrew/include/CGAL/license/Boolean_set_operations_2.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/search.h:
-
-/opt/homebrew/include/CGAL/Distance_2/Triangle_2_Triangle_2.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__utility/cmp.h:
-
-/opt/homebrew/include/CGAL/IO/OFF/generic_copy_OFF.h:
+/opt/homebrew/include/boost/parameter/required.hpp:
 
 /opt/homebrew/include/boost/move/detail/force_ptr.hpp:
 
@@ -7091,25 +7382,23 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Distance_2/Segment_2_Segment_2.h:
 
-/opt/homebrew/include/CGAL/IO/OFF/File_header_OFF.h:
-
-/opt/homebrew/include/CGAL/Distance_2/Segment_2_Ray_2.h:
-
-/opt/homebrew/include/eigen3/Eigen/Core:
+/opt/homebrew/include/boost/parameter/aux_/parameter_requirements.hpp:
 
 /opt/homebrew/include/boost/container_hash/detail/hash_range.hpp:
 
 /opt/homebrew/include/boost/move/core.hpp:
 
+/opt/homebrew/include/CGAL/Cartesian_converter_fwd.h:
+
 /opt/homebrew/include/boost/mpl/bool_fwd.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/array_cookie.h:
 
-/opt/homebrew/include/CGAL/Cartesian_converter_fwd.h:
-
 /opt/homebrew/include/boost/type_traits/has_nothrow_destructor.hpp:
 
 /opt/homebrew/include/CGAL/Distance_2/Ray_2_Triangle_2.h:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_lsqr.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/concepts.h:
 
@@ -7119,21 +7408,23 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Distance_2/Point_2_Ray_2.h:
 
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_class.h:
+
+/Users/jiayu/local/include/casadi/core/dae_builder.hpp:
+
 /opt/homebrew/include/boost/type_traits/is_destructible.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__concepts/derived_from.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/AvailabilityInternalLegacy.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__chrono/month_weekday.h:
-
-/opt/homebrew/include/eigen3/Eigen/src/Core/BooleanRedux.h:
 
 /opt/homebrew/include/boost/preprocessor/seq/limits/fold_left_256.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/default_sentinel.h:
 
 /opt/homebrew/include/boost/intrusive/detail/reverse_iterator.hpp:
+
+/opt/homebrew/include/boost/mpl/aux_/include_preprocessed.hpp:
+
+/opt/homebrew/include/CGAL/Cartesian/Translation_rep_2.h:
 
 /opt/homebrew/include/CGAL/Direction_2.h:
 
@@ -7143,7 +7434,11 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/eigen3/Eigen/src/Core/util/IntegralConstant.h:
 
+/opt/homebrew/include/boost/parameter/aux_/is_tagged_argument.hpp:
+
 /opt/homebrew/include/CGAL/Intersections_3/Tetrahedron_3_Triangle_3.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/normal_distribution.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/lib/clang/20/include/__stddef_rsize_t.h:
 
@@ -7165,10 +7460,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_equal.h:
 
-/opt/homebrew/include/CGAL/Intersections_2/Bbox_2_Line_2.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/insert_iterator.h:
-
 /opt/homebrew/include/CGAL/Convex_hull_2/ch_akl_toussaint_impl.h:
 
 /opt/homebrew/include/CGAL/Converting_construction.h:
@@ -7185,9 +7476,17 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Compact_container.h:
 
+/opt/homebrew/include/boost/move/detail/addressof.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/remove_cv.h:
+
+/opt/homebrew/include/CGAL/Conic_2.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_id_t.h:
 
 /opt/homebrew/include/boost/multiprecision/detail/assert.hpp:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_interpn_weights.hpp:
 
 /opt/homebrew/include/boost/predef/compiler/gcc.h:
 
@@ -7199,17 +7498,21 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/aff_transformation_tags.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/lib/clang/20/include/__stddef_offsetof.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_search.h:
-
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/nat.h:
 
 /opt/homebrew/include/CGAL/GMP/Gmpz_type.h:
 
+/opt/homebrew/Cellar/llvm/20.1.6/lib/clang/20/include/__stddef_offsetof.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_search.h:
+
 /opt/homebrew/include/vtk-9.4/vtkObjectFactory.h:
 
 /opt/homebrew/include/boost/container/detail/iterator.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__utility/is_valid_range.h:
+
+/Users/jiayu/local/include/casadi/core/matrix_decl.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/desugars_to.h:
 
@@ -7219,19 +7522,11 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Chinese_remainder_traits.h:
 
-/opt/homebrew/include/boost/type_traits/extent.hpp:
-
 /opt/homebrew/include/boost/mpl/pair_view.hpp:
 
 /opt/homebrew/include/boost/predef/os/irix.h:
 
 /opt/homebrew/include/CGAL/Cartesian/solve_3.h:
-
-/opt/homebrew/include/boost/mpl/assert.hpp:
-
-/opt/homebrew/Cellar/llvm/20.1.6/lib/clang/20/include/__stdarg___gnuc_va_list.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/Plane_3_Segment_3.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/rotate.h:
 
@@ -7243,7 +7538,13 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Intersections_3/internal/Bbox_3_Line_3_do_intersect.h:
 
+/Users/jiayu/local/include/casadi/core/generic_matrix.hpp:
+
 /opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Is_degenerate_3.h:
+
+/opt/homebrew/include/boost/type_traits/conjunction.hpp:
+
+/Users/jiayu/local/include/casadi/core/slice.hpp:
 
 /opt/homebrew/include/boost/type_traits/is_member_pointer.hpp:
 
@@ -7255,9 +7556,19 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_integral.h:
 
+/opt/homebrew/include/vtk-9.4/vtkCommonExecutionModelModule.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/GeneralProduct.h:
+
+/opt/homebrew/include/CGAL/Cartesian/point_constructions_3.h:
+
+/opt/homebrew/include/boost/intrusive/list.hpp:
+
 /opt/homebrew/include/CGAL/Cartesian/plane_constructions_3.h:
 
 /opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Orientation_2.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/binomial_distribution.h:
 
 /opt/homebrew/include/CGAL/Cartesian/ft_constructions_3.h:
 
@@ -7265,19 +7576,7 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__math/trigonometric_functions.h:
 
-/opt/homebrew/include/CGAL/Kernel/solve.h:
-
-/opt/homebrew/include/CGAL/IO/Arrangement_2_reader.h:
-
-/opt/homebrew/include/CGAL/Cartesian/Line_2.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__fwd/memory_resource.h:
-
 /opt/homebrew/include/CGAL/Arrangement_2/Arr_traits_adaptor_2.h:
-
-/opt/homebrew/include/boost/iterator/transform_iterator.hpp:
-
-/opt/homebrew/include/CGAL/Cartesian/Sphere_3.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__concepts/equality_comparable.h:
 
@@ -7285,13 +7584,15 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Cartesian/Segment_2.h:
 
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__filesystem/directory_iterator.h:
+
+/opt/homebrew/include/boost/heap/policies.hpp:
+
 /opt/homebrew/include/boost/mpl/aux_/adl_barrier.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/__wctype.h:
 
 /opt/homebrew/include/CGAL/Cartesian/Scaling_rep_3.h:
-
-/opt/homebrew/include/CGAL/Bbox_2.h:
 
 /opt/homebrew/include/boost/mpl/placeholders.hpp:
 
@@ -7299,27 +7600,7 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Cartesian/Scaling_rep_2.h:
 
-/opt/homebrew/include/boost/move/algo/detail/heap_sort.hpp:
-
-/opt/homebrew/include/boost/random/mersenne_twister.hpp:
-
-/opt/homebrew/include/boost/move/detail/reverse_iterator.hpp:
-
-/opt/homebrew/include/CGAL/Intersections_3/internal/Iso_cuboid_3_Triangle_3_do_intersect.h:
-
 /opt/homebrew/include/CGAL/Cartesian/Reflection_rep_2.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/remove_copy.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/fill.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_unsigned.h:
-
-/opt/homebrew/include/boost/predef/architecture/superh.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__stop_token/stop_token.h:
-
-/opt/homebrew/include/CGAL/Cartesian/Ray_3.h:
 
 /opt/homebrew/include/CGAL/Cartesian/Plane_3.h:
 
@@ -7329,21 +7610,11 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Cartesian/Iso_rectangle_2.h:
 
-/opt/homebrew/include/boost/random/ranlux.hpp:
-
-/opt/homebrew/include/boost/type_traits/common_type.hpp:
-
 /opt/homebrew/include/vtk-9.4/vtkSelection.h:
 
 /opt/homebrew/include/CGAL/Cartesian/Iso_cuboid_3.h:
 
 /opt/homebrew/include/CGAL/Cartesian/Is_trivial_construction.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/nl_types.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__fwd/variant.h:
-
-/opt/homebrew/include/boost/type_traits/add_cv.hpp:
 
 /opt/homebrew/include/CGAL/Direction_3.h:
 
@@ -7353,9 +7624,7 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Cartesian/Direction_2.h:
 
-/opt/homebrew/include/eigen3/Eigen/src/Geometry/arch/Geometry_SIMD.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_inplace_merge.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/negative_binomial_distribution.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/find_end.h:
 
@@ -7367,21 +7636,23 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Intersections_2/Line_2_Triangle_2.h:
 
+/opt/homebrew/include/boost/intrusive/detail/get_value_traits.hpp:
+
+/opt/homebrew/include/boost/predef/architecture/superh.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/remove_copy.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/fill.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_unsigned.h:
+
 /opt/homebrew/include/CGAL/Cartesian.h:
 
-/opt/homebrew/include/CGAL/Intersections_2/Line_2_Line_2.h:
+/opt/homebrew/include/CGAL/Intersections_3/Point_3_Ray_3.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_for_each.h:
+/opt/homebrew/include/CGAL/Surface_sweep_2/Arr_overlay_subcurve.h:
 
-/opt/homebrew/include/CGAL/Intersections_3/internal/Iso_cuboid_3_Plane_3_do_intersect.h:
-
-/opt/homebrew/include/boost/mpl/aux_/advance_forward.hpp:
-
-/opt/homebrew/include/CGAL/Intersections_2/internal/Triangle_2_Triangle_2_do_intersect_impl.h:
-
-/opt/homebrew/include/boost/predef/compiler/compaq.h:
-
-/opt/homebrew/include/CGAL/CORE_BigRat.h:
+/opt/homebrew/include/CGAL/CORE_Expr.h:
 
 /opt/homebrew/include/boost/lexical_cast/detail/buffer_view.hpp:
 
@@ -7394,22 +7665,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__system_error/error_code.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__math/exponential_functions.h:
-
-/opt/homebrew/include/CGAL/CORE/poly/Poly.h:
-
-/opt/homebrew/include/boost/preprocessor/arithmetic/dec.hpp:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/arm/_limits.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/locale.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/allocate_at_least.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/internal/Iso_cuboid_3_Plane_3_intersection.h:
-
-/opt/homebrew/include/eigen3/Eigen/src/SVD/JacobiSVD.h:
-
-/opt/homebrew/include/CGAL/IO/Color.h:
 
 /opt/homebrew/include/boost/core/empty_value.hpp:
 
@@ -7435,13 +7690,11 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/CORE/Promote.h:
 
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__numeric/accumulate.h:
+
+/opt/homebrew/include/boost/parameter/template_keyword.hpp:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__chrono/convert_to_timespec.h:
-
-/opt/homebrew/include/CGAL/Cartesian/function_objects.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__thread/this_thread.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/Line_3_Ray_3.h:
 
 /opt/homebrew/include/boost/container_hash/is_described_class.hpp:
 
@@ -7450,6 +7703,28 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/Cellar/llvm/20.1.6/lib/clang/20/include/__stdarg_va_copy.h:
 
 /opt/homebrew/include/CGAL/GMP_arithmetic_kernel.h:
+
+/opt/homebrew/include/CGAL/linear_least_squares_fitting_segments_3.h:
+
+/opt/homebrew/include/CGAL/Intersections_3/internal/Point_3_Triangle_3_do_intersect.h:
+
+/opt/homebrew/include/CGAL/Intersections_2/Segment_2_Segment_2.h:
+
+/opt/homebrew/include/CGAL/IO/OFF/File_header_OFF_impl.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/uses_allocator.h:
+
+/opt/homebrew/include/CGAL/CORE/Config.h:
+
+/opt/homebrew/include/vtk-9.4/vtkVersionQuick.h:
+
+/opt/homebrew/include/CGAL/Intersections_3/internal/Bbox_3_Segment_3_intersection.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/libkern/arm/_OSByteOrder.h:
+
+/opt/homebrew/include/boost/smart_ptr/detail/sp_counted_impl.hpp:
+
+/opt/homebrew/include/CGAL/CORE/BigInt.h:
 
 /opt/homebrew/include/CGAL/CORE/BigFloat_impl.h:
 
@@ -7465,6 +7740,12 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_find_if_not.h:
 
+/opt/homebrew/include/boost/mpl/key_type_fwd.hpp:
+
+/opt/homebrew/include/boost/mpl/integral_c_fwd.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__vector/comparison.h:
+
 /opt/homebrew/include/CGAL/Dummy_tds_2.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/cstring:
@@ -7473,17 +7754,17 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/predicates/kernel_ftC3.h:
 
+/opt/homebrew/include/boost/type_traits/function_traits.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/set_intersection.h:
+
+/opt/homebrew/include/boost/intrusive/detail/list_node.hpp:
+
 /opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_sym_diff_functor.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/is_heap.h:
 
 /opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_polygon_simplifier.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/Triangle_3_Triangle_3.h:
-
-/opt/homebrew/include/boost/math/cstdfloat/cstdfloat_complex.hpp:
-
-/opt/homebrew/include/CGAL/Intersections_2/Iso_rectangle_2_Triangle_2.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/alloca.h:
 
@@ -7493,9 +7774,7 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/common_type.h:
 
-/opt/homebrew/include/CGAL/IO/OFF/File_header_extended_OFF_impl.h:
-
-/opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_merge.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_trivial.h:
 
 /opt/homebrew/include/boost/math/special_functions/polygamma.hpp:
 
@@ -7503,13 +7782,17 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__atomic/atomic_ref.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_trivial.h:
-
 /opt/homebrew/include/CGAL/Intersections_3/Line_3_Segment_3.h:
 
 /opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_intersection_functor.h:
 
-/opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/or.hpp:
+/opt/homebrew/include/boost/range/begin.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__utility/element_count.h:
+
+/opt/homebrew/include/CGAL/Intersections_2/Iso_rectangle_2_Ray_2.h:
+
+/opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_do_intersect_functor.h:
 
 /opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_difference_functor.h:
 
@@ -7529,47 +7812,25 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Boolean_set_operations_2/Ccb_curve_iterator.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/_types.h:
+/opt/homebrew/include/boost/type_traits/detail/has_prefix_operator.hpp:
 
-/opt/homebrew/include/boost/type_traits/is_fundamental.hpp:
-
-/opt/homebrew/include/boost/type_traits/has_trivial_assign.hpp:
+/opt/homebrew/include/boost/intrusive/detail/exception_disposer.hpp:
 
 /opt/homebrew/include/CGAL/CORE/BigRat.h:
+
+/opt/homebrew/include/boost/type_traits/is_scalar.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/linear_congruential_engine.h:
+
+/opt/homebrew/include/CGAL/Number_types/internal/Exact_type_selector.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__cstddef/byte.h:
 
 /opt/homebrew/include/CGAL/Arrangement_zone_2.h:
 
-/opt/homebrew/include/CGAL/Intersections_3/internal/Line_3_Plane_3_do_intersect.h:
+/opt/homebrew/include/boost/utility.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/remove_cvref.h:
-
-/opt/homebrew/include/boost/predef/architecture/sparc.h:
-
-/opt/homebrew/include/vtk-9.4/vtkViewport.h:
-
-/opt/homebrew/include/CGAL/In_place_list.h:
-
-/opt/homebrew/include/CGAL/Arrangement_2/Arrangement_zone_2_impl.h:
-
-/opt/homebrew/include/boost/predef/architecture/arm.h:
-
-/opt/homebrew/include/CGAL/Arrangement_2/Arrangement_on_surface_2_impl.h:
-
-/opt/homebrew/include/CGAL/Surface_sweep_2/Random_access_output_iterator.h:
-
-/opt/homebrew/include/CGAL/HalfedgeDS_default.h:
-
-/opt/homebrew/include/CGAL/assertions.h:
-
-/opt/homebrew/include/CGAL/General_polygon_with_holes_2.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_pod.h:
-
-/opt/homebrew/include/CGAL/Arrangement_2/Arrangement_2_iterators.h:
-
-/opt/homebrew/include/eigen3/Eigen/src/plugins/ArrayCwiseBinaryOps.h:
+/opt/homebrew/include/CGAL/Arrangement_on_surface_2.h:
 
 /opt/homebrew/include/boost/mpl/long.hpp:
 
@@ -7581,21 +7842,23 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Arr_topology_traits/Arr_unb_planar_vert_decomp_helper.h:
 
-/opt/homebrew/include/CGAL/IO/OFF/File_writer_OFF.h:
-
 /opt/homebrew/include/boost/predef/platform/cloudabi.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/string_view:
 
 /opt/homebrew/include/CGAL/Arr_topology_traits/Arr_unb_planar_overlay_helper.h:
 
+/opt/homebrew/include/boost/version.hpp:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_finite_diff.hpp:
+
+/opt/homebrew/include/CGAL/Intersections_3/Ray_3_Triangle_3.h:
+
+/opt/homebrew/include/CGAL/Arr_topology_traits/Arr_unb_planar_insertion_helper.h:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__charconv/from_chars_result.h:
 
 /opt/homebrew/include/CGAL/Arr_topology_traits/Arr_unb_planar_construction_helper.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__bit/invert_if.h:
-
-/opt/homebrew/include/eigen3/Eigen/src/Cholesky/LDLT.h:
 
 /opt/homebrew/include/CGAL/Arr_topology_traits/Arr_planar_topology_traits_base_2.h:
 
@@ -7607,11 +7870,13 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Arr_topology_traits/Arr_inc_insertion_zone_visitor.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__numeric/accumulate.h:
-
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__bit/bit_floor.h:
 
 /opt/homebrew/include/CGAL/Arr_topology_traits/Arr_bounded_planar_topology_traits_2_impl.h:
+
+/opt/homebrew/include/boost/type_traits/is_nothrow_swappable.hpp:
+
+/opt/homebrew/include/CGAL/Polyhedron_3_fwd.h:
 
 /opt/homebrew/include/CGAL/Arr_topology_traits/Arr_bounded_planar_construction_helper.h:
 
@@ -7621,12 +7886,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Arr_point_location_result.h:
 
-/opt/homebrew/include/CGAL/Convex_hull_traits_3.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__numeric/transform_inclusive_scan.h:
-
-/opt/homebrew/include/CGAL/Arr_naive_point_location.h:
-
 /opt/homebrew/include/boost/preprocessor/arithmetic/limits/dec_256.hpp:
 
 /opt/homebrew/include/CGAL/Intersections_2/Iso_rectangle_2_Segment_2.h:
@@ -7634,6 +7893,12 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__math/abs.h:
 
 /opt/homebrew/include/CGAL/version.h:
+
+/opt/homebrew/include/boost/type_traits/remove_all_extents.hpp:
+
+/opt/homebrew/include/CGAL/Cartesian/Aff_transformation_rep_3.h:
+
+/opt/homebrew/include/CGAL/Intersections_3/internal/Ray_3_Triangle_3_intersection.h:
 
 /opt/homebrew/include/CGAL/Splitters.h:
 
@@ -7649,8 +7914,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Arr_dcel_base.h:
 
-/opt/homebrew/include/boost/type_traits/is_constructible.hpp:
-
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__ostream/put_character_sequence.h:
 
 /opt/homebrew/include/CGAL/cpp_float.h:
@@ -7660,12 +7923,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_const.h:
 
 /opt/homebrew/include/CGAL/Arr_dcel.h:
-
-/opt/homebrew/include/CGAL/Spatial_searching/internal/Get_dimension_tag.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__concepts/boolean_testable.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/Iso_cuboid_3_Tetrahedron_3.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/temp_value.h:
 
@@ -7687,19 +7944,15 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Aff_transformation_2.h:
 
+/opt/homebrew/include/CGAL/Intersections_3/Iso_cuboid_3_Segment_3.h:
+
 /opt/homebrew/Cellar/llvm/20.1.6/lib/clang/20/include/stdarg.h:
-
-/opt/homebrew/include/boost/random/generalized_inverse_gaussian_distribution.hpp:
-
-/opt/homebrew/include/vtk-9.4/vtkCollection.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/sift_down.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/Iso_cuboid_3_Iso_cuboid_3.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/lib/clang/20/include/limits.h:
 
 /opt/homebrew/include/boost/config/detail/select_stdlib_config.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/random_device.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/lib/clang/20/include/inttypes.h:
 
@@ -7707,21 +7960,13 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_gid_t.h:
 
-/opt/homebrew/include/boost/multiprecision/detail/atomic.hpp:
+/opt/homebrew/include/boost/type_traits/common_type.hpp:
 
-/opt/homebrew/include/vtk-9.4/vtkRenderWindow.h:
+/opt/homebrew/include/boost/random/ranlux.hpp:
 
-/opt/homebrew/include/boost/smart_ptr/detail/sp_noexcept.hpp:
+/opt/homebrew/include/boost/type_traits/is_member_function_pointer.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__atomic/atomic.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_rotate.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/cstdarg:
-
-/opt/homebrew/include/CGAL/Distance_3/Segment_3_Ray_3.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/lib/clang/20/include/float.h:
+/opt/homebrew/Cellar/llvm/20.1.6/lib/clang/20/include/__stddef_ptrdiff_t.h:
 
 /opt/homebrew/include/CGAL/Cartesian/Vector_3.h:
 
@@ -7739,8 +7984,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/vector:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/utility:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_in_port_t.h:
 
 /opt/homebrew/include/CGAL/Arithmetic_kernel/Arithmetic_kernel_base.h:
@@ -7755,6 +7998,12 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_polygon_validation.h:
 
+/opt/homebrew/include/CGAL/Intersections_3/Point_3_Triangle_3.h:
+
+/opt/homebrew/include/boost/predef/architecture/e2k.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/typeinfo:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/type_traits:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/tuple:
@@ -7767,11 +8016,13 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Polygon_2/Polygon_2_impl.h:
 
-/opt/homebrew/include/boost/preprocessor/seq/size.hpp:
+/Users/jiayu/local/include/casadi/core/sx_fwd.hpp:
 
-/opt/homebrew/include/boost/preprocessor/seq/seq.hpp:
+/opt/homebrew/include/eigen3/Eigen/src/Core/util/BlasUtil.h:
 
-/opt/homebrew/include/CGAL/IO/OFF/Scanner_OFF.h:
+/opt/homebrew/include/boost/iterator/counting_iterator.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/string.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_mode_t.h:
 
@@ -7799,19 +8050,11 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Aff_transformation_3.h:
 
-/opt/homebrew/include/CGAL/IO/Polyhedron_scan_OFF.h:
+/opt/homebrew/include/CGAL/Homogeneous/Data_accessorH2.h:
 
-/opt/homebrew/include/boost/cstdint.hpp:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_copy.h:
 
-/opt/homebrew/include/CGAL/Intersections_3/internal/Iso_cuboid_3_Iso_cuboid_3_intersection.h:
-
-/opt/homebrew/include/CGAL/Surface_sweep_2/Arr_construction_ss_visitor.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/_types/_nl_item.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__format/formatter_integer.h:
-
-/opt/homebrew/include/CGAL/Intersections_2/Circle_2_Triangle_2.h:
+/opt/homebrew/include/CGAL/Kernel_d/Matrix__.h:
 
 /opt/homebrew/include/CGAL/Homogeneous/Aff_transformationH3.h:
 
@@ -7821,9 +8064,15 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Compare_squared_radius_3.h:
 
+/opt/homebrew/include/boost/mpl/aux_/iter_fold_if_impl.hpp:
+
 /opt/homebrew/include/CGAL/IO/io.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/memory_resource:
+
+/opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Orientation_3.h:
+
+/opt/homebrew/include/CGAL/Intersections_3/internal/Segment_3_Sphere_3_do_intersect.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/libkern/_OSByteOrder.h:
 
@@ -7831,17 +8080,13 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/math.h:
 
-/opt/homebrew/include/CGAL/Intersections_3/internal/Ray_3_Sphere_3_do_intersect.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__charconv/tables.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/internal/Iso_cuboid_3_Line_3_intersection.h:
-
 /opt/homebrew/include/boost/multiprecision/rational_adaptor.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__functional/mem_fn.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/readable_traits.h:
+
+/Users/jiayu/local/include/casadi/core/archiver.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_partition.h:
 
@@ -7859,6 +8104,12 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/Cellar/llvm/20.1.6/lib/clang/20/include/arm_neon.h:
 
+/opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/iter_fold_if_impl.hpp:
+
+/opt/homebrew/include/CGAL/IO/Polyhedron_VRML_2_ostream.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/latch:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/iterator:
 
 /opt/homebrew/include/boost/mp11/detail/mp_with_index.hpp:
@@ -7873,29 +8124,19 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/dependent_type.h:
 
+/opt/homebrew/include/boost/type_traits/negation.hpp:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/generate_n.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/in_fun_result.h:
-
-/opt/homebrew/include/boost/type_traits/negation.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/inttypes.h:
 
 /opt/homebrew/include/CGAL/Homogeneous/DirectionH2.h:
 
-/opt/homebrew/include/boost/type_traits/rank.hpp:
-
-/opt/homebrew/include/boost/type_traits/promote.hpp:
-
-/opt/homebrew/include/boost/static_assert.hpp:
-
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_empty.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/functional:
-
-/opt/homebrew/include/boost/type_traits/is_noncopyable.hpp:
-
-/opt/homebrew/include/boost/type_traits/has_right_shift_assign.hpp:
 
 /opt/homebrew/include/boost/multiprecision/detail/number_compare.hpp:
 
@@ -7922,20 +8163,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/predef/os/vms.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/complex:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__new/allocate.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/clocale:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/coroutine:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__format/format_parse_context.h:
-
-/opt/homebrew/include/eigen3/Eigen/src/Core/Reshaped.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/Sphere_3_Sphere_3.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/chrono:
 
 /opt/homebrew/include/boost/mpl/reverse_fold.hpp:
 
@@ -7975,14 +8202,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Arr_segment_traits_2.h:
 
-/opt/homebrew/include/boost/random/negative_binomial_distribution.hpp:
-
-/opt/homebrew/include/boost/preprocessor/array/elem.hpp:
-
-/opt/homebrew/include/CGAL/linear_least_squares_fitting_tetrahedra_3.h:
-
-/opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_bfs_base_visitor.h:
-
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__utility/to_underlying.h:
 
 /opt/homebrew/include/boost/move/iterator.hpp:
@@ -7995,19 +8214,13 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/preprocessor/arithmetic/add.hpp:
 
-/opt/homebrew/include/boost/throw_exception.hpp:
-
 /opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/full_lambda.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__utility/pair.h:
 
-/opt/homebrew/include/CGAL/CORE/ExprRep.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__utility/move.h:
+/Users/jiayu/local/include/casadi/core/im_fwd.hpp:
 
 /opt/homebrew/include/CGAL/Arr_walk_along_line_point_location.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__utility/is_valid_range.h:
 
 /opt/homebrew/include/CGAL/Subiterator.h:
 
@@ -8025,12 +8238,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__utility/forward_like.h:
 
-/opt/homebrew/include/eigen3/Eigen/src/Core/CoreEvaluators.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/_stdio.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__utility/empty.h:
-
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__undef_macros:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__functional/mem_fun_ref.h:
@@ -8039,11 +8246,15 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/void_t.h:
 
-/opt/homebrew/include/boost/predef/architecture/mips.h:
+/opt/homebrew/include/boost/range/empty.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/ctime:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/invoke.h:
 
-/opt/homebrew/include/CGAL/Intersections_3/Bbox_3_Bbox_3.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/unwrap_ref.h:
+
+/opt/homebrew/include/vtk-9.4/vtkGenericDataArray.h:
+
+/opt/homebrew/include/boost/parameter/aux_/result_of0.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_s_ifmt.h:
 
@@ -8057,21 +8268,27 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Distance_3/Point_3_Weighted_point_3.h:
 
+/opt/homebrew/include/boost/type_traits/is_fundamental.hpp:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/_types.h:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/is_heap_until.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/result_of.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/remove_reference.h:
 
-/opt/homebrew/include/CGAL/Intersections_3/Plane_3_Tetrahedron_3.h:
+/opt/homebrew/include/boost/type_traits/has_left_shift_assign.hpp:
 
-/opt/homebrew/include/vtk-9.4/vtkTexturedActor2D.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/remove_extent.h:
 
-/opt/homebrew/include/CGAL/Unique_hash_map.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/move.h:
 
-/opt/homebrew/include/CGAL/Intersections_2/Bbox_2_Circle_2.h:
+/opt/homebrew/include/boost/intrusive/link_mode.hpp:
 
-/opt/homebrew/include/boost/type_traits/aligned_storage.hpp:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/climits:
+
+/opt/homebrew/include/CGAL/Distance_3/Point_3_Point_3.h:
 
 /opt/homebrew/include/boost/mpl/vector/aux_/at.hpp:
 
@@ -8085,13 +8302,35 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/negation.h:
 
+/opt/homebrew/include/boost/assert/source_location.hpp:
+
+/opt/homebrew/include/CGAL/Intersections_3/internal/Iso_cuboid_3_Ray_3_intersection.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/syslimits.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/make_const_lvalue_ref.h:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_volatile.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__thread/this_thread.h:
+
+/opt/homebrew/include/CGAL/Cartesian/function_objects.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_ct_rune_t.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_trivially_relocatable.h:
 
+/opt/homebrew/include/CGAL/Homogeneous/Weighted_point_3.h:
+
+/opt/homebrew/include/boost/mpl/aux_/na.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_trivially_copyable.h:
+
 /opt/homebrew/include/CGAL/Intersections_3/Line_3_Plane_3.h:
+
+/opt/homebrew/include/CGAL/Cartesian/Ray_3.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__stop_token/stop_token.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/istreambuf_iterator.h:
 
@@ -8109,17 +8348,29 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_pointer.h:
 
-/opt/homebrew/include/CGAL/Surface_sweep_2/Arr_insertion_traits_2.h:
+/opt/homebrew/include/boost/predef/architecture/mips.h:
 
-/opt/homebrew/include/boost/type_traits/is_base_of.hpp:
+/opt/homebrew/include/CGAL/Intersections_3/Bbox_3_Bbox_3.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/ctime:
+
+/opt/homebrew/include/CGAL/IO/Arr_iostream.h:
+
+/opt/homebrew/include/boost/config/detail/suffix.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__mutex/once_flag.h:
+
+/opt/homebrew/include/CGAL/assertions.h:
+
+/opt/homebrew/include/CGAL/General_polygon_with_holes_2.h:
+
+/opt/homebrew/include/CGAL/Arrangement_2/Arrangement_2_iterators.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_pod.h:
 
 /opt/homebrew/include/CGAL/CORE_BigFloat.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_object.h:
-
-/opt/homebrew/include/eigen3/Eigen/src/Core/CwiseTernaryOp.h:
 
 /opt/homebrew/include/CGAL/Kernel/Return_base_tag.h:
 
@@ -8127,35 +8378,37 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/common_iterator.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/construct_at.h:
-
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__concepts/arithmetic.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/construct_at.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_nothrow_destructible.h:
 
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__utility/convert_to_integral.h:
+
+/Users/jiayu/local/include/casadi/core/dm_fwd.hpp:
+
+/opt/homebrew/include/eigen3/Eigen/src/LU/arch/InverseSize4.h:
+
+/opt/homebrew/include/boost/type_traits/has_nothrow_constructor.hpp:
+
+/opt/homebrew/include/CGAL/CORE/CoreAux_impl.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_nothrow_convertible.h:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__format/formatter_integral.h:
-
-/opt/homebrew/include/CGAL/CORE/Expr.h:
-
-/opt/homebrew/include/CGAL/Homogeneous/function_objects.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_nothrow_constructible.h:
 
 /opt/homebrew/include/boost/mpl/same_as.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_nothrow_assignable.h:
-
-/opt/homebrew/include/CGAL/Intersections_2/Line_2_Point_2.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/cwctype:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_member_pointer.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_literal_type.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__utility/as_const.h:
 
 /opt/homebrew/include/CGAL/Homogeneous/Iso_rectangleH2.h:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_de_boor.hpp:
 
 /opt/homebrew/include/CGAL/Distance_2/Point_2_Segment_2.h:
 
@@ -8167,19 +8420,19 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_simplifier_traits.h:
 
+/Users/jiayu/local/include/casadi/core/importer.hpp:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__bit/bit_ceil.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_implicitly_default_constructible.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_fundamental.h:
-
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_enum.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_convertible.h:
+/opt/homebrew/include/eigen3/Eigen/src/Core/Redux.h:
 
-/opt/homebrew/include/eigen3/Eigen/src/Core/CwiseUnaryView.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/has_unique_object_representation.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_class.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_constant_evaluated.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_char_like_type.h:
 
@@ -8193,11 +8446,9 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_bounded_array.h:
 
-/opt/homebrew/include/CGAL/convexity_check_3.h:
+/opt/homebrew/include/boost/random/uniform_on_sphere.hpp:
 
-/opt/homebrew/include/CGAL/Intersections_3/internal/Line_3_Segment_3_do_intersect.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_base_of.h:
+/opt/homebrew/include/CGAL/Distance_3/Ray_3_Ray_3.h:
 
 /opt/homebrew/include/boost/intrusive/detail/minimal_less_equal_header.hpp:
 
@@ -8211,63 +8462,25 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/type_traits/add_rvalue_reference.hpp:
 
+/Users/jiayu/local/include/casadi/core/runtime/casadi_densify.hpp:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_always_bitcastable.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_allocator.h:
 
-/opt/homebrew/include/CGAL/Lazy_exact_nt.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__numeric/transform_inclusive_scan.h:
 
-/opt/homebrew/include/CGAL/boost/graph/properties_HalfedgeDS_default.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/string.h:
-
-/opt/homebrew/include/CGAL/boost/graph/properties_Triangulation_data_structure_2.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/Segment_3_Triangle_3.h:
+/opt/homebrew/include/CGAL/Convex_hull_traits_3.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/integral_constant.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/atomic:
-
-/opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Side_of_oriented_sphere_3.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_set_union.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/enable_if.h:
-
-/opt/homebrew/include/CGAL/CORE_coercion_traits.h:
-
-/opt/homebrew/include/CGAL/Cartesian/Line_3.h:
-
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/disjunction.h:
 
-/opt/homebrew/include/yaml-cpp/emitterstyle.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/ostream:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/detected_or.h:
-
-/opt/homebrew/include/eigen3/Eigen/src/Core/MathFunctionsImpl.h:
+/opt/homebrew/include/boost/parameter/aux_/use_default.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/datasizeof.h:
 
-/opt/homebrew/include/boost/container/detail/version_type.hpp:
-
-/opt/homebrew/include/eigen3/Eigen/src/Core/Ref.h:
-
-/opt/homebrew/include/CGAL/Intersections_2/internal/Straight_2.h:
-
 /opt/homebrew/include/boost/container/detail/copy_move_algo.hpp:
-
-/opt/homebrew/include/CGAL/Aos_observer.h:
-
-/opt/homebrew/include/eigen3/Eigen/src/Core/products/TriangularMatrixVector.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/deque:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/container_traits.h:
-
-/opt/homebrew/include/eigen3/Eigen/src/Cholesky/LLT.h:
 
 /opt/homebrew/include/CGAL/Cartesian/ConicCPA2.h:
 
@@ -8277,8 +8490,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Bigfloat_interval_traits.h:
 
-/opt/homebrew/include/boost/type_traits/cv_traits.hpp:
-
 /opt/homebrew/include/CGAL/Homogeneous/PointH2.h:
 
 /opt/homebrew/include/CGAL/Distance_2/Point_2_Line_2.h:
@@ -8286,16 +8497,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/math/cstdfloat/cstdfloat_cmath.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/barrier:
-
-/opt/homebrew/include/boost/mpl/bool.hpp:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/common_reference.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_replace.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__concepts/regular.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/can_extract_key.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/aligned_union.h:
 
@@ -8321,6 +8522,10 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/counted_iterator.h:
 
+/opt/homebrew/include/boost/type_traits/has_minus.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__tuple/tuple_size.h:
+
 /opt/homebrew/include/CGAL/version_macros.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__tuple/tuple_like_no_subrange.h:
@@ -8330,10 +8535,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/foreach_fwd.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__cstddef/nullptr_t.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__atomic/contention_t.h:
-
-/opt/homebrew/include/boost/type_traits/is_convertible.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__tuple/tuple_indices.h:
 
@@ -8356,6 +8557,10 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/CGAL/Union_find.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__thread/support.h:
+
+/Users/jiayu/Desktop/nas_ws/NAS/src/nas_plan.cpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__thread/poll_with_backoff.h:
 
 /opt/homebrew/include/CGAL/CORE/BigFloatRep.h:
 
@@ -8387,47 +8592,15 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/preprocessor/list/detail/limits/fold_left_256.hpp:
 
-/opt/homebrew/include/boost/config/detail/posix_features.hpp:
+/opt/homebrew/include/boost/mpl/O1_size.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/out_ptr.h:
+/Users/jiayu/local/include/casadi/core/runtime/casadi_dense_lsqr.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__ranges/ref_view.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__system_error/error_category.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/span:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__stop_token/intrusive_shared_ptr.h:
 
-/opt/homebrew/include/boost/math/special_functions/sin_pi.hpp:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/reverse_access.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__string/extern_template_lists.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__string/char_traits.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__math/inverse_hyperbolic_functions.h:
-
-/opt/homebrew/include/boost/predef/os/solaris.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_u_short.h:
-
-/opt/homebrew/include/boost/range/mutable_iterator.hpp:
-
-/opt/homebrew/include/boost/predef/compiler/borland.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__split_buffer:
-
-/opt/homebrew/include/CGAL/Iterator_range.h:
-
-/opt/homebrew/include/CGAL/Distance_3/Segment_3_Segment_3.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__compare/compare_three_way_result.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/arm/_mcontext.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/rotate_copy.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/lib/clang/20/include/__stddef_nullptr_t.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__ranges/size.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__stop_token/atomic_unique_lock.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__format/parser_std_format_spec.h:
 
@@ -8435,17 +8608,13 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/random/detail/disable_warnings.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_count_if.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/span:
 
-/opt/homebrew/include/CGAL/Surface_sweep_2/Event_comparer.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__ranges/ref_view.h:
 
-/opt/homebrew/include/vtk-9.4/vtkMatrixUtilities.h:
+/opt/homebrew/include/CGAL/license/lgpl.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/limits:
-
-/opt/homebrew/include/CGAL/Intersections_3/internal/Line_3_Segment_3_intersection.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__ranges/enable_view.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_pthread/_pthread_key_t.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/iostream:
 
@@ -8459,13 +8628,67 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__ranges/dangling.h:
 
+/opt/homebrew/include/boost/intrusive/detail/list_iterator.hpp:
+
+/opt/homebrew/include/CGAL/Gmpzf.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__ranges/container_compatible_range.h:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/aligned_storage.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/uniform_random_bit_generator.h:
+/Users/jiayu/local/include/casadi/core/casadi_limits.hpp:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/_printf.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__ranges/access.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/uniform_int_distribution.h:
+/opt/homebrew/include/boost/container/detail/pair.hpp:
+
+/opt/homebrew/include/boost/random/binomial_distribution.hpp:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/_types/_intmax_t.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/find_if_not.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__functional/binder2nd.h:
+
+/opt/homebrew/include/CGAL/Convex_hull_2/ch_bykat_impl.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/weibull_distribution.h:
+
+/opt/homebrew/include/CGAL/CORE/CoreDefs.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_int32_t.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/CoreEvaluators.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/uniform_real_distribution.h:
+
+/opt/homebrew/include/CGAL/CORE/ExprRep.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__utility/move.h:
+
+/opt/homebrew/include/vtk-9.4/vtkPoints.h:
+
+/opt/homebrew/include/boost/type_traits/integral_constant.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/subtract_with_carry_engine.h:
+
+/opt/homebrew/include/CGAL/Kernel/Type_equality_wrapper.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_swap_ranges.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/mach/machine/_structs.h:
+
+/opt/homebrew/include/boost/random/detail/mixmax_skip_N17.ipp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_void.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_fd_clr.h:
+
+/opt/homebrew/include/CGAL/license/Spatial_searching.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/piecewise_constant_distribution.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/lognormal_distribution.h:
 
 /opt/homebrew/include/boost/preprocessor/tuple/rem.hpp:
 
@@ -8479,47 +8702,59 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/log2.h:
 
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/knuth_b.h:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__fwd/format.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/is_valid.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_is_sorted.h:
+/opt/homebrew/include/CGAL/Intersections_3/internal/Tetrahedron_3_Bounded_3_do_intersect.h:
 
-/opt/homebrew/include/boost/math/tools/throw_exception.hpp:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/cctype:
 
-/opt/homebrew/include/boost/any/bad_any_cast.hpp:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/geometric_distribution.h:
 
-/opt/homebrew/include/eigen3/Eigen/src/Core/functors/TernaryFunctors.h:
+/opt/homebrew/include/boost/utility/addressof.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/simd_utils.h:
+/opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/advance_forward.hpp:
 
-/opt/homebrew/include/boost/multiprecision/traits/max_digits10.hpp:
+/Users/jiayu/local/include/casadi/core/runtime/casadi_norm_2.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/in_out_out_result.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/arm/limits.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__configuration/abi.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_fd_zero.h:
 
-/opt/homebrew/include/eigen3/Eigen/src/misc/Image.h:
+/opt/homebrew/include/CGAL/Intersections_3/internal/Point_3_Point_3_do_intersect.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/lib/clang/20/include/__stddef_wchar_t.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/poisson_distribution.h:
 
-/opt/homebrew/include/CGAL/Cartesian/basic_constructions_2.h:
+/opt/homebrew/include/boost/type_traits/add_reference.hpp:
 
-/opt/homebrew/include/boost/math/special_functions/next.hpp:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/generate_canonical.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/conjunction.h:
+/opt/homebrew/include/CGAL/Surface_sweep_2/Random_access_output_iterator.h:
 
-/opt/homebrew/include/CGAL/Intersections_3/Iso_cuboid_3_Point_3.h:
+/opt/homebrew/include/CGAL/HalfedgeDS_default.h:
 
-/opt/homebrew/include/boost/detail/workaround.hpp:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/discrete_distribution.h:
 
-/opt/homebrew/include/eigen3/Eigen/src/Core/Transpose.h:
+/opt/homebrew/include/boost/math/special_functions/expm1.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/equal_range.h:
+/opt/homebrew/include/boost/type_traits/conversion_traits.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__chrono/steady_clock.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/cauchy_distribution.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__numeric/transform_reduce.h:
+/Users/jiayu/local/include/casadi/core/runtime/casadi_mmax.hpp:
+
+/opt/homebrew/include/CGAL/CORE_coercion_traits.h:
+
+/opt/homebrew/include/CGAL/Cartesian/Line_3.h:
+
+/opt/homebrew/include/CGAL/Arr_naive_point_location.h:
+
+/opt/homebrew/include/boost/mpl/aux_/lambda_arity_param.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__numeric/transform_exclusive_scan.h:
 
 /opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Compare_x_2.h:
 
@@ -8531,109 +8766,99 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__numeric/pstl.h:
 
+/opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_bfs_scanner.h:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__numeric/inclusive_scan.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__chrono/day.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__numeric/gcd_lcm.h:
 
-/opt/homebrew/include/CGAL/Homogeneous/Iso_cuboidH3.h:
+/opt/homebrew/include/CGAL/Arr_point_location/Arr_batched_point_location_traits_2.h:
 
-/opt/homebrew/include/boost/math/tools/is_standalone.hpp:
+/opt/homebrew/include/boost/math/ccmath/detail/config.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__tuple/ignore.h:
-
-/opt/homebrew/include/boost/container/detail/construct_in_place.hpp:
-
-/Users/jiayu/Desktop/nas_ws/NAS/include/constants.hpp:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/pstl.h:
-
-/opt/homebrew/include/CGAL/Kernel/Type_equality_wrapper.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_swap_ranges.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/mach/machine/_structs.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/stack:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/iter_swap.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__numeric/exclusive_scan.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__numeric/adjacent_difference.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__node_handle:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_int32_t.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__utility/exchange.h:
 
-/opt/homebrew/include/CGAL/CORE/CoreDefs.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory_resource/polymorphic_allocator.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__new/nothrow_t.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__new/interference_size.h:
 
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/bernoulli_distribution.h:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_core_convertible.h:
 
-/opt/homebrew/include/CGAL/double.h:
-
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__new/global_new_delete.h:
+
+/opt/homebrew/include/boost/type_traits/has_pre_decrement.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__new/destroying_delete_t.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/clocale:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__new/allocate.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/make_unsigned.h:
 
 /opt/homebrew/include/boost/random/chi_squared_distribution.hpp:
 
-/opt/homebrew/include/boost/mpl/aux_/config/typeof.hpp:
+/opt/homebrew/include/boost/parameter/aux_/set.hpp:
 
-/opt/homebrew/include/boost/preprocessor/seq/for_each_i.hpp:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__mutex/lock_guard.h:
 
-/opt/homebrew/include/CGAL/license/Convex_hull_3.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__stop_token/intrusive_list_view.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__config_site:
+/opt/homebrew/include/boost/predef/architecture/blackfin.h:
 
-/opt/homebrew/include/boost/move/traits.hpp:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory_resource/memory_resource.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/unique_temporary_buffer.h:
+
+/opt/homebrew/include/CGAL/Intersections_3/Plane_3_Tetrahedron_3.h:
+
+/opt/homebrew/include/boost/parameter/aux_/always_true_predicate.hpp:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_u_int.h:
+
+/opt/homebrew/include/vtk-9.4/vtkMathConfigure.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/in_found_result.h:
+
+/Users/jiayu/local/include/casadi/core/im.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/swap_allocator.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/shared_count.h:
 
 /opt/homebrew/include/CGAL/Distance_2/Segment_2_Triangle_2.h:
 
 /opt/homebrew/include/CGAL/Cartesian/predicates_on_points_3.h:
 
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/ostream_iterator.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_trivially_assignable.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/student_t_distribution.h:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/raw_storage_iterator.h:
 
-/opt/homebrew/include/boost/preprocessor/punctuation/is_begin_parens.hpp:
+/opt/homebrew/include/CGAL/Intersections_3/internal/Bbox_3_Triangle_3_do_intersect.h:
 
-/opt/homebrew/include/boost/mpl/aux_/msvc_type.hpp:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_abstract.h:
 
-/opt/homebrew/include/CGAL/Arr_default_overlay_traits.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/stable_sort.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/auto_ptr.h:
+/opt/homebrew/include/CGAL/Kernel/hash_functions.h:
 
-/opt/homebrew/include/boost/lexical_cast/bad_lexical_cast.hpp:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/ranges_uninitialized_algorithms.h:
 
-/opt/homebrew/include/CGAL/CORE_arithmetic_kernel.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/pointer_traits.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/wctype.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/remove_pointer.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/copy_cvref.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__chrono/year.h:
-
-/opt/homebrew/include/boost/lexical_cast/detail/is_character.hpp:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/allocation_guard.h:
-
-/opt/homebrew/include/boost/random/extreme_value_distribution.hpp:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_includes.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/align.h:
-
-/opt/homebrew/include/boost/smart_ptr/detail/sp_disable_deprecated.hpp:
-
-/opt/homebrew/include/vtk-9.4/vtkSystemIncludes.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/addressof.h:
-
-/opt/homebrew/include/boost/mpl/aux_/inserter_algorithm.hpp:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__math/rounding_functions.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/front_insert_iterator.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/noexcept_move_assign_container.h:
 
 /opt/homebrew/include/CGAL/Filtered_predicate.h:
 
@@ -8643,49 +8868,97 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/CORE/Impl.h:
 
+/opt/homebrew/include/boost/random/piecewise_linear_distribution.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/inout_ptr.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/destruct_n.h:
+
+/opt/homebrew/include/boost/mpl/aux_/msvc_type.hpp:
+
+/opt/homebrew/include/CGAL/Arr_default_overlay_traits.h:
+
+/opt/homebrew/include/CGAL/Cartesian/Data_accessor_2.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/compressed_pair.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/auto_ptr.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/cstdio:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_standard_layout.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_set_union.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/atomic:
+
+/opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Side_of_oriented_sphere_3.h:
+
+/opt/homebrew/include/boost/lexical_cast/bad_lexical_cast.hpp:
+
+/opt/homebrew/include/CGAL/CORE_arithmetic_kernel.h:
+
+/opt/homebrew/include/boost/random/extreme_value_distribution.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_includes.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/align.h:
+
+/opt/homebrew/include/boost/mpl/aux_/inserter_algorithm.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/stdio.h:
+
+/opt/homebrew/include/CGAL/HalfedgeDS_face_base.h:
+
+/opt/homebrew/include/boost/container_hash/is_contiguous_range.hpp:
+
+/opt/homebrew/include/boost/type_traits/detail/yes_no_type.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/includes.h:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_nd_boor_eval.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__math/special_functions.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__math/rounding_functions.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__compare/compare_three_way_result.h:
+
+/Users/jiayu/local/include/casadi/core/nlpsol.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/exponential_distribution.h:
+
+/opt/homebrew/include/CGAL/Named_function_parameters.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__math/remainder.h:
+
+/opt/homebrew/include/boost/move/detail/config_end.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__math/modulo.h:
+
+/opt/homebrew/include/CGAL/Projection_traits_xy_3.h:
+
+/opt/homebrew/include/CGAL/Intersections_3/internal/Plane_3_Tetrahedron_3_do_intersect.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__math/min_max.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__math/logarithms.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__chrono/utc_clock.h:
+
+/opt/homebrew/include/CGAL/Cartesian/Weighted_point_3.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_sigaltstack.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__math/inverse_trigonometric_functions.h:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/max_element.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__math/hypot.h:
 
-/opt/homebrew/include/boost/preprocessor/config/config.hpp:
+/opt/homebrew/include/CGAL/boost/graph/graph_traits_Polyhedron_3.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/fstream:
-
-/opt/homebrew/include/boost/mpl/O1_size.hpp:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__system_error/error_category.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__numeric/transform_exclusive_scan.h:
-
-/opt/homebrew/include/boost/mpl/aux_/lambda_arity_param.hpp:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__functional/hash.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_nlink_t.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/underlying_type.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__locale:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_none_of.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/remove.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/arm/types.h:
-
-/opt/homebrew/include/boost/container_hash/is_range.hpp:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_merge.h:
-
-/opt/homebrew/include/CGAL/Kernel_traits_fwd.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_fill.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__math/error_functions.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_pthread/_pthread_rwlock_t.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__math/copysign.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__math/fdim.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/cwchar:
 
@@ -8693,33 +8966,57 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_default_dcel.h:
 
+/opt/homebrew/include/boost/utility/result_of.hpp:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/sort_heap.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__locale_dir/support/bsd_like.h:
 
+/opt/homebrew/include/boost/preprocessor/seq/for_each_i.hpp:
+
+/Users/jiayu/Desktop/nas_ws/NAS/include/astar_search.hpp:
+
+/opt/homebrew/include/CGAL/license/Convex_hull_3.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__config_site:
+
+/opt/homebrew/include/boost/move/traits.hpp:
+
+/Users/jiayu/local/include/casadi/core/dm.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_none_of.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__locale:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/wrap_iter.h:
-
-/opt/homebrew/include/CGAL/Surface_sweep_2/Arr_construction_event_base.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/optional:
-
-/opt/homebrew/include/CGAL/Intersections_3/internal/Plane_3_Triangle_3_do_intersect.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/min_element.h:
-
-/opt/homebrew/include/vtk-9.4/vtkDataArrayValueRange_AOS.h:
-
-/opt/homebrew/include/boost/type_traits/copy_cv.hpp:
-
-/opt/homebrew/include/boost/type_traits/remove_pointer.hpp:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/unreachable_sentinel.h:
-
-/opt/homebrew/include/eigen3/Eigen/QR:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/static_bounded_iter.h:
 
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__ranges/view_interface.h:
+
+/opt/homebrew/include/boost/preprocessor/identity.hpp:
+
+/opt/homebrew/include/CGAL/Homogeneous/Aff_transformationH2.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/copy_backward.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/xlocale/_wctype.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/size.h:
+
+/opt/homebrew/include/boost/type_traits/is_polymorphic.hpp:
+
+/opt/homebrew/include/CGAL/Distance_3/Point_3_Triangle_3.h:
+
 /opt/homebrew/include/boost/preprocessor/list/detail/limits/fold_right_256.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__string/extern_template_lists.h:
+
+/opt/homebrew/include/boost/math/special_functions/sin_pi.hpp:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_nlp.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/reverse_access.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__system_error/errc.h:
 
@@ -8731,6 +9028,16 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/CGAL/Arr_topology_traits/Arr_bounded_planar_insertion_helper.h:
 
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/sstream:
+
+/Users/jiayu/local/include/casadi/core/dple.hpp:
+
+/opt/homebrew/include/CGAL/Distance_3/Segment_3_Ray_3.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/cstdarg:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_scaled_copy.hpp:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_function.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/upper_bound.h:
@@ -8738,6 +9045,24 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__format/extended_grapheme_cluster_table.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/rank.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/ArrayWrapper.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/projected.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/stdexcept:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/prev.h:
+
+/opt/homebrew/include/boost/mpl/vector/aux_/push_back.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/ostreambuf_iterator.h:
+
+/opt/homebrew/include/CGAL/Cartesian/Ray_2.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/move_sentinel.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/move_iterator.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__fwd/ios.h:
 
@@ -8747,39 +9072,23 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/iterator_traits.h:
 
-/opt/homebrew/include/CGAL/Intersections_3/internal/Iso_cuboid_3_Tetrahedron_3_do_intersect.h:
+/opt/homebrew/include/boost/mpl/vector/aux_/begin_end.hpp:
 
-/opt/homebrew/include/vtk-9.4/vtk_kwiml.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/_types/_uint32_t.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/___wctype.h:
-
-/opt/homebrew/include/boost/preprocessor/comma_if.hpp:
+/Users/jiayu/local/include/casadi/core/callback.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/errno.h:
+
+/opt/homebrew/include/boost/preprocessor/comma_if.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_minmax_element.h:
 
 CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
-/opt/homebrew/include/boost/math/special_functions/log1p.hpp:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/memory:
-
-/opt/homebrew/include/boost/preprocessor/list/fold_left.hpp:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__bit/endian.h:
-
-/opt/homebrew/include/boost/type_traits/is_signed.hpp:
-
-/Users/jiayu/Desktop/nas_ws/NAS/include/tree.hpp:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/_wchar.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__string/constexpr_c_functions.h:
-
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/erase_if_container.h:
+
+/opt/homebrew/include/boost/parameter/aux_/pack/tag_type.hpp:
+
+/opt/homebrew/include/CGAL/Intersections_3/Line_3_Ray_3.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__fwd/deque.h:
 
@@ -8793,31 +9102,43 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/empty.h:
 
-/opt/homebrew/include/boost/range/range_fwd.hpp:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_posix_availability.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__filesystem/u8path.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/cerrno:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/bounded_iter.h:
-
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__concepts/class_or_enum.h:
 
-/opt/homebrew/include/boost/container_hash/is_contiguous_range.hpp:
+/opt/homebrew/include/boost/multiprecision/detail/atomic.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__math/special_functions.h:
+/opt/homebrew/include/vtk-9.4/vtkRenderWindow.h:
+
+/opt/homebrew/include/boost/smart_ptr/detail/sp_noexcept.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__atomic/atomic.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_rotate.h:
 
 /opt/homebrew/include/boost/concept/detail/concept_def.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/_abort.h:
+
+/opt/homebrew/include/boost/type_traits/same_traits.hpp:
+
+/opt/homebrew/include/CGAL/Default.h:
+
+/opt/homebrew/include/boost/multiprecision/detail/hash.hpp:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/assert.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/set_difference.h:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_sqpmethod.hpp:
+
+/Users/jiayu/local/include/casadi/core/generic_shared.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/find_first_of.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__fwd/tuple.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/in_out_result.h:
+
+/Users/jiayu/Desktop/nas_ws/NAS/include/footstep_planner.hpp:
 
 /opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Power_side_of_oriented_power_sphere_3.h:
 
@@ -8827,25 +9148,21 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__fwd/subrange.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/allocator.h:
-
 /opt/homebrew/include/boost/mpl/integral_c.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/strip_signature.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/lib/clang/20/include/__stdarg_header_macro.h:
 
+/opt/homebrew/include/eigen3/Eigen/src/Core/Dot.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_execution_policy.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/make_32_64_or_128_bit.h:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/sample.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__fwd/string_view.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_equality_comparable.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__chrono/file_clock.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__new/new_handler.h:
-
-/opt/homebrew/include/boost/type_traits/has_greater.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__fwd/streambuf.h:
 
@@ -8855,35 +9172,17 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__fwd/sstream.h:
 
-/opt/homebrew/include/boost/random/detail/xoshiro_base.hpp:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_null.h:
-
-/opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_traits_decorator.h:
-
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__fwd/istream.h:
 
-/opt/homebrew/include/CGAL/IO/Polyhedron_OFF_iostream.h:
-
-/opt/homebrew/include/CGAL/Arr_point_location/Arr_walk_along_line_pl_impl.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__new/launder.h:
-
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__fwd/bit_reference.h:
-
-/opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/advance_forward.hpp:
-
-/opt/homebrew/include/boost/utility/addressof.hpp:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__stop_token/atomic_unique_lock.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/stdexcept:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/prev.h:
 
 /opt/homebrew/include/boost/math/special_functions/detail/fp_traits.hpp:
 
 /opt/homebrew/include/boost/config/detail/select_compiler_config.hpp:
+
+/opt/homebrew/include/boost/predef/platform/mingw32.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__functional/unary_negate.h:
 
 /opt/homebrew/include/boost/predef/detail/test.h:
 
@@ -8897,27 +9196,25 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__functional/perfect_forward.h:
 
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_nlink_t.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__functional/hash.h:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/remove_volatile.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/_types/_intmax_t.h:
+/opt/homebrew/include/vtk-9.4/vtkSmartPointerBase.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/find_if_not.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__functional/binder2nd.h:
+/Users/jiayu/local/include/casadi/core/runtime/casadi_mmin.hpp:
 
 /opt/homebrew/include/vtk-9.4/vtkOStrStreamWrapper.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__functional/not_fn.h:
 
+/opt/homebrew/include/boost/heap/detail/tree_iterator.hpp:
+
 /opt/homebrew/include/CGAL/Dimension.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__functional/invoke.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/Line_3_Tetrahedron_3.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__math/remainder.h:
-
-/opt/homebrew/include/CGAL/Named_function_parameters.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/_stdlib.h:
 
@@ -8925,17 +9222,9 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_reference.h:
 
-/opt/homebrew/include/boost/type_traits/make_unsigned.hpp:
+/opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Compare_distance_3.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/move.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__math/inverse_trigonometric_functions.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__chrono/utc_clock.h:
-
-/opt/homebrew/include/CGAL/Cartesian/Weighted_point_3.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_sigaltstack.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/malloc/_ptrcheck.h:
 
 /opt/homebrew/include/boost/move/algo/detail/merge.hpp:
 
@@ -8945,29 +9234,9 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__functional/default_searcher.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__compare/synth_three_way.h:
-
-/opt/homebrew/include/eigen3/Eigen/src/Core/MathFunctions.h:
-
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__functional/bind_front.h:
 
-/opt/homebrew/include/boost/type_traits/is_assignable.hpp:
-
 /opt/homebrew/include/boost/math/policies/policy.hpp:
-
-/opt/homebrew/include/CGAL/Intersections_3/Point_3_Point_3.h:
-
-/opt/homebrew/include/boost/range/value_type.hpp:
-
-/opt/homebrew/include/boost/random/detail/ptr_helper.hpp:
-
-/opt/homebrew/include/boost/random/gamma_distribution.hpp:
-
-/opt/homebrew/include/CGAL/Intersections_2/Ray_2_Ray_2.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/shared_count.h:
-
-/opt/homebrew/include/CGAL/Cartesian/Data_accessor_2.h:
 
 /opt/homebrew/include/boost/limits.hpp:
 
@@ -8977,45 +9246,33 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/indirectly_comparable.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_sample.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/iter_move.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/Bbox_3_Sphere_3.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_seek_set.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_pthread/_pthread_rwlockattr_t.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__format/range_formatter.h:
 
-/opt/homebrew/include/boost/smart_ptr/detail/yield_k.hpp:
+/opt/homebrew/include/CGAL/Surface_sweep_2/Arr_construction_ss_visitor.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/gethostuuid.h:
+/opt/homebrew/include/CGAL/Intersections_2/Circle_2_Triangle_2.h:
 
-/opt/homebrew/include/CGAL/Intersections_2/Iso_rectangle_2_Line_2.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/_types/_nl_item.h:
 
-/opt/homebrew/include/boost/type_traits/has_post_decrement.hpp:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__format/formatter_integer.h:
 
-/opt/homebrew/include/vtk-9.4/vtkAbstractMapper3D.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__chrono/year.h:
 
-/opt/homebrew/include/boost/preprocessor/list/reverse.hpp:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/copy_cvref.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_pthread/_pthread_attr_t.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/remove.h:
 
-/opt/homebrew/include/CGAL/CORE/extLong_impl.h:
+/opt/homebrew/include/boost/type_traits/integral_promotion.hpp:
 
-/opt/homebrew/include/boost/preprocessor/tuple/elem.hpp:
+/Users/jiayu/local/include/casadi/core/runtime/casadi_oracle.hpp:
 
-/opt/homebrew/include/CGAL/Origin_impl.h:
+/opt/homebrew/include/CGAL/Distance_3/internal/squared_distance_utils_3.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/set_symmetric_difference.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__functional/function.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__format/formatter_output.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/aliasing_iterator.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__format/formatter_floating_point.h:
 
 /opt/homebrew/include/boost/mpl/aux_/full_lambda.hpp:
 
@@ -9023,101 +9280,75 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /Users/jiayu/Desktop/nas_ws/NAS/include/surface.hpp:
 
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__format/formatter.h:
+
 /opt/homebrew/include/boost/preprocessor/repetition/limits/repeat_256.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__format/format_string.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/move_iterator.h:
-
-/opt/homebrew/include/boost/random/detail/generator_bits.hpp:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_blksize_t.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__format/format_error.h:
-
-/opt/homebrew/include/CGAL/boost/graph/IO/Generic_facegraph_printer.h:
-
-/opt/homebrew/include/CGAL/Intersections_2/Triangle_2_Triangle_2.h:
-
 /opt/homebrew/include/CGAL/Cartesian/point_constructions_2.h:
+
+/opt/homebrew/include/boost/preprocessor/control/deduce_d.hpp:
 
 /opt/homebrew/include/CGAL/ch_graham_andrew.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/remove_if.h:
 
-/opt/homebrew/include/boost/preprocessor/control/deduce_d.hpp:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__exception/operations.h:
-
-/opt/homebrew/include/boost/type_traits/is_const.hpp:
-
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__format/format_args.h:
 
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/iter_swap.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/stack:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/uninitialized_algorithms.h:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_interpn_grad.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_find.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__format/escaped_output_table.h:
 
+/opt/homebrew/include/CGAL/Intersections_3/internal/Iso_cuboid_3_Segment_3_intersection.h:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_kron.hpp:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/iter_swap.h:
+
+/opt/homebrew/include/CGAL/IO/Polyhedron_iostream.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__format/enable_insertable.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__format/container_adaptor.h:
 
-/opt/homebrew/include/boost/random/poisson_distribution.hpp:
-
-/opt/homebrew/include/CGAL/IO/OFF.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__stop_token/intrusive_shared_ptr.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/arm/limits.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_fd_zero.h:
-
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__filesystem/perms.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/noexcept_move_assign_container.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/next_permutation.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__cstddef/max_align_t.h:
-
-/opt/homebrew/include/boost/preprocessor/identity.hpp:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__ranges/view_interface.h:
-
-/opt/homebrew/include/boost/smart_ptr/detail/sp_has_gcc_intrinsics.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__functional/operations.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/execution:
 
+/opt/homebrew/include/boost/move/detail/destruct_n.hpp:
+
+/opt/homebrew/include/boost/mpl/aux_/iter_apply.hpp:
+
 /opt/homebrew/include/boost/move/detail/iterator_to_raw_pointer.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__compare/ordering.h:
-
-/opt/homebrew/include/CGAL/license/lgpl.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_pthread/_pthread_key_t.h:
 
 /opt/homebrew/include/boost/mp11/detail/mp_list_v.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__filesystem/file_type.h:
 
-/opt/homebrew/include/CGAL/license/Convex_hull_2.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/machine/endian.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__filesystem/file_status.h:
-
-/opt/homebrew/include/boost/mpl/vector/aux_/begin_end.hpp:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/allocator.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/lib/clang/20/include/__stdarg___va_copy.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__filesystem/directory_iterator.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__filesystem/directory_entry.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__charconv/to_chars_integral.h:
+
+/opt/homebrew/include/boost/type_traits/is_const.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__exception/operations.h:
 
 /opt/homebrew/include/boost/container/flat_set.hpp:
 
@@ -9135,63 +9366,91 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /opt/homebrew/include/boost/predef/library/std/roguewave.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__locale_dir/pad_and_output.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/bounded_iter.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/cerrno:
+
+/opt/homebrew/include/boost/type_traits/add_pointer.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__debug_utils/randomize_range.h:
 
 /opt/homebrew/include/CGAL/Line_3.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__cstddef/ptrdiff_t.h:
 
-/opt/homebrew/include/CGAL/Intersections_2/Point_2_Point_2.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__string/constexpr_c_functions.h:
+
+/Users/jiayu/Desktop/nas_ws/NAS/include/tree.hpp:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/_wchar.h:
+
+/opt/homebrew/include/boost/parameter/keyword_fwd.hpp:
+
+/opt/homebrew/include/CGAL/Intersections_3/internal/Plane_3_Triangle_3_intersection.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/piecewise_linear_distribution.h:
+
+/opt/homebrew/include/boost/mpl/find.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__configuration/language.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__configuration/compiler.h:
 
+/opt/homebrew/include/yaml-cpp/node/impl.h:
+
+/Users/jiayu/local/include/casadi/core/rootfinder.hpp:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/unique.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__concepts/same_as.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/stdlib.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/can_extract_key.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__bit/popcount.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_replace.h:
 
-/opt/homebrew/include/CGAL/Intersections_3/internal/Point_3_Point_3_do_intersect.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__concepts/regular.h:
 
-/opt/homebrew/include/CGAL/Arr_unb_planar_topology_traits_2.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__functional/function.h:
 
-/opt/homebrew/include/boost/smart_ptr/detail/spinlock.hpp:
+/opt/homebrew/include/boost/type_traits/remove_cv_ref.hpp:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/_types/_wctrans_t.h:
+/opt/homebrew/include/boost/iterator/iterator_categories.hpp:
 
-/opt/homebrew/include/eigen3/Eigen/src/Core/products/GeneralBlockPanelKernel.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__compare/is_eq.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__concepts/different_from.h:
+/opt/homebrew/include/CGAL/Spatial_searching/internal/Get_dimension_tag.h:
 
-/opt/homebrew/include/boost/core/use_default.hpp:
+/opt/homebrew/include/CGAL/Intersections_3/Iso_cuboid_3_Tetrahedron_3.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__utility/auto_cast.h:
+/Users/jiayu/local/include/casadi/core/runtime/casadi_polyval.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__math/fdim.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__concepts/assignable.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__concepts/boolean_testable.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__compare/three_way_comparable.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__tuple/tuple_types.h:
-
-/opt/homebrew/include/boost/predef/make.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_pthread/_pthread_t.h:
-
-/opt/homebrew/include/boost/type_traits/conditional.hpp:
-
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__atomic/kill_dependency.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_fd_set.h:
+/opt/homebrew/include/eigen3/Eigen/src/Eigenvalues/HessenbergDecomposition.h:
+
+/opt/homebrew/include/boost/multiprecision/detail/functions/pow.hpp:
+
+/Users/jiayu/local/include/casadi/core/filesystem.hpp:
+
+/opt/homebrew/include/CGAL/Intersections_2/Line_2_Ray_2.h:
+
+/opt/homebrew/include/vtk-9.4/vtkType.h:
+
+/opt/homebrew/include/CGAL/Distance_2/Point_2_Triangle_2.h:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_mv_dense.hpp:
 
 /opt/homebrew/include/CGAL/Intersections_3/internal/Iso_cuboid_3_Sphere_3_do_intersect.h:
 
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_fd_set.h:
+
 /opt/homebrew/include/vtk-9.4/vtkVariantCast.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/shuffle_order_engine.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__compare/compare_partial_order_fallback.h:
 
@@ -9201,45 +9460,35 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__chrono/year_month.h:
 
-/opt/homebrew/include/vtk-9.4/vtkIntArray.h:
+/opt/homebrew/include/CGAL/Intersections_3/internal/Iso_cuboid_3_Plane_3_intersection.h:
 
-/opt/homebrew/include/CGAL/Polyhedron_items_3.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/locale.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/fenv.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/allocate_at_least.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/three_way_comp_ref_type.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/next.h:
-
-/opt/homebrew/include/CGAL/Cartesian/Ray_2.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/move_sentinel.h:
+/Users/jiayu/local/include/casadi/core/runtime/casadi_sum_viol.hpp:
 
 /opt/homebrew/include/boost/mpl/aux_/config/adl.hpp:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/Transpose.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__numeric/transform_reduce.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/equal_range.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__chrono/steady_clock.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/lib/clang/20/include/__stddef_size_t.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__chrono/statically_widen.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/stable_sort.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/system_error:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/nth_element.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/system_error:
 
 /opt/homebrew/include/boost/mpl/begin_end.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__chrono/parser_std_format_spec.h:
-
-/opt/homebrew/include/boost/config/compiler/clang.hpp:
-
-/opt/homebrew/include/boost/container/detail/addressof.hpp:
-
-/opt/homebrew/include/CGAL/Homogeneous/predicates_on_directionsH2.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__bit/countl.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__chrono/ostream.h:
 
 /opt/homebrew/include/boost/mpl/advance_fwd.hpp:
 
@@ -9247,15 +9496,15 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/allocator_traits.h:
 
-/opt/homebrew/include/CGAL/Intersections_3/internal/Line_3_Plane_3_intersection.h:
-
-/opt/homebrew/include/boost/predef/platform/windows_uwp.h:
-
 /opt/homebrew/include/CGAL/Surface_sweep_2/Arr_no_intersection_insertion_ss_visitor.h:
 
 /Users/jiayu/Desktop/nas_ws/NAS/include/geometry.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__atomic/aliases.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/Assign.h:
+
+/opt/homebrew/include/boost/random/uniform_real_distribution.hpp:
 
 /opt/homebrew/include/boost/mpl/equal_to.hpp:
 
@@ -9271,77 +9520,49 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Coplanar_3.h:
 
-/opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_bfs_scanner.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/fill_n.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_stable_partition.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__chrono/weekday.h:
-
-/opt/homebrew/include/boost/predef/library/c/_prefix.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__numeric/iota.h:
-
-/opt/homebrew/include/CGAL/license/TDS_2.h:
-
-/opt/homebrew/include/CGAL/auto_link/auto_link.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/pthread/pthread_impl.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__format/formatter_char.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__stop_token/stop_source.h:
-
-/opt/homebrew/include/boost/preprocessor/inc.hpp:
-
-/opt/homebrew/include/boost/describe/detail/void_t.hpp:
+/Users/jiayu/local/include/casadi/core/tools.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/decay.h:
 
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/wait.h:
+
+/opt/homebrew/include/CGAL/Intersections_2/Segment_2_Triangle_2.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__charconv/to_chars_base_10.h:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/lazy.h:
-
-/opt/homebrew/include/boost/preprocessor/arithmetic/inc.hpp:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__utility/swap.h:
-
-/opt/homebrew/include/CGAL/test_FPU_rounding_mode_impl.h:
-
-/opt/homebrew/include/eigen3/Eigen/src/Core/util/XprHelper.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__charconv/from_chars_integral.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_is_heap.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__bit_reference:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/reverse_copy.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/stdlib.h:
 
-/opt/homebrew/include/CGAL/predicates_on_points_2.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_select.h:
-
-/opt/homebrew/include/CGAL/Default_diagonalize_traits.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/internal/Iso_cuboid_3_Ray_3_do_intersect.h:
-
-/opt/homebrew/include/boost/smart_ptr/bad_weak_ptr.hpp:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__bit/popcount.h:
 
 /opt/homebrew/include/boost/iterator/detail/config_undef.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__filesystem/copy_options.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__bit/has_single_bit.h:
+/opt/homebrew/include/eigen3/Eigen/src/Cholesky/LDLT.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/unique_temporary_buffer.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__bit/invert_if.h:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_qrqp.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__chrono/ostream.h:
+
+/opt/homebrew/include/boost/config/compiler/clang.hpp:
+
+/opt/homebrew/include/boost/container/detail/addressof.hpp:
+
+/opt/homebrew/include/eigen3/Eigen/src/Eigenvalues/EigenSolver.h:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_cache.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__bit/bit_log2.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/ctype.h:
-
-/opt/homebrew/include/boost/preprocessor/detail/auto_rec.hpp:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_min.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__locale_dir/locale_base_api.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__bit/bit_cast.h:
 
@@ -9351,8 +9572,6 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__atomic/support/c11.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__atomic/support.h:
-
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__atomic/memory_order.h:
 
 /opt/homebrew/include/CGAL/Cartesian/line_constructions_2.h:
@@ -9360,6 +9579,12 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 /opt/homebrew/include/CGAL/Cartesian/Tetrahedron_3.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__atomic/fence.h:
+
+/opt/homebrew/include/boost/type_traits/is_convertible.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__atomic/contention_t.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/clamp_to_integral.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/lower_bound.h:
 
@@ -9369,11 +9594,9 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__atomic/atomic_flag.h:
 
+/Users/jiayu/local/include/casadi/core/runtime/shared.hpp:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__assertion_handler:
-
-/opt/homebrew/include/CGAL/Intersections_3/internal/Iso_cuboid_3_Triangle_3_intersection.h:
-
-/opt/homebrew/include/boost/type_traits/is_empty.hpp:
 
 /opt/homebrew/include/CGAL/Distance_3/Ray_3_Line_3.h:
 
@@ -9389,65 +9612,87 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__assert:
 
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_member_pointer.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/cwctype:
+
 /opt/homebrew/include/boost/random/normal_distribution.hpp:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/_ctermid.h:
+/Users/jiayu/local/include/casadi/core/casadi_interrupt.hpp:
 
-/opt/homebrew/include/boost/preprocessor/repetition/enum_trailing_params.hpp:
+/opt/homebrew/include/CGAL/Cache.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_unique.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__fwd/string.h:
 
-/opt/homebrew/include/boost/iterator/detail/facade_iterator_category.hpp:
+/Users/jiayu/local/include/casadi/core/serializer.hpp:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_timespec.h:
+/opt/homebrew/include/boost/random/negative_binomial_distribution.hpp:
 
-/opt/homebrew/include/vtk-9.4/vtkWin32Header.h:
+/opt/homebrew/include/boost/preprocessor/array/elem.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/maybe_const.h:
+/opt/homebrew/include/boost/utility/identity_type.hpp:
 
-/opt/homebrew/include/boost/iterator/iterator_adaptor.hpp:
+/opt/homebrew/include/CGAL/Intersections_2/Line_2_Segment_2.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/transform.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__thread/id.h:
 
-/opt/homebrew/include/eigen3/Eigen/src/Eigenvalues/SelfAdjointEigenSolver.h:
+/Users/jiayu/local/include/casadi/core/runtime/casadi_swap.hpp:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_caddr_t.h:
+/Users/jiayu/local/include/casadi/core/runtime/casadi_norm_1.hpp:
 
-/opt/homebrew/include/vtk-9.4/vtkGenericCell.h:
+/opt/homebrew/include/vtk-9.4/vtkIntArray.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_pthread/_pthread_cond_t.h:
+/opt/homebrew/include/CGAL/Polyhedron_items_3.h:
 
-/opt/homebrew/include/nlohmann/json_fwd.hpp:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/fenv.h:
 
-/opt/homebrew/include/CGAL/Homogeneous/LineH2.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/next.h:
 
-/opt/homebrew/include/boost/multiprecision/traits/extract_exponent_type.hpp:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/three_way_comp_ref_type.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/charconv:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__chrono/year_month_day.h:
+
+/opt/homebrew/include/boost/intrusive/detail/array_initializer.hpp:
+
+/opt/homebrew/include/CGAL/Kernel/global_functions_internal_3.h:
+
+/opt/homebrew/include/CGAL/mutex.h:
+
+/opt/homebrew/include/CGAL/Sqrt_extension/Chinese_remainder_traits.h:
+
+/opt/homebrew/include/boost/multiprecision/traits/transcendental_reduction_type.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/stable_partition.h:
 
 /opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/bind.hpp:
 
-/opt/homebrew/include/vtk-9.4/vtkType.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_pthread/_pthread_rwlock_t.h:
 
-/opt/homebrew/include/CGAL/Distance_2/Point_2_Triangle_2.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__math/copysign.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/stdio.h:
+/opt/homebrew/include/boost/predef/os.h:
 
-/opt/homebrew/include/CGAL/HalfedgeDS_face_base.h:
+/opt/homebrew/include/vtk-9.4/vtkCellTypes.h:
 
-/opt/homebrew/include/CGAL/iterator.h:
+/opt/homebrew/include/boost/predef/architecture/x86/32.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/shift_left.h:
+/opt/homebrew/include/eigen3/Eigen/src/Core/functors/BinaryFunctors.h:
 
-/opt/homebrew/include/boost/random/shuffle_order.hpp:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/sort.h:
 
-/opt/homebrew/include/boost/preprocessor/arithmetic/detail/is_maximum_number.hpp:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__configuration/abi.h:
 
-/opt/homebrew/include/CGAL/Arr_tags.h:
+/opt/homebrew/include/boost/multiprecision/traits/max_digits10.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/uses_allocator_construction.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/in_out_out_result.h:
 
-/opt/homebrew/include/CGAL/Homogeneous/Weighted_point_2.h:
+/opt/homebrew/include/boost/any/bad_any_cast.hpp:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/functors/TernaryFunctors.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/simd_utils.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/shuffle.h:
 
 /opt/homebrew/include/vtk-9.4/vtkStdString.h:
 
@@ -9455,23 +9700,33 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /opt/homebrew/include/boost/container/detail/type_traits.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/fill_n.h:
-
 /opt/homebrew/include/CGAL/centroid.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_blkcnt_t.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/set_union.h:
 
-/opt/homebrew/include/CGAL/Intersections_3/internal/Iso_cuboid_3_Iso_cuboid_3_do_intersect.h:
+/opt/homebrew/include/boost/container/detail/allocation_type.hpp:
 
-/opt/homebrew/include/CGAL/Interval_traits.h:
+/opt/homebrew/include/CGAL/Coercion_traits.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/merge.h:
+/opt/homebrew/include/boost/mpl/aux_/begin_end_impl.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/search_n.h:
+/opt/homebrew/include/CGAL/boost/graph/IO/OFF.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__ranges/access.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/_ctype.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__concepts/swappable.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_u_int32_t.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__charconv/from_chars_floating_point.h:
+
+/opt/homebrew/include/boost/preprocessor/tuple/elem.hpp:
+
+/opt/homebrew/include/CGAL/Origin_impl.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/set_symmetric_difference.h:
 
 /opt/homebrew/include/boost/predef/hardware/simd/ppc/versions.h:
 
@@ -9489,41 +9744,73 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/machine/signal.h:
 
+/opt/homebrew/include/CGAL/license/Boolean_set_operations_2.h:
+
+/opt/homebrew/include/CGAL/Distance_2/Triangle_2_Triangle_2.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/search.h:
+
+/opt/homebrew/include/CGAL/Distance_3/Segment_3_Segment_3.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/lib/clang/20/include/__stddef_nullptr_t.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__ranges/size.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/arm/_mcontext.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/rotate_copy.h:
+
+/opt/homebrew/include/CGAL/Homogeneous/predicates_on_pointsH3.h:
+
+/opt/homebrew/include/vtk-9.4/vtkVector.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/numbers:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__concepts/copyable.h:
 
 /opt/homebrew/include/boost/mpl/size_fwd.hpp:
 
+/Users/jiayu/local/include/casadi/core/runtime/casadi_newton.hpp:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/any_of.h:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_tri_project.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__compare/weak_order.h:
 
-/opt/homebrew/include/CGAL/Homogeneous/Aff_transformationH2.h:
+/opt/homebrew/include/CGAL/boost/graph/graph_traits_HalfedgeDS.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/copy_backward.h:
+/Users/jiayu/local/include/casadi/core/runtime/casadi_scal.hpp:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/xlocale/_wctype.h:
+/opt/homebrew/include/CGAL/predicates_on_points_2.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_select.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/reverse_copy.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/reverse.h:
 
-/opt/homebrew/include/boost/preprocessor/array/size.hpp:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/wchar.h:
-
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_contains.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/queue:
-
-/opt/homebrew/include/boost/type_traits/is_reference.hpp:
-
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__bit/blsr.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_trivially_assignable.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/replace_copy_if.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/__endian.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_upper_bound.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__concepts/predicate.h:
+
+/opt/homebrew/include/vtk-9.4/vtkDataArrayValueRange_Generic.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_unique_copy.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/___wctype.h:
+
+/opt/homebrew/include/vtk-9.4/vtk_kwiml.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/_types/_uint32_t.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__functional/boyer_moore_searcher.h:
 
@@ -9533,35 +9820,9 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_transform.h:
 
-/opt/homebrew/include/CGAL/Intersections_3/internal/Plane_3_Plane_3_Plane_3_do_intersect.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/for_each.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_union.h:
-
-/opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Compare_y_at_x_2.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_constructible.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_sort_heap.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/Bbox_3_Plane_3.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/swap_allocator.h:
-
-/opt/homebrew/include/vtk-9.4/vtkMathConfigure.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/in_found_result.h:
-
-/opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/placeholders.hpp:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/signal.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_sigset_t.h:
-
-/opt/homebrew/include/CGAL/Handle_hash_function.h:
-
-/opt/homebrew/include/CGAL/Homogeneous/Homogeneous_base.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__functional/identity.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_stable_sort.h:
 
 /opt/homebrew/include/CGAL/Kernel/mpl.h:
 
@@ -9569,21 +9830,47 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__ios/fpos.h:
 
-/opt/homebrew/include/CGAL/CORE/MemoryPool.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/Plane_3_Plane_3.h:
-
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_set_symmetric_difference.h:
-
-/opt/homebrew/include/CGAL/Homogeneous_converter.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/shift_right.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_set_difference.h:
 
-/opt/homebrew/include/boost/random/non_central_chi_squared_distribution.hpp:
+/Users/jiayu/local/include/casadi/core/sx_elem.hpp:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/resource.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_search_n.h:
+
+/opt/homebrew/include/nlohmann/json_fwd.hpp:
+
+/opt/homebrew/include/boost/multiprecision/traits/extract_exponent_type.hpp:
+
+/opt/homebrew/include/CGAL/Homogeneous/LineH2.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/_printf.h:
+
+/opt/homebrew/include/boost/intrusive/detail/default_header_holder.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_reverse_copy.h:
+
+/opt/homebrew/include/boost/iterator/detail/type_traits/conjunction.hpp:
+
+/opt/homebrew/include/CGAL/Sqrt_extension/convert_to_bfi.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_swappable.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__functional/reference_wrapper.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/unistd.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_reverse.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/move_backward.h:
+
+/opt/homebrew/include/CGAL/HalfedgeDS_list.h:
+
+/opt/homebrew/include/boost/move/algo/adaptive_sort.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_replace_copy.h:
 
 /opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/tools.h:
 
@@ -9591,17 +9878,21 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_remove_if.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__concepts/movable.h:
+/opt/homebrew/include/CGAL/Intersections_3/Plane_3_Plane_3.h:
 
-/opt/homebrew/include/boost/multiprecision/detail/hash.hpp:
+/opt/homebrew/include/CGAL/CORE/MemoryPool.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/assert.h:
+/opt/homebrew/include/boost/preprocessor/control/detail/while.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/set_difference.h:
+/opt/homebrew/include/CGAL/Arrangement_2/Arr_do_intersect_zone_visitor.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/unistd.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_remove_copy.h:
+
+/opt/homebrew/include/vtk-9.4/vtkWin32Header.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/maybe_const.h:
 
 /opt/homebrew/include/CGAL/boost/graph/properties_HalfedgeDS_base.h:
 
@@ -9609,7 +9900,11 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_push_heap.h:
 
-/opt/homebrew/include/boost/type_traits/is_nothrow_move_assignable.hpp:
+/opt/homebrew/include/boost/type_traits/add_cv.hpp:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/nl_types.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__fwd/variant.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/filesystem:
 
@@ -9617,13 +9912,15 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_pop_heap.h:
 
+/opt/homebrew/include/boost/mpl/aux_/na_fwd.hpp:
+
+/Users/jiayu/local/include/casadi/core/nlp_builder.hpp:
+
 /opt/homebrew/include/CGAL/Iterator_transform.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__numeric/partial_sum.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/unwrap_range.h:
-
-/opt/homebrew/include/boost/type_traits/is_abstract.hpp:
 
 /opt/homebrew/include/CGAL/linear_least_squares_fitting_triangles_3.h:
 
@@ -9632,6 +9929,8 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__config:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_partition_point.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_partition_copy.h:
 
 /opt/homebrew/include/boost/mpl/aux_/config/ttp.hpp:
 
@@ -9643,15 +9942,19 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_partial_sort_copy.h:
 
+/opt/homebrew/include/boost/move/algo/predicate.hpp:
+
+/opt/homebrew/include/boost/iterator/interoperable.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_partial_sort.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/underlying_type.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/xlocale/_time.h:
 
-/opt/homebrew/include/boost/random/inversive_congruential.hpp:
+/opt/homebrew/include/boost/math/tools/detail/rational_horner3_20.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/is_sorted_until.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_move.h:
-
-/opt/homebrew/include/eigen3/Eigen/src/Core/Inverse.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_move_backward.h:
 
 /opt/homebrew/include/boost/multiprecision/detail/string_helpers.hpp:
 
@@ -9661,11 +9964,15 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/cxxabi.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_timeval.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_prev_permutation.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_min_element.h:
 
 /opt/homebrew/include/eigen3/Eigen/src/Geometry/Transform.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__ranges/data.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_timeval.h:
 
 /opt/homebrew/include/boost/iterator/function_output_iterator.hpp:
 
@@ -9675,33 +9982,17 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /opt/homebrew/include/CGAL/Boolean_set_operations_2/Curve_with_halfedge.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/for_each.h:
+/opt/homebrew/include/CGAL/Kernel_traits_fwd.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_stable_sort.h:
+/opt/homebrew/include/boost/container_hash/is_range.hpp:
 
-/opt/homebrew/include/CGAL/Intersections_3/internal/Bbox_3_Iso_cuboid_3_do_intersect.h:
-
-/opt/homebrew/include/boost/smart_ptr/detail/local_counted_base.hpp:
-
-/opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_on_surface_base_2.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__numeric/midpoint.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__functional/pointer_to_binary_function.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/min_max_result.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_max.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_merge.h:
 
 /opt/homebrew/include/boost/multiprecision/cpp_int/import_export.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_uuid_t.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_make_heap.h:
-
-/opt/homebrew/include/CGAL/number_utils_classes.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_lexicographical_compare.h:
 
 /opt/homebrew/include/boost/lexical_cast/detail/converter_numeric.hpp:
 
@@ -9713,13 +10004,25 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__chrono/hh_mm_ss.h:
 
-/opt/homebrew/include/CGAL/Convex_hull_2/ch_bykat_impl.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/arm/_endian.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/machine/types.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_is_partitioned.h:
+
+/opt/homebrew/include/boost/type_traits/is_reference.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/queue:
+
+/opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_on_surface_base_2.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_max.h:
+
+/opt/homebrew/include/boost/mpl/logical.hpp:
+
+/opt/homebrew/include/CGAL/Polygon_2/Polygon_2_edge_circulator.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/is_partitioned.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/_types/_uintmax_t.h:
 
@@ -9729,45 +10032,37 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/iosfwd:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__functional/reference_wrapper.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_swappable.h:
-
 /opt/homebrew/include/boost/mp11/detail/mp_map_find.hpp:
 
-/opt/homebrew/include/boost/move/algo/predicate.hpp:
+/opt/homebrew/include/vtk-9.4/vtkAbstractMapper3D.h:
 
-/opt/homebrew/include/boost/iterator/interoperable.hpp:
+/opt/homebrew/include/boost/preprocessor/list/reverse.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_partial_sort.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_pthread/_pthread_attr_t.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_generate.h:
+/opt/homebrew/include/CGAL/CORE/extLong_impl.h:
 
-/opt/homebrew/include/CGAL/tags.h:
+/opt/homebrew/include/boost/type_traits/is_same.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_for_each_n.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/clamp.h:
 
-/opt/homebrew/include/boost/type_traits/has_minus_assign.hpp:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__format/indic_conjunct_break_table.h:
 
-/opt/homebrew/include/CGAL/CORE/CORE.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__new/launder.h:
 
-/opt/homebrew/include/boost/type_traits/has_not_equal_to.hpp:
+/opt/homebrew/include/CGAL/Arr_point_location/Arr_walk_along_line_pl_impl.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_find_first_of.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_sample.h:
 
-/opt/homebrew/include/CGAL/Intersections_3/Bbox_3_Triangle_3.h:
-
-/Users/jiayu/Desktop/nas_ws/NAS/include/utils.hpp:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/uniform_random_bit_generator_adaptor.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/iter_move.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/cmath:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_fill_n.h:
 
-/opt/homebrew/include/CGAL/Installation/internal/enable_third_party_libraries.h:
-
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__atomic/is_always_lock_free.h:
+
+/Users/jiayu/local/include/casadi/core/casadi_meta.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_pthread/_pthread_mutexattr_t.h:
 
@@ -9777,33 +10072,41 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /opt/homebrew/include/CGAL/ipower.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__mutex/lock_guard.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__math/error_functions.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_fill.h:
+
+/opt/homebrew/include/CGAL/Intersections_3/internal/Line_3_Point_3_do_intersect.h:
+
+/opt/homebrew/include/boost/mpl/or.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_equal_range.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_count_if.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__locale_dir/locale_base_api.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/ctype.h:
+
+/opt/homebrew/include/boost/preprocessor/detail/auto_rec.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_min.h:
+
+/opt/homebrew/include/boost/property_map/property_map.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_count.h:
+
+/opt/homebrew/include/CGAL/CORE/CORE.h:
+
+/opt/homebrew/include/boost/detail/workaround.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_valid_expansion.h:
 
-/opt/homebrew/include/CGAL/HalfedgeDS_list.h:
+/opt/homebrew/include/CGAL/Intersections_3/Sphere_3_Triangle_3.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/move_backward.h:
+/opt/homebrew/include/CGAL/Distance_3/Weighted_point_3_Weighted_point_3.h:
 
-/opt/homebrew/include/yaml-cpp/traits.h:
-
-/opt/homebrew/include/vtk-9.4/vtkFeatures.h:
-
-/opt/homebrew/include/boost/random/geometric_distribution.hpp:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/machine/_types.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/fenv.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/replace.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/size.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/xlocale.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_int64_t.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_copy_backward.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_copy_if.h:
 
 /opt/homebrew/include/CGAL/memory.h:
 
@@ -9811,97 +10114,115 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_clamp.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/lib/clang/20/include/stdint.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__compare/partial_order.h:
 
-/opt/homebrew/include/boost/container/detail/allocation_type.hpp:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__filesystem/operations.h:
 
-/opt/homebrew/include/CGAL/Coercion_traits.h:
+/opt/homebrew/include/CGAL/Intersections_3/internal/Line_3_Plane_3_do_intersect.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/_ctype.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__charconv/traits.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__concepts/swappable.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/arm/_types.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_u_int32_t.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/_types/_uint8_t.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__charconv/from_chars_floating_point.h:
+/opt/homebrew/include/CGAL/Arr_extended_dcel.h:
 
-/opt/homebrew/include/CGAL/Distance_3/Point_3_Plane_3.h:
+/opt/homebrew/include/vtk-9.4/vtkFiltersSourcesModule.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/pthread/qos.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__new/exceptions.h:
 
-/opt/homebrew/include/CGAL/Arrangement_2.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__filesystem/space_info.h:
 
-/opt/homebrew/include/boost/move/utility_core.hpp:
+/opt/homebrew/include/boost/mpl/iter_fold_if.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_min_element.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__chrono/day.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_prev_permutation.h:
+/opt/homebrew/include/CGAL/Homogeneous/Iso_cuboidH3.h:
 
-/opt/homebrew/include/CGAL/Intersections_3/internal/Tetrahedron_3_Tetrahedron_3_do_intersect.h:
+/opt/homebrew/include/boost/math/tools/is_standalone.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_adjacent_find.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__tuple/ignore.h:
 
-/opt/homebrew/include/boost/math/tools/detail/rational_horner3_20.hpp:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__numeric/exclusive_scan.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_move_backward.h:
+/opt/homebrew/include/boost/container/detail/construct_in_place.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/push_heap.h:
+/Users/jiayu/Desktop/nas_ws/NAS/include/constants.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/pstl.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__mutex/unique_lock.h:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_oracle_callback.hpp:
+
+/opt/homebrew/include/vtk-9.4/vtkDataArray.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/prev_permutation.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_signed.h:
 
-/opt/homebrew/include/boost/mpl/vector/aux_/push_back.hpp:
+/opt/homebrew/include/CGAL/IO/OFF/File_header_extended_OFF.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/ostreambuf_iterator.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/shift_left.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/for_each_segment.h:
 
-/opt/homebrew/include/boost/mpl/logical.hpp:
+/opt/homebrew/include/boost/parameter/aux_/tagged_argument.hpp:
 
-/opt/homebrew/include/CGAL/Polygon_2/Polygon_2_edge_circulator.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_sort_heap.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/is_partitioned.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_constructible.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/lib/clang/20/include/__stdarg_va_list.h:
+/opt/homebrew/include/boost/mpl/iter_fold.hpp:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/xlocale/___wctype.h:
+/opt/homebrew/include/eigen3/Eigen/src/Geometry/arch/Geometry_SIMD.h:
 
-/opt/homebrew/include/CGAL/HalfedgeDS_vertex_base.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_inplace_merge.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/partial_sort.h:
+/opt/homebrew/include/CGAL/Intersection_traits_2.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/PartialReduxEvaluator.h:
+
+/opt/homebrew/include/CGAL/Arrangement_2/Arrangement_on_surface_2_global.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_unique.h:
+
+/opt/homebrew/include/boost/preprocessor/repetition/enum_trailing_params.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/none_of.h:
 
-/opt/homebrew/include/CGAL/Intersections_2/Bbox_2_Point_2.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/next_permutation.h:
 
-/opt/homebrew/include/CGAL/Intersections_3/internal/Tetrahedron_3_Bounded_3_do_intersect.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/mismatch.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/cctype:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__numeric/midpoint.h:
 
-/opt/homebrew/include/CGAL/Homogeneous/basic_constructionsH2.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__functional/pointer_to_binary_function.h:
 
-/opt/homebrew/include/boost/predef/compiler/edg.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/search_n.h:
 
-/opt/homebrew/include/CGAL/Sqrt_extension/Get_arithmetic_kernel.h:
+/opt/homebrew/include/CGAL/Interval_traits.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/minmax.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/merge.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/pointer_traits.h:
+/opt/homebrew/include/boost/random/shuffle_order.hpp:
 
-/opt/homebrew/include/boost/container_hash/detail/hash_integral.hpp:
+/opt/homebrew/include/boost/preprocessor/arithmetic/detail/is_maximum_number.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__charconv/to_chars_floating_point.h:
+/opt/homebrew/include/CGAL/Arr_tags.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/partition.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/uses_allocator_construction.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/compare:
+/Users/jiayu/local/include/casadi/core/function.hpp:
 
-/opt/homebrew/include/CGAL/Intersections_3/Ray_3_Sphere_3.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_move.h:
 
-/opt/homebrew/include/CGAL/Homogeneous/PointH3.h:
+/opt/homebrew/include/eigen3/Eigen/src/Core/CwiseBinaryOp.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/is_sorted.h:
+/Users/jiayu/Desktop/nas_ws/NAS/include/visualizer.hpp:
 
-/opt/homebrew/include/eigen3/Eigen/src/Core/ArrayBase.h:
+/opt/homebrew/include/boost/mpl/always.hpp:
 
 /opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/fold_impl.hpp:
 
@@ -9911,77 +10232,37 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/time.h:
 
-/opt/homebrew/include/CGAL/Arr_point_location/Arr_batched_point_location_traits_2.h:
-
-/opt/homebrew/include/boost/math/ccmath/detail/config.hpp:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__numeric/adjacent_difference.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/stable_partition.h:
-
-/opt/homebrew/include/boost/multiprecision/traits/transcendental_reduction_type.hpp:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/xlocale/_ctype.h:
-
-/opt/homebrew/include/eigen3/Eigen/src/Geometry/Umeyama.h:
-
-/opt/homebrew/include/boost/container/detail/value_init.hpp:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__bit/bit_width.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__chrono/calendar.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/lib/clang/20/include/immintrin.h:
+/opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Compare_y_at_x_2.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/in_in_result.h:
+/opt/homebrew/include/CGAL/Intersections_3/internal/Plane_3_Plane_3_Plane_3_do_intersect.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__mutex/unique_lock.h:
+/Users/jiayu/local/include/casadi/core/runtime/casadi_ldl.hpp:
 
-/opt/homebrew/include/vtk-9.4/vtkDataArray.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/prev_permutation.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_union.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/for_each_n.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/cstdint:
-
-/opt/homebrew/include/CGAL/CORE/poly/Sturm.h:
-
-/opt/homebrew/include/boost/type_traits/has_trivial_copy.hpp:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__concepts/totally_ordered.h:
-
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/find_if.h:
 
-/opt/homebrew/include/CGAL/Intersections_3/internal/Iso_cuboid_3_Point_3_do_intersect.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_u_int8_t.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__chrono/high_resolution_clock.h:
+/opt/homebrew/include/CGAL/intersections.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_find_if.h:
-
-/opt/homebrew/include/CGAL/HalfedgeDS_decorator.h:
-
-/opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/equal_to.hpp:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_ptrdiff_t.h:
+/Users/jiayu/local/include/casadi/core/runtime/casadi_fill.hpp:
 
 /opt/homebrew/include/CGAL/Cartesian/Vector_2.h:
 
-/opt/homebrew/include/CGAL/Arr_topology_traits/Arr_unb_planar_batched_pl_helper.h:
+/opt/homebrew/include/CGAL/iterator.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/_locale.h:
+/opt/homebrew/include/eigen3/Eigen/src/plugins/CommonCwiseUnaryOps.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/compressed_pair.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/allocator_arg_t.h:
 
-/opt/homebrew/include/vtk-9.4/vtkAbstractCellArray.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/bitset:
-
-/opt/homebrew/Cellar/llvm/20.1.6/lib/clang/20/include/__stddef_header_macro.h:
-
-/opt/homebrew/include/CGAL/Arr_topology_traits/Arr_bounded_planar_batched_pl_helper.h:
-
-/Users/jiayu/Desktop/nas_ws/NAS/include/types.hpp:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_generate.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/array:
 
@@ -9991,89 +10272,605 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/wchar.h:
 
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__format/formatter_output.h:
+
+/opt/homebrew/include/boost/move/algo/detail/pdqsort.hpp:
+
+/Users/jiayu/local/include/casadi/core/xml_node.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/lib/clang/20/include/__stddef_header_macro.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/compare:
+
+/opt/homebrew/include/boost/container/detail/destroyers.hpp:
+
+/opt/homebrew/include/CGAL/Intersections_3/internal/Bbox_3_Ray_3_intersection.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/count.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__tuple/tuple_types.h:
+
+/opt/homebrew/include/boost/predef/make.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_pthread/_pthread_t.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/MathFunctions.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__compare/synth_three_way.h:
+
+/Users/jiayu/local/include/casadi/core/sx.hpp:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_posix_availability.h:
+
+/opt/homebrew/include/boost/cstdint.hpp:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_masked_norm_inf.hpp:
+
+/opt/homebrew/include/CGAL/Ray_2.h:
+
+/Users/jiayu/local/include/casadi/core/sparsity_interface.hpp:
+
 /opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/advance_backward.hpp:
+
+/opt/homebrew/include/boost/type_traits/has_bit_xor_assign.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__fwd/queue.h:
+
+/opt/homebrew/include/boost/mpl/aux_/config/typeof.hpp:
+
+/opt/homebrew/include/boost/type_traits/has_multiplies_assign.hpp:
+
+/opt/homebrew/include/CGAL/boost/graph/copy_face_graph.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__configuration/platform.h:
+
+/opt/homebrew/include/CGAL/convexity_check_3.h:
+
+/opt/homebrew/include/CGAL/Intersections_3/internal/Line_3_Segment_3_do_intersect.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_base_of.h:
+
+/opt/homebrew/include/vtk-9.4/vtkIOStream.h:
+
+/opt/homebrew/include/boost/preprocessor/variadic/detail/has_opt.hpp:
+
+/Users/jiayu/local/include/casadi/core/sparsity.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/cstdint:
+
+/opt/homebrew/include/boost/config/detail/posix_features.hpp:
+
+/opt/homebrew/include/boost/preprocessor/repetition/enum.hpp:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/errno.h:
+
+/opt/homebrew/include/boost/predef/architecture/arm.h:
+
+/opt/homebrew/include/CGAL/Arrangement_2/Arrangement_on_surface_2_impl.h:
+
+/opt/homebrew/include/boost/container/flat_map.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__filesystem/filesystem_error.h:
+
+/opt/homebrew/include/CGAL/Intersections_2/internal/Triangle_2_Triangle_2_intersection_impl.h:
+
+/opt/homebrew/include/CGAL/CORE/Expr_impl.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_mach_port_t.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/is_seed_sequence.h:
+
+/opt/homebrew/include/boost/type_traits/detail/has_binary_operator.hpp:
+
+/opt/homebrew/include/boost/mpl/aux_/push_front_impl.hpp:
+
+/opt/homebrew/include/CGAL/Interval_nt.h:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_qp.hpp:
+
+/opt/homebrew/include/CGAL/Intersections_3/internal/Plane_3_Plane_3_do_intersect.h:
+
+/opt/homebrew/include/CGAL/linear_least_squares_fitting_cuboids_3.h:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_ocp_block.hpp:
+
+/Users/jiayu/local/include/casadi/core/conic.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/adjacent_find.h:
 
-/opt/homebrew/include/boost/preprocessor/control/detail/while.hpp:
-
-/opt/homebrew/include/CGAL/Arrangement_2/Arr_do_intersect_zone_visitor.h:
-
-/opt/homebrew/include/boost/type_traits/is_float.hpp:
-
-/opt/homebrew/include/CGAL/boost/graph/graph_traits_Polyhedron_3.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/internal/Line_3_Triangle_3_intersection.h:
-
-/Users/jiayu/Desktop/nas_ws/NAS/include/nas_plan.hpp:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/__xlocale.h:
+/Users/jiayu/local/include/casadi/core/optistack.hpp:
 
 /opt/homebrew/include/boost/multiprecision/traits/explicit_conversion.hpp:
 
-/Users/jiayu/Desktop/nas_ws/NAS/include/environments.hpp:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/__xlocale.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/cstdio:
+/opt/homebrew/include/boost/concept/assert.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_standard_layout.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/minmax_element.h:
 
-/opt/homebrew/include/boost/preprocessor/control/iif.hpp:
+/opt/homebrew/include/CGAL/license/TDS_2.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/machine/_mcontext.h:
+/opt/homebrew/include/CGAL/auto_link/auto_link.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/xlocale/_wchar.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/pthread/pthread_impl.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/_types/_wctype_t.h:
+/opt/homebrew/include/boost/exception/exception.hpp:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_off_t.h:
+/Users/jiayu/local/include/casadi/core/runtime/casadi_regularize.hpp:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_ssize_t.h:
+/opt/homebrew/include/CGAL/Intersections_3/internal/Plane_3_Triangle_3_do_intersect.h:
 
-/opt/homebrew/include/boost/smart_ptr/detail/sp_typeinfo_.hpp:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/min_element.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/machine/_endian.h:
+/Users/jiayu/local/include/casadi/core/runtime/casadi_runtime.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__chrono/formatter.h:
+/opt/homebrew/include/boost/mpl/aux_/preprocessor/default_params.hpp:
 
-/opt/homebrew/include/boost/type_traits/has_bit_xor.hpp:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__new/placement_new_delete.h:
 
-/opt/homebrew/include/CGAL/Cache.h:
+/opt/homebrew/include/boost/parameter/aux_/lambda_tag.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__fwd/string.h:
+/opt/homebrew/include/CGAL/CORE/poly/Poly.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__thread/id.h:
+/Users/jiayu/local/include/casadi/core/runtime/casadi_norm_inf_mul.hpp:
 
-/opt/homebrew/include/boost/mpl/iter_fold.hpp:
+/opt/homebrew/include/boost/mpl/bool.hpp:
 
-/opt/homebrew/include/boost/foreach.hpp:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/common_reference.h:
 
-/opt/homebrew/include/CGAL/Intersection_traits_2.h:
+/opt/homebrew/include/boost/iterator_adaptors.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/sstream:
+/opt/homebrew/include/boost/preprocessor/arithmetic/dec.hpp:
 
-/opt/homebrew/include/CGAL/Intersections_3/Bbox_3_Segment_3.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/arm/_limits.h:
 
-/opt/homebrew/include/boost/type_traits/is_complex.hpp:
+/Users/jiayu/local/include/casadi/core/expm.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__chrono/year_month_weekday.h:
+/opt/homebrew/include/CGAL/IO/OFF/File_writer_OFF.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_ino64_t.h:
+/opt/homebrew/include/boost/preprocessor/array/size.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/wchar.h:
+
+/opt/homebrew/include/boost/math/special_functions/next.hpp:
+
+/opt/homebrew/include/CGAL/Cartesian/basic_constructions_2.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__string/char_traits.h:
+
+/opt/homebrew/include/CGAL/license/Convex_hull_2.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/machine/endian.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__filesystem/file_status.h:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_nd_boor_dual_eval.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__new/new_handler.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__chrono/file_clock.h:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_mv.hpp:
+
+/opt/homebrew/include/CGAL/Intersections_3/internal/Tetrahedron_3_Triangle_3_intersection.h:
+
+/opt/homebrew/include/CGAL/IO/VRML.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_ino_t.h:
+
+/opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/apply_fwd.hpp:
+
+/opt/homebrew/include/CGAL/Homogeneous/RayH3.h:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_logsumexp.hpp:
+
+/opt/homebrew/include/CGAL/Intersections_3/Plane_3_Plane_3_Plane_3.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_fd_isset.h:
+
+/opt/homebrew/include/boost/preprocessor/arithmetic/inc.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__utility/swap.h:
+
+/opt/homebrew/include/CGAL/test_FPU_rounding_mode_impl.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/util/XprHelper.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__charconv/from_chars_integral.h:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_interpn_interpolate.hpp:
+
+/opt/homebrew/include/eigen3/Eigen/src/misc/Image.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/lib/clang/20/include/__stddef_wchar_t.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/conjunction.h:
+
+/opt/homebrew/include/boost/any/detail/placeholder.hpp:
+
+/Users/jiayu/local/include/casadi/core/shared_object.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__ranges/enable_view.h:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_interpn.hpp:
+
+/opt/homebrew/include/CGAL/Lazy_exact_nt.h:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_file_slurp.hpp:
+
+/Users/jiayu/local/include/casadi/core/matrix_fwd.hpp:
+
+/opt/homebrew/include/boost/intrusive/detail/iiterator.hpp:
+
+/opt/homebrew/include/CGAL/Scalar_factor_traits.h:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_feasiblesqpmethod.hpp:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_fd_setsize.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/is_sorted.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_clock_t.h:
+
+/opt/homebrew/include/boost/random/additive_combine.hpp:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_convexify.hpp:
+
+/opt/homebrew/include/boost/intrusive/detail/config_end.hpp:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_clear.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_aggregate.h:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_trans.hpp:
 
 /opt/homebrew/include/boost/random/taus88.hpp:
 
 /opt/homebrew/include/CGAL/CORE/RealRep.h:
 
-/opt/homebrew/include/boost/random/detail/mixmax_skip_N17.ipp:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_void.h:
-
 /opt/homebrew/include/CGAL/Cartesian/Point_3.h:
+
+/opt/homebrew/include/CGAL/Bbox_2.h:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_bound_consistency.hpp:
+
+/opt/homebrew/include/CGAL/Distance_3/Point_3_Plane_3.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_int64_t.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/xlocale.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/pthread/qos.h:
+
+/opt/homebrew/include/CGAL/Arrangement_2.h:
+
+/opt/homebrew/include/boost/move/utility_core.hpp:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_iamax.hpp:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_bilin.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/uniform_int_distribution.h:
+
+/opt/homebrew/include/boost/multiprecision/cpp_int/literals.hpp:
+
+/Users/jiayu/local/include/casadi/core/printable.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/ranlux.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/lib/clang/20/include/immintrin.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_endian.h:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_jac.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/in_in_result.h:
+
+/Users/jiayu/local/include/casadi/core/nonzeros.hpp:
+
+/opt/homebrew/include/CGAL/tags.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_for_each_n.h:
+
+/opt/homebrew/include/CGAL/Surface_sweep_2/Event_comparer.h:
+
+/opt/homebrew/include/vtk-9.4/vtkMatrixUtilities.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/limits:
+
+/opt/homebrew/include/CGAL/Intersections_3/internal/Line_3_Segment_3_intersection.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__concepts/movable.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/detected_or.h:
+
+/Users/jiayu/local/include/casadi/core/linsol.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/lib/clang/20/include/float.h:
+
+/Users/jiayu/local/include/casadi/core/interpolant.hpp:
+
+/opt/homebrew/include/CGAL/Arr_unb_planar_topology_traits_2.h:
+
+/opt/homebrew/include/boost/parameter/aux_/pack/unmatched_argument.hpp:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/_types/_wctrans_t.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Geometry/OrthoMethods.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/Replicate.h:
+
+/Users/jiayu/local/include/casadi/core/generic_expression.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__concepts/relation.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__functional/identity.h:
+
+/opt/homebrew/include/CGAL/Homogeneous/Homogeneous_base.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/lexicographical_compare_three_way.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/pop_heap.h:
+
+/opt/homebrew/include/boost/mpl/aux_/find_if_pred.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/independent_bits_engine.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/uniform_random_bit_generator_adaptor.h:
+
+/opt/homebrew/include/CGAL/enable_warnings.h:
+
+/opt/homebrew/include/boost/predef/platform/windows_store.h:
+
+/opt/homebrew/include/boost/mpl/vector.hpp:
+
+/opt/homebrew/include/CGAL/HalfedgeDS_iterator.h:
+
+/opt/homebrew/include/boost/iterator/detail/facade_iterator_category.hpp:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_timespec.h:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_flip.hpp:
+
+/Users/jiayu/local/include/casadi/core/generic_shared_internal.hpp:
+
+/opt/homebrew/include/boost/random/detail/generator_bits.hpp:
+
+/opt/homebrew/include/boost/parameter/parameters.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/coroutine:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__format/format_parse_context.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/uniform_random_bit_generator.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/_stdio.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__utility/empty.h:
+
+/opt/homebrew/include/CGAL/constant.h:
+
+/opt/homebrew/include/CGAL/Intersections_3/internal/Plane_3_Ray_3_intersection.h:
+
+/opt/homebrew/include/boost/type_traits/is_abstract.hpp:
+
+/Users/jiayu/local/include/casadi/core/external.hpp:
+
+/opt/homebrew/include/vtk-9.4/vtkAbstractCellArray.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/bitset:
+
+/opt/homebrew/include/CGAL/kernel_basic.h:
+
+/Users/jiayu/local/include/casadi/casadi.hpp:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/SelfAdjointView.h:
+
+/opt/homebrew/include/boost/preprocessor/list/limits/fold_left_256.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__chrono/high_resolution_clock.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_find_if.h:
+
+/opt/homebrew/include/boost/type_traits.hpp:
+
+/opt/homebrew/include/boost/mpl/aux_/numeric_op.hpp:
+
+/opt/homebrew/include/CGAL/HalfedgeDS_decorator.h:
+
+/opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/equal_to.hpp:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_ptrdiff_t.h:
+
+/Users/jiayu/local/include/casadi/core/core.hpp:
+
+/Users/jiayu/Desktop/nas_ws/NAS/include/utils.hpp:
+
+/opt/homebrew/include/boost/container_hash/detail/hash_integral.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__charconv/to_chars_floating_point.h:
+
+/opt/homebrew/include/boost/type_traits/has_trivial_move_assign.hpp:
+
+/opt/homebrew/include/boost/math/tools/atomic.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/container_traits.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/products/TriangularMatrixVector.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/deque:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/partition.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__bit/has_single_bit.h:
+
+/Users/jiayu/local/include/casadi/core/casadi_logger.hpp:
+
+/Users/jiayu/Desktop/nas_ws/NAS/include/environments.hpp:
+
+/opt/homebrew/include/boost/preprocessor/comparison/less_equal.hpp:
+
+/opt/homebrew/include/CGAL/Segment_3.h:
+
+/opt/homebrew/include/boost/lexical_cast/detail/is_character.hpp:
+
+/Users/jiayu/local/include/casadi/core/casadi_types.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/wctype.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/remove_pointer.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/allocation_guard.h:
+
+/opt/homebrew/include/CGAL/Arr_topology_traits/Arr_bounded_planar_batched_pl_helper.h:
+
+/Users/jiayu/Desktop/nas_ws/NAS/include/types.hpp:
+
+/opt/homebrew/include/boost/random/detail/xoshiro_base.hpp:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_null.h:
+
+/opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_traits_decorator.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/products/GeneralBlockPanelKernel.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__concepts/different_from.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/resource.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/utility:
+
+/opt/homebrew/include/boost/preprocessor/facilities/expand.hpp:
+
+/opt/homebrew/include/CGAL/number_utils_classes.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_lexicographical_compare.h:
+
+/Users/jiayu/local/include/casadi/core/blazing_spline.hpp:
+
+/opt/homebrew/include/boost/preprocessor/config/config.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/fstream:
+
+/Users/jiayu/local/include/casadi/core/casadi_common.hpp:
+
+/Users/jiayu/local/include/casadi/core/casadi_export.h:
+
+/Users/jiayu/local/include/casadi/core/casadi_enum.hpp:
+
+/opt/homebrew/include/boost/type_traits/is_compound.hpp:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/limits.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/stdio.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Geometry/Umeyama.h:
+
+/opt/homebrew/include/boost/container/detail/value_init.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__bit/bit_width.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/_types/_wctype_t.h:
+
+/opt/homebrew/include/CGAL/STL_Extension/internal/parameters_interface.h:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_qr.hpp:
+
+/opt/homebrew/include/CGAL/Aos_observer.h:
+
+/opt/homebrew/include/boost/smart_ptr/detail/spinlock_pool.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/syncstream:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__atomic/support.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__filesystem/u8path.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_convertible.h:
+
+/Users/jiayu/Desktop/nas_ws/NAS/include/nas_plan.hpp:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/fenv.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/replace.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_int16_t.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/remove_const.h:
+
+/opt/homebrew/include/boost/mpl/aux_/arg_typedef.hpp:
+
+/opt/homebrew/include/boost/move/detail/pointer_element.hpp:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/select.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/copy_n.h:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_axpy.hpp:
+
+/opt/homebrew/include/boost/mpl/aux_/preprocessor/def_params_tail.hpp:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_ipqp.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__concepts/assignable.h:
+
+/opt/homebrew/include/vtk-9.4/vtkTypeTraits.h:
+
+/opt/homebrew/include/boost/mpl/iterator_tags.hpp:
+
+/opt/homebrew/include/boost/preprocessor/control/iif.hpp:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/machine/_mcontext.h:
+
+/opt/homebrew/include/eigen3/Eigen/src/Eigenvalues/SelfAdjointEigenSolver.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_caddr_t.h:
+
+/opt/homebrew/include/vtk-9.4/vtkGenericCell.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_pthread/_pthread_cond_t.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/charconv:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/machine/_endian.h:
+
+/opt/homebrew/include/boost/type_traits/is_base_of.hpp:
+
+/opt/homebrew/include/CGAL/Surface_sweep_2/Arr_insertion_traits_2.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__chrono/formatter.h:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_bfgs.hpp:
+
+/opt/homebrew/include/CGAL/Sqrt_extension/Get_arithmetic_kernel.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/minmax.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__chrono/year_month_weekday.h:
+
+/opt/homebrew/include/vtk-9.4/vtkSystemIncludes.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/addressof.h:
+
+/opt/homebrew/include/CGAL/Handle_hash_function.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_sigset_t.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_ino64_t.h:
+
+/Users/jiayu/local/include/casadi/core/xml_file.hpp:
 
 /opt/homebrew/include/boost/random/student_t_distribution.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__fwd/pair.h:
 
+/opt/homebrew/include/boost/predef/os/amigaos.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__random/mersenne_twister_engine.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_pthread/_pthread_condattr_t.h:
+
+/opt/homebrew/include/boost/parameter/optional.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_u_char.h:
 
@@ -10082,22 +10879,6 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_in_addr_t.h:
 
 /opt/homebrew/include/boost/mpl/aux_/config/arrays.hpp:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/unistd.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_reverse.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/_types/_uint8_t.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/arm/_types.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/ranges_construct_at.h:
-
-/opt/homebrew/include/boost/smart_ptr/shared_ptr.hpp:
-
-/opt/homebrew/include/boost/mpl/void.hpp:
-
-/opt/homebrew/include/CGAL/IO/VRML/File_writer_VRML_2.h:
 
 /opt/homebrew/include/CGAL/CORE/BigFloat.h:
 
@@ -10109,7 +10890,21 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_useconds_t.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__filesystem/filesystem_error.h:
+/opt/homebrew/Cellar/llvm/20.1.6/lib/clang/20/include/stdint.h:
+
+/opt/homebrew/include/boost/type_traits/is_enum.hpp:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_ucontext.h:
+
+/opt/homebrew/include/CGAL/Intersections_3/internal/Tetrahedron_3_Tetrahedron_3_do_intersect.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_adjacent_find.h:
+
+/opt/homebrew/include/boost/predef/compiler/borland.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__split_buffer:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__math/inverse_hyperbolic_functions.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/_string.h:
 
@@ -10119,77 +10914,89 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/stdio.h:
+/opt/homebrew/include/boost/intrusive/detail/size_holder.hpp:
 
-/opt/homebrew/include/boost/move/algo/adaptive_sort.hpp:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__cstddef/max_align_t.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_replace_copy.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_copy_backward.h:
 
 /opt/homebrew/include/CGAL/GMPXX_arithmetic_kernel.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_u_int.h:
-
-/opt/homebrew/include/boost/property_map/property_map.hpp:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_count.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_time_t.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/internal/Ray_3_Tetrahedron_3_intersection.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/stdio.h:
-
-/opt/homebrew/include/CGAL/Intersections_3/internal/Sphere_3_Sphere_3_do_intersect.h:
-
-/opt/homebrew/include/boost/type_traits/enable_if.hpp:
-
-/opt/homebrew/include/boost/type_traits/has_trivial_destructor.hpp:
-
-/opt/homebrew/include/CGAL/Intersections_3/internal/Plane_3_Tetrahedron_3_do_intersect.h:
-
-/opt/homebrew/include/CGAL/Projection_traits_xy_3.h:
-
-/opt/homebrew/include/CGAL/Filtered_kernel/Cartesian_coordinate_iterator_3.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/_strings.h:
-
-/opt/homebrew/include/CGAL/Distance_3/Point_3_Ray_3.h:
-
-/opt/homebrew/include/CGAL/IO/print_OFF.h:
-
-/opt/homebrew/include/CGAL/Boolean_set_operations_2/Gps_base_functor.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_pid_t.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__numeric/gcd_lcm.h:
-
-/opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Side_of_oriented_circle_2.h:
-
-/opt/homebrew/include/CGAL/STL_Extension/internal/mesh_option_classes.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_key_t.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/ranges_construct_at.h:
 
 /opt/homebrew/include/eigen3/Eigen/src/SVD/BDCSVD.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__utility/piecewise_construct.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__utility/convert_to_integral.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/enable_if.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/destruct_n.h:
+/opt/homebrew/include/CGAL/HalfedgeDS_vertex_base.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/partial_sort.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/lib/clang/20/include/__stdarg_va_list.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/xlocale/___wctype.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_time_t.h:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_dot.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/push_heap.h:
+
+/opt/homebrew/include/CGAL/Intersections_3/internal/Ray_3_Tetrahedron_3_intersection.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/stdio.h:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_vector_fmax.hpp:
+
+/opt/homebrew/include/CGAL/Intersections_3/internal/Sphere_3_Sphere_3_do_intersect.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/math.h:
+
+/Users/jiayu/local/include/casadi/core/resource.hpp:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_max_viol.hpp:
+
+/opt/homebrew/include/eigen3/Eigen/src/Core/GlobalFunctions.h:
+
+/opt/homebrew/include/boost/type_traits/is_unsigned.hpp:
+
+/opt/homebrew/include/CGAL/ch_selected_extreme_points_2.h:
+
+/opt/homebrew/include/CGAL/Enum_converter.h:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_rank1.hpp:
+
+/opt/homebrew/include/boost/math/special_functions/log1p.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/memory:
+
+/opt/homebrew/include/boost/preprocessor/list/fold_left.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__bit/endian.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_pid_t.h:
+
+/opt/homebrew/include/CGAL/Filtered_kernel/internal/Static_filters/Side_of_oriented_circle_2.h:
+
+/opt/homebrew/include/CGAL/STL_Extension/internal/mesh_option_classes.h:
+
+/opt/homebrew/include/CGAL/exceptions.h:
+
+/opt/homebrew/include/CGAL/boost/graph/IO/Generic_facegraph_builder.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__stop_token/stop_source.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__format/formatter_char.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_key_t.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/cdefs.h:
 
-/opt/homebrew/include/boost/mpl/aux_/value_wknd.hpp:
+/opt/homebrew/include/eigen3/Eigen/src/Core/IndexedView.h:
 
-/opt/homebrew/include/CGAL/Intersections_3/internal/Plane_3_Segment_3_intersection.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/float.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/comp_ref_type.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/remove_copy_if.h:
-
-/opt/homebrew/include/CGAL/Enum_converter.h:
+/opt/homebrew/include/boost/predef/architecture/ppc.h:
 
 /opt/homebrew/include/CGAL/Arr_point_location/Arr_naive_point_location_impl.h:
 
@@ -10197,13 +11004,17 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /opt/homebrew/include/boost/preprocessor/repetition/enum_params.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__math/min_max.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_partition_copy.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/arm/endian.h:
 
-/opt/homebrew/include/CGAL/Intersections_3/Iso_cuboid_3_Plane_3.h:
+/opt/homebrew/include/boost/type_traits/type_identity.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_shuffle.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/signal.h:
+
+/opt/homebrew/include/boost/type_traits/has_unary_plus.hpp:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_fsblkcnt_t.h:
 
 /opt/homebrew/include/eigen3/Eigen/src/Eigenvalues/RealQZ.h:
 
@@ -10213,19 +11024,29 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__exception/nested_exception.h:
 
+/opt/homebrew/include/eigen3/Eigen/src/Core/BooleanRedux.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/AvailabilityInternalLegacy.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__chrono/month_weekday.h:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__charconv/to_chars.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__utility/forward.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_fd_copy.h:
 
-/opt/homebrew/include/yaml-cpp/node/iterator.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/remove_copy_if.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__format/concepts.h:
+/opt/homebrew/include/boost/mpl/aux_/value_wknd.hpp:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_rune_t.h:
+/opt/homebrew/include/CGAL/Intersections_3/internal/Plane_3_Segment_3_intersection.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__chrono/convert_to_tm.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/float.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/comp_ref_type.h:
+
+/opt/homebrew/include/CGAL/Default_diagonalize_traits.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/inttypes.h:
 
@@ -10233,27 +11054,39 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/stop_token:
 
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__format/format_error.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_blksize_t.h:
+
+/opt/homebrew/include/boost/intrusive/options.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_fundamental.h:
+
+/opt/homebrew/include/boost/intrusive/detail/simple_disposers.hpp:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_kkt.hpp:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__format/format_arg.h:
 
 /opt/homebrew/include/CGAL/Triangulation_ds_face_base_2.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__cxxabi_config.h:
 
+/Users/jiayu/local/include/casadi/core/integration_tools.hpp:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/appleapiopts.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/shuffle.h:
+/opt/homebrew/include/boost/predef/platform/mingw64.h:
 
-/opt/homebrew/include/boost/mpl/aux_/preprocessor/default_params.hpp:
+/opt/homebrew/include/CGAL/Intersections_3/Point_3_Sphere_3.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__new/placement_new_delete.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__functional/is_transparent.h:
 
 /opt/homebrew/include/boost/predef/library/std.h:
 
-/opt/homebrew/include/CGAL/Intersections_3/Plane_3_Ray_3.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_clock_t.h:
-
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__filesystem/path.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/_locale.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__fwd/complex.h:
 
@@ -10263,93 +11096,105 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_va_list.h:
 
-/opt/homebrew/include/vtk-9.4/vtkPoints.h:
-
-/opt/homebrew/include/boost/type_traits/integral_constant.hpp:
-
-/opt/homebrew/include/CGAL/IO/binary_file_io.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_int16_t.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_fsfilcnt_t.h:
 
-/opt/homebrew/include/boost/concept/assert.hpp:
+/opt/homebrew/include/boost/intrusive/detail/is_stateful_value_traits.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/minmax_element.h:
+/opt/homebrew/include/yaml-cpp/traits.h:
 
-/opt/homebrew/include/CGAL/Intersections_3/Iso_cuboid_3_Triangle_3.h:
+/opt/homebrew/include/vtk-9.4/vtkFeatures.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/errno.h:
+/opt/homebrew/include/boost/random/geometric_distribution.hpp:
 
-/opt/homebrew/include/boost/preprocessor/repetition/enum.hpp:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/machine/_types.h:
+
+/opt/homebrew/include/CGAL/Intersections_3/Bbox_3_Segment_3.h:
+
+/opt/homebrew/include/boost/tuple/detail/tuple_basic.hpp:
+
+/opt/homebrew/include/CGAL/Distance_3/Line_3_Plane_3.h:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/binary_search.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__math/logarithms.h:
+/opt/homebrew/include/boost/random/non_central_chi_squared_distribution.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/remove_const.h:
+/opt/homebrew/include/eigen3/Eigen/src/Core/Fuzzy.h:
 
-/opt/homebrew/include/boost/mpl/aux_/arg_typedef.hpp:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_rotate_copy.h:
 
-/opt/homebrew/include/boost/move/detail/pointer_element.hpp:
+/opt/homebrew/include/boost/parameter/aux_/preprocessor/is_binary.hpp:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/select.h:
-
-/opt/homebrew/include/boost/mpl/not.hpp:
+/opt/homebrew/include/CGAL/Multiset.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sched.h:
 
-/opt/homebrew/include/boost/type_traits/is_arithmetic.hpp:
-
-/opt/homebrew/include/boost/smart_ptr/detail/deprecated_macros.hpp:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__chrono/year_month_day.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/copy_n.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__locale_dir/pad_and_output.h:
 
 /opt/homebrew/include/CGAL/Intersections_3/internal/Segment_3_Tetrahedron_3_intersection.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__filesystem/operations.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/pthread/sched.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__compare/partial_order.h:
+/opt/homebrew/include/CGAL/CORE/poly/Sturm.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__utility/exchange.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__concepts/totally_ordered.h:
 
-/opt/homebrew/include/CGAL/Kernel/global_functions_internal_3.h:
+/opt/homebrew/include/boost/core/use_default.hpp:
 
-/opt/homebrew/include/CGAL/mutex.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__utility/auto_cast.h:
 
-/opt/homebrew/include/CGAL/Sqrt_extension/Chinese_remainder_traits.h:
+/opt/homebrew/include/CGAL/Filtered_kernel/Cartesian_coordinate_iterator_3.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/_strings.h:
+
+/opt/homebrew/include/CGAL/Arr_topology_traits/Arr_unb_planar_batched_pl_helper.h:
+
+/opt/homebrew/include/CGAL/Intersections_3/Line_3_Triangle_3.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_rsize_t.h:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_sum.hpp:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_find_first_of.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_equality_comparable.h:
+
+/opt/homebrew/include/boost/intrusive/pack_options.hpp:
+
+/Users/jiayu/local/include/casadi/core/serializing_stream.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory/allocator_destructor.h:
 
-/opt/homebrew/include/boost/type_traits/has_multiplies.hpp:
-
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__fwd/stack.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_endian.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__chrono/convert_to_tm.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_rune_t.h:
+
+/opt/homebrew/include/yaml-cpp/emitterstyle.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/ostream:
+
+/opt/homebrew/include/CGAL/Intersections_2/Iso_rectangle_2_Line_2.h:
+
+/opt/homebrew/include/boost/smart_ptr/detail/yield_k.hpp:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/gethostuuid.h:
 
 /opt/homebrew/include/boost/preprocessor/arithmetic/sub.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__type_traits/is_aggregate.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/front_insert_iterator.h:
 
-/opt/homebrew/include/boost/predef/architecture/blackfin.h:
+/opt/homebrew/include/CGAL/Surface_sweep_2/Arr_construction_event_base.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__memory_resource/memory_resource.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/optional:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__stop_token/intrusive_list_view.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/unreachable_sentinel.h:
 
-/opt/homebrew/include/CGAL/Arr_extended_dcel.h:
+/opt/homebrew/include/boost/smart_ptr/detail/sp_typeinfo_.hpp:
 
-/opt/homebrew/include/vtk-9.4/vtkFiltersSourcesModule.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_off_t.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__new/exceptions.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/lexicographical_compare_three_way.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/pop_heap.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_reverse_copy.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_ssize_t.h:
 
 /opt/homebrew/include/CGAL/Boolean_set_operations_2/Indexed_event.h:
 
@@ -10357,29 +11202,21 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_size_t.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__iterator/ostream_iterator.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_fd_setsize.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_search_n.h:
-
 /opt/homebrew/include/boost/random/uniform_int_distribution.hpp:
 
 /opt/homebrew/include/boost/preprocessor/repetition/enum_binary_params.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__charconv/traits.h:
+/Users/jiayu/local/include/casadi/core/mx.hpp:
+
+/opt/homebrew/include/CGAL/Hash_map/internal/chained_map.h:
+
+/Users/jiayu/local/include/casadi/core/runtime/casadi_project.hpp:
+
+/Users/jiayu/local/include/casadi/core/casadi_misc.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_pthread/_pthread_types.h:
 
-/opt/homebrew/include/boost/type_traits/is_scoped_enum.hpp:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/runetype.h:
-
-/opt/homebrew/include/CGAL/Gmpzf.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__ranges/container_compatible_range.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__compare/compare_three_way.h:
 
 /opt/homebrew/include/boost/container/detail/alloc_helpers.hpp:
 
@@ -10389,40 +11226,60 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
 /opt/homebrew/include/boost/predef/hardware/simd/x86_amd.h:
 
+/opt/homebrew/include/boost/parameter/aux_/is_maybe.hpp:
+
 /opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__exception/exception_ptr.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__format/formatter_tuple.h:
+/opt/homebrew/include/boost/mpl/aux_/preprocessed/gcc/placeholders.hpp:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/pthread/sched.h:
+/Users/jiayu/local/include/casadi/core/runtime/casadi_cvx.hpp:
+
+/opt/homebrew/include/boost/iterator/transform_iterator.hpp:
+
+/opt/homebrew/include/CGAL/Cartesian/Sphere_3.h:
+
+/opt/homebrew/include/boost/noncopyable.hpp:
+
+/Users/jiayu/local/include/casadi/core/polynomial.hpp:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/arm/types.h:
+
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__format/formatter_tuple.h:
 
 /opt/homebrew/include/boost/predef/os/aix.h:
 
 /opt/homebrew/include/boost/math/special_functions/detail/round_fwd.hpp:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/mismatch.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__compare/compare_three_way.h:
 
-/opt/homebrew/include/eigen3/Eigen/src/Core/Diagonal.h:
+/opt/homebrew/include/yaml-cpp/node/iterator.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__configuration/platform.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__format/concepts.h:
 
-/opt/homebrew/include/CGAL/enable_warnings.h:
+/opt/homebrew/include/CGAL/Intersections_2/Circle_2_Segment_2.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__concepts/predicate.h:
-
-/opt/homebrew/include/vtk-9.4/vtkDataArrayValueRange_Generic.h:
-
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/ranges_unique_copy.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__fwd/byte.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/_mb_cur_max.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_wchar_t.h:
 
-/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__filesystem/space_info.h:
+/opt/homebrew/include/boost/iterator/iterator_adaptor.hpp:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/math.h:
+/opt/homebrew/Cellar/llvm/20.1.6/include/c++/v1/__algorithm/transform.h:
 
-/opt/homebrew/include/boost/mp11/version.hpp:
+/opt/homebrew/include/boost/smart_ptr/detail/spinlock_gcc_atomic.hpp:
 
-/opt/homebrew/include/CGAL/Intersections_3/Line_3_Point_3.h:
+/opt/homebrew/include/CGAL/Vector_2.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/_ctermid.h:
+
+/opt/homebrew/include/boost/random/detail/ptr_helper.hpp:
+
+/opt/homebrew/include/CGAL/Intersections_2/Line_2_Point_2.h:
+
+/opt/homebrew/include/boost/mpl/is_sequence.hpp:
+
+/Users/jiayu/local/include/casadi/core/options.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include/AvailabilityInternal.h:

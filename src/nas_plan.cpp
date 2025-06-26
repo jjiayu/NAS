@@ -10,6 +10,7 @@
 #include <chrono>
 #include <thread>
 #include <vtkRendererCollection.h>
+#include "footstep_planner.hpp"
 
 
 int main() {
@@ -18,6 +19,9 @@ int main() {
 
     //Create the tree
     Tree tree;
+
+    // Create FootstepPlanner instance
+    FootstepPlanner footstep_planner;
 
     // Expand the tree (Depth = num_steps)
     tree.expand(tree.num_steps);
@@ -51,9 +55,16 @@ int main() {
             // Visualize each path in a separate window
             for (size_t i = 0; i < all_paths.size(); ++i) {
                 std::cout << "Path " << i + 1 << ": ";
+
+                // Plan the footstep positions
+                std::cout << "\n=== Planning the footstep positions ===" << std::endl;
+                footstep_planner.plan(current_stance_foot_flag, current_foot_pos, 
+                          tree.goal_stance_foot, 
+                          tree.goal_location,
+                          all_paths[i]);
                 
                 // Create a new window for this path
-                auto renderWindow = Visualizer::create_figure("Path " + std::to_string(i + 1));
+                auto renderWindow = Visualizer::create_figure("Path " + std::to_string(i + 1) + " with Footsteps");
                 auto renderer = renderWindow->GetRenderers()->GetFirstRenderer();
 
                 // Add coordinate axes
@@ -92,6 +103,34 @@ int main() {
                     Visualizer::add_polyhedron(renderer, path_node->patch_polyhedron_3d, patch_color, 0.5);
                 }
                 std::cout << std::endl;
+                
+                // Add computed footsteps to the visualization
+                std::cout << "\n=== Adding footsteps to visualization ===" << std::endl;
+                const auto& computed_footsteps = footstep_planner.get_computed_footsteps();
+                if (!computed_footsteps.empty()) {
+                    // Add optimized footsteps (blue with transparency)
+                    double footstep_color[3] = {0.0, 0.5, 1.0};  // Blue
+                    Visualizer::add_footsteps(renderer, computed_footsteps, footstep_color);
+                    
+                    // Also add desired footstep positions for comparison (green with transparency)
+                    std::vector<Point_3> desired_footsteps;
+                    for (size_t j = 0; j < all_paths[i].size(); j++) {
+                        if (j == 0) {
+                            desired_footsteps.push_back(current_foot_pos);
+                        } else if (j == all_paths[i].size() - 1) {
+                            desired_footsteps.push_back(tree.goal_location);
+                        } else {
+                            desired_footsteps.push_back(all_paths[i][j]->centroid);
+                        }
+                    }
+                    double desired_color[3] = {0.0, 1.0, 0.0};  // Green
+                    Visualizer::add_footsteps(renderer, desired_footsteps, desired_color);
+                    
+                    std::cout << "Added " << computed_footsteps.size() << " optimized footsteps (blue)" << std::endl;
+                    std::cout << "Added " << desired_footsteps.size() << " desired footsteps (green)" << std::endl;
+                } else {
+                    std::cout << "No computed footsteps available for visualization." << std::endl;
+                }
                 
                 // Show this path's window and wait for it to be closed
                 Visualizer::show(renderWindow);

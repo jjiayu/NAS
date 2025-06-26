@@ -31,6 +31,9 @@ class FootstepPlanner {
         casadi::SX b_rf_in_lf_casadi;
         casadi::SX A_lf_in_rf_casadi;
         casadi::SX b_lf_in_rf_casadi;
+        
+        // Store computed footsteps for visualization
+        std::vector<Point_3> computed_footsteps;
 
         FootstepPlanner();
         ~FootstepPlanner();
@@ -40,6 +43,9 @@ class FootstepPlanner {
                   const int& stance_foot_flag_at_goal,
                   const Point_3& stance_foot_position_at_goal,
                   const std::vector<Node*>& path_nodes);
+                  
+        // Get the computed footsteps for visualization
+        const std::vector<Point_3>& get_computed_footsteps() const { return computed_footsteps; }
 
 };
 

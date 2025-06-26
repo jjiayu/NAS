@@ -98,8 +98,8 @@ void FootstepPlanner::plan(const int& stance_foot_flag_at_start,
         objective += casadi::SX::dot(deviation, deviation);
     }
 
-    // Create constraints
-    std::vector<casadi::SX> constraint_functions;
+    // Create Reachability constraints
+    std::vector<casadi::SX> reachability_constraints;
     for (int footstep_cnt = 1; footstep_cnt < path_nodes.size(); footstep_cnt++) {
         casadi::SX A_matrix;
         casadi::SX b_vector;
@@ -114,14 +114,25 @@ void FootstepPlanner::plan(const int& stance_foot_flag_at_start,
         else {
             throw std::runtime_error("Invalid stance foot flag");
         }
-        constraint_functions.push_back(mtimes(A_matrix, (footstep_pos_vars[footstep_cnt] - footstep_pos_vars[footstep_cnt-1])) - b_vector);
+        reachability_constraints.push_back(mtimes(A_matrix, (footstep_pos_vars[footstep_cnt] - footstep_pos_vars[footstep_cnt-1])) - b_vector);
     }
+    // Concatenate reachability constraints into a single vector
+    casadi::SX reachability_constraints_vec = casadi::SX::vertcat(reachability_constraints);
+
+    // Create footstep position constraints
+    std::vector<casadi::SX> footstep_position_constraints;
+    for (int footstep_cnt = 0; footstep_cnt < path_nodes.size(); footstep_cnt++) {
+        footstep_position_constraints.push_back(footstep_pos_vars[footstep_cnt] - desired_footstep_positions[footstep_cnt]);
+    }
+    // Concatenate footstep position constraints into a single vector
+    casadi::SX footstep_position_constraints_vec = casadi::SX::vertcat(footstep_position_constraints);
 
     // Concatenate all footstep position variables into a single vector
     casadi::SX all_vars = casadi::SX::vertcat(footstep_pos_vars);
     
     // Concatenate all constraint functions into a single vector
-    casadi::SX all_constraints = casadi::SX::vertcat(constraint_functions);
+    std::vector<casadi::SX> all_constraint_vectors = {reachability_constraints_vec, footstep_position_constraints_vec};
+    casadi::SX all_constraints = casadi::SX::vertcat(all_constraint_vectors);
 
     // Create QP problem
     casadi::SXDict qp;
@@ -136,8 +147,18 @@ void FootstepPlanner::plan(const int& stance_foot_flag_at_start,
     // Create solver arguments with proper types
     casadi::DMDict arg;
     arg["x0"] = casadi::DM::zeros(all_vars.size1());
-    arg["lbg"] = -casadi::DM::inf(all_constraints.size1());
-    arg["ubg"] = casadi::DM::zeros(all_constraints.size1());
+    
+    // Create bounds for constraints
+    casadi::DM reachability_constraints_lb = -casadi::DM::inf(reachability_constraints_vec.size1());
+    casadi::DM reachability_constraints_ub = casadi::DM::zeros(reachability_constraints_vec.size1());
+    casadi::DM footstep_position_constraints_lb = -casadi::DM::inf(footstep_position_constraints_vec.size1());
+    casadi::DM footstep_position_constraints_ub = casadi::DM::inf(footstep_position_constraints_vec.size1());
+    
+    std::vector<casadi::DM> lbg_parts = {reachability_constraints_lb, footstep_position_constraints_lb};
+    std::vector<casadi::DM> ubg_parts = {reachability_constraints_ub, footstep_position_constraints_ub};
+    
+    arg["lbg"] = casadi::DM::vertcat(lbg_parts);
+    arg["ubg"] = casadi::DM::vertcat(ubg_parts);
 
     // Solve QP
     casadi::DMDict result = solver(arg);
@@ -153,161 +174,26 @@ void FootstepPlanner::plan(const int& stance_foot_flag_at_start,
     std::cout << "\n[ Footstep Positions ]" << std::endl;
     for (int i = 0; i < footstep_pos_vars.size(); i++) {
         // Extract the 3D position for footstep i from the solution vector
-        casadi::DM footstep_solution = x_opt(casadi::Slice(i*3, (i+1)*3));
-        std::cout << "Footstep " << i << " position: " << footstep_solution << std::endl;
+        // Each footstep has 3 coordinates: [x, y, z]
+        casadi::DM footstep_x = x_opt(i*3 + 0);
+        casadi::DM footstep_y = x_opt(i*3 + 1); 
+        casadi::DM footstep_z = x_opt(i*3 + 2);
+        
+        std::cout << "Footstep " << i << " position: [" << footstep_x << ", " << footstep_y << ", " << footstep_z << "]" << std::endl;
         std::cout << "Footstep " << i << " desired:  " << desired_footstep_positions[i] << std::endl;
         std::cout << std::endl;
     }
 
-    // // Decision variables: [x, y, z] position of footstep
-    // casadi::SX x = casadi::SX::sym("x");
-    // casadi::SX y = casadi::SX::sym("y");
-    // casadi::SX z = casadi::SX::sym("z");
-    // casadi::SX vars = vertcat(x, y, z);
-    
-    // // Quadratic objective: minimize deviation from target position
-    // // For demo: minimize x^2 + y^2 + z^2 (minimize distance from origin)
-    // casadi::SX objective = x*x + y*y + z*z;
-    
-    // // Create constraint: A*x <= b  becomes  A*x - b <= 0
-    // // Now all SX types - no ambiguity!
-    // casadi::SX constraints = mtimes(A_rf_in_lf_casadi, vars) - b_rf_in_lf_casadi;
-    
-    // // Formulate QP problem
-    // casadi::SXDict qp;
-    // qp["x"] = vars;                    // Decision variables [x, y, z]
-    // qp["f"] = objective;               // Quadratic objective
-    // qp["g"] = constraints;             // Inequality constraints: A*x <= b
-    
-    // // Create QP solver
-    // casadi::Function solver = casadi::qpsol("footstep_qp", "qpoases", qp);
-    // std::cout << "QP Solver created with polytope constraints!" << std::endl;
-    
-    // try {
-    //     // Setup solver arguments
-    //     std::map<std::string, casadi::DM> arg;
-    //     arg["x0"] = casadi::DM::zeros(3);                           // Initial guess [x0, y0, z0]
-    //     arg["lbg"] = -casadi::DM::inf(constraints.size1());         // Lower bounds: -inf (no lower bounds on Ax <= b)
-    //     arg["ubg"] = casadi::DM::zeros(constraints.size1());        // Upper bounds: 0 (for Ax <= b)
-        
-    //     // Add variable bounds if needed (optional)
-    //     arg["lbx"] = casadi::DM::vertcat({-10, -10, -10});          // Variable lower bounds
-    //     arg["ubx"] = casadi::DM::vertcat({10, 10, 10});             // Variable upper bounds
-        
-    //     // Solve the QP
-    //     std::map<std::string, casadi::DM> result = solver(arg);
-        
-    //     // Check solver success
-    //     bool solve_successful = true;
-    //     std::string solver_status = "unknown";
-        
-    //     // Method 1: Check solver statistics
-    //     auto stats = solver.stats();
-    //     if (stats.find("return_status") != stats.end()) {
-    //         solver_status = static_cast<std::string>(stats.at("return_status"));
-    //         std::cout << "Solver status: " << solver_status << std::endl;
-            
-    //         // qpoases success indicators
-    //         if (solver_status == "SUCCESS" || 
-    //             solver_status == "SOLVED" || 
-    //             solver_status == "Successful return." ||
-    //             solver_status.find("Successful") != std::string::npos) {
-    //             solve_successful = true;
-    //             std::cout << "✅ Optimization SUCCESSFUL!" << std::endl;
-    //         } else {
-    //             solve_successful = false;
-    //             std::cout << "❌ Optimization FAILED: " << solver_status << std::endl;
-    //         }
-    //     }
-        
-    //     // Method 2: Check if solution exists and is finite
-    //     if (result.find("x") == result.end()) {
-    //         solve_successful = false;
-    //         std::cout << "❌ No solution returned!" << std::endl;
-    //     } else {
-    //         casadi::DM x_sol = result["x"];
-    //         bool solution_finite = true;
-    //         for (int i = 0; i < x_sol.size1(); ++i) {
-    //             double val = static_cast<double>(x_sol(i));
-    //             if (!std::isfinite(val)) {
-    //                 solution_finite = false;
-    //                 break;
-    //             }
-    //         }
-    //         if (!solution_finite) {
-    //             solve_successful = false;
-    //             std::cout << "❌ Solution contains infinite/NaN values!" << std::endl;
-    //         }
-    //     }
-        
-    //     // Method 3: Display solver statistics
-    //     std::cout << "\n=== Solver Statistics ===" << std::endl;
-    //     for (const auto& stat : stats) {
-    //         std::cout << stat.first << ": " << stat.second << std::endl;
-    //     }
-        
-    //     if (!solve_successful) {
-    //         std::cout << "\n❌ QP Solve FAILED - cannot proceed" << std::endl;
-    //         return;
-    //     }
-        
-    //     // Extract and display results (only if successful)
-    //     casadi::DM x_opt = result["x"];
-    //     double obj_val = static_cast<double>(result["f"]);
-        
-    //     std::cout << "\n=== QP Solution ===" << std::endl;
-    //     std::cout << "Optimal footstep position:" << std::endl;
-    //     std::cout << "  x = " << x_opt(0) << std::endl;
-    //     std::cout << "  y = " << x_opt(1) << std::endl;
-    //     std::cout << "  z = " << x_opt(2) << std::endl;
-    //     std::cout << "Objective value: " << obj_val << std::endl;
-        
-    //     // Verify constraints - convert to DM for numerical evaluation
-    //     casadi::DM A_rf_num = casadi::DM::zeros(rf_in_lf_constraint.A.rows(), rf_in_lf_constraint.A.cols());
-    //     casadi::DM b_rf_num = casadi::DM::zeros(rf_in_lf_constraint.b.size());
-        
-    //     for (int i = 0; i < rf_in_lf_constraint.A.rows(); ++i) {
-    //         for (int j = 0; j < rf_in_lf_constraint.A.cols(); ++j) {
-    //             A_rf_num(i, j) = rf_in_lf_constraint.A(i, j);
-    //         }
-    //         b_rf_num(i) = rf_in_lf_constraint.b(i);
-    //     }
-        
-    //     // Use proper matrix multiplication for DM - need to be careful about dimensions
-    //     // A_rf_num is (n_constraints x 3), x_opt is (3 x 1), result should be (n_constraints x 1)
-    //     std::cout << "Matrix dimensions: A=" << A_rf_num.rows() << "x" << A_rf_num.columns() 
-    //               << ", x=" << x_opt.rows() << "x" << x_opt.columns() 
-    //               << ", b=" << b_rf_num.rows() << "x" << b_rf_num.columns() << std::endl;
-        
-    //     casadi::DM constraint_values = casadi::DM::mtimes(A_rf_num, x_opt) - b_rf_num;
-        
-    //     // Method 4: Check constraint satisfaction
-    //     std::cout << "\n=== Constraint Verification ===" << std::endl;
-    //     bool constraints_satisfied = true;
-    //     double constraint_tolerance = 1e-6;
-        
-    //     for (int i = 0; i < constraint_values.size1(); ++i) {
-    //         double g_val = static_cast<double>(constraint_values(i));
-    //         std::cout << "  g[" << i << "] = " << g_val;
-            
-    //         if (g_val > constraint_tolerance) {
-    //             std::cout << " ❌ VIOLATED (should be ≤ 0)";
-    //             constraints_satisfied = false;
-    //         } else {
-    //             std::cout << " ✅ satisfied";
-    //         }
-    //         std::cout << std::endl;
-    //     }
-        
-    //     if (constraints_satisfied) {
-    //         std::cout << "✅ All constraints satisfied within tolerance " << constraint_tolerance << std::endl;
-    //     } else {
-    //         std::cout << "❌ Some constraints violated! Solution may be infeasible." << std::endl;
-    //     }
-        
-    // } catch (const std::exception& e) {
-    //     std::cout << "QP Optimization failed: " << e.what() << std::endl;
-    // }
+    // Store the computed footsteps for later use
+    computed_footsteps.clear();
+    for (int i = 0; i < footstep_pos_vars.size(); i++) {
+        double x = static_cast<double>(x_opt(i*3 + 0));
+        double y = static_cast<double>(x_opt(i*3 + 1));
+        double z = static_cast<double>(x_opt(i*3 + 2));
+        computed_footsteps.push_back(Point_3(x, y, z));
+    }
+
 }
+
 
 }
