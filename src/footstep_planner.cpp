@@ -55,7 +55,108 @@ void FootstepPlanner::plan(const int& stance_foot_flag_at_start,
                              
     std::cout << "\n[ Planning Footsteps ]" << std::endl;
 
-    for (int footstep_cnt = 1; footstep_cnt < path_nodes.size() - 1; footstep_cnt++) {
+    // Generate desired footstep positions
+    std::vector<casadi::SX> desired_footstep_positions;
+    for (int footstep_cnt = 0; footstep_cnt < path_nodes.size(); footstep_cnt++) {
+        if (footstep_cnt == 0) {
+            desired_footstep_positions.push_back(casadi::SX::vertcat({
+                CGAL::to_double(stance_foot_position_at_start.x()),
+                CGAL::to_double(stance_foot_position_at_start.y()),
+                CGAL::to_double(stance_foot_position_at_start.z())
+            }));
+        } else if (footstep_cnt == path_nodes.size() - 1) {
+            desired_footstep_positions.push_back(casadi::SX::vertcat({
+                CGAL::to_double(stance_foot_position_at_goal.x()),
+                CGAL::to_double(stance_foot_position_at_goal.y()),
+                CGAL::to_double(stance_foot_position_at_goal.z())
+            }));
+        } else {
+            desired_footstep_positions.push_back(casadi::SX::vertcat({
+                CGAL::to_double(path_nodes[footstep_cnt]->centroid.x()),
+                CGAL::to_double(path_nodes[footstep_cnt]->centroid.y()),
+                CGAL::to_double(path_nodes[footstep_cnt]->centroid.z())
+            }));
+        }
+    }
+
+    // Print desired footstep positions
+    std::cout << "\n[ Desired Footstep Positions (center of patches)]" << std::endl;
+    for (int i = 0; i < desired_footstep_positions.size(); i++) {
+        std::cout << "Footstep " << i << " desired position: " << desired_footstep_positions[i] << std::endl;
+    }
+
+    // Create decision variables for each footstep
+    std::vector<casadi::SX> footstep_pos_vars;
+    for (int footstep_cnt = 0; footstep_cnt < path_nodes.size(); footstep_cnt++) {
+        footstep_pos_vars.push_back(casadi::SX::sym("step"+std::to_string(footstep_cnt),3));
+    }
+
+    // Create objective function (empty)
+    casadi::SX objective = 0;
+    for (int footstep_cnt = 0; footstep_cnt < path_nodes.size(); footstep_cnt++) {
+        casadi::SX deviation = footstep_pos_vars[footstep_cnt] - desired_footstep_positions[footstep_cnt];
+        objective += casadi::SX::dot(deviation, deviation);
+    }
+
+    // Create constraints
+    std::vector<casadi::SX> constraint_functions;
+    for (int footstep_cnt = 1; footstep_cnt < path_nodes.size(); footstep_cnt++) {
+        casadi::SX A_matrix;
+        casadi::SX b_vector;
+
+        if (path_nodes[footstep_cnt]->stance_foot == 0) { // Left foot for making current step "footstep_cnt", then lf in rf
+            A_matrix = A_lf_in_rf_casadi;
+            b_vector = b_lf_in_rf_casadi;
+        } else if (path_nodes[footstep_cnt]->stance_foot == 1) { // Right foot for making current step "footstep_cnt", then rf in lf
+            A_matrix = A_rf_in_lf_casadi;
+            b_vector = b_rf_in_lf_casadi;
+        }
+        else {
+            throw std::runtime_error("Invalid stance foot flag");
+        }
+        constraint_functions.push_back(mtimes(A_matrix, (footstep_pos_vars[footstep_cnt] - footstep_pos_vars[footstep_cnt-1])) - b_vector);
+    }
+
+    // Concatenate all footstep position variables into a single vector
+    casadi::SX all_vars = casadi::SX::vertcat(footstep_pos_vars);
+    
+    // Concatenate all constraint functions into a single vector
+    casadi::SX all_constraints = casadi::SX::vertcat(constraint_functions);
+
+    // Create QP problem
+    casadi::SXDict qp;
+    qp["x"] = all_vars;
+    qp["f"] = objective;
+    qp["g"] = all_constraints;
+
+    // Create QP solver
+    casadi::Function solver = casadi::qpsol("footstep_qp", "qpoases", qp);
+    std::cout << "QP Solver created with polytope constraints!" << std::endl;
+
+    // Create solver arguments with proper types
+    casadi::DMDict arg;
+    arg["x0"] = casadi::DM::zeros(all_vars.size1());
+    arg["lbg"] = -casadi::DM::inf(all_constraints.size1());
+    arg["ubg"] = casadi::DM::zeros(all_constraints.size1());
+
+    // Solve QP
+    casadi::DMDict result = solver(arg);
+    std::cout << "QP Solver result: " << result << std::endl;
+
+    // Extract and display results (only if successful)
+    casadi::DM x_opt = result.at("x");
+    double obj_val = static_cast<double>(result.at("f"));
+        
+    std::cout << "\n=== QP Solution ===" << std::endl;
+
+    // Print the footstep positions (extract from solution)
+    std::cout << "\n[ Footstep Positions ]" << std::endl;
+    for (int i = 0; i < footstep_pos_vars.size(); i++) {
+        // Extract the 3D position for footstep i from the solution vector
+        casadi::DM footstep_solution = x_opt(casadi::Slice(i*3, (i+1)*3));
+        std::cout << "Footstep " << i << " position: " << footstep_solution << std::endl;
+        std::cout << "Footstep " << i << " desired:  " << desired_footstep_positions[i] << std::endl;
+        std::cout << std::endl;
     }
 
     // // Decision variables: [x, y, z] position of footstep
