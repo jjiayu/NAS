@@ -9,23 +9,25 @@
 #include <unordered_map>
 #include <vector>
 #include "astar_search.hpp"
-
-using namespace nas;
+#include "footstep_planner.hpp"
 
 int main() {
+    using namespace nas;
 
     // Create A* search instance
     AstarSearch astar_search;
 
-    HalfSpacePolytopeConstraint constraints = convert_polytope_to_half_space_constraint(astar_search.rf_in_lf_polytope);
-    std::cout << "Constraints: " << constraints.A << std::endl;
-    std::cout << "Constraints: " << constraints.b << std::endl;
+    // Create FootstepPlanner instance
+    FootstepPlanner footstep_planner;
 
     // Search for the path
     astar_search.search();
 
     // Plot the path
     astar_search.plot_path();
+
+    // Plan the footstep
+    footstep_planner.plan();
     
     return 0;
 }

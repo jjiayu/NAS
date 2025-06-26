@@ -176,7 +176,7 @@ double compute_euclidean_distance(const Point_3& start_location, const Point_3& 
 
 // Convert half-space polytope constraint to H-representation
 HalfSpacePolytopeConstraint convert_polytope_to_half_space_constraint(const Polyhedron& polytope){
-    std::cout << "Converting polytope to half-space constraint" << std::endl;
+    std::cout << "- Converting polytope to half-space constraint" << std::endl;
     HalfSpacePolytopeConstraint constraint;
     
     // Calculate centroid for normal orientation
@@ -190,8 +190,8 @@ HalfSpacePolytopeConstraint convert_polytope_to_half_space_constraint(const Poly
     
     int vertex_count = std::distance(polytope.vertices_begin(), polytope.vertices_end());
     if (vertex_count == 0) {
-        std::cout << "Error: Empty polytope" << std::endl;
-        return constraint;
+        //exception handling
+        throw std::runtime_error("Error: Empty polytope");
     }
     
     centroid = Point_3(centroid.x() / vertex_count,
@@ -211,49 +211,51 @@ HalfSpacePolytopeConstraint convert_polytope_to_half_space_constraint(const Poly
         const Point_3& p2 = (++h)->vertex()->point();
         const Point_3& p3 = (++h)->vertex()->point();
         
-        // Compute normal using cross product
-        Vector_3 v1 = p2 - p1;
-        Vector_3 v2 = p3 - p1;
-        Vector_3 normal = CGAL::cross_product(v1, v2);
+        // Create CGAL plane from three points
+        Plane_3 plane(p1, p2, p3);
         
-        // Convert to doubles and normalize
-        double a = CGAL::to_double(normal.x());
-        double b = CGAL::to_double(normal.y());
-        double c = CGAL::to_double(normal.z());
-        
-        // Check for degenerate facets
-        double norm = std::sqrt(a*a + b*b + c*c);
-        if (norm <= 1e-12) {
-            std::cout << "Warning: Degenerate facet detected, skipping..." << std::endl;
+        // Check for degenerate plane
+        if (plane.is_degenerate()) {
+            std::cout << "\033[1;33mWarning: Degenerate facet detected, skipping...\033[0m" << std::endl;
             continue;
         }
         
-        // Normalize the normal vector
+        // Get plane coefficients: ax + by + cz + d = 0
+        double a = CGAL::to_double(plane.a());
+        double b = CGAL::to_double(plane.b());
+        double c = CGAL::to_double(plane.c());
+        double d = CGAL::to_double(plane.d());
+        
+        // Normalize the coefficients
+        double norm = std::sqrt(a*a + b*b + c*c);
+        if (norm <= 1e-12) {
+            std::cout << "\033[1;33mWarning: Zero normal vector detected, skipping...\033[0m" << std::endl;
+            continue;
+        }
         a /= norm;
         b /= norm;
         c /= norm;
+        d /= norm;
         
-        // Calculate d: ax + by + cz = d (facet equation)
-        double d = a * CGAL::to_double(p1.x()) + 
-                   b * CGAL::to_double(p1.y()) + 
-                   c * CGAL::to_double(p1.z());
+        // Check orientation: for half-space Ax <= b, we want normal pointing inward
+        // CGAL plane equation: ax + by + cz + d = 0
+        // For half-space: ax + by + cz <= -d (interior points satisfy this)
+        double centroid_side = a * CGAL::to_double(centroid.x()) + 
+                              b * CGAL::to_double(centroid.y()) + 
+                              c * CGAL::to_double(centroid.z()) + d;
         
-        // Check normal direction using centroid
-        // For half-space representation Ax <= b, we want normal pointing inward
-        double centroid_value = a * CGAL::to_double(centroid.x()) + 
-                               b * CGAL::to_double(centroid.y()) + 
-                               c * CGAL::to_double(centroid.z());
-        
-        // If centroid_value > d, normal points outward, so flip it
-        if (centroid_value > d) {
+        // If centroid_side > 0, the normal points away from centroid (outward)
+        // We want inward normals, so flip if needed
+        if (centroid_side > 0) {
             a = -a; b = -b; c = -c; d = -d;
         }
         
         // Store in constraint matrices: Ax <= b format
+        // From ax + by + cz + d = 0, we get ax + by + cz <= -d
         constraint.A(facet_index, 0) = a;
         constraint.A(facet_index, 1) = b;
         constraint.A(facet_index, 2) = c;
-        constraint.b(facet_index) = d;
+        constraint.b(facet_index) = -d;  // Note the negative sign!
         
         facet_index++;
     }
@@ -264,9 +266,10 @@ HalfSpacePolytopeConstraint convert_polytope_to_half_space_constraint(const Poly
         constraint.b.conservativeResize(facet_index);
     }
     
-    std::cout << "Successfully converted polytope to half-space representation with " 
+    std::cout << "- Successfully converted polytope to half-space representation with " 
               << facet_index << " constraints" << std::endl;
     
+
     return constraint;
 }
 

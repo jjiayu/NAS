@@ -1,7 +1,7 @@
 #include "node.hpp"
 #include <iostream>
 
-using namespace nas;
+namespace nas {
 
 Node::Node() {    // surface_id = 0;
     node_id = 0;
@@ -23,4 +23,6 @@ bool Node::check_if_node_contains_point(const Point_3& point) {
     CGAL::Bounded_side result = this->patch_polygon_2d.bounded_side(point_in_surface_coord[0]);//take the first point of the transformed point (the list only have one component)
     
     return result == CGAL::ON_BOUNDED_SIDE || result == CGAL::ON_BOUNDARY;
+}
+
 }

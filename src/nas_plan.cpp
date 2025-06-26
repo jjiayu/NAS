@@ -11,9 +11,10 @@
 #include <thread>
 #include <vtkRendererCollection.h>
 
-using namespace nas;
 
 int main() {
+
+    using namespace nas;
 
     //Create the tree
     Tree tree;

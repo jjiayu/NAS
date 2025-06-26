@@ -24,8 +24,8 @@ Tree::Tree() {
     // KD-trees are automatically initialized to nullptr by std::unique_ptr
 
     std::cout << "[ Loading Polytopes ]" << std::endl;
-    load_obj(rf_in_lf_path, this->rf_in_lf_polytope);
-    load_obj(lf_in_rf_path, this->lf_in_rf_polytope);
+    load_obj(rf_in_lf_path_antecedent, this->rf_in_lf_polytope);
+    load_obj(lf_in_rf_path_antecedent, this->lf_in_rf_polytope);
 
     // Creat the Surfaces List
     std::cout << "\n[ Generate Environment Inforamtion (Get Surface Parameters) ]" << std::endl;

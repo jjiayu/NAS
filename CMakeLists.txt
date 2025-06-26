@@ -52,6 +52,7 @@ add_library(geometry_lib src/geometry.cpp)
 add_library(surface_lib src/surface.cpp)
 add_library(visualizer_lib src/visualizer.cpp)
 add_library(astar_search_lib src/astar_search.cpp)
+add_library(footstep_planner_lib src/footstep_planner.cpp)
 
 # Set library dependencies
 target_link_libraries(node_lib PRIVATE geometry_lib CGAL::CGAL)
@@ -85,6 +86,15 @@ target_link_libraries(astar_search_lib PRIVATE
     CGAL::CGAL
     Boost::boost
 )
+target_link_libraries(footstep_planner_lib PRIVATE
+    astar_search_lib
+    tree_lib
+    utils_lib
+    geometry_lib
+    visualizer_lib
+    ${VTK_LIBRARIES}
+    CGAL::CGAL
+)
 
 # Add executables
 add_executable(nas_plan src/nas_plan.cpp)
@@ -93,6 +103,8 @@ add_executable(casadi_test src/casadi_test.cpp)
 
 # Link libraries for first executable
 target_link_libraries(nas_plan PRIVATE
+    footstep_planner_lib
+    astar_search_lib
     tree_lib
     utils_lib
     node_lib
@@ -106,6 +118,7 @@ target_link_libraries(nas_plan PRIVATE
 
 # Link libraries for A* planning executable
 target_link_libraries(astar_plan PRIVATE
+    footstep_planner_lib
     astar_search_lib
     tree_lib
     utils_lib

@@ -208,6 +208,19 @@ astar_search_lib/fast:
 .PHONY : astar_search_lib/fast
 
 #=============================================================================
+# Target rules for targets named footstep_planner_lib
+
+# Build rule for target.
+footstep_planner_lib: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 footstep_planner_lib
+.PHONY : footstep_planner_lib
+
+# fast build rule for target.
+footstep_planner_lib/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/footstep_planner_lib.dir/build.make CMakeFiles/footstep_planner_lib.dir/build
+.PHONY : footstep_planner_lib/fast
+
+#=============================================================================
 # Target rules for targets named nas_plan
 
 # Build rule for target.
@@ -317,6 +330,30 @@ src/casadi_test.s: src/casadi_test.cpp.s
 src/casadi_test.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/casadi_test.dir/build.make CMakeFiles/casadi_test.dir/src/casadi_test.cpp.s
 .PHONY : src/casadi_test.cpp.s
+
+src/footstep_planner.o: src/footstep_planner.cpp.o
+.PHONY : src/footstep_planner.o
+
+# target to build an object file
+src/footstep_planner.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/footstep_planner_lib.dir/build.make CMakeFiles/footstep_planner_lib.dir/src/footstep_planner.cpp.o
+.PHONY : src/footstep_planner.cpp.o
+
+src/footstep_planner.i: src/footstep_planner.cpp.i
+.PHONY : src/footstep_planner.i
+
+# target to preprocess a source file
+src/footstep_planner.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/footstep_planner_lib.dir/build.make CMakeFiles/footstep_planner_lib.dir/src/footstep_planner.cpp.i
+.PHONY : src/footstep_planner.cpp.i
+
+src/footstep_planner.s: src/footstep_planner.cpp.s
+.PHONY : src/footstep_planner.s
+
+# target to generate assembly for a file
+src/footstep_planner.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/footstep_planner_lib.dir/build.make CMakeFiles/footstep_planner_lib.dir/src/footstep_planner.cpp.s
+.PHONY : src/footstep_planner.cpp.s
 
 src/geometry.o: src/geometry.cpp.o
 .PHONY : src/geometry.o
@@ -497,6 +534,7 @@ help:
 	@echo "... astar_plan"
 	@echo "... astar_search_lib"
 	@echo "... casadi_test"
+	@echo "... footstep_planner_lib"
 	@echo "... geometry_lib"
 	@echo "... nas_plan"
 	@echo "... node_lib"
@@ -513,6 +551,9 @@ help:
 	@echo "... src/casadi_test.o"
 	@echo "... src/casadi_test.i"
 	@echo "... src/casadi_test.s"
+	@echo "... src/footstep_planner.o"
+	@echo "... src/footstep_planner.i"
+	@echo "... src/footstep_planner.s"
 	@echo "... src/geometry.o"
 	@echo "... src/geometry.i"
 	@echo "... src/geometry.s"

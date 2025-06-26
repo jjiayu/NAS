@@ -149,6 +149,7 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/surface_lib.dir/DependInfo.cmake"
   "CMakeFiles/visualizer_lib.dir/DependInfo.cmake"
   "CMakeFiles/astar_search_lib.dir/DependInfo.cmake"
+  "CMakeFiles/footstep_planner_lib.dir/DependInfo.cmake"
   "CMakeFiles/nas_plan.dir/DependInfo.cmake"
   "CMakeFiles/astar_plan.dir/DependInfo.cmake"
   "CMakeFiles/casadi_test.dir/DependInfo.cmake"

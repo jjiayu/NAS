@@ -23,8 +23,8 @@ AstarSearch::AstarSearch() {
     std::cout << "Initializing A* search algorithm" << std::endl;
 
     // Initialize polytopes
-    load_obj(rf_in_lf_path_astar, this->rf_in_lf_polytope);
-    load_obj(lf_in_rf_path_astar, this->lf_in_rf_polytope);
+    load_obj(rf_in_lf_path_forward, this->rf_in_lf_polytope);
+    load_obj(lf_in_rf_path_forward, this->lf_in_rf_polytope);
 
     // Creat the Surfaces List
     std::cout << "\n[ Generate Environment Inforamtion (Get Surface Parameters) ]" << std::endl;

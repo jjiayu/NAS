@@ -5,6 +5,7 @@
 /Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles/surface_lib.dir
 /Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles/visualizer_lib.dir
 /Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles/astar_search_lib.dir
+/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles/footstep_planner_lib.dir
 /Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles/nas_plan.dir
 /Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles/astar_plan.dir
 /Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles/casadi_test.dir

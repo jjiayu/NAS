@@ -95,6 +95,8 @@ nas_plan_EXTERNAL_OBJECTS =
 
 nas_plan: CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o
 nas_plan: CMakeFiles/nas_plan.dir/build.make
+nas_plan: libfootstep_planner_lib.dylib
+nas_plan: libastar_search_lib.dylib
 nas_plan: libtree_lib.dylib
 nas_plan: libnode_lib.dylib
 nas_plan: libsurface_lib.dylib

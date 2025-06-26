@@ -18,7 +18,7 @@ void load_obj(const std::string& filename, Polyhedron& polyhedron) {
     if (!CGAL::IO::read_polygon_mesh(filename, polyhedron)) {
         throw std::runtime_error("Failed to load polyhedron from: " + filename);
     }
-    std::cout << "Successfully loaded polytope from: " << filename << std::endl;
+    std::cout << "- Successfully loaded polytope from: " << filename << std::endl;
 }
 
 } // namespace nas
