@@ -94,6 +94,7 @@ target_link_libraries(footstep_planner_lib PRIVATE
     visualizer_lib
     ${VTK_LIBRARIES}
     CGAL::CGAL
+    casadi::casadi
 )
 
 # Add executables

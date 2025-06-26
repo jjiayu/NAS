@@ -27,7 +27,7 @@ class FootstepPlanner {
         FootstepPlanner();
         ~FootstepPlanner();
 
-        void plan();
+        void plan(const std::vector<Node*>& path_nodes);
 
 };
 

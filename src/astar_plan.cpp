@@ -27,7 +27,7 @@ int main() {
     astar_search.plot_path();
 
     // Plan the footstep
-    footstep_planner.plan();
+    footstep_planner.plan(astar_search.result_path);
     
     return 0;
 }
