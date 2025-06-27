@@ -132,11 +132,61 @@ int main() {
                     std::cout << "No computed footsteps available for visualization." << std::endl;
                 }
                 
+                // Add reachability polytopes at each footstep position
+                std::cout << "\n=== Adding reachability polytopes at footstep positions ===" << std::endl;
+                if (!computed_footsteps.empty() && !all_paths[i].empty()) {
+                    for (size_t j = 0; j < computed_footsteps.size() - 1; j++) {  // Don't show polytope for last step
+                        const auto& current_footstep = computed_footsteps[j];
+                        
+                        // Determine which polytope to show based on current step's stance foot
+                        Polyhedron polytope_to_show;
+                        double polytope_color[3];
+                        std::string polytope_description;
+                        
+                        if (j < all_paths[i].size()) {
+                            if (all_paths[i][j]->stance_foot == RIGHT_FOOT) {
+                                // Current step is right foot stance, show LF in RF polytope (reachable region for left foot)
+                                polytope_to_show = footstep_planner.lf_in_rf_polytope;
+                                polytope_color[0] = 1.0; polytope_color[1] = 0.5; polytope_color[2] = 0.5;  // Light red
+                                polytope_description = "LF in RF (left foot reachable region)";
+                            } else {
+                                // Current step is left foot stance, show RF in LF polytope (reachable region for right foot)
+                                polytope_to_show = footstep_planner.rf_in_lf_polytope;
+                                polytope_color[0] = 0.5; polytope_color[1] = 0.5; polytope_color[2] = 1.0;  // Light blue
+                                polytope_description = "RF in LF (right foot reachable region)";
+                            }
+                            
+                            // Create a translated polytope by building a new one with translated vertices
+                            // Get translation offsets
+                            double tx = CGAL::to_double(current_footstep.x());
+                            double ty = CGAL::to_double(current_footstep.y());
+                            double tz = CGAL::to_double(current_footstep.z());
+                            
+                            // Create a translated copy of the polytope using CGAL transformation
+                            Polyhedron translated_polytope = polytope_to_show;  // Copy the original
+                            
+                            // Apply translation using CGAL's transform function
+                            Transformation translation(CGAL::TRANSLATION, Vector_3(tx, ty, tz));
+                            
+                            // Apply transformation to all vertices
+                            for (auto v_it = translated_polytope.vertices_begin(); v_it != translated_polytope.vertices_end(); ++v_it) {
+                                v_it->point() = translation(v_it->point());
+                            }
+                            
+                            // Add the translated polytope to visualization
+                            Visualizer::add_polyhedron(renderer, translated_polytope, polytope_color, 0.2);
+                            
+                            std::cout << "Step " << j << " (" << polytope_description << ") at position [" 
+                                      << tx << ", " << ty << ", " << tz << "]" << std::endl;
+                        }
+                    }
+                    std::cout << "Added reachability polytopes for " << (computed_footsteps.size() - 1) << " footsteps" << std::endl;
+                }
+                std::cout << "\n=== Showing the visualization ===" << std::endl;
                 // Show this path's window and wait for it to be closed
                 Visualizer::show(renderWindow);
             }
         }
     }
-
     return 0;
 }
