@@ -22,10 +22,11 @@ const bool merge_node_flag = true;
 const std::string rf_in_lf_path_antecedent = "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/LF_antecedent_CUTZ.obj";
 const std::string lf_in_rf_path_antecedent = "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/RF_antecedent_CUTZ.obj";
 
-// for a star we use forward polytopes
+// for A* and footstep planning qp, we use forward polytopes
 const std::string rf_in_lf_path_forward = "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/RF_constraints_in_LF_quasi_flat_REDUCED.obj";
 const std::string lf_in_rf_path_forward = "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/LF_constraints_in_RF_quasi_flat_REDUCED.obj";
-
+const std::string com_in_lf_path_forward = "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/COM_constraints_in_LF_quasi_flat_REDUCED.obj";
+const std::string com_in_rf_path_forward = "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/COM_constraints_in_RF_quasi_flat_REDUCED.obj";
 
 // Define Goal Specificaitons
 const int stance_foot_at_goal = LEFT_FOOT;

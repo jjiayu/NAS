@@ -119,19 +119,35 @@ void FootstepPlanner::plan(const int& stance_foot_flag_at_start,
     // Concatenate reachability constraints into a single vector
     casadi::SX reachability_constraints_vec = casadi::SX::vertcat(reachability_constraints);
 
-    // Create footstep position constraints
-    std::vector<casadi::SX> footstep_position_constraints;
-    for (int footstep_cnt = 0; footstep_cnt < path_nodes.size(); footstep_cnt++) {
-        footstep_position_constraints.push_back(footstep_pos_vars[footstep_cnt] - desired_footstep_positions[footstep_cnt]);
-    }
-    // Concatenate footstep position constraints into a single vector
-    casadi::SX footstep_position_constraints_vec = casadi::SX::vertcat(footstep_position_constraints);
-
     // Concatenate all footstep position variables into a single vector
     casadi::SX all_vars = casadi::SX::vertcat(footstep_pos_vars);
+
+    // Create bounds for reachability constraints
+    casadi::DM reachability_constraints_lb = -casadi::DM::inf(reachability_constraints_vec.size1());
+    casadi::DM reachability_constraints_ub = casadi::DM::zeros(reachability_constraints_vec.size1());
     
+    // Generate Initial and Final footstep constraints
+    // Convert Point_3 to CasADi SX format
+    casadi::SX initial_stance_pos = casadi::SX::vertcat({
+        CGAL::to_double(stance_foot_position_at_start.x()),
+        CGAL::to_double(stance_foot_position_at_start.y()),
+        CGAL::to_double(stance_foot_position_at_start.z())
+    });
+    casadi::SX final_stance_pos = casadi::SX::vertcat({
+        CGAL::to_double(stance_foot_position_at_goal.x()),
+        CGAL::to_double(stance_foot_position_at_goal.y()),
+        CGAL::to_double(stance_foot_position_at_goal.z())
+    });
+    
+    casadi::SX initial_footstep_constraints = footstep_pos_vars[0] - initial_stance_pos;
+    casadi::SX final_footstep_constraints = footstep_pos_vars[path_nodes.size() - 1] - final_stance_pos;
+    casadi::DM initial_footstep_constraints_lb = casadi::DM::zeros(initial_footstep_constraints.size1());
+    casadi::DM initial_footstep_constraints_ub = casadi::DM::zeros(initial_footstep_constraints.size1());
+    casadi::DM final_footstep_constraints_lb = casadi::DM::zeros(final_footstep_constraints.size1());
+    casadi::DM final_footstep_constraints_ub = casadi::DM::zeros(final_footstep_constraints.size1());
+
     // Concatenate all constraint functions into a single vector
-    std::vector<casadi::SX> all_constraint_vectors = {reachability_constraints_vec, footstep_position_constraints_vec};
+    std::vector<casadi::SX> all_constraint_vectors = {reachability_constraints_vec, initial_footstep_constraints, final_footstep_constraints};
     casadi::SX all_constraints = casadi::SX::vertcat(all_constraint_vectors);
 
     // Create QP problem
@@ -148,14 +164,9 @@ void FootstepPlanner::plan(const int& stance_foot_flag_at_start,
     casadi::DMDict arg;
     arg["x0"] = casadi::DM::zeros(all_vars.size1());
     
-    // Create bounds for constraints
-    casadi::DM reachability_constraints_lb = -casadi::DM::inf(reachability_constraints_vec.size1());
-    casadi::DM reachability_constraints_ub = casadi::DM::zeros(reachability_constraints_vec.size1());
-    casadi::DM footstep_position_constraints_lb = -casadi::DM::inf(footstep_position_constraints_vec.size1());
-    casadi::DM footstep_position_constraints_ub = casadi::DM::inf(footstep_position_constraints_vec.size1());
-    
-    std::vector<casadi::DM> lbg_parts = {reachability_constraints_lb, footstep_position_constraints_lb};
-    std::vector<casadi::DM> ubg_parts = {reachability_constraints_ub, footstep_position_constraints_ub};
+    // Collect the bounds for all constraints
+    std::vector<casadi::DM> lbg_parts = {reachability_constraints_lb, initial_footstep_constraints_lb, final_footstep_constraints_lb};
+    std::vector<casadi::DM> ubg_parts = {reachability_constraints_ub, initial_footstep_constraints_ub, final_footstep_constraints_ub};
     
     arg["lbg"] = casadi::DM::vertcat(lbg_parts);
     arg["ubg"] = casadi::DM::vertcat(ubg_parts);
