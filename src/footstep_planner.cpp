@@ -8,6 +8,7 @@ FootstepPlanner::FootstepPlanner() {
 
     std::cout << "\n[ Initializing Footstep Planner ]" << std::endl;
 
+    // Left foot in Right Foot constraint forward polytope
     load_obj(rf_in_lf_path_forward, this->rf_in_lf_polytope);
     this->rf_in_lf_constraint = convert_polytope_to_half_space_constraint(this->rf_in_lf_polytope);
 
@@ -22,9 +23,9 @@ FootstepPlanner::FootstepPlanner() {
         }
         this->b_rf_in_lf_casadi(i) = rf_in_lf_constraint.b(i);
     }
-    std::cout << "- Right foot in Left Foot constraint polytope: " << A_rf_in_lf_casadi.rows() << " x " << A_rf_in_lf_casadi.columns() << std::endl;
+    std::cout << "- Right foot in Left Foot (forward)constraint polytope: " << A_rf_in_lf_casadi.rows() << " x " << A_rf_in_lf_casadi.columns() << std::endl;
 
-    // Left foot in Right Foot constraint polytope
+    // Left foot in Right Foot constraint forward polytope
     
     load_obj(lf_in_rf_path_forward, this->lf_in_rf_polytope);
     this->lf_in_rf_constraint = convert_polytope_to_half_space_constraint(this->lf_in_rf_polytope);
@@ -39,7 +40,43 @@ FootstepPlanner::FootstepPlanner() {
         this->b_lf_in_rf_casadi(i) = lf_in_rf_constraint.b(i);
     }
 
-    std::cout << "- Left foot in Right Foot constraint polytope: " << A_lf_in_rf_casadi.rows() << " x " << A_lf_in_rf_casadi.columns() << std::endl;
+    std::cout << "- Left foot in Right Foot (forward)) constraint polytope: " << A_lf_in_rf_casadi.rows() << " x " << A_lf_in_rf_casadi.columns() << std::endl;
+
+
+    // CoM in Left Foot constraint forward polytope
+    load_obj(com_in_lf_path_forward, this->com_in_lf_polytope);
+    this->com_in_lf_constraint = convert_polytope_to_half_space_constraint(this->com_in_lf_polytope);
+
+    // CoM in Right Foot constraint forward polytope
+    load_obj(com_in_rf_path_forward, this->com_in_rf_polytope);
+    this->com_in_rf_constraint = convert_polytope_to_half_space_constraint(this->com_in_rf_polytope);
+
+    // Convert Eigen matrices to CasADi SX (for mtimes compatibility)
+    //   CoM in Left Foot constraint polytope
+    this->A_com_in_lf_casadi = casadi::SX::zeros(com_in_lf_constraint.A.rows(), com_in_lf_constraint.A.cols());
+    this->b_com_in_lf_casadi = casadi::SX::zeros(com_in_lf_constraint.b.size());
+
+    for (int i = 0; i < com_in_lf_constraint.A.rows(); ++i) {
+        for (int j = 0; j < com_in_lf_constraint.A.cols(); ++j) {
+            this->A_com_in_lf_casadi(i, j) = com_in_lf_constraint.A(i, j);
+        }
+        this->b_com_in_lf_casadi(i) = com_in_lf_constraint.b(i);
+    }
+
+    std::cout << "- CoM in Left Foot (forward) constraint polytope: " << A_com_in_lf_casadi.rows() << " x " << A_com_in_lf_casadi.columns() << std::endl;
+    
+    // CoM in Right Foot constraint forward polytope
+    this->A_com_in_rf_casadi = casadi::SX::zeros(com_in_rf_constraint.A.rows(), com_in_rf_constraint.A.cols());
+    this->b_com_in_rf_casadi = casadi::SX::zeros(com_in_rf_constraint.b.size());
+
+    for (int i = 0; i < com_in_rf_constraint.A.rows(); ++i) {
+        for (int j = 0; j < com_in_rf_constraint.A.cols(); ++j) {
+            this->A_com_in_rf_casadi(i, j) = com_in_rf_constraint.A(i, j);
+        }
+        this->b_com_in_rf_casadi(i) = com_in_rf_constraint.b(i);
+    }
+
+    std::cout << "- CoM in Right Foot (forward) constraint polytope: " << A_com_in_rf_casadi.rows() << " x " << A_com_in_rf_casadi.columns() << std::endl;
 
 }
 
@@ -173,12 +210,15 @@ void FootstepPlanner::plan(const int& stance_foot_flag_at_start,
 
     // Solve QP
     casadi::DMDict result = solver(arg);
-    std::cout << "QP Solver result: " << result << std::endl;
+    
+    // Print QP solver status
+    casadi::Dict stats = solver.stats();
+    std::cout << "\nSuccess: " << stats["success"] << std::endl;
 
-    // Extract and display results (only if successful)
+    // Extract and display results
     casadi::DM x_opt = result.at("x");
     double obj_val = static_cast<double>(result.at("f"));
-        
+
     std::cout << "\n=== QP Solution ===" << std::endl;
 
     // Print the footstep positions (extract from solution)

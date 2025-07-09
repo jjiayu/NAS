@@ -21,9 +21,15 @@ class FootstepPlanner {
         Polyhedron rf_in_lf_polytope;
         Polyhedron lf_in_rf_polytope;
 
+        // CoM Polytope
+        Polyhedron com_in_lf_polytope;
+        Polyhedron com_in_rf_polytope;
+
         // Half-space polytope constraint
         HalfSpacePolytopeConstraint rf_in_lf_constraint;
         HalfSpacePolytopeConstraint lf_in_rf_constraint;
+        HalfSpacePolytopeConstraint com_in_lf_constraint;
+        HalfSpacePolytopeConstraint com_in_rf_constraint;
 
         // CasADi matrices will be created in the implementation file
         // No need to expose CasADi types in the header
@@ -31,6 +37,10 @@ class FootstepPlanner {
         casadi::SX b_rf_in_lf_casadi;
         casadi::SX A_lf_in_rf_casadi;
         casadi::SX b_lf_in_rf_casadi;
+        casadi::SX A_com_in_lf_casadi;
+        casadi::SX b_com_in_lf_casadi;
+        casadi::SX A_com_in_rf_casadi;
+        casadi::SX b_com_in_rf_casadi;
         
         // Store computed footsteps for visualization
         std::vector<Point_3> computed_footsteps;

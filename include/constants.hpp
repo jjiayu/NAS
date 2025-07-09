@@ -5,6 +5,9 @@
 
 namespace nas {
 
+// CoM z Height (for footstep planning))
+const double com_z_height = 0.75;
+
 // Define Foot stance status
 const int LEFT_FOOT = 0;   // Represents the left foot in stance
 const int RIGHT_FOOT = 1;  // Represents the right foot in stance
@@ -25,8 +28,8 @@ const std::string lf_in_rf_path_antecedent = "/Users/jiayu/Desktop/nas_ws/NAS/da
 // for A* and footstep planning qp, we use forward polytopes
 const std::string rf_in_lf_path_forward = "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/RF_constraints_in_LF_quasi_flat_REDUCED.obj";
 const std::string lf_in_rf_path_forward = "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/LF_constraints_in_RF_quasi_flat_REDUCED.obj";
-const std::string com_in_lf_path_forward = "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/COM_constraints_in_LF_quasi_flat_REDUCED.obj";
-const std::string com_in_rf_path_forward = "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/COM_constraints_in_RF_quasi_flat_REDUCED.obj";
+const std::string com_in_lf_path_forward = "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/COM_constraints_in_LF_effector_frame_REDUCED.obj";
+const std::string com_in_rf_path_forward = "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/COM_constraints_in_RF_effector_frame_REDUCED.obj";
 
 // Define Goal Specificaitons
 const int stance_foot_at_goal = LEFT_FOOT;
