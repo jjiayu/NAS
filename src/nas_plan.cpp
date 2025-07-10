@@ -86,7 +86,7 @@ int main() {
                 
                 // Add patches along the current path
                 for (const auto& path_node : all_paths[i]) {
-                    // std::cout << path_node->node_id << " foot ID: " << path_node->stance_foot << " -> ";
+                    std::cout << path_node->node_id << " foot ID: " << path_node->stance_foot << " -> ";
                     
                     // Color patches based on stance foot
                     double patch_color[3];

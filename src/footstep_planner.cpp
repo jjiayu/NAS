@@ -1,6 +1,7 @@
 #include "footstep_planner.hpp"
 #include <casadi/casadi.hpp>
 #include <iostream>
+#include <limits>
 
 namespace nas {
 
@@ -135,7 +136,7 @@ void FootstepPlanner::plan(const int& stance_foot_flag_at_start,
         objective += casadi::SX::dot(deviation, deviation);
     }
 
-    // Create Reachability constraints
+    // Create Footstep Reachability constraints
     std::vector<casadi::SX> reachability_constraints;
     for (int footstep_cnt = 1; footstep_cnt < path_nodes.size(); footstep_cnt++) {
         casadi::SX A_matrix;
@@ -155,6 +156,76 @@ void FootstepPlanner::plan(const int& stance_foot_flag_at_start,
     }
     // Concatenate reachability constraints into a single vector
     casadi::SX reachability_constraints_vec = casadi::SX::vertcat(reachability_constraints);
+
+    // Create Surface constraints for intermediate steps (steps 1 to n-2)
+    // Skip first step (0) and last step (n-1) as they are already constrained
+    std::vector<casadi::SX> surface_constraints;
+    std::cout << "\n[ Creating Surface Constraints for Intermediate Steps ]" << std::endl;
+    
+    for (int footstep_cnt = 1; footstep_cnt < path_nodes.size() - 1; footstep_cnt++) {
+        // Get the surface constraint for this patch
+        SurfaceConstraint surface_constraint = convert_surface_constraint(path_nodes[footstep_cnt]->patch_polyhedron_3d);
+        
+        // Convert Eigen matrices to CasADi format
+        casadi::SX A_surface_casadi = casadi::SX::zeros(surface_constraint.A.rows(), surface_constraint.A.cols());
+        casadi::SX b_surface_casadi = casadi::SX::zeros(surface_constraint.b.size());
+        
+        for (int i = 0; i < surface_constraint.A.rows(); ++i) {
+            for (int j = 0; j < surface_constraint.A.cols(); ++j) {
+                A_surface_casadi(i, j) = surface_constraint.A(i, j);
+            }
+            b_surface_casadi(i) = surface_constraint.b(i);
+        }
+        
+        // Create constraint: A_surface * footstep_pos <= b_surface
+        casadi::SX surface_constraint_expr = mtimes(A_surface_casadi, footstep_pos_vars[footstep_cnt]) - b_surface_casadi;
+        surface_constraints.push_back(surface_constraint_expr);
+        
+        std::cout << "  Step " << footstep_cnt << ": Added surface constraint with " 
+                  << surface_constraint.A.rows() << " constraints (1 plane + " 
+                  << (surface_constraint.A.rows() - 1) << " edge boundaries)" << std::endl;
+    }
+    
+    // Concatenate surface constraints into a single vector (if any exist)
+    casadi::SX surface_constraints_vec;
+    casadi::DM surface_constraints_lb, surface_constraints_ub;
+    
+    if (!surface_constraints.empty()) {
+        surface_constraints_vec = casadi::SX::vertcat(surface_constraints);
+        
+        // Create bounds: first row of each patch is equality (plane), rest are inequalities (edges)
+        int total_surface_constraints = surface_constraints_vec.size1();
+        surface_constraints_lb = casadi::DM::zeros(total_surface_constraints);
+        surface_constraints_ub = casadi::DM::zeros(total_surface_constraints);
+        
+        // Set bounds for each surface constraint block
+        int constraint_offset = 0;
+        for (int footstep_cnt = 1; footstep_cnt < path_nodes.size() - 1; footstep_cnt++) {
+            // Get the surface constraint for this patch to know the size
+            SurfaceConstraint surface_constraint = convert_surface_constraint(path_nodes[footstep_cnt]->patch_polyhedron_3d);
+            int num_constraints = surface_constraint.A.rows();
+            
+            // First constraint: plane equality (lb = ub = 0)
+            surface_constraints_lb(constraint_offset) = 0.0;
+            surface_constraints_ub(constraint_offset) = 0.0;
+            
+            // Remaining constraints: edge inequalities (lb = -inf, ub = 0)
+            for (int i = 1; i < num_constraints; i++) {
+                surface_constraints_lb(constraint_offset + i) = -casadi::DM::inf();
+                surface_constraints_ub(constraint_offset + i) = 0.0;
+            }
+            
+            constraint_offset += num_constraints;
+        }
+        
+        std::cout << "  Total surface constraints: " << surface_constraints_vec.size1() << std::endl;
+        std::cout << "  (Each patch: 1 plane equality + multiple edge inequalities)" << std::endl;
+    } else {
+        surface_constraints_vec = casadi::SX::zeros(0, 1);
+        surface_constraints_lb = casadi::DM::zeros(0);
+        surface_constraints_ub = casadi::DM::zeros(0);
+        std::cout << "  No intermediate steps - no surface constraints added" << std::endl;
+    }
 
     // Concatenate all footstep position variables into a single vector
     casadi::SX all_vars = casadi::SX::vertcat(footstep_pos_vars);
@@ -184,7 +255,7 @@ void FootstepPlanner::plan(const int& stance_foot_flag_at_start,
     casadi::DM final_footstep_constraints_ub = casadi::DM::zeros(final_footstep_constraints.size1());
 
     // Concatenate all constraint functions into a single vector
-    std::vector<casadi::SX> all_constraint_vectors = {reachability_constraints_vec, initial_footstep_constraints, final_footstep_constraints};
+    std::vector<casadi::SX> all_constraint_vectors = {reachability_constraints_vec, surface_constraints_vec, initial_footstep_constraints, final_footstep_constraints};
     casadi::SX all_constraints = casadi::SX::vertcat(all_constraint_vectors);
 
     // Create QP problem
@@ -202,8 +273,8 @@ void FootstepPlanner::plan(const int& stance_foot_flag_at_start,
     arg["x0"] = casadi::DM::zeros(all_vars.size1());
     
     // Collect the bounds for all constraints
-    std::vector<casadi::DM> lbg_parts = {reachability_constraints_lb, initial_footstep_constraints_lb, final_footstep_constraints_lb};
-    std::vector<casadi::DM> ubg_parts = {reachability_constraints_ub, initial_footstep_constraints_ub, final_footstep_constraints_ub};
+    std::vector<casadi::DM> lbg_parts = {reachability_constraints_lb, surface_constraints_lb, initial_footstep_constraints_lb, final_footstep_constraints_lb};
+    std::vector<casadi::DM> ubg_parts = {reachability_constraints_ub, surface_constraints_ub, initial_footstep_constraints_ub, final_footstep_constraints_ub};
     
     arg["lbg"] = casadi::DM::vertcat(lbg_parts);
     arg["ubg"] = casadi::DM::vertcat(ubg_parts);

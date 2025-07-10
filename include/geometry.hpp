@@ -21,6 +21,12 @@ struct HalfSpacePolytopeConstraint{
     Eigen::VectorXd b;
 };
 
+// Surface constraint representation (the last row is on surface constraint)
+struct SurfaceConstraint{
+    Eigen::MatrixXd A;
+    Eigen::VectorXd b;
+};
+
 class Node;  // Forward declaration
 
 std::vector<Point_2> transform_3d_points_to_surface_plane(const std::vector<Point_3>& points, const Transformation& transformation);
@@ -49,5 +55,8 @@ double compute_euclidean_distance(const Point_3& start_location, const Point_3& 
 
 // Convert half-space polytope constraint to H-representation
 HalfSpacePolytopeConstraint convert_polytope_to_half_space_constraint(const Polyhedron& polytope);
+
+// Convert surface constraint to H-representation
+SurfaceConstraint convert_surface_constraint(const Polyhedron& surface_3d);
 
 } // namespace nas

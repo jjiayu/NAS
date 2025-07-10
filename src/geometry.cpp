@@ -1,6 +1,7 @@
 #include "types.hpp"
 #include "geometry.hpp"
 #include "node.hpp"
+#include <limits>
 namespace nas {
 
 std::vector<Point_2> transform_3d_points_to_surface_plane(const std::vector<Point_3>& points, const Transformation& transformation) {
@@ -269,6 +270,139 @@ HalfSpacePolytopeConstraint convert_polytope_to_half_space_constraint(const Poly
     std::cout << "- Successfully converted polytope to half-space representation with " 
               << facet_index << " constraints" << std::endl;
     
+
+    return constraint;
+}
+
+// Convert surface constraint to H-representation with plane equality and boundary inequalities
+SurfaceConstraint convert_surface_constraint(const Polyhedron& surface_3d){
+    std::cout << "- Converting surface to H-representation with plane equality and boundary constraints" << std::endl;
+    SurfaceConstraint constraint;
+
+    // PART 1: Get the plane equation of the surface (equality constraint)
+    // First, extract all vertices from the polyhedron
+    std::vector<Point_3> vertices;
+    for (auto v = surface_3d.vertices_begin(); v != surface_3d.vertices_end(); ++v) {
+        vertices.push_back(v->point());
+        //print vertices here
+        std::cout << "Vertex: " << v->point() << std::endl;
+    }
+    
+    if (vertices.size() < 3) {
+        throw std::runtime_error("Error: Need at least 3 vertices to fit a plane");
+    }
+    
+    // Fit a plane to the vertices using least squares
+    Plane_3 plane;
+    CGAL::linear_least_squares_fitting_3(vertices.begin(), vertices.end(), plane, CGAL::Dimension_tag<0>());
+
+    // Get the plane coefficients
+    double a = CGAL::to_double(plane.a());
+    double b = CGAL::to_double(plane.b());
+    double c = CGAL::to_double(plane.c());
+    double d = CGAL::to_double(plane.d());
+
+    // Normalize the coefficients
+    double norm = std::sqrt(a*a + b*b + c*c);
+    if (norm <= 1e-12) {
+        std::cout << "\033[1;33mWarning: Zero normal vector detected, skipping...\033[0m" << std::endl;
+        return SurfaceConstraint();
+    }
+    a /= norm;
+    b /= norm;
+    c /= norm;
+    d /= norm;
+    
+    // PART 2: Get boundary constraints from surface vertices (vertical half-space planes in 3D)
+    int num_vertices = vertices.size();
+    if (num_vertices < 3) {
+        throw std::runtime_error("Error: Surface has fewer than 3 vertices");
+    }
+    
+    // PART 3: Create half-space constraints from edges
+    // For a closed polygon: num_edges = num_vertices
+    // Total: 1 equality constraint (plane) + num_vertices inequality constraints (edge boundaries)
+    constraint.A = Eigen::MatrixXd::Zero(1 + num_vertices, 3);
+    constraint.b = Eigen::VectorXd::Zero(1 + num_vertices);
+    
+    // Row 0: Plane constraint (equality: ax + by + cz = -d)
+    constraint.A(0, 0) = a;
+    constraint.A(0, 1) = b;
+    constraint.A(0, 2) = c;
+    constraint.b(0) = -d;
+    
+    // Rows 1 to num_vertices: Vertical boundary constraints from each edge
+    for (int i = 0; i < num_vertices; i++) {
+        Point_3 p1 = vertices[i];
+        Point_3 p2 = vertices[(i + 1) % num_vertices];
+        
+        // Edge vector in x-y plane
+        double edge_x = CGAL::to_double(p2.x() - p1.x());
+        double edge_y = CGAL::to_double(p2.y() - p1.y());
+        
+        // Inward normal vector in x-y plane (perpendicular to edge, pointing inside)
+        // For counterclockwise ordering, inward normal is (-edge_y, edge_x)
+        double normal_x = -edge_y;  // inward normal for counterclockwise vertices
+        double normal_y = edge_x;
+        
+        // Normalize the normal vector
+        double normal_length = std::sqrt(normal_x * normal_x + normal_y * normal_y);
+        if (normal_length > 1e-12) {
+            normal_x /= normal_length;
+            normal_y /= normal_length;
+        }
+        
+        // VERIFICATION: Check if normal points inward by testing against polygon centroid
+        // Calculate 2D centroid of the polygon
+        double centroid_x = 0.0, centroid_y = 0.0;
+        for (const auto& v : vertices) {
+            centroid_x += CGAL::to_double(v.x());
+            centroid_y += CGAL::to_double(v.y());
+        }
+        centroid_x /= vertices.size();
+        centroid_y /= vertices.size();
+        
+        // Vector from edge midpoint to centroid
+        double midpoint_x = (CGAL::to_double(p1.x()) + CGAL::to_double(p2.x())) / 2.0;
+        double midpoint_y = (CGAL::to_double(p1.y()) + CGAL::to_double(p2.y())) / 2.0;
+        double to_centroid_x = centroid_x - midpoint_x;
+        double to_centroid_y = centroid_y - midpoint_y;
+        
+        // Dot product: if positive, normal points toward centroid (inward)
+        double dot_product = normal_x * to_centroid_x + normal_y * to_centroid_y;
+        
+        // If dot product is positive, normal points inward - we need outward normals for ≤ constraints
+        if (dot_product > 0) {
+            normal_x = -normal_x;
+            normal_y = -normal_y;
+        }
+        
+        // DEBUG: Verify RHS calculation consistency
+        double p1_x = CGAL::to_double(p1.x());
+        double p1_y = CGAL::to_double(p1.y());
+        double p2_x = CGAL::to_double(p2.x());
+        double p2_y = CGAL::to_double(p2.y());
+        
+        double rhs_p1 = normal_x * p1_x + normal_y * p1_y;
+        double rhs_p2 = normal_x * p2_x + normal_y * p2_y;
+        
+        // Test the boundary constraint with the polygon centroid
+        double centroid_value = normal_x * centroid_x + normal_y * centroid_y;
+        std::cout << "    Edge " << i << ": Normal=[" << normal_x << "," << normal_y << "], RHS=" << rhs_p1 << std::endl;
+        std::cout << "    Centroid test: " << centroid_value << " <= " << rhs_p1 << " ? " << (centroid_value <= rhs_p1 ? "PASS" : "FAIL") << std::endl;
+        
+        // Use p1 for RHS (both should give the same value if normal is correct)
+        double rhs = rhs_p1;
+        
+        constraint.A(1 + i, 0) = normal_x;  // x coefficient
+        constraint.A(1 + i, 1) = normal_y;  // y coefficient
+        constraint.A(1 + i, 2) = 0.0;       // z coefficient (vertical plane)
+        constraint.b(1 + i) = rhs;
+    }
+    
+    std::cout << "- Successfully created combined surface constraint:" << std::endl;
+    std::cout << "  Row 0: Plane equation (ax + by + cz = " << -d << ")" << std::endl;
+    std::cout << "  Rows 1-" << num_vertices << ": Vertical edge boundary constraints (" << num_vertices << " edges)" << std::endl;
 
     return constraint;
 }

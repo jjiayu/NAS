@@ -221,7 +221,7 @@ std::vector<Node*> AstarSearch::get_children(Node* parent){
                 child->patch_polygon_2d = polygon_2d_intersect_result;
                 child->patch_polyhedron_3d = polytope_surf_3d_intersect_polygon;
                 child->transformation_to_2d = surface.transform_to_surface;
-                child->transformation_to_3d = surface.transform_to_3d; 
+                child->transformation_to_3d = surface.transform_to_3d;
                 child->perimeter = compute_polygon_perimeter(polytope_surf_3d_intersect_polygon);
                 child->centroid = get_centroid(polytope_surf_3d_intersect_pts);
                 
