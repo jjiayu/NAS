@@ -86,7 +86,7 @@ FootstepPlanner::~FootstepPlanner() {
     // Destructor implementation (can be empty if no special cleanup needed)
 }
 
-void FootstepPlanner::plan(const int& stance_foot_flag_at_start, 
+bool FootstepPlanner::plan(const int& stance_foot_flag_at_start, 
                            const Point_3& stance_foot_position_at_start, 
                            const int& stance_foot_flag_at_goal,
                            const Point_3& stance_foot_position_at_goal,
@@ -413,40 +413,70 @@ void FootstepPlanner::plan(const int& stance_foot_flag_at_start,
     arg["lbg"] = casadi::DM::vertcat(lbg_parts);
     arg["ubg"] = casadi::DM::vertcat(ubg_parts);
 
-    // Solve QP
-    casadi::DMDict result = solver(arg);
-    
-    // Print QP solver status
-    casadi::Dict stats = solver.stats();
-    std::cout << "\nSuccess: " << stats["success"] << std::endl;
-
-    // Extract and display results
-    casadi::DM x_opt = result.at("x");
-    double obj_val = static_cast<double>(result.at("f"));
-
-    std::cout << "\n=== QP Solution ===" << std::endl;
-
-    // Print the footstep positions (extract from solution)
-    std::cout << "\n[ Footstep Positions ]" << std::endl;
-    for (int i = 0; i < footstep_pos_vars.size(); i++) {
-        // Extract the 3D position for footstep i from the solution vector
-        // Each footstep has 3 coordinates: [x, y, z]
-        casadi::DM footstep_x = x_opt(i*3 + 0);
-        casadi::DM footstep_y = x_opt(i*3 + 1); 
-        casadi::DM footstep_z = x_opt(i*3 + 2);
+    // Solve QP with error handling
+    try {
+        casadi::DMDict result = solver(arg);
         
-        std::cout << "Footstep " << i << " position: [" << footstep_x << ", " << footstep_y << ", " << footstep_z << "]" << std::endl;
-        std::cout << "Footstep " << i << " desired:  " << desired_footstep_positions[i] << std::endl;
-        std::cout << std::endl;
-    }
+        // Print QP solver status
+        casadi::Dict stats = solver.stats();
+        std::cout << "\nSuccess: " << stats["success"] << std::endl;
 
-    // Store the computed footsteps for later use
-    computed_footsteps.clear();
-    for (int i = 0; i < footstep_pos_vars.size(); i++) {
-        double x = static_cast<double>(x_opt(i*3 + 0));
-        double y = static_cast<double>(x_opt(i*3 + 1));
-        double z = static_cast<double>(x_opt(i*3 + 2));
-        computed_footsteps.push_back(Point_3(x, y, z));
+        // Check if solver actually succeeded
+        if (static_cast<bool>(stats["success"])) {
+            // Extract and display results
+            casadi::DM x_opt = result.at("x");
+            double obj_val = static_cast<double>(result.at("f"));
+
+            std::cout << "\n=== QP Solution ===" << std::endl;
+
+            // Print the footstep positions (extract from solution)
+            std::cout << "\n[ Footstep Positions ]" << std::endl;
+            for (int i = 0; i < footstep_pos_vars.size(); i++) {
+                // Extract the 3D position for footstep i from the solution vector
+                // Each footstep has 3 coordinates: [x, y, z]
+                casadi::DM footstep_x = x_opt(i*3 + 0);
+                casadi::DM footstep_y = x_opt(i*3 + 1); 
+                casadi::DM footstep_z = x_opt(i*3 + 2);
+                
+                std::cout << "Footstep " << i << " position: [" << footstep_x << ", " << footstep_y << ", " << footstep_z << "]" << std::endl;
+                std::cout << "Footstep " << i << " desired:  " << desired_footstep_positions[i] << std::endl;
+                std::cout << std::endl;
+            }
+
+            // Store the computed footsteps for later use
+            computed_footsteps.clear();
+            for (int i = 0; i < footstep_pos_vars.size(); i++) {
+                double x = static_cast<double>(x_opt(i*3 + 0));
+                double y = static_cast<double>(x_opt(i*3 + 1));
+                double z = static_cast<double>(x_opt(i*3 + 2));
+                computed_footsteps.push_back(Point_3(x, y, z));
+            }
+            
+            std::cout << "\n✓ QP solved successfully!" << std::endl;
+            return true;  // Success
+        } else {
+            std::cout << "\n✗ QP solver returned success=false (infeasible/failed)" << std::endl;
+            // Clear computed footsteps to indicate failure
+            computed_footsteps.clear();
+            return false;  // Failure
+        }
+        
+    } catch (const casadi::CasadiException& e) {
+        std::cout << "\n✗ QP solver failed with CasADi exception: " << e.what() << std::endl;
+        std::cout << "   This path is infeasible - skipping to next iteration" << std::endl;
+        
+        // Clear computed footsteps to indicate failure
+        computed_footsteps.clear();
+        
+        // Don't re-throw the exception - let the caller handle the failure gracefully
+        return false;  // Failure
+    } catch (const std::exception& e) {
+        std::cout << "\n✗ QP solver failed with exception: " << e.what() << std::endl;
+        std::cout << "   This path is infeasible - skipping to next iteration" << std::endl;
+        
+        // Clear computed footsteps to indicate failure
+        computed_footsteps.clear();
+        return false;  // Failure
     }
 
 }

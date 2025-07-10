@@ -58,10 +58,16 @@ int main() {
 
                 // Plan the footstep positions
                 std::cout << "\n=== Planning the footstep positions ===" << std::endl;
-                footstep_planner.plan(current_stance_foot_flag, current_foot_pos, 
-                          tree.goal_stance_foot, 
-                          tree.goal_location,
-                          all_paths[i]);
+                bool planning_success = footstep_planner.plan(current_stance_foot_flag, current_foot_pos, 
+                                              tree.goal_stance_foot, 
+                                              tree.goal_location,
+                                              all_paths[i]);
+                
+                // Skip this path if footstep planning failed
+                if (!planning_success) {
+                    std::cout << "⚠️  Footstep planning failed for path " << (i + 1) << " - skipping to next path" << std::endl;
+                    continue;  // Skip to the next iteration of the for loop
+                }
                 
                 // Create a new window for this path
                 auto renderWindow = Visualizer::create_figure("Path " + std::to_string(i + 1) + " with Footsteps");

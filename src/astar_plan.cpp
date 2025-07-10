@@ -45,10 +45,14 @@ int main() {
 
     // Plan the footsteps
     std::cout << "\n=== Planning Footsteps with Optimization ===" << std::endl;
-    footstep_planner.plan(current_stance_foot_flag, current_foot_pos, 
-                          astar_search.goal_stance_foot, 
-                          astar_search.goal_location,
-                          astar_search.result_path);
+    bool planning_success = footstep_planner.plan(current_stance_foot_flag, current_foot_pos, 
+                                                   astar_search.goal_stance_foot, 
+                                                   astar_search.goal_location,
+                                                   astar_search.result_path);
+    
+    if (!planning_success) {
+        std::cout << "⚠️  Footstep planning failed! Continuing with visualization of A* path only." << std::endl;
+    }
 
     // Create comprehensive visualization
     std::cout << "\n=== Creating Comprehensive Visualization ===" << std::endl;

@@ -48,7 +48,7 @@ class FootstepPlanner {
         FootstepPlanner();
         ~FootstepPlanner();
 
-        void plan(const int& stance_foot_flag_at_start, 
+        bool plan(const int& stance_foot_flag_at_start, 
                   const Point_3& stance_foot_position_at_start, 
                   const int& stance_foot_flag_at_goal,
                   const Point_3& stance_foot_position_at_goal,
