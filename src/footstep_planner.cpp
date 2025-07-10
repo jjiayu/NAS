@@ -280,8 +280,9 @@ void FootstepPlanner::plan(const int& stance_foot_flag_at_start,
         com_constraints_vec = casadi::SX::vertcat(com_constraints);
         // CoM constraints are inequalities: A_com * com_position <= b_com
         com_constraints_lb = -casadi::DM::inf(com_constraints_vec.size1());
-        com_constraints_ub = casadi::DM::zeros(com_constraints_vec.size1());
-        std::cout << "  Total CoM constraints: " << com_constraints_vec.size1() << std::endl;
+        // com_constraints_ub = casadi::DM::zeros(com_constraints_vec.size1());
+        com_constraints_ub = casadi::DM::inf(com_constraints_vec.size1());
+        std::cout << " (Disabled) Total CoM constraints: " << com_constraints_vec.size1() << std::endl;
     } else {
         com_constraints_vec = casadi::SX::zeros(0, 1);
         com_constraints_lb = casadi::DM::zeros(0);
