@@ -57,7 +57,6 @@ const std::string node_search_method = "bruteforce"; // "bruteforce", "kdtree", 
 // The surfaces are defined in the following order:
 // 1) bottom left, 2) bottom right, 3) top right, 4) top left
 
-// Flat Terrain for testing
 // const std::vector<std::vector<Point_3>> surf_list = Stairs;
 // const std::vector<std::vector<Point_3>> surf_list = TwoFlatSurfaces;
 // const std::vector<std::vector<Point_3>> surf_list = LongStairsComplete;

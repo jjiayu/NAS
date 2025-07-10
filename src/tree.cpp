@@ -125,7 +125,7 @@ void Tree::expand(int target_depth) {
 
     auto end_time = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time);
-    std::cout << "=== Tree expansion===\n";
+    std::cout << "\n=== Tree expansion===\n";
     std::cout << "Total number of nodes: " << total_num_nodes << std::endl;
     std::cout << "Took " << std::fixed << std::setprecision(3) << duration.count()/1000.0 << " milliseconds (ms)" << std::endl;
 }

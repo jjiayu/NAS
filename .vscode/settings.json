@@ -110,6 +110,10 @@
         "numbers": "cpp",
         "semaphore": "cpp",
         "shared_mutex": "cpp",
-        "valarray": "cpp"
+        "valarray": "cpp",
+        "regex": "cpp",
+        "flat_map": "cpp",
+        "flat_set": "cpp",
+        "stacktrace": "cpp"
     }
 }

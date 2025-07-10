@@ -54,10 +54,14 @@ int main() {
             std::cout << "Number of paths to root: " << all_paths.size() << std::endl;
             // Visualize each path in a separate window
             for (size_t i = 0; i < all_paths.size(); ++i) {
-                std::cout << "Path " << i + 1 << ": ";
+                std::cout << "\nPath " << i + 1 << ": ";
+                for (size_t j = 0; j < all_paths[i].size(); j++) {
+                    const auto& node = all_paths[i][j];
+                    std::cout << "Node ID: " << node->node_id << ", foot ID: " << node->stance_foot << " -> ";
+                }
 
                 // Plan the footstep positions
-                std::cout << "\n=== Planning the footstep positions ===" << std::endl;
+                std::cout << "\n\n=== Planning the footstep positions ===" << std::endl;
                 bool planning_success = footstep_planner.plan(current_stance_foot_flag, current_foot_pos, 
                                               tree.goal_stance_foot, 
                                               tree.goal_location,
@@ -92,7 +96,6 @@ int main() {
                 
                 // Add patches along the current path
                 for (const auto& path_node : all_paths[i]) {
-                    std::cout << path_node->node_id << " foot ID: " << path_node->stance_foot << " -> ";
                     
                     // Color patches based on stance foot
                     double patch_color[3];
@@ -111,7 +114,6 @@ int main() {
                 std::cout << std::endl;
                 
                 // Add computed footsteps to the visualization
-                std::cout << "\n=== Adding footsteps to visualization ===" << std::endl;
                 const auto& computed_footsteps = footstep_planner.get_computed_footsteps();
                 if (!computed_footsteps.empty()) {
                     // Add optimized footsteps (blue with transparency)
@@ -132,14 +134,11 @@ int main() {
                     double desired_color[3] = {0.0, 1.0, 0.0};  // Green
                     Visualizer::add_footsteps(renderer, desired_footsteps, desired_color);
                     
-                    std::cout << "Added " << computed_footsteps.size() << " optimized footsteps (blue)" << std::endl;
-                    std::cout << "Added " << desired_footsteps.size() << " desired footsteps (green)" << std::endl;
                 } else {
                     std::cout << "No computed footsteps available for visualization." << std::endl;
                 }
                 
                 // Add reachability polytopes at each footstep position
-                std::cout << "\n=== Adding reachability polytopes at footstep positions ===" << std::endl;
                 if (!computed_footsteps.empty() && !all_paths[i].empty()) {
                     for (size_t j = 0; j < computed_footsteps.size() - 1; j++) {  // Don't show polytope for last step
                         const auto& current_footstep = computed_footsteps[j];
@@ -154,12 +153,10 @@ int main() {
                                 // Current step is right foot stance, show LF in RF polytope (reachable region for left foot)
                                 polytope_to_show = footstep_planner.lf_in_rf_polytope;
                                 polytope_color[0] = 1.0; polytope_color[1] = 0.5; polytope_color[2] = 0.5;  // Light red
-                                polytope_description = "LF in RF (left foot reachable region)";
                             } else {
                                 // Current step is left foot stance, show RF in LF polytope (reachable region for right foot)
                                 polytope_to_show = footstep_planner.rf_in_lf_polytope;
                                 polytope_color[0] = 0.5; polytope_color[1] = 0.5; polytope_color[2] = 1.0;  // Light blue
-                                polytope_description = "RF in LF (right foot reachable region)";
                             }
                             
                             // Create a translated polytope by building a new one with translated vertices
@@ -182,11 +179,8 @@ int main() {
                             // Add the translated polytope to visualization
                             Visualizer::add_polyhedron(renderer, translated_polytope, polytope_color, 0.2);
                             
-                            std::cout << "Step " << j << " (" << polytope_description << ") at position [" 
-                                      << tx << ", " << ty << ", " << tz << "]" << std::endl;
                         }
                     }
-                    std::cout << "Added reachability polytopes for " << (computed_footsteps.size() - 1) << " footsteps" << std::endl;
                 }
                 std::cout << "\n=== Showing the visualization ===" << std::endl;
                 // Show this path's window and wait for it to be closed

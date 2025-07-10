@@ -55,7 +55,7 @@ int main() {
     }
 
     // Create comprehensive visualization
-    std::cout << "\n=== Creating Comprehensive Visualization ===" << std::endl;
+    // std::cout << "\n=== Creating Comprehensive Visualization ===" << std::endl;
     auto renderWindow = Visualizer::create_figure("A* Path with Footstep Planning and Reachability Polytopes");
     auto renderer = renderWindow->GetRenderers()->GetFirstRenderer();
 
@@ -63,21 +63,21 @@ int main() {
     Visualizer::add_coordinate_axes(renderer);
 
     // Add environment surfaces
-    std::cout << "Adding environment surfaces..." << std::endl;
+    // std::cout << "Adding environment surfaces..." << std::endl;
     for (const auto& surface : astar_search.surfaces) {
         double surface_color[3] = {0.7, 0.9, 1.0};  // Light blue
         Visualizer::add_polyhedron(renderer, surface.polyhedron_3d, surface_color, 0.3);
     }
 
     // Add start and goal positions
-    std::cout << "Adding start and goal positions..." << std::endl;
+    // std::cout << "Adding start and goal positions..." << std::endl;
     double start_color[3] = {1.0, 0.0, 0.0};  // Red
     double goal_color[3] = {0.0, 1.0, 0.0};   // Green
     Visualizer::add_points(renderer, {current_foot_pos}, start_color, 0.1);
     Visualizer::add_points(renderer, {astar_search.goal_location}, goal_color, 0.1);
 
     // Add A* path patches with stance foot coloring
-    std::cout << "Adding A* path patches..." << std::endl;
+    // std::cout << "Adding A* path patches..." << std::endl;
     for (const auto& node : astar_search.result_path) {
         double patch_color[3];
         if (node->stance_foot == LEFT_FOOT) {
@@ -91,7 +91,7 @@ int main() {
     // Add computed footsteps if available
     const auto& computed_footsteps = footstep_planner.get_computed_footsteps();
     if (!computed_footsteps.empty()) {
-        std::cout << "Adding optimized footsteps..." << std::endl;
+        // std::cout << "Adding optimized footsteps..." << std::endl;
         
         // Add optimized footsteps (cyan/blue with transparency)
         double footstep_color[3] = {0.0, 0.8, 1.0};  // Cyan
@@ -111,11 +111,11 @@ int main() {
         double desired_color[3] = {1.0, 1.0, 0.0};  // Yellow
         Visualizer::add_footsteps(renderer, desired_footsteps, desired_color);
         
-        std::cout << "Added " << computed_footsteps.size() << " optimized footsteps (cyan)" << std::endl;
-        std::cout << "Added " << desired_footsteps.size() << " desired footsteps (yellow)" << std::endl;
+        // std::cout << "Added " << computed_footsteps.size() << " optimized footsteps (cyan)" << std::endl;
+        // std::cout << "Added " << desired_footsteps.size() << " desired footsteps (yellow)" << std::endl;
 
         // Add reachability polytopes at each footstep position
-        std::cout << "\n=== Adding reachability polytopes at footstep positions ===" << std::endl;
+        // std::cout << "\n=== Adding reachability polytopes at footstep positions ===" << std::endl;
         for (size_t j = 0; j < computed_footsteps.size() - 1; j++) {  // Don't show polytope for last step
             const auto& current_footstep = computed_footsteps[j];
             
@@ -129,12 +129,12 @@ int main() {
                     // Current step is right foot stance, show LF in RF polytope (reachable region for left foot)
                     polytope_to_show = footstep_planner.lf_in_rf_polytope;
                     polytope_color[0] = 1.0; polytope_color[1] = 0.5; polytope_color[2] = 0.5;  // Light red
-                    polytope_description = "LF in RF (left foot reachable region)";
+                    // polytope_description = "LF in RF (left foot reachable region)";
                 } else {
                     // Current step is left foot stance, show RF in LF polytope (reachable region for right foot)
                     polytope_to_show = footstep_planner.rf_in_lf_polytope;
                     polytope_color[0] = 0.5; polytope_color[1] = 0.5; polytope_color[2] = 1.0;  // Light blue
-                    polytope_description = "RF in LF (right foot reachable region)";
+                    // polytope_description = "RF in LF (right foot reachable region)";
                 }
                 
                 // Get translation offsets
@@ -156,11 +156,10 @@ int main() {
                 // Add the translated polytope to visualization
                 Visualizer::add_polyhedron(renderer, translated_polytope, polytope_color, 0.2);
                 
-                std::cout << "Step " << j << " (" << polytope_description << ") at position [" 
-                          << tx << ", " << ty << ", " << tz << "]" << std::endl;
+                // std::cout << "Step " << j << " (" << polytope_description << ") at position [" 
+                        //   << tx << ", " << ty << ", " << tz << "]" << std::endl;
             }
         }
-        std::cout << "Added reachability polytopes for " << (computed_footsteps.size() - 1) << " footsteps" << std::endl;
     } else {
         std::cout << "No computed footsteps available for visualization." << std::endl;
     }

@@ -177,7 +177,6 @@ double compute_euclidean_distance(const Point_3& start_location, const Point_3& 
 
 // Convert half-space polytope constraint to H-representation
 HalfSpacePolytopeConstraint convert_polytope_to_half_space_constraint(const Polyhedron& polytope){
-    std::cout << "- Converting polytope to half-space constraint" << std::endl;
     HalfSpacePolytopeConstraint constraint;
     
     // Calculate centroid for normal orientation
@@ -275,8 +274,10 @@ HalfSpacePolytopeConstraint convert_polytope_to_half_space_constraint(const Poly
 }
 
 // Convert surface constraint to H-representation with plane equality and boundary inequalities
-SurfaceConstraint convert_surface_constraint(const Polyhedron& surface_3d){
-    std::cout << "- Converting surface to H-representation with plane equality and boundary constraints" << std::endl;
+// The first row is equality constraint defines the plane
+// Other rows are inequality constraints that define the boundary of the surface
+SurfaceConstraint generate_surface_constraint(const Polyhedron& surface_3d){
+    // std::cout << "- Converting surface to H-representation with plane equality and boundary constraints" << std::endl;
     SurfaceConstraint constraint;
 
     // PART 1: Get the plane equation of the surface (equality constraint)
@@ -284,8 +285,6 @@ SurfaceConstraint convert_surface_constraint(const Polyhedron& surface_3d){
     std::vector<Point_3> vertices;
     for (auto v = surface_3d.vertices_begin(); v != surface_3d.vertices_end(); ++v) {
         vertices.push_back(v->point());
-        //print vertices here
-        std::cout << "Vertex: " << v->point() << std::endl;
     }
     
     if (vertices.size() < 3) {
@@ -388,8 +387,8 @@ SurfaceConstraint convert_surface_constraint(const Polyhedron& surface_3d){
         
         // Test the boundary constraint with the polygon centroid
         double centroid_value = normal_x * centroid_x + normal_y * centroid_y;
-        std::cout << "    Edge " << i << ": Normal=[" << normal_x << "," << normal_y << "], RHS=" << rhs_p1 << std::endl;
-        std::cout << "    Centroid test: " << centroid_value << " <= " << rhs_p1 << " ? " << (centroid_value <= rhs_p1 ? "PASS" : "FAIL") << std::endl;
+        // std::cout << "    Edge " << i << ": Normal=[" << normal_x << "," << normal_y << "], RHS=" << rhs_p1 << std::endl;
+        // std::cout << "    Centroid test: " << centroid_value << " <= " << rhs_p1 << " ? " << (centroid_value <= rhs_p1 ? "PASS" : "FAIL") << std::endl;
         
         // Use p1 for RHS (both should give the same value if normal is correct)
         double rhs = rhs_p1;
@@ -400,9 +399,9 @@ SurfaceConstraint convert_surface_constraint(const Polyhedron& surface_3d){
         constraint.b(1 + i) = rhs;
     }
     
-    std::cout << "- Successfully created combined surface constraint:" << std::endl;
-    std::cout << "  Row 0: Plane equation (ax + by + cz = " << -d << ")" << std::endl;
-    std::cout << "  Rows 1-" << num_vertices << ": Vertical edge boundary constraints (" << num_vertices << " edges)" << std::endl;
+    // std::cout << "- Successfully created combined surface constraint:" << std::endl;
+    // std::cout << "  Row 0: Plane equation (ax + by + cz = " << -d << ")" << std::endl;
+    // std::cout << "  Rows 1-" << num_vertices << ": Vertical edge boundary constraints (" << num_vertices << " edges)" << std::endl;
 
     return constraint;
 }

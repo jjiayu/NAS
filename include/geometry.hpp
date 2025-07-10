@@ -57,6 +57,6 @@ double compute_euclidean_distance(const Point_3& start_location, const Point_3& 
 HalfSpacePolytopeConstraint convert_polytope_to_half_space_constraint(const Polyhedron& polytope);
 
 // Convert surface constraint to H-representation
-SurfaceConstraint convert_surface_constraint(const Polyhedron& surface_3d);
+SurfaceConstraint generate_surface_constraint(const Polyhedron& surface_3d);
 
 } // namespace nas
