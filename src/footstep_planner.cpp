@@ -137,7 +137,7 @@ void FootstepPlanner::plan(const int& stance_foot_flag_at_start,
         objective += casadi::SX::dot(deviation, deviation);
     }
 
-    // Create Footstep Reachability constraints
+    // Create Footstep Reachability constraints (next foot in previous foot's polytope)
     std::vector<casadi::SX> reachability_constraints;
     for (int footstep_cnt = 1; footstep_cnt < path_nodes.size(); footstep_cnt++) {
         casadi::SX A_matrix;
@@ -157,6 +157,78 @@ void FootstepPlanner::plan(const int& stance_foot_flag_at_start,
     }
     // Concatenate reachability constraints into a single vector
     casadi::SX reachability_constraints_vec = casadi::SX::vertcat(reachability_constraints);
+
+
+    // Create Footstep Reachability constraints (previous foot in next foot's polytope)
+    // Constraint: previous_foot must be reachable from current_foot
+    // Polytope selection: based on previous foot's stance type
+    std::vector<casadi::SX> reachability_constraints_prev;
+    std::cout << "\n[ Creating Reverse Reachability Constraints ]" << std::endl;
+    
+    for (int footstep_cnt = 1; footstep_cnt < path_nodes.size(); footstep_cnt++) {
+        casadi::SX A_matrix;
+        casadi::SX b_vector;
+
+        // Select polytope based on PREVIOUS foot's stance type
+        // If previous foot is LF, use "LF in RF" polytope
+        // If previous foot is RF, use "RF in LF" polytope
+        if (path_nodes[footstep_cnt-1]->stance_foot == 0) { // Previous was LF, so use LF in RF polytope
+            A_matrix = A_lf_in_rf_casadi;
+            b_vector = b_lf_in_rf_casadi;
+        } else if (path_nodes[footstep_cnt-1]->stance_foot == 1) { // Previous was RF, so use RF in LF polytope
+            A_matrix = A_rf_in_lf_casadi;
+            b_vector = b_rf_in_lf_casadi;
+        } else {
+            throw std::runtime_error("Invalid previous stance foot flag for reverse reachability");
+        }
+        
+        // Constraint: A * (previous_foot - current_foot) <= b
+        casadi::SX relative_position = footstep_pos_vars[footstep_cnt-1] - footstep_pos_vars[footstep_cnt];
+        casadi::SX constraint_expr = mtimes(A_matrix, relative_position) - b_vector;
+        reachability_constraints_prev.push_back(constraint_expr);
+        
+        std::cout << "  Step " << footstep_cnt << ": Previous foot (" 
+                  << (path_nodes[footstep_cnt-1]->stance_foot == 0 ? "LF" : "RF") 
+                  << ") reachable from current foot, " 
+                  << A_matrix.size1() << " constraints" << std::endl;
+    }
+    
+    // Concatenate reachability constraints into a single vector
+    casadi::SX reachability_constraints_prev_vec;
+    casadi::DM reachability_constraints_prev_lb, reachability_constraints_prev_ub;
+    
+    if (!reachability_constraints_prev.empty()) {
+        reachability_constraints_prev_vec = casadi::SX::vertcat(reachability_constraints_prev);
+        reachability_constraints_prev_lb = -casadi::DM::inf(reachability_constraints_prev_vec.size1());
+        reachability_constraints_prev_ub = casadi::DM::zeros(reachability_constraints_prev_vec.size1());
+        std::cout << "  Total reverse reachability constraints: " << reachability_constraints_prev_vec.size1() << std::endl;
+    } else {
+        reachability_constraints_prev_vec = casadi::SX::zeros(0, 1);
+        reachability_constraints_prev_lb = casadi::DM::zeros(0);
+        reachability_constraints_prev_ub = casadi::DM::zeros(0);
+        std::cout << "  No reverse reachability constraints" << std::endl;
+    }
+
+    // Create CoM constraints (next foot in previous foot's polytope)
+    std::vector<casadi::SX> com_constraints_next;
+    for (int footstep_cnt = 1; footstep_cnt < path_nodes.size(); footstep_cnt++) {
+        casadi::SX A_matrix;
+        casadi::SX b_vector;
+        
+        if (path_nodes[footstep_cnt]->stance_foot == 0) { // Left foot for making current step "footstep_cnt", then lf in rf
+            A_matrix = A_lf_in_rf_casadi;
+            b_vector = b_lf_in_rf_casadi;
+        } else if (path_nodes[footstep_cnt]->stance_foot == 1) { // Right foot for making current step "footstep_cnt", then rf in lf
+            A_matrix = A_rf_in_lf_casadi;
+            b_vector = b_rf_in_lf_casadi;
+        }   
+        else {
+            throw std::runtime_error("Invalid stance foot flag");
+        }
+        com_constraints_next.push_back(mtimes(A_matrix, (footstep_pos_vars[footstep_cnt] - footstep_pos_vars[footstep_cnt-1])) - b_vector);
+    }
+    // Concatenate com constraints into a single vector
+    casadi::SX com_constraints_next_vec = casadi::SX::vertcat(com_constraints_next);
 
     // Create CoM constraints starting from footstep 1
     // CoM position is above each footstep at com_z_height
@@ -316,7 +388,7 @@ void FootstepPlanner::plan(const int& stance_foot_flag_at_start,
     casadi::DM final_footstep_constraints_ub = casadi::DM::zeros(final_footstep_constraints.size1());
 
     // Concatenate all constraint functions into a single vector
-    std::vector<casadi::SX> all_constraint_vectors = {reachability_constraints_vec, com_constraints_vec, surface_constraints_vec, initial_footstep_constraints, final_footstep_constraints};
+    std::vector<casadi::SX> all_constraint_vectors = {reachability_constraints_vec, reachability_constraints_prev_vec, com_constraints_vec, surface_constraints_vec, initial_footstep_constraints, final_footstep_constraints};
     casadi::SX all_constraints = casadi::SX::vertcat(all_constraint_vectors);
 
     // Create QP problem
@@ -334,8 +406,8 @@ void FootstepPlanner::plan(const int& stance_foot_flag_at_start,
     arg["x0"] = casadi::DM::zeros(all_vars.size1());
     
     // Collect the bounds for all constraints
-    std::vector<casadi::DM> lbg_parts = {reachability_constraints_lb, com_constraints_lb, surface_constraints_lb, initial_footstep_constraints_lb, final_footstep_constraints_lb};
-    std::vector<casadi::DM> ubg_parts = {reachability_constraints_ub, com_constraints_ub, surface_constraints_ub, initial_footstep_constraints_ub, final_footstep_constraints_ub};
+    std::vector<casadi::DM> lbg_parts = {reachability_constraints_lb, reachability_constraints_prev_lb, com_constraints_lb, surface_constraints_lb, initial_footstep_constraints_lb, final_footstep_constraints_lb};
+    std::vector<casadi::DM> ubg_parts = {reachability_constraints_ub, reachability_constraints_prev_ub, com_constraints_ub, surface_constraints_ub, initial_footstep_constraints_ub, final_footstep_constraints_ub};
     
     arg["lbg"] = casadi::DM::vertcat(lbg_parts);
     arg["ubg"] = casadi::DM::vertcat(ubg_parts);
