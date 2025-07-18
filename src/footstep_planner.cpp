@@ -173,10 +173,6 @@ bool FootstepPlanner::plan(const int& stance_foot_flag_at_start,
         casadi::SX constraint_expr = mtimes(A_matrix, relative_position) - b_vector;
         reachability_constraints_prev.push_back(constraint_expr);
         
-        // std::cout << "  Step " << footstep_cnt << ": Previous foot (" 
-        //           << (path_nodes[footstep_cnt-1]->stance_foot == 0 ? "LF" : "RF") 
-        //           << ") reachable from current foot, " 
-        //           << A_matrix.size1() << " constraints" << std::endl;
     }
     
     // Concatenate reachability constraints into a single vector
@@ -187,12 +183,10 @@ bool FootstepPlanner::plan(const int& stance_foot_flag_at_start,
         reachability_constraints_prev_vec = casadi::SX::vertcat(reachability_constraints_prev);
         reachability_constraints_prev_lb = -casadi::DM::inf(reachability_constraints_prev_vec.size1());
         reachability_constraints_prev_ub = casadi::DM::zeros(reachability_constraints_prev_vec.size1());
-        // std::cout << "  Total reverse reachability constraints: " << reachability_constraints_prev_vec.size1() << std::endl;
     } else {
         reachability_constraints_prev_vec = casadi::SX::zeros(0, 1);
         reachability_constraints_prev_lb = casadi::DM::zeros(0);
         reachability_constraints_prev_ub = casadi::DM::zeros(0);
-        // std::cout << "  No reverse reachability constraints" << std::endl;
     }
 
     // Create CoM constraints (next foot in previous foot's polytope)
@@ -220,7 +214,6 @@ bool FootstepPlanner::plan(const int& stance_foot_flag_at_start,
     // CoM position is above each footstep at com_z_height
     // CoM must stay inside the polytope based on the previous footstep's stance foot
     std::vector<casadi::SX> com_constraints;
-    // std::cout << "\n[ Creating CoM Constraints ]" << std::endl;
     
     for (int footstep_cnt = 1; footstep_cnt < path_nodes.size(); footstep_cnt++) {
         // CoM position: above current footstep at com_z_height
@@ -252,10 +245,6 @@ bool FootstepPlanner::plan(const int& stance_foot_flag_at_start,
         casadi::SX com_constraint_expr = mtimes(A_com_matrix, com_relative_position) - b_com_vector;
         com_constraints.push_back(com_constraint_expr);
         
-        // std::cout << "  Step " << footstep_cnt << ": CoM constraint using " 
-        //           << (path_nodes[footstep_cnt-1]->stance_foot == 0 ? "LF" : "RF") 
-        //           << " polytope (previous stance foot), " 
-        //           << A_com_matrix.size1() << " constraints" << std::endl;
     }
     
     // Concatenate CoM constraints into a single vector
@@ -264,18 +253,13 @@ bool FootstepPlanner::plan(const int& stance_foot_flag_at_start,
     
     if (!com_constraints.empty()) {
         com_constraints_vec = casadi::SX::vertcat(com_constraints);
-        // CoM constraints are inequalities: A_com * com_position <= b_com
         com_constraints_lb = -casadi::DM::inf(com_constraints_vec.size1());
-        // com_constraints_ub = casadi::DM::zeros(com_constraints_vec.size1());
         com_constraints_ub = casadi::DM::inf(com_constraints_vec.size1());
-        // std::cout << " (Disabled) Total CoM constraints: " << com_constraints_vec.size1() << std::endl;
     } else {
         com_constraints_vec = casadi::SX::zeros(0, 1);
         com_constraints_lb = casadi::DM::zeros(0);
         com_constraints_ub = casadi::DM::zeros(0);
-        // std::cout << "  No CoM constraints (only one footstep)" << std::endl;
     }
-
 
     // Create Surface constraints for intermediate steps (steps 1 to n-2)
     // Skip first step (0) and last step (n-1) as they are already constrained
@@ -303,9 +287,6 @@ bool FootstepPlanner::plan(const int& stance_foot_flag_at_start,
         casadi::SX surface_constraint_expr = mtimes(A_surface_casadi, footstep_pos_vars[footstep_cnt]) - b_surface_casadi;
         surface_constraints.push_back(surface_constraint_expr);
         
-        // std::cout << "  Step " << footstep_cnt << ": Added surface constraint with " 
-        //           << surface_constraint.A.rows() << " constraints (1 plane + " 
-        //           << (surface_constraint.A.rows() - 1) << " edge boundaries)" << std::endl;
     }
     
     // Concatenate surface constraints into a single vector (if any exist)
@@ -339,14 +320,10 @@ bool FootstepPlanner::plan(const int& stance_foot_flag_at_start,
             
             constraint_offset += num_constraints;
         }
-        
-        // std::cout << "  Total surface constraints: " << surface_constraints_vec.size1() << std::endl;
-        // std::cout << "  (Each patch: 1 plane equality + multiple edge inequalities)" << std::endl;
     } else {
         surface_constraints_vec = casadi::SX::zeros(0, 1);
         surface_constraints_lb = casadi::DM::zeros(0);
         surface_constraints_ub = casadi::DM::zeros(0);
-        // std::cout << "  No intermediate steps - no surface constraints added" << std::endl;
     }
 
     // Concatenate all footstep position variables into a single vector
@@ -469,6 +446,4 @@ bool FootstepPlanner::plan(const int& stance_foot_flag_at_start,
     }
 
 }
-
-
 }
