@@ -203,8 +203,17 @@ std::vector<Node*> Tree::get_children(Node* parent) {
                 // Found intersection, create child node
                 // Filter children if it has been visited in 2 steps before (same foot), filter with surface ID
                 bool has_been_visited = false;
+                Point_3 patch_centroid = get_centroid(polytope_surf_3d_intersect_pts);
+                double patch_perimeter = compute_polygon_perimeter(polytope_surf_3d_intersect_polygon);
                 for (Node* grandparent : parent->parent_ptrs) {
-                    if (grandparent->surface_id == surface.surface_id) {
+                    double centroid_distance_squared = CGAL::squared_distance(grandparent->centroid, patch_centroid);
+                    double perimeter_distance = fabs(grandparent->perimeter - patch_perimeter);
+
+                    if (grandparent->surface_id == surface.surface_id && 
+                        centroid_distance_squared <(node_similarity_threshold*node_similarity_threshold) && 
+                        perimeter_distance < node_similarity_threshold
+                        ) 
+                    {
                         has_been_visited = true;
                         break;
                     }
@@ -416,7 +425,7 @@ bool Tree::check_node_similarity(Node* node1, Node* node2){
     bool same_node_flag = false;
 
     // Check the distance between the two centroids
-    double centroid_distance = CGAL::squared_distance(get_centroid(node1->patch_vertices), get_centroid(node2->patch_vertices));
+    double centroid_distance_squared = CGAL::squared_distance(get_centroid(node1->patch_vertices), get_centroid(node2->patch_vertices));
 
     // Compute Perimeter of the two nodes
     double perimeter1 = compute_polygon_perimeter(node1->patch_polyhedron_3d);
@@ -424,7 +433,7 @@ bool Tree::check_node_similarity(Node* node1, Node* node2){
 
     double perimeter_distance = fabs(perimeter1 - perimeter2);
 
-    if ((centroid_distance < node_similarity_threshold) && (perimeter_distance < node_similarity_threshold)){
+    if ((centroid_distance_squared < (node_similarity_threshold*node_similarity_threshold)) && (perimeter_distance < node_similarity_threshold)){
         same_node_flag = true;
     }
 

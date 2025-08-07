@@ -213,8 +213,17 @@ std::vector<Node*> AstarSearch::get_children(Node* parent){
                 // Found intersection, create child node
                 // Filter children if it has been visited in 2 steps before (same foot), filter with surface ID
                 bool has_been_visited = false;
+                Point_3 patch_centroid = get_centroid(polytope_surf_3d_intersect_pts);
+                double patch_perimeter = compute_polygon_perimeter(polytope_surf_3d_intersect_polygon);
                 for (Node* grandparent : parent->parent_ptrs) {
-                    if (grandparent->surface_id == surface.surface_id) {
+                    double centroid_distance_squared = CGAL::squared_distance(grandparent->centroid, patch_centroid);
+                    double perimeter_distance = fabs(grandparent->perimeter - patch_perimeter);
+
+                    if (grandparent->surface_id == surface.surface_id && 
+                        centroid_distance_squared <(node_similarity_threshold*node_similarity_threshold) && 
+                        perimeter_distance < node_similarity_threshold
+                        ) 
+                    {
                         has_been_visited = true;
                         break;
                     }
