@@ -145,18 +145,26 @@ std::vector<Point_2> compute_2d_polygon_intersection(const std::vector<Point_2>&
         }
     }
 
-    for (const auto& clip_vertex : clip_polygon) {
-    if (CGAL::bounded_side_2(subject_polygon.begin(), subject_polygon.end(), clip_vertex, Kernel()) == CGAL::ON_BOUNDED_SIDE ||
-        CGAL::bounded_side_2(subject_polygon.begin(), subject_polygon.end(), clip_vertex, Kernel()) == CGAL::ON_BOUNDARY) {
-        // Insert the clip_vertex into the intersection_result at the best place
-        // For simplicity, you can just add it (optionally, you can insert it after the closest edge)
-            output_list.push_back(clip_vertex);
-        }
-    }
+    // Add surface corners to the intersection result (not used for now)
+    // for (const auto& clip_vertex : clip_polygon) {
+    // if (CGAL::bounded_side_2(subject_polygon.begin(), subject_polygon.end(), clip_vertex, Kernel()) == CGAL::ON_BOUNDED_SIDE ||
+    //     CGAL::bounded_side_2(subject_polygon.begin(), subject_polygon.end(), clip_vertex, Kernel()) == CGAL::ON_BOUNDARY) {
+    //     // Insert the clip_vertex into the intersection_result at the best place
+    //     // For simplicity, you can just add it (optionally, you can insert it after the closest edge)
+    //         output_list.push_back(clip_vertex);
+    //     }
+    // }
 
-    // Remove duplicates if needed
-    auto end = std::unique(output_list.begin(), output_list.end());
-    output_list.erase(end, output_list.end());
+    // // Remove duplicates if needed (Segmentation fault with Convex hull will need this)
+    // // Sort points first to group duplicates together
+    // std::sort(output_list.begin(), output_list.end(), [](const Point_2& a, const Point_2& b) {
+    //     if (a.x() != b.x()) return a.x() < b.x();
+    //     return a.y() < b.y();
+    // });
+
+    // // Now std::unique will work because duplicates are consecutive
+    // auto end = std::unique(output_list.begin(), output_list.end());
+    // output_list.erase(end, output_list.end());
 
     return output_list;
 }

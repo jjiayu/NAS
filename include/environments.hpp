@@ -509,8 +509,7 @@ const std::vector<std::vector<Point_3>> LongLongStairs = {
         Point_3(7.04, -1.0, 2.4),   // bottom left
         Point_3(7.34, -1.0, 2.4)    // bottom right
     }
-}; 
-
+};
 
 const std::vector<std::vector<Point_3>> LongStairsComplete = {
     // Floor

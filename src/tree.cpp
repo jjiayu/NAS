@@ -144,7 +144,12 @@ std::vector<Node*> Tree::get_children(Node* parent) {
 
         // Sub-Step 1: Compute intersection between P_union and current surface
         std::vector<Point_3> polytope_plane_intersect_pts_3d = compute_polytope_plane_intersection(surface.plane, P_union);
-        
+        // //print 3d point intersection result
+        // std::cout << "Size of polytope_plane_intersect_pts_3d: " << polytope_plane_intersect_pts_3d.size() << std::endl;
+        // for (const auto& pt : polytope_plane_intersect_pts_3d) {
+        //     std::cout << "Point: " << pt << std::endl;
+        // }
+
         // Sub-Step 2: Compute intersection between polygons (if we have the polytope and the plane has intersection)
 
         if (polytope_plane_intersect_pts_3d.size() > 2) {
@@ -163,6 +168,12 @@ std::vector<Node*> Tree::get_children(Node* parent) {
             //compute intersection between 2d intersection polygon (subject polygon) and the surface polygon (clipping polygon)
             std::vector<Point_2> polygon_2d_intersect_pts = compute_2d_polygon_intersection(polytope_plane_intersect_convex_hull_pts, surface.vertices_2d);
             
+            // //print 2d intersection result
+            // std::cout << "Size of polygon_2d_intersect_pts: " << polygon_2d_intersect_pts.size() << std::endl;
+            // for (const auto& pt : polygon_2d_intersect_pts) {
+            //     std::cout << "Point: " << pt << std::endl;
+            // }
+
             // Sub-Step 3: Convert the 2D intersection polygon to 3D (using the inverse transformation), only if we have polygon intersection result
             //             Also create the child node
             if (polygon_2d_intersect_pts.size() > 2) {
@@ -171,6 +182,12 @@ std::vector<Node*> Tree::get_children(Node* parent) {
                 CGAL::convex_hull_2(polygon_2d_intersect_pts.begin(), polygon_2d_intersect_pts.end(), std::back_inserter(polygon_2d_intersect_result));
                 std::vector<Point_3> polytope_surf_3d_intersect_pts = transform_2d_points_to_world(polygon_2d_intersect_pts, surface.transform_to_3d);
                 Polyhedron polytope_surf_3d_intersect_polygon;        // Create intersection polygon (just for visualization)
+                // //print the coordiinate of the points
+                // std::cout << "Size of polytope_surf_3d_intersect_pts: " << polytope_surf_3d_intersect_pts.size() << std::endl;
+                // for (const auto& pt : polytope_surf_3d_intersect_pts) {
+                //     std::cout << "Point: " << pt << std::endl;
+                // }
+
                 CGAL::convex_hull_3(polytope_surf_3d_intersect_pts.begin(), polytope_surf_3d_intersect_pts.end(), polytope_surf_3d_intersect_polygon);
                 
                 // // Visualization
@@ -182,21 +199,35 @@ std::vector<Node*> Tree::get_children(Node* parent) {
                 // Visualizer::add_points(renderer, polytope_surf_3d_intersect_pts, (double[]){1.0, 0.0, 0.0}, 0.05);  // Add intersection points (red)
                 // Visualizer::show(renderWindow);        // Show the 3D visualization
 
+
                 // Found intersection, create child node
-                Node* child = new Node();
-                child->parent_ptrs.push_back(parent);
-                child->node_id = node_counter++;
-                child->patch_vertices = polytope_surf_3d_intersect_pts;
-                child->centroid = get_centroid(child->patch_vertices);
-                child->perimeter = compute_polygon_perimeter(polytope_surf_3d_intersect_polygon);
-                child->stance_foot = parent->stance_foot == 0 ?  1 : 0; //Alternate stance foot
-                child->surface_id = surface.surface_id;
-                child->depth = parent->depth + 1;
-                child->patch_polygon_2d = polygon_2d_intersect_result;
-                child->patch_polyhedron_3d = polytope_surf_3d_intersect_polygon;
-                child->transformation_to_2d = surface.transform_to_surface;
-                child->transformation_to_3d = surface.transform_to_3d; 
-                children.push_back(child);
+                // Filter children if it has been visited in 2 steps before (same foot), filter with surface ID
+                bool has_been_visited = false;
+                for (Node* grandparent : parent->parent_ptrs) {
+                    if (grandparent->surface_id == surface.surface_id) {
+                        has_been_visited = true;
+                        break;
+                    }
+                }
+                if (has_been_visited) {
+                    continue; //the same surface visited 2 steps before
+                }
+                else{
+                    Node* child = new Node();
+                    child->parent_ptrs.push_back(parent);
+                    child->node_id = node_counter++;
+                    child->patch_vertices = polytope_surf_3d_intersect_pts;
+                    child->centroid = get_centroid(child->patch_vertices);
+                    child->perimeter = compute_polygon_perimeter(polytope_surf_3d_intersect_polygon);
+                    child->stance_foot = parent->stance_foot == 0 ?  1 : 0; //Alternate stance foot
+                    child->surface_id = surface.surface_id;
+                    child->depth = parent->depth + 1;
+                    child->patch_polygon_2d = polygon_2d_intersect_result;
+                    child->patch_polyhedron_3d = polytope_surf_3d_intersect_polygon;
+                    child->transformation_to_2d = surface.transform_to_surface;
+                    child->transformation_to_3d = surface.transform_to_3d; 
+                    children.push_back(child);
+                }
             }
         }
     }
