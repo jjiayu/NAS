@@ -777,5 +777,190 @@ const std::vector<std::vector<Point_3>> LongStairsExp = {
     // }
 };
 
+const std::vector<std::vector<Point_3>> ThreePathsScene = {
+    // Floor (start)
+    {
+        Point_3(0.15, 0.3, 0.0),     // bottom left
+        Point_3(-0.15, 0.3, 0.0),    // bottom right  
+        Point_3(-0.15, -0.15, 0.0),  // top right
+        Point_3(0.15, -0.15, 0.0)    // top left
+    },
 
-}
+    // Path Up - pu1
+    {
+        Point_3(0.15, 0.62, 0.0),    // bottom left
+        Point_3(-0.15, 0.62, 0.0),   // bottom right
+        Point_3(-0.15, 0.32, 0.0),   // top right
+        Point_3(0.15, 0.32, 0.0)     // top left
+    },
+
+    // Path Up - pu2
+    {
+        Point_3(0.15, 0.94, 0.0),    // bottom left
+        Point_3(-0.15, 0.94, 0.0),   // bottom right
+        Point_3(-0.15, 0.64, 0.0),   // top right
+        Point_3(0.15, 0.64, 0.0)     // top left
+    },
+
+    // Path Up - pu3
+    {
+        Point_3(0.25, 1.175, 0.0),   // bottom left
+        Point_3(-0.05, 1.175, 0.0),  // bottom right
+        Point_3(-0.05, 0.875, 0.0),  // top right
+        Point_3(0.25, 0.875, 0.0)    // top left
+    },
+
+    // Path Up - pu4
+    {
+        Point_3(0.55, 1.175, 0.0),   // bottom left
+        Point_3(0.3, 1.175, 0.0),    // bottom right
+        Point_3(0.3, 0.875, 0.0),    // top right
+        Point_3(0.55, 0.875, 0.0)    // top left
+    },
+
+    // Path Up - pu5
+    {
+        Point_3(0.9, 1.175, 0.0),    // bottom left
+        Point_3(0.6, 1.175, 0.0),    // bottom right
+        Point_3(0.6, 0.875, 0.0),    // top right
+        Point_3(0.9, 0.875, 0.0)     // top left
+    },
+
+    // Path Up - pu6
+    {
+        Point_3(1.25, 1.175, 0.0),   // bottom left
+        Point_3(0.95, 1.175, 0.0),   // bottom right
+        Point_3(0.95, 0.875, 0.0),   // top right
+        Point_3(1.25, 0.875, 0.0)    // top left
+    },
+
+    // Path Up - pu7
+    {
+        Point_3(1.6, 1.175, 0.0),    // bottom left
+        Point_3(1.3, 1.175, 0.0),    // bottom right
+        Point_3(1.3, 0.875, 0.0),    // top right
+        Point_3(1.6, 0.875, 0.0)     // top left
+    },
+
+    // Path Up - pu8
+    {
+        Point_3(1.95, 1.175, 0.0),   // bottom left
+        Point_3(1.65, 1.175, 0.0),   // bottom right
+        Point_3(1.65, 0.875, 0.0),   // top right
+        Point_3(1.95, 0.875, 0.0)    // top left
+    },
+
+    // Path Up - pu9
+    {
+        Point_3(2.05, 0.85, 0.0),    // bottom left
+        Point_3(1.75, 0.85, 0.0),    // bottom right
+        Point_3(1.75, 0.55, 0.0),    // top right
+        Point_3(2.05, 0.55, 0.0)     // top left
+    },
+
+    // Path Up - pu10
+    {
+        Point_3(2.05, 0.5, 0.0),     // bottom left
+        Point_3(1.75, 0.5, 0.0),     // bottom right
+        Point_3(1.75, 0.2, 0.0),     // top right
+        Point_3(2.05, 0.2, 0.0)      // top left
+    },
+
+    // Path Down - pd1
+    {
+        Point_3(0.15, -0.5, 0.0),    // bottom left
+        Point_3(-0.15, -0.5, 0.0),   // bottom right
+        Point_3(-0.15, -0.2, 0.0),   // top right
+        Point_3(0.15, -0.2, 0.0)     // top left
+    },
+
+    // Path Down - pd2
+    {
+        Point_3(0.15, -0.85, 0.0),   // bottom left
+        Point_3(-0.15, -0.85, 0.0),  // bottom right
+        Point_3(-0.15, -0.55, 0.0),  // top right
+        Point_3(0.15, -0.55, 0.0)    // top left
+    },
+
+    // Path Down - pd3
+    {
+        Point_3(0.25, -1.175, 0.0),  // bottom left
+        Point_3(-0.05, -1.175, 0.0), // bottom right
+        Point_3(-0.05, -0.875, 0.0), // top right
+        Point_3(0.25, -0.875, 0.0)   // top left
+    },
+
+    // Path Down - pd4
+    {
+        Point_3(0.55, -1.175, 0.0),  // bottom left
+        Point_3(0.3, -1.175, 0.0),   // bottom right
+        Point_3(0.3, -0.875, 0.0),   // top right
+        Point_3(0.55, -0.875, 0.0)   // top left
+    },
+
+    // Path Down - pd5
+    {
+        Point_3(0.9, -1.175, 0.0),   // bottom left
+        Point_3(0.6, -1.175, 0.0),   // bottom right
+        Point_3(0.6, -0.875, 0.0),   // top right
+        Point_3(0.9, -0.875, 0.0)    // top left
+    },
+
+    // Path Down - pd6
+    {
+        Point_3(1.25, -1.175, 0.0),  // bottom left
+        Point_3(0.95, -1.175, 0.0),  // bottom right
+        Point_3(0.95, -0.875, 0.0),  // top right
+        Point_3(1.25, -0.875, 0.0)   // top left
+    },
+
+    // Path Down - pd7
+    {
+        Point_3(1.6, -1.175, 0.0),   // bottom left
+        Point_3(1.3, -1.175, 0.0),   // bottom right
+        Point_3(1.3, -0.875, 0.0),   // top right
+        Point_3(1.6, -0.875, 0.0)    // top left
+    },
+
+    // Path Down - pd8
+    {
+        Point_3(1.95, -1.175, 0.0),  // bottom left
+        Point_3(1.65, -1.175, 0.0),  // bottom right
+        Point_3(1.65, -0.875, 0.0),  // top right
+        Point_3(1.95, -0.875, 0.0)   // top left
+    },
+
+    // Path Down - pd9
+    {
+        Point_3(2.05, -0.85, 0.0),   // bottom left
+        Point_3(1.75, -0.85, 0.0),   // bottom right
+        Point_3(1.75, -0.55, 0.0),   // top right
+        Point_3(2.05, -0.55, 0.0)    // top left
+    },
+
+    // Path Down - pd10
+    {
+        Point_3(2.05, -0.5, 0.0),    // bottom left
+        Point_3(1.75, -0.5, 0.0),    // bottom right
+        Point_3(1.75, -0.2, 0.0),    // top right
+        Point_3(2.05, -0.2, 0.0)     // top left
+    },
+
+    // Dead end path
+    {
+        Point_3(0.5, 0.15, 0.0),     // bottom left
+        Point_3(0.2, 0.15, 0.0),     // bottom right
+        Point_3(0.2, -0.15, 0.0),    // top right
+        Point_3(0.5, -0.15, 0.0)     // top left
+    },
+
+    // Target
+    {
+        Point_3(2.05, 0.15, 0.0),    // bottom left
+        Point_3(1.75, 0.15, 0.0),    // bottom right
+        Point_3(1.75, -0.15, 0.0),   // top right
+        Point_3(2.05, -0.15, 0.0)    // top left
+    }
+};
+
+} // namespace nas

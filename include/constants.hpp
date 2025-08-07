@@ -13,8 +13,8 @@ const int LEFT_FOOT = 0;   // Represents the left foot in stance
 const int RIGHT_FOOT = 1;  // Represents the right foot in stance
 
 // Foot size information
-const double foot_length = 0.22;
-const double foot_width  = 0.12;
+const double foot_length = 0.22;//0.22;
+const double foot_width  = 0.12;//0.12;
 
 // Merge Node Flag
 const bool merge_node_flag = true;
@@ -36,7 +36,7 @@ const int stance_foot_at_goal = LEFT_FOOT;
 const Vector_3 goal_offset(0.0, 0.0, 0.0); // goal offset applied to move in the local frame of the goal surface (last surface)
 
 // Define Number of Steps (max number of steps)
-const int total_num_steps = 24;
+const int total_num_steps = 40;
 
 // Define Current (Initial) Foot Position
 const int current_stance_foot_flag = RIGHT_FOOT;
@@ -60,7 +60,8 @@ const std::string node_search_method = "bruteforce"; // "bruteforce", "kdtree", 
 // const std::vector<std::vector<Point_3>> surf_list = Stairs;
 // const std::vector<std::vector<Point_3>> surf_list = TwoFlatSurfaces;
 // const std::vector<std::vector<Point_3>> surf_list = LongStairsComplete;
-const std::vector<std::vector<Point_3>> surf_list = LongStairs;
+// const std::vector<std::vector<Point_3>> surf_list = LongStairs;
 // const std::vector<std::vector<Point_3>> surf_list = LongLongStairs;
+const std::vector<std::vector<Point_3>> surf_list = ThreePathsScene;
 
 }

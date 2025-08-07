@@ -190,7 +190,7 @@ std::vector<Node*> Tree::get_children(Node* parent) {
 
                 CGAL::convex_hull_3(polytope_surf_3d_intersect_pts.begin(), polytope_surf_3d_intersect_pts.end(), polytope_surf_3d_intersect_polygon);
                 
-                // // Visualization
+                // Visualization
                 // auto renderWindow = Visualizer::create_figure("3D Polytope-Surface Intersection Visualization"); 
                 // auto renderer = renderWindow->GetRenderers()->GetFirstRenderer();
                 // Visualizer::add_polyhedron(renderer, surface.polyhedron_3d, (double[]){0.7, 0.9, 1.0}, 0.3);  // Add Surface (light blue)
