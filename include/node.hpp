@@ -27,6 +27,7 @@ public:
         int depth; // The depth of the node in the tree
         double perimeter; // The perimeter of the patch
         Point_3 centroid; // The centroid of the patch
+        std::vector<std::vector<std::vector<int>>> pred_surface_ids;
 
         // For A* search
         Node* parent; // Pointer to the parent node

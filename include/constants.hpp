@@ -13,8 +13,8 @@ const int LEFT_FOOT = 0;   // Represents the left foot in stance
 const int RIGHT_FOOT = 1;  // Represents the right foot in stance
 
 // Foot size information
-const double foot_length = 0.22;//0.22;
-const double foot_width  = 0.12;//0.12;
+const double foot_length = 0.0;//0.22;
+const double foot_width  = 0.0;//0.12;
 
 // Merge Node Flag
 const bool merge_node_flag = true;
