@@ -212,22 +212,19 @@ std::vector<Node*> AstarSearch::get_children(Node* parent){
                 
                 // Found intersection, create child node
                 // Filter children if it has been visited in 2 steps before (same foot), filter with surface ID
+                // Filter children if it has been visited in 2 steps before (same foot), filter with surface ID
                 bool has_been_visited = false;
-                Point_3 patch_centroid = get_centroid(polytope_surf_3d_intersect_pts);
-                double patch_perimeter = compute_polygon_perimeter(polytope_surf_3d_intersect_polygon);
-                for (Node* grandparent : parent->parent_ptrs) {
-                    double centroid_distance_squared = CGAL::squared_distance(grandparent->centroid, patch_centroid);
-                    double perimeter_distance = fabs(grandparent->perimeter - patch_perimeter);
-
-                    if (grandparent->surface_id == surface.surface_id && 
-                        centroid_distance_squared <(node_similarity_threshold*node_similarity_threshold) && 
-                        perimeter_distance < node_similarity_threshold
-                        ) 
-                    {
+                int stance_foot = parent->stance_foot == 0 ? 1 : 0; // Alternate stance foot
+                for (int layer = 0; layer < parent->pred_surface_ids[stance_foot].size(); layer++) {
+                    const auto& surfaces_at_layer = parent->pred_surface_ids[stance_foot][layer];
+                    
+                    // Check if surface exists in any layer (no backtrack allowed)
+                    if (std::find(surfaces_at_layer.begin(), surfaces_at_layer.end(), surface.surface_id) != surfaces_at_layer.end()) {
                         has_been_visited = true;
                         break;
                     }
                 }
+                has_been_visited = false;
                 if (has_been_visited) {
                     continue; //the same surface visited 2 steps before
                 }
@@ -245,6 +242,9 @@ std::vector<Node*> AstarSearch::get_children(Node* parent){
                     child->transformation_to_3d = surface.transform_to_3d;
                     child->perimeter = compute_polygon_perimeter(polytope_surf_3d_intersect_polygon);
                     child->centroid = get_centroid(polytope_surf_3d_intersect_pts);
+                    // Copy parent's pred_surface_ids and add parent's surface as new layer
+                    child->pred_surface_ids = parent->pred_surface_ids;
+                    child->pred_surface_ids[parent->stance_foot].push_back({parent->surface_id});
                     
                     // Initialize scores for A* search
                     child->g_score = std::numeric_limits<double>::infinity();

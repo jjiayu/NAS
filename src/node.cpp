@@ -6,6 +6,7 @@ namespace nas {
 Node::Node() {    // surface_id = 0;
     node_id = 0;
     parent_ptrs = std::vector<Node*>();
+    pred_surface_ids = std::vector<std::vector<std::vector<int>>>(2);
 }
 
 Node::~Node() {
