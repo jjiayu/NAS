@@ -1,6 +1,0 @@
-name: "Test Configuration"
-version: 1.0
-parameters:
-  value1: 10
-  value2: 20.5
-  message: "Hello from YAML!" 

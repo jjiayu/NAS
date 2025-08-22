@@ -202,18 +202,8 @@ std::vector<Node*> Tree::get_children(Node* parent) {
 
                 // Found intersection, create child node
                 // Filter children if it has been visited in 2 steps before (same foot), filter with surface ID
-                bool has_been_visited = false;
                 int stance_foot = parent->stance_foot == 0 ? 1 : 0; // Alternate stance foot
-                for (int layer = 0; layer < parent->pred_surface_ids[stance_foot].size(); layer++) {
-                    const auto& surfaces_at_layer = parent->pred_surface_ids[stance_foot][layer];
-                    
-                    // Check if surface exists in any layer (no backtrack allowed)
-                    if (std::find(surfaces_at_layer.begin(), surfaces_at_layer.end(), surface.surface_id) != surfaces_at_layer.end()) {
-                        has_been_visited = true;
-                        break;
-                    }
-                }
-                if (has_been_visited) {
+                if (cycle_path_detection(parent, stance_foot, surface.surface_id)) {
                     continue; //the same surface visited 2 steps before
                 }
                 else{

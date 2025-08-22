@@ -19,6 +19,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "/opt/homebrew/opt/cgal")
 set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "/opt/homebrew/opt/vtk@9.2")
 
+# Use PkgConfig to find FreeType (Homebrew doesn't provide CMake config)
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(FREETYPE REQUIRED freetype2)
+
 # Set custom path for CasADi
 set(CMAKE_PREFIX_PATH "/Users/jiayu/local" ${CMAKE_PREFIX_PATH})
 

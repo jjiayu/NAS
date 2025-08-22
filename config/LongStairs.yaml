@@ -1,0 +1,5 @@
+name: "Long Stairs Configuration"
+version: 1.0
+parameters:
+  com_z_height: 0.75
+  

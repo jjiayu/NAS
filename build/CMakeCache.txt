@@ -21,7 +21,7 @@ BUILD_SHARED_LIBS:BOOL=ON
 Boost_DEBUG:BOOL=OFF
 
 //The directory containing a CMake configuration file for Boost.
-Boost_DIR:PATH=/opt/homebrew/lib/cmake/Boost-1.88.0
+Boost_DIR:PATH=/opt/homebrew/lib/cmake/Boost-1.89.0
 
 //Path to a file.
 Boost_INCLUDE_DIR:PATH=/opt/homebrew/include
@@ -68,16 +68,16 @@ CMAKE_BUILD_TYPE:STRING=
 CMAKE_COLOR_MAKEFILE:BOOL=ON
 
 //CXX compiler
-CMAKE_CXX_COMPILER:STRING=/opt/homebrew/opt/llvm/bin/clang++
+CMAKE_CXX_COMPILER:FILEPATH=/opt/homebrew/opt/llvm/bin/clang++
 
 //LLVM archiver
-CMAKE_CXX_COMPILER_AR:FILEPATH=/opt/homebrew/Cellar/llvm/20.1.6/bin/llvm-ar
+CMAKE_CXX_COMPILER_AR:FILEPATH=/opt/homebrew/Cellar/llvm/20.1.8/bin/llvm-ar
 
 //`clang-scan-deps` dependency scanner
-CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS:FILEPATH=/opt/homebrew/Cellar/llvm/20.1.6/bin/clang-scan-deps
+CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS:FILEPATH=/opt/homebrew/Cellar/llvm/20.1.8/bin/clang-scan-deps
 
 //Generate index for LLVM archive
-CMAKE_CXX_COMPILER_RANLIB:FILEPATH=/opt/homebrew/Cellar/llvm/20.1.6/bin/llvm-ranlib
+CMAKE_CXX_COMPILER_RANLIB:FILEPATH=/opt/homebrew/Cellar/llvm/20.1.8/bin/llvm-ranlib
 
 //Flags used by the CXX compiler during all build types.
 CMAKE_CXX_FLAGS:STRING=
@@ -373,7 +373,7 @@ ZLIB_LIBRARY_DEBUG:FILEPATH=ZLIB_LIBRARY_DEBUG-NOTFOUND
 ZLIB_LIBRARY_RELEASE:FILEPATH=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/lib/libz.tbd
 
 //The directory containing a CMake configuration file for boost_headers.
-boost_headers_DIR:PATH=/opt/homebrew/lib/cmake/boost_headers-1.88.0
+boost_headers_DIR:PATH=/opt/homebrew/lib/cmake/boost_headers-1.89.0
 
 //double-conversion include directory
 double-conversion_INCLUDE_DIR:PATH=/opt/homebrew/include/double-conversion
@@ -395,6 +395,9 @@ nas_SOURCE_DIR:STATIC=/Users/jiayu/Desktop/nas_ws/NAS
 
 //The directory containing a CMake configuration file for nlohmann_json.
 nlohmann_json_DIR:PATH=/opt/homebrew/share/cmake/nlohmann_json
+
+//Path to a library.
+pkgcfg_lib_FREETYPE_freetype:FILEPATH=/opt/homebrew/opt/freetype/lib/libfreetype.dylib
 
 //Path to a library.
 pkgcfg_lib_PC_EXPAT_expat:FILEPATH=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/lib/libexpat.tbd
@@ -567,7 +570,7 @@ EXPAT_LIBRARY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: Eigen3_INCLUDE_DIR
 Eigen3_INCLUDE_DIR-ADVANCED:INTERNAL=1
 //Details about finding Boost
-FIND_PACKAGE_MESSAGE_DETAILS_Boost:INTERNAL=[/opt/homebrew/lib/cmake/Boost-1.88.0/BoostConfig.cmake][c ][v1.88.0()]
+FIND_PACKAGE_MESSAGE_DETAILS_Boost:INTERNAL=[/opt/homebrew/lib/cmake/Boost-1.89.0/BoostConfig.cmake][c ][v1.89.0()]
 //Details about finding EXPAT
 FIND_PACKAGE_MESSAGE_DETAILS_EXPAT:INTERNAL=[/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/lib/libexpat.tbd][/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk/usr/include][v2.7.1()]
 //Details about finding Eigen3
@@ -585,7 +588,9 @@ FIND_PACKAGE_MESSAGE_DETAILS_LZMA:INTERNAL=[/opt/homebrew/lib/liblzma.dylib][/op
 //Details about finding MPFR
 FIND_PACKAGE_MESSAGE_DETAILS_MPFR:INTERNAL=[/opt/homebrew/lib/libmpfr.dylib][/opt/homebrew/include][v()]
 //Details about finding PNG
-FIND_PACKAGE_MESSAGE_DETAILS_PNG:INTERNAL=[/opt/homebrew/lib/libpng.dylib][/opt/homebrew/include][v1.6.48()]
+FIND_PACKAGE_MESSAGE_DETAILS_PNG:INTERNAL=[/opt/homebrew/lib/libpng.dylib][/opt/homebrew/include][v1.6.50()]
+//Details about finding PkgConfig
+FIND_PACKAGE_MESSAGE_DETAILS_PkgConfig:INTERNAL=[/opt/homebrew/bin/pkg-config][v2.5.1()]
 //Details about finding TIFF
 FIND_PACKAGE_MESSAGE_DETAILS_TIFF:INTERNAL=[/opt/homebrew/lib/libtiff.dylib][/opt/homebrew/include][c ][v4.7.0()]
 //Details about finding Threads
@@ -598,14 +603,49 @@ FIND_PACKAGE_MESSAGE_DETAILS_double-conversion:INTERNAL=[/opt/homebrew/lib/libdo
 FIND_PACKAGE_MESSAGE_DETAILS_nlohmann_json:INTERNAL=[/opt/homebrew/share/cmake/nlohmann_json/nlohmann_jsonConfig.cmake][v3.12.0()]
 //Details about finding utf8cpp
 FIND_PACKAGE_MESSAGE_DETAILS_utf8cpp:INTERNAL=[/opt/homebrew/include/utf8cpp][v()]
+FREETYPE_CFLAGS:INTERNAL=-I/opt/homebrew/opt/freetype/include/freetype2;-I/opt/homebrew/opt/libpng/include/libpng16
+FREETYPE_CFLAGS_I:INTERNAL=
+FREETYPE_CFLAGS_OTHER:INTERNAL=
+FREETYPE_FOUND:INTERNAL=1
+FREETYPE_INCLUDEDIR:INTERNAL=/opt/homebrew/opt/freetype/include
+FREETYPE_INCLUDE_DIRS:INTERNAL=/opt/homebrew/opt/freetype/include/freetype2;/opt/homebrew/opt/libpng/include/libpng16
 //ADVANCED property for variable: FREETYPE_INCLUDE_DIR_freetype2
 FREETYPE_INCLUDE_DIR_freetype2-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: FREETYPE_INCLUDE_DIR_ft2build
 FREETYPE_INCLUDE_DIR_ft2build-ADVANCED:INTERNAL=1
+FREETYPE_LDFLAGS:INTERNAL=-L/opt/homebrew/opt/freetype/lib;-lfreetype
+FREETYPE_LDFLAGS_OTHER:INTERNAL=
+FREETYPE_LIBDIR:INTERNAL=/opt/homebrew/opt/freetype/lib
+FREETYPE_LIBRARIES:INTERNAL=freetype
 //ADVANCED property for variable: FREETYPE_LIBRARY_DEBUG
 FREETYPE_LIBRARY_DEBUG-ADVANCED:INTERNAL=1
+FREETYPE_LIBRARY_DIRS:INTERNAL=/opt/homebrew/opt/freetype/lib
 //ADVANCED property for variable: FREETYPE_LIBRARY_RELEASE
 FREETYPE_LIBRARY_RELEASE-ADVANCED:INTERNAL=1
+FREETYPE_LIBS:INTERNAL=
+FREETYPE_LIBS_L:INTERNAL=
+FREETYPE_LIBS_OTHER:INTERNAL=
+FREETYPE_LIBS_PATHS:INTERNAL=
+FREETYPE_MODULE_NAME:INTERNAL=freetype2
+FREETYPE_PREFIX:INTERNAL=/opt/homebrew/opt/freetype
+FREETYPE_STATIC_CFLAGS:INTERNAL=-I/opt/homebrew/opt/freetype/include/freetype2;-I/opt/homebrew/opt/libpng/include/libpng16
+FREETYPE_STATIC_CFLAGS_I:INTERNAL=
+FREETYPE_STATIC_CFLAGS_OTHER:INTERNAL=
+FREETYPE_STATIC_INCLUDE_DIRS:INTERNAL=/opt/homebrew/opt/freetype/include/freetype2;/opt/homebrew/opt/libpng/include/libpng16
+FREETYPE_STATIC_LDFLAGS:INTERNAL=-L/opt/homebrew/opt/freetype/lib;-lfreetype;-lbz2;-L/opt/homebrew/opt/libpng/lib;-lpng16;-L/usr/lib;-lz
+FREETYPE_STATIC_LDFLAGS_OTHER:INTERNAL=
+FREETYPE_STATIC_LIBDIR:INTERNAL=
+FREETYPE_STATIC_LIBRARIES:INTERNAL=freetype;bz2;png16;z
+FREETYPE_STATIC_LIBRARY_DIRS:INTERNAL=/opt/homebrew/opt/freetype/lib;/opt/homebrew/opt/libpng/lib;/usr/lib
+FREETYPE_STATIC_LIBS:INTERNAL=
+FREETYPE_STATIC_LIBS_L:INTERNAL=
+FREETYPE_STATIC_LIBS_OTHER:INTERNAL=
+FREETYPE_STATIC_LIBS_PATHS:INTERNAL=
+FREETYPE_VERSION:INTERNAL=26.2.20
+FREETYPE_freetype2_INCLUDEDIR:INTERNAL=
+FREETYPE_freetype2_LIBDIR:INTERNAL=
+FREETYPE_freetype2_PREFIX:INTERNAL=
+FREETYPE_freetype2_VERSION:INTERNAL=
 //ADVANCED property for variable: JPEG_INCLUDE_DIR
 JPEG_INCLUDE_DIR-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: JPEG_LIBRARY_DEBUG
@@ -675,7 +715,9 @@ ZLIB_INCLUDE_DIR-ADVANCED:INTERNAL=1
 ZLIB_LIBRARY_DEBUG-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: ZLIB_LIBRARY_RELEASE
 ZLIB_LIBRARY_RELEASE-ADVANCED:INTERNAL=1
+__pkg_config_arguments_FREETYPE:INTERNAL=REQUIRED;freetype2
 __pkg_config_arguments_PC_EXPAT:INTERNAL=QUIET;expat
+__pkg_config_checked_FREETYPE:INTERNAL=1
 __pkg_config_checked_PC_EXPAT:INTERNAL=1
 //ADVANCED property for variable: boost_headers_DIR
 boost_headers_DIR-ADVANCED:INTERNAL=1
@@ -683,6 +725,8 @@ boost_headers_DIR-ADVANCED:INTERNAL=1
 double-conversion_INCLUDE_DIR-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: double-conversion_LIBRARY
 double-conversion_LIBRARY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: pkgcfg_lib_FREETYPE_freetype
+pkgcfg_lib_FREETYPE_freetype-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: pkgcfg_lib_PC_EXPAT_expat
 pkgcfg_lib_PC_EXPAT_expat-ADVANCED:INTERNAL=1
 prefix_result:INTERNAL=/usr/lib
