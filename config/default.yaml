@@ -1,0 +1,34 @@
+# Default NAS Planning Configuration
+# This replaces hardcoded values in constants.hpp
+
+# Environment
+environment: "LongLongStairs"
+
+# Start configuration
+start_position: [0.0, 0.0, 0.0]
+start_foot: 1  # RIGHT_FOOT
+
+# Goal configuration
+goal_foot: 0   # LEFT_FOOT
+goal_offset: [0.0, 0.0, 0.0]
+
+# Planning parameters
+max_steps: 40
+search_method: "bruteforce"  # Options: bruteforce, kdtree, knn, octree
+node_similarity_threshold: 0.02
+merge_nodes: true
+
+# Foot parameters
+foot_length: 0.22
+foot_width: 0.12
+com_z_height: 0.75
+
+# File paths - Antecedent Kinematics Reachability
+rf_in_lf_path_antecedent: "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/LF_antecedent_CUTZ.obj"
+lf_in_rf_path_antecedent: "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/RF_antecedent_CUTZ.obj"
+
+# File paths - Forward polytopes for A* and footstep planning
+rf_in_lf_path_forward: "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/RF_constraints_in_LF_quasi_flat_REDUCED.obj"
+lf_in_rf_path_forward: "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/LF_constraints_in_RF_quasi_flat_REDUCED.obj"
+com_in_lf_path_forward: "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/COM_constraints_in_LF_effector_frame_REDUCED.obj"
+com_in_rf_path_forward: "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/COM_constraints_in_RF_effector_frame_REDUCED.obj"

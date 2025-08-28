@@ -5,6 +5,8 @@ if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release)
 endif()
 
+set(CMAKE_BUILD_TYPE Release)
+
 project(
   nas
   VERSION 1.0
@@ -18,6 +20,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Set Homebrew paths for Apple Silicon
 set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "/opt/homebrew/opt/cgal")
 set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "/opt/homebrew/opt/vtk@9.2")
+
+# Use PkgConfig to find FreeType (Homebrew doesn't provide CMake config)
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(FREETYPE REQUIRED freetype2)
 
 # Set custom path for CasADi
 set(CMAKE_PREFIX_PATH "/Users/jiayu/local" ${CMAKE_PREFIX_PATH})
@@ -100,7 +106,6 @@ target_link_libraries(footstep_planner_lib PRIVATE
 # Add executables
 add_executable(nas_plan src/nas_plan.cpp)
 add_executable(astar_plan src/astar_plan.cpp)
-add_executable(casadi_test src/casadi_test.cpp)
 
 # Link libraries for first executable
 target_link_libraries(nas_plan PRIVATE
@@ -134,8 +139,6 @@ target_link_libraries(astar_plan PRIVATE
     casadi::casadi
 )
 
-# Link libraries for CasADi test executable
-target_link_libraries(casadi_test PRIVATE casadi::casadi)
 
 # Enable VTK module autoinit for both executables
 vtk_module_autoinit(
