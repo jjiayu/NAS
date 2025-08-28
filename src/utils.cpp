@@ -39,6 +39,7 @@ bool cycle_path_detection(const Node* parent, const int current_stance_foot, con
         }
     }
     return surface_visited;
+    // return false;
 }
 
 } // namespace nas
