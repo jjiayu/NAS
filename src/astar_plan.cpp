@@ -33,13 +33,13 @@ int main() {
         return 1;
     }
 
-    std::cout << "\n=== A* Path Found with " << astar_search.result_path.size() << " nodes ===" << std::endl;
-    for (size_t i = 0; i < astar_search.result_path.size(); i++) {
-        const auto& node = astar_search.result_path[i];
-        std::cout << "Step " << i << ": Node ID " << node->node_id 
-                  << ", Surface ID " << node->surface_id 
-                  << ", Stance Foot " << (node->stance_foot == LEFT_FOOT ? "LEFT" : "RIGHT") << std::endl;
-    }
+    // std::cout << "\n=== A* Path Found with " << astar_search.result_path.size() << " nodes ===" << std::endl;
+    // for (size_t i = 0; i < astar_search.result_path.size(); i++) {
+    //     const auto& node = astar_search.result_path[i];
+    //     std::cout << "Step " << i << ": Node ID " << node->node_id 
+    //               << ", Surface ID " << node->surface_id 
+    //               << ", Stance Foot " << (node->stance_foot == LEFT_FOOT ? "LEFT" : "RIGHT") << std::endl;
+    // }
 
     astar_search.plot_path();
 

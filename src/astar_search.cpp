@@ -71,6 +71,7 @@ void AstarSearch::search() {
         // Get the node with the lowest f_score
         Node* current_node = open_set.top();
         open_set.pop();
+        this->expansion_coount++;
         
         // Remove from handles map since we're processing it
         node_handles.erase(current_node);
@@ -83,7 +84,12 @@ void AstarSearch::search() {
             auto end_time = std::chrono::high_resolution_clock::now();
             auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time);
             std::cout << "A-star Time taken: " << std::fixed << std::setprecision(3) << duration.count()/1000.0 << " milliseconds (ms)" << std::endl;
-
+            std::cout << "Total node expansion count: " << this->expansion_coount << std::endl;
+            std::cout << "Total minkowski time: " << this->total_minkowski_time << " ms" << std::endl;
+            std::cout << "Total clipping time: " << this->total_clipping_time << " ms" << std::endl;
+            std::cout << "Total plane-polytope intersection time: " << this->total_plane_polytope_intersect_time << " ms" << std::endl;
+            std::cout << "Total polygon intersection time: " << this->total_polygon_2d_intersect_time << " ms" << std::endl;
+            
             //reconstruct the path
             std::cout << "Goal reached!" << std::endl;
             Node* current = current_node;
@@ -163,20 +169,31 @@ std::vector<Node*> AstarSearch::get_children(Node* parent){
 
     // Step 1: Compute minkowski sum based on the patch vertices and the base polytope
     // TODO: make sure we get the correct base polytop
+    
+    auto start_time = std::chrono::high_resolution_clock::now();
+    
     Polyhedron base_polytope = parent->stance_foot == 0 ? this->rf_in_lf_polytope : this->lf_in_rf_polytope;
     Polyhedron P_union = minkowski_sum(parent->patch_vertices, base_polytope);
+    
+    auto end_time = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time);
+    this->total_minkowski_time += duration.count() / 1000.0;
 
     // Step 2: Loop over all surfaces
+    auto start_time_clipping = std::chrono::high_resolution_clock::now();
     for (const auto& surface : surfaces) {
 
         // Sub-Step 1: Compute intersection between P_union and current surface
+        start_time = std::chrono::high_resolution_clock::now();
         std::vector<Point_3> polytope_plane_intersect_pts_3d = compute_polytope_plane_intersection(surface.plane, P_union);
+        end_time = std::chrono::high_resolution_clock::now();
+        duration = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time);
+        this->total_plane_polytope_intersect_time += duration.count() / 1000.0;
         
         // Sub-Step 2: Compute intersection between polygons (if we have the polytope and the plane has intersection)
 
         if (polytope_plane_intersect_pts_3d.size() > 2) {
-
-            //convert 3d intersection points to 2d surface plane
+            // Convert 3d intersection points to 2d surface plane
             std::vector<Point_2> polytope_plane_intersect_pts_2d = transform_3d_points_to_surface_plane(polytope_plane_intersect_pts_3d, surface.transform_to_surface);
 
             // Convert polytope plane intersection points into convex hull
@@ -188,8 +205,14 @@ std::vector<Node*> AstarSearch::get_children(Node* parent){
             }
 
             //compute intersection between 2d intersection polygon (subject polygon) and the surface polygon (clipping polygon)
+            start_time = std::chrono::high_resolution_clock::now();
+
             std::vector<Point_2> polygon_2d_intersect_pts = compute_2d_polygon_intersection(polytope_plane_intersect_convex_hull_pts, surface.vertices_2d);
             
+            end_time = std::chrono::high_resolution_clock::now();
+            duration = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time);
+            this->total_polygon_2d_intersect_time += duration.count() / 1000.0;
+
             // Sub-Step 3: Convert the 2D intersection polygon to 3D (using the inverse transformation), only if we have polygon intersection result
             //             Also create the child node
             if (polygon_2d_intersect_pts.size() > 2) {
@@ -244,6 +267,10 @@ std::vector<Node*> AstarSearch::get_children(Node* parent){
             }
         }
     }
+    auto end_time_clipping = std::chrono::high_resolution_clock::now();
+    auto duration_clipping = std::chrono::duration_cast<std::chrono::microseconds>(end_time_clipping - start_time_clipping);
+    this->total_clipping_time += duration_clipping.count() / 1000.0;
+
     return children;
 }
 

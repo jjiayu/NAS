@@ -1,6 +1,5 @@
 #include "utils.hpp"
-#include "tree.hpp"
-#include "constants.hpp"
+#include "node.hpp"
 #include "visualizer.hpp"
 #include "geometry.hpp"
 #include "types.hpp"
@@ -9,8 +8,8 @@
 #include <CGAL/convex_hull_3.h>
 #include <CGAL/Boolean_set_operations_2.h>
 #include <CGAL/linear_least_squares_fitting_3.h>
-#include <fstream>
 #include <iostream>
+#include <algorithm>
 
 namespace nas {
 
@@ -23,23 +22,34 @@ void load_obj(const std::string& filename, Polyhedron& polyhedron) {
 
 bool cycle_path_detection(const Node* parent, const int current_stance_foot, const int surface_id) {
     // Safety check for null pointer
-    if (!parent) {
+    if (parent == nullptr) {
         return false;
     }
     
-    bool surface_visited = false;
+    // Get the history for the current stance foot
+    const auto& foot_history = parent->pred_surface_ids[current_stance_foot];
     
-    for (int layer = 0; layer < parent->pred_surface_ids[current_stance_foot].size(); layer++) {
-        const auto& surfaces_at_layer = parent->pred_surface_ids[current_stance_foot][layer];
+    // If no history, allow the move
+    if (foot_history.empty()) {
+        return false;
+    }
+    
+    bool left_surface = false;
+    
+    // Loop backward through history to detect cycle
+    for (int i = foot_history.size() - 1; i >= 0; --i) {
+        const auto& layer = foot_history[i];
+        bool surface_in_layer = std::find(layer.begin(), layer.end(), surface_id) != layer.end();
         
-        // Check if surface exists in any layer (no backtrack allowed)
-        if (std::find(surfaces_at_layer.begin(), surfaces_at_layer.end(), surface_id) != surfaces_at_layer.end()) {
-            surface_visited = true;
-            break;
+        if (surface_in_layer == false) {
+            // We found a layer where we were not on the target surface - we left it
+            left_surface = true;
+        } else if (left_surface == true && surface_in_layer == true) {
+            // We left the surface and now found it again in history - cycle detected
+            return true;
         }
     }
-    return surface_visited;
-    // return false;
+    return false; // No cycle detected
 }
 
 } // namespace nas
