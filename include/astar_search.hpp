@@ -107,6 +107,15 @@ public:
     // Close set
     std::unordered_set<Node*, NodeHash, NodeEqual> closed_set;
 
+    // Computation time statistics
+    double total_minkowski_time = 0.0;
+    double total_clipping_time = 0.0;
+    double total_plane_polytope_intersect_time = 0.0;
+    double total_polygon_2d_intersect_time = 0.0;
+
+    // Counters
+    int expansion_coount = 0;
+
     // Constructor
     AstarSearch();
 
