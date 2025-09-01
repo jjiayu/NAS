@@ -991,33 +991,33 @@ const std::vector<std::vector<Point_3>> Stairs_Up_Down = {
         // Step 3
         {
             Point_3(0.9, -0.16, 0.3),    // bottom left
-            Point_3(1.2, -0.16, 0.3),    // bottom right
-            Point_3(1.2, 0.6, 0.3),      // top right
+            Point_3(1.8, -0.16, 0.3),    // bottom right
+            Point_3(1.8, 0.6, 0.3),      // top right
             Point_3(0.9, 0.6, 0.3)       // top left
         },
     
         // Step 4
         {
-            Point_3(1.2, -0.16, 0.2),    // bottom left
-            Point_3(1.5, -0.16, 0.2),    // bottom right
-            Point_3(1.5, 0.6, 0.2),      // top right
-            Point_3(1.2, 0.6, 0.2)       // top left
+            Point_3(1.8, -0.16, 0.2),    // bottom left
+            Point_3(2.1, -0.16, 0.2),    // bottom right
+            Point_3(2.1, 0.6, 0.2),      // top right
+            Point_3(1.8, 0.6, 0.2)       // top left
         },
 
         // Step 5
         {
-            Point_3(1.5, -0.16, 0.1),    // bottom left
-            Point_3(1.8, -0.16, 0.1),    // bottom right
-            Point_3(1.8, 0.6, 0.1),      // top right
-            Point_3(1.5, 0.6, 0.1)       // top left
+            Point_3(2.1, -0.16, 0.1),    // bottom left
+            Point_3(2.4, -0.16, 0.1),    // bottom right
+            Point_3(2.4, 0.6, 0.1),      // top right
+            Point_3(2.1, 0.6, 0.1)       // top left
         },
 
         // Step 6
         {
-            Point_3(1.8, -0.16, 0.0),    // bottom left
-            Point_3(2.1, -0.16, 0.0),    // bottom right
-            Point_3(2.1, 0.6, 0.0),      // top right
-            Point_3(1.8, 0.6, 0.0)       // top left
+            Point_3(2.4, -0.16, 0.0),    // bottom left
+            Point_3(2.7, -0.16, 0.0),    // bottom right
+            Point_3(2.7, 0.6, 0.0),      // top right
+            Point_3(2.4, 0.6, 0.0)       // top left
         }
     };
 
