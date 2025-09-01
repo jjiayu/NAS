@@ -279,3 +279,46 @@ events:
         
       exitCode: 0
 ...
+
+---
+events:
+  -
+    kind: "try_run-v1"
+    backtrace:
+      - "/opt/homebrew/lib/cmake/coal/cxx-standard.cmake:62 (try_run)"
+      - "/opt/homebrew/lib/cmake/coal/coalConfig.cmake:190 (CHECK_MINIMAL_CXX_STANDARD)"
+      - "CMakeLists.txt:35 (find_package)"
+    directories:
+      source: "/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles/CMakeTmp"
+      binary: "/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles/CMakeTmp"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "/opt/homebrew/Cellar/llvm/20.1.8/bin/clang-scan-deps"
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: "-L/opt/homebrew/opt/openblas/lib"
+      CMAKE_MODULE_PATH: "/opt/homebrew/opt/cgal/lib/cmake/CGAL;/opt/homebrew/opt/cgal/lib/cmake/CGAL;/opt/homebrew/opt/cgal/lib/cmake/CGAL"
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: ""
+      CMAKE_OSX_SYSROOT: "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk"
+    buildResult:
+      variable: "_cxx_standard_build_status"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles/CMakeTmp'
+        
+        Run Build Command(s): /Applications/CMake.app/Contents/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_f0780/fast
+        /Applications/Xcode.app/Contents/Developer/usr/bin/make  -f CMakeFiles/cmTC_f0780.dir/build.make CMakeFiles/cmTC_f0780.dir/build
+        Building CXX object CMakeFiles/cmTC_f0780.dir/tmp-cxx-standard.cpp.o
+        /opt/homebrew/opt/llvm/bin/clang++   -std=gnu++20 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk -MD -MT CMakeFiles/cmTC_f0780.dir/tmp-cxx-standard.cpp.o -MF CMakeFiles/cmTC_f0780.dir/tmp-cxx-standard.cpp.o.d -o CMakeFiles/cmTC_f0780.dir/tmp-cxx-standard.cpp.o -c /Users/jiayu/Desktop/nas_ws/NAS/build/cmake/tmp-cxx-standard.cpp
+        Linking CXX executable cmTC_f0780
+        /Applications/CMake.app/Contents/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f0780.dir/link.txt --verbose=1
+        /opt/homebrew/opt/llvm/bin/clang++  -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names -L/opt/homebrew/opt/openblas/lib  "CMakeFiles/cmTC_f0780.dir/tmp-cxx-standard.cpp.o" -o cmTC_f0780
+        
+      exitCode: 0
+    runResult:
+      variable: "_cxx_standard_run_status"
+      cached: true
+      stdout: |
+        202002
+      exitCode: 0
+...

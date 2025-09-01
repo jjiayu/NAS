@@ -43,6 +43,9 @@ AstarSearch::AstarSearch() {
          goal_stance_foot == 1 ? "RIGHT FOOT (1)" : "INVALID") << std::endl;
     std::cout << "  - Goal Location (World Frame): " << this->goal_location << std::endl;
 
+    this->distance_metric = a_star_distance_metric;
+    std::cout << "  - Distance Metric: " << this->distance_metric << std::endl;
+
     // Initialize the start node
     Node* start_node = new Node();
     start_node->parent_ptrs = std::vector<Node*>();  // Empty vector for root node
@@ -121,7 +124,13 @@ void AstarSearch::search() {
             
             // Calculate the tentative g_score for this child
             double tentative_g_score = current_node->g_score + compute_euclidean_distance(current_node->centroid, child->centroid);
-            double tentative_h_score = compute_euclidean_distance(child->centroid, this->goal_location);
+            double tentative_h_score = 0.0;
+            if (this->distance_metric == "gjk") {
+                tentative_h_score = calculate_gjk_distance_point_to_patch(child->patch_vertices, this->goal_location);
+            }
+            else if (this->distance_metric == "euclidean") {
+                tentative_h_score = compute_euclidean_distance(child->centroid, this->goal_location);
+            }
             double tentative_f_score = tentative_g_score + tentative_h_score;
             
             // Check if this node is already in the open set

@@ -74,7 +74,9 @@ target_link_libraries(visualizer_lib PRIVATE
 )
 target_link_libraries(geometry_lib PRIVATE
     CGAL::CGAL
+    /opt/homebrew/lib/libcoal.dylib
 )
+target_include_directories(geometry_lib PRIVATE /opt/homebrew/include)
 target_link_libraries(surface_lib PRIVATE 
     utils_lib
     geometry_lib

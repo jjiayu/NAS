@@ -3414,6 +3414,27 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /opt/homebrew/include/boost/utility/identity_type.hpp \
   /opt/homebrew/include/boost/utility/result_of.hpp \
   /opt/homebrew/include/boost/version.hpp \
+  /opt/homebrew/include/coal/BV/AABB.h \
+  /opt/homebrew/include/coal/collision_data.h \
+  /opt/homebrew/include/coal/collision_object.h \
+  /opt/homebrew/include/coal/config.hh \
+  /opt/homebrew/include/coal/data_types.h \
+  /opt/homebrew/include/coal/deprecated.hh \
+  /opt/homebrew/include/coal/distance.h \
+  /opt/homebrew/include/coal/distance_func_matrix.h \
+  /opt/homebrew/include/coal/fwd.hh \
+  /opt/homebrew/include/coal/logging.h \
+  /opt/homebrew/include/coal/math/transform.h \
+  /opt/homebrew/include/coal/narrowphase/gjk.h \
+  /opt/homebrew/include/coal/narrowphase/minkowski_difference.h \
+  /opt/homebrew/include/coal/narrowphase/narrowphase.h \
+  /opt/homebrew/include/coal/narrowphase/narrowphase_defaults.h \
+  /opt/homebrew/include/coal/narrowphase/support_functions.h \
+  /opt/homebrew/include/coal/shape/convex.h \
+  /opt/homebrew/include/coal/shape/details/convex.hxx \
+  /opt/homebrew/include/coal/shape/geometric_shapes.h \
+  /opt/homebrew/include/coal/timings.h \
+  /opt/homebrew/include/coal/warning.hh \
   /opt/homebrew/include/eigen3/Eigen/Cholesky \
   /opt/homebrew/include/eigen3/Eigen/Core \
   /opt/homebrew/include/eigen3/Eigen/Dense \
@@ -4184,6 +4205,32 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/vtk-9.4/vtkCompiler.h:
 
 /opt/homebrew/include/eigen3/Eigen/Cholesky:
+
+/opt/homebrew/include/coal/warning.hh:
+
+/opt/homebrew/include/coal/shape/convex.h:
+
+/opt/homebrew/include/coal/narrowphase/support_functions.h:
+
+/opt/homebrew/include/coal/narrowphase/narrowphase_defaults.h:
+
+/opt/homebrew/include/coal/narrowphase/narrowphase.h:
+
+/opt/homebrew/include/coal/narrowphase/minkowski_difference.h:
+
+/opt/homebrew/include/coal/logging.h:
+
+/opt/homebrew/include/coal/fwd.hh:
+
+/opt/homebrew/include/coal/deprecated.hh:
+
+/opt/homebrew/include/coal/data_types.h:
+
+/opt/homebrew/include/coal/collision_object.h:
+
+/opt/homebrew/include/coal/collision_data.h:
+
+/opt/homebrew/include/coal/BV/AABB.h:
 
 /opt/homebrew/include/boost/utility/result_of.hpp:
 
@@ -5185,6 +5232,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/boost/mpl/bool.hpp:
 
+/opt/homebrew/include/coal/timings.h:
+
 /opt/homebrew/include/boost/mpl/bind_fwd.hpp:
 
 /opt/homebrew/include/boost/mpl/bind.hpp:
@@ -5379,6 +5428,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/include/eigen3/Eigen/src/Core/NestByValue.h:
 
+/opt/homebrew/include/coal/shape/geometric_shapes.h:
+
 /opt/homebrew/include/boost/random/subtract_with_carry.hpp:
 
 /opt/homebrew/include/boost/range/detail/implementation_help.hpp:
@@ -5544,6 +5595,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/math/tools/is_standalone.hpp:
 
 /opt/homebrew/include/eigen3/Eigen/src/plugins/BlockMethods.h:
+
+/opt/homebrew/include/coal/config.hh:
 
 /opt/homebrew/include/boost/math/tools/cxx03_warn.hpp:
 
@@ -10287,6 +10340,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/Cellar/llvm/20.1.8/include/c++/v1/__algorithm/iterator_operations.h:
 
+/opt/homebrew/include/coal/narrowphase/gjk.h:
+
 /opt/homebrew/include/boost/random/random_number_generator.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.8/include/c++/v1/__ios/fpos.h:
@@ -10669,6 +10724,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 
 /opt/homebrew/Cellar/llvm/20.1.8/include/c++/v1/__format/format_args.h:
 
+/opt/homebrew/include/coal/math/transform.h:
+
 /opt/homebrew/include/boost/multiprecision/cpp_int/misc.hpp:
 
 /opt/homebrew/include/eigen3/Eigen/src/Core/Solve.h:
@@ -10778,6 +10835,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/boost/mpl/apply_fwd.hpp:
 
 /opt/homebrew/Cellar/llvm/20.1.8/include/c++/v1/__algorithm/reverse.h:
+
+/opt/homebrew/include/coal/distance.h:
 
 /opt/homebrew/include/boost/preprocessor/comparison/less_equal.hpp:
 
@@ -10902,6 +10961,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/CGAL/Intersections_3/internal/Iso_cuboid_3_Plane_3_intersection.h:
 
 /Users/jiayu/local/include/casadi/core/runtime/casadi_ipqp.hpp:
+
+/opt/homebrew/include/coal/distance_func_matrix.h:
 
 CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 
@@ -11172,6 +11233,8 @@ CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h:
 /opt/homebrew/include/vtk-9.4/vtkNew.h:
 
 /opt/homebrew/include/boost/mpl/aux_/config/overload_resolution.hpp:
+
+/opt/homebrew/include/coal/shape/details/convex.hxx:
 
 /opt/homebrew/Cellar/llvm/20.1.8/include/c++/v1/__algorithm/remove.h:
 

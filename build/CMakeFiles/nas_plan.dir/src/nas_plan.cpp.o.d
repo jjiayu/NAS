@@ -3250,8 +3250,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: \
   /opt/homebrew/include/CGAL/linear_least_squares_fitting_cuboids_3.h \
   /opt/homebrew/include/CGAL/linear_least_squares_fitting_tetrahedra_3.h \
   /opt/homebrew/include/CGAL/linear_least_squares_fitting_spheres_3.h \
-  /opt/homebrew/include/CGAL/convex_hull_3.h \
-  /opt/homebrew/include/CGAL/license/Convex_hull_3.h \
   /opt/homebrew/include/CGAL/convex_hull_2.h \
   /opt/homebrew/include/CGAL/license/Convex_hull_2.h \
   /opt/homebrew/include/CGAL/convex_hull_traits_2.h \
@@ -3267,6 +3265,29 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: \
   /opt/homebrew/include/CGAL/IO/Tee_for_output_iterator.h \
   /opt/homebrew/include/CGAL/ch_bykat.h \
   /opt/homebrew/include/CGAL/Convex_hull_2/ch_bykat_impl.h \
+  /opt/homebrew/include/coal/collision_object.h \
+  /opt/homebrew/include/coal/deprecated.hh \
+  /opt/homebrew/include/coal/fwd.hh /opt/homebrew/include/coal/config.hh \
+  /opt/homebrew/include/coal/warning.hh \
+  /opt/homebrew/include/coal/BV/AABB.h \
+  /opt/homebrew/include/coal/data_types.h \
+  /opt/homebrew/include/coal/math/transform.h \
+  /opt/homebrew/include/coal/shape/geometric_shapes.h \
+  /opt/homebrew/include/coal/shape/convex.h \
+  /opt/homebrew/include/coal/shape/details/convex.hxx \
+  /opt/homebrew/include/coal/distance.h \
+  /opt/homebrew/include/coal/collision_data.h \
+  /opt/homebrew/include/coal/timings.h \
+  /opt/homebrew/include/coal/narrowphase/narrowphase_defaults.h \
+  /opt/homebrew/include/coal/logging.h \
+  /opt/homebrew/include/coal/distance_func_matrix.h \
+  /opt/homebrew/include/coal/narrowphase/narrowphase.h \
+  /opt/homebrew/include/coal/narrowphase/gjk.h \
+  /opt/homebrew/include/coal/narrowphase/minkowski_difference.h \
+  /opt/homebrew/include/coal/narrowphase/support_functions.h \
+  /Users/jiayu/Desktop/nas_ws/NAS/include/utils.hpp \
+  /opt/homebrew/include/CGAL/convex_hull_3.h \
+  /opt/homebrew/include/CGAL/license/Convex_hull_3.h \
   /opt/homebrew/include/CGAL/Convex_hull_traits_3.h \
   /opt/homebrew/include/CGAL/Projection_traits_xy_3.h \
   /opt/homebrew/include/CGAL/Kernel_23/internal/Projection_traits_3.h \
@@ -3294,7 +3315,6 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: \
   /opt/homebrew/include/CGAL/boost/graph/properties_Triangulation_data_structure_2.h \
   /opt/homebrew/include/CGAL/convexity_check_3.h \
   /opt/homebrew/include/CGAL/boost/graph/property_maps.h \
-  /Users/jiayu/Desktop/nas_ws/NAS/include/utils.hpp \
   /Users/jiayu/Desktop/nas_ws/NAS/include/visualizer.hpp \
   /opt/homebrew/include/vtk-9.4/vtkSmartPointer.h \
   /opt/homebrew/include/vtk-9.4/vtkSmartPointerBase.h \

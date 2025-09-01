@@ -113,6 +113,9 @@ public:
     double total_plane_polytope_intersect_time = 0.0;
     double total_polygon_2d_intersect_time = 0.0;
 
+    // A star realted
+    std::string distance_metric;
+
     // Counters
     int expansion_coount = 0;
 
