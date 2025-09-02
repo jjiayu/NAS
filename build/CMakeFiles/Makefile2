@@ -73,6 +73,7 @@ all: CMakeFiles/astar_search_lib.dir/all
 all: CMakeFiles/footstep_planner_lib.dir/all
 all: CMakeFiles/nas_plan.dir/all
 all: CMakeFiles/astar_plan.dir/all
+all: CMakeFiles/astar_grid_plan.dir/all
 .PHONY : all
 
 # The main recursive "codegen" target.
@@ -86,6 +87,7 @@ codegen: CMakeFiles/astar_search_lib.dir/codegen
 codegen: CMakeFiles/footstep_planner_lib.dir/codegen
 codegen: CMakeFiles/nas_plan.dir/codegen
 codegen: CMakeFiles/astar_plan.dir/codegen
+codegen: CMakeFiles/astar_grid_plan.dir/codegen
 .PHONY : codegen
 
 # The main recursive "preinstall" target.
@@ -103,6 +105,7 @@ clean: CMakeFiles/astar_search_lib.dir/clean
 clean: CMakeFiles/footstep_planner_lib.dir/clean
 clean: CMakeFiles/nas_plan.dir/clean
 clean: CMakeFiles/astar_plan.dir/clean
+clean: CMakeFiles/astar_grid_plan.dir/clean
 .PHONY : clean
 
 #=============================================================================
@@ -112,7 +115,7 @@ clean: CMakeFiles/astar_plan.dir/clean
 CMakeFiles/utils_lib.dir/all: CMakeFiles/visualizer_lib.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/utils_lib.dir/build.make CMakeFiles/utils_lib.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/utils_lib.dir/build.make CMakeFiles/utils_lib.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=17,18 "Built target utils_lib"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=19,20 "Built target utils_lib"
 .PHONY : CMakeFiles/utils_lib.dir/all
 
 # Build rule for subdir invocation for target.
@@ -129,7 +132,7 @@ utils_lib: CMakeFiles/utils_lib.dir/rule
 # codegen rule for target.
 CMakeFiles/utils_lib.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/utils_lib.dir/build.make CMakeFiles/utils_lib.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=17,18 "Finished codegen for target utils_lib"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=19,20 "Finished codegen for target utils_lib"
 .PHONY : CMakeFiles/utils_lib.dir/codegen
 
 # clean rule for target.
@@ -144,7 +147,7 @@ CMakeFiles/utils_lib.dir/clean:
 CMakeFiles/node_lib.dir/all: CMakeFiles/geometry_lib.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/node_lib.dir/build.make CMakeFiles/node_lib.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/node_lib.dir/build.make CMakeFiles/node_lib.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=11,12 "Built target node_lib"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=13,14 "Built target node_lib"
 .PHONY : CMakeFiles/node_lib.dir/all
 
 # Build rule for subdir invocation for target.
@@ -161,7 +164,7 @@ node_lib: CMakeFiles/node_lib.dir/rule
 # codegen rule for target.
 CMakeFiles/node_lib.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/node_lib.dir/build.make CMakeFiles/node_lib.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=11,12 "Finished codegen for target node_lib"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=13,14 "Finished codegen for target node_lib"
 .PHONY : CMakeFiles/node_lib.dir/codegen
 
 # clean rule for target.
@@ -180,7 +183,7 @@ CMakeFiles/tree_lib.dir/all: CMakeFiles/surface_lib.dir/all
 CMakeFiles/tree_lib.dir/all: CMakeFiles/visualizer_lib.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/tree_lib.dir/build.make CMakeFiles/tree_lib.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/tree_lib.dir/build.make CMakeFiles/tree_lib.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=15,16 "Built target tree_lib"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=17,18 "Built target tree_lib"
 .PHONY : CMakeFiles/tree_lib.dir/all
 
 # Build rule for subdir invocation for target.
@@ -197,7 +200,7 @@ tree_lib: CMakeFiles/tree_lib.dir/rule
 # codegen rule for target.
 CMakeFiles/tree_lib.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/tree_lib.dir/build.make CMakeFiles/tree_lib.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=15,16 "Finished codegen for target tree_lib"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=17,18 "Finished codegen for target tree_lib"
 .PHONY : CMakeFiles/tree_lib.dir/codegen
 
 # clean rule for target.
@@ -212,7 +215,7 @@ CMakeFiles/tree_lib.dir/clean:
 CMakeFiles/geometry_lib.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/geometry_lib.dir/build.make CMakeFiles/geometry_lib.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/geometry_lib.dir/build.make CMakeFiles/geometry_lib.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=7,8 "Built target geometry_lib"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=9,10 "Built target geometry_lib"
 .PHONY : CMakeFiles/geometry_lib.dir/all
 
 # Build rule for subdir invocation for target.
@@ -229,7 +232,7 @@ geometry_lib: CMakeFiles/geometry_lib.dir/rule
 # codegen rule for target.
 CMakeFiles/geometry_lib.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/geometry_lib.dir/build.make CMakeFiles/geometry_lib.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=7,8 "Finished codegen for target geometry_lib"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=9,10 "Finished codegen for target geometry_lib"
 .PHONY : CMakeFiles/geometry_lib.dir/codegen
 
 # clean rule for target.
@@ -245,7 +248,7 @@ CMakeFiles/surface_lib.dir/all: CMakeFiles/utils_lib.dir/all
 CMakeFiles/surface_lib.dir/all: CMakeFiles/geometry_lib.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/surface_lib.dir/build.make CMakeFiles/surface_lib.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/surface_lib.dir/build.make CMakeFiles/surface_lib.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=13,14 "Built target surface_lib"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=15,16 "Built target surface_lib"
 .PHONY : CMakeFiles/surface_lib.dir/all
 
 # Build rule for subdir invocation for target.
@@ -262,7 +265,7 @@ surface_lib: CMakeFiles/surface_lib.dir/rule
 # codegen rule for target.
 CMakeFiles/surface_lib.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/surface_lib.dir/build.make CMakeFiles/surface_lib.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=13,14 "Finished codegen for target surface_lib"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=15,16 "Finished codegen for target surface_lib"
 .PHONY : CMakeFiles/surface_lib.dir/codegen
 
 # clean rule for target.
@@ -277,7 +280,7 @@ CMakeFiles/surface_lib.dir/clean:
 CMakeFiles/visualizer_lib.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/visualizer_lib.dir/build.make CMakeFiles/visualizer_lib.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/visualizer_lib.dir/build.make CMakeFiles/visualizer_lib.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=19,20 "Built target visualizer_lib"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=21,22 "Built target visualizer_lib"
 .PHONY : CMakeFiles/visualizer_lib.dir/all
 
 # Build rule for subdir invocation for target.
@@ -294,7 +297,7 @@ visualizer_lib: CMakeFiles/visualizer_lib.dir/rule
 # codegen rule for target.
 CMakeFiles/visualizer_lib.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/visualizer_lib.dir/build.make CMakeFiles/visualizer_lib.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=19,20 "Finished codegen for target visualizer_lib"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=21,22 "Finished codegen for target visualizer_lib"
 .PHONY : CMakeFiles/visualizer_lib.dir/codegen
 
 # clean rule for target.
@@ -314,7 +317,7 @@ CMakeFiles/astar_search_lib.dir/all: CMakeFiles/surface_lib.dir/all
 CMakeFiles/astar_search_lib.dir/all: CMakeFiles/visualizer_lib.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/astar_search_lib.dir/build.make CMakeFiles/astar_search_lib.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/astar_search_lib.dir/build.make CMakeFiles/astar_search_lib.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=3,4 "Built target astar_search_lib"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=5,6 "Built target astar_search_lib"
 .PHONY : CMakeFiles/astar_search_lib.dir/all
 
 # Build rule for subdir invocation for target.
@@ -331,7 +334,7 @@ astar_search_lib: CMakeFiles/astar_search_lib.dir/rule
 # codegen rule for target.
 CMakeFiles/astar_search_lib.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/astar_search_lib.dir/build.make CMakeFiles/astar_search_lib.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=3,4 "Finished codegen for target astar_search_lib"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=5,6 "Finished codegen for target astar_search_lib"
 .PHONY : CMakeFiles/astar_search_lib.dir/codegen
 
 # clean rule for target.
@@ -350,7 +353,7 @@ CMakeFiles/footstep_planner_lib.dir/all: CMakeFiles/visualizer_lib.dir/all
 CMakeFiles/footstep_planner_lib.dir/all: CMakeFiles/astar_search_lib.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/footstep_planner_lib.dir/build.make CMakeFiles/footstep_planner_lib.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/footstep_planner_lib.dir/build.make CMakeFiles/footstep_planner_lib.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=5,6 "Built target footstep_planner_lib"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=7,8 "Built target footstep_planner_lib"
 .PHONY : CMakeFiles/footstep_planner_lib.dir/all
 
 # Build rule for subdir invocation for target.
@@ -367,7 +370,7 @@ footstep_planner_lib: CMakeFiles/footstep_planner_lib.dir/rule
 # codegen rule for target.
 CMakeFiles/footstep_planner_lib.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/footstep_planner_lib.dir/build.make CMakeFiles/footstep_planner_lib.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=5,6 "Finished codegen for target footstep_planner_lib"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=7,8 "Finished codegen for target footstep_planner_lib"
 .PHONY : CMakeFiles/footstep_planner_lib.dir/codegen
 
 # clean rule for target.
@@ -389,7 +392,7 @@ CMakeFiles/nas_plan.dir/all: CMakeFiles/astar_search_lib.dir/all
 CMakeFiles/nas_plan.dir/all: CMakeFiles/footstep_planner_lib.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/nas_plan.dir/build.make CMakeFiles/nas_plan.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/nas_plan.dir/build.make CMakeFiles/nas_plan.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=9,10 "Built target nas_plan"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=11,12 "Built target nas_plan"
 .PHONY : CMakeFiles/nas_plan.dir/all
 
 # Build rule for subdir invocation for target.
@@ -406,7 +409,7 @@ nas_plan: CMakeFiles/nas_plan.dir/rule
 # codegen rule for target.
 CMakeFiles/nas_plan.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/nas_plan.dir/build.make CMakeFiles/nas_plan.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=9,10 "Finished codegen for target nas_plan"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=11,12 "Finished codegen for target nas_plan"
 .PHONY : CMakeFiles/nas_plan.dir/codegen
 
 # clean rule for target.
@@ -428,7 +431,7 @@ CMakeFiles/astar_plan.dir/all: CMakeFiles/astar_search_lib.dir/all
 CMakeFiles/astar_plan.dir/all: CMakeFiles/footstep_planner_lib.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/astar_plan.dir/build.make CMakeFiles/astar_plan.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/astar_plan.dir/build.make CMakeFiles/astar_plan.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=1,2 "Built target astar_plan"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=3,4 "Built target astar_plan"
 .PHONY : CMakeFiles/astar_plan.dir/all
 
 # Build rule for subdir invocation for target.
@@ -445,13 +448,52 @@ astar_plan: CMakeFiles/astar_plan.dir/rule
 # codegen rule for target.
 CMakeFiles/astar_plan.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/astar_plan.dir/build.make CMakeFiles/astar_plan.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=1,2 "Finished codegen for target astar_plan"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=3,4 "Finished codegen for target astar_plan"
 .PHONY : CMakeFiles/astar_plan.dir/codegen
 
 # clean rule for target.
 CMakeFiles/astar_plan.dir/clean:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/astar_plan.dir/build.make CMakeFiles/astar_plan.dir/clean
 .PHONY : CMakeFiles/astar_plan.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/astar_grid_plan.dir
+
+# All Build rule for target.
+CMakeFiles/astar_grid_plan.dir/all: CMakeFiles/utils_lib.dir/all
+CMakeFiles/astar_grid_plan.dir/all: CMakeFiles/node_lib.dir/all
+CMakeFiles/astar_grid_plan.dir/all: CMakeFiles/tree_lib.dir/all
+CMakeFiles/astar_grid_plan.dir/all: CMakeFiles/geometry_lib.dir/all
+CMakeFiles/astar_grid_plan.dir/all: CMakeFiles/surface_lib.dir/all
+CMakeFiles/astar_grid_plan.dir/all: CMakeFiles/visualizer_lib.dir/all
+CMakeFiles/astar_grid_plan.dir/all: CMakeFiles/astar_search_lib.dir/all
+CMakeFiles/astar_grid_plan.dir/all: CMakeFiles/footstep_planner_lib.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astar_grid_plan.dir/build.make CMakeFiles/astar_grid_plan.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astar_grid_plan.dir/build.make CMakeFiles/astar_grid_plan.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=1,2 "Built target astar_grid_plan"
+.PHONY : CMakeFiles/astar_grid_plan.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/astar_grid_plan.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles 18
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/astar_grid_plan.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles 0
+.PHONY : CMakeFiles/astar_grid_plan.dir/rule
+
+# Convenience name for target.
+astar_grid_plan: CMakeFiles/astar_grid_plan.dir/rule
+.PHONY : astar_grid_plan
+
+# codegen rule for target.
+CMakeFiles/astar_grid_plan.dir/codegen:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astar_grid_plan.dir/build.make CMakeFiles/astar_grid_plan.dir/codegen
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=1,2 "Finished codegen for target astar_grid_plan"
+.PHONY : CMakeFiles/astar_grid_plan.dir/codegen
+
+# clean rule for target.
+CMakeFiles/astar_grid_plan.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astar_grid_plan.dir/build.make CMakeFiles/astar_grid_plan.dir/clean
+.PHONY : CMakeFiles/astar_grid_plan.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

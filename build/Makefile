@@ -246,6 +246,43 @@ astar_plan/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/astar_plan.dir/build.make CMakeFiles/astar_plan.dir/build
 .PHONY : astar_plan/fast
 
+#=============================================================================
+# Target rules for targets named astar_grid_plan
+
+# Build rule for target.
+astar_grid_plan: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 astar_grid_plan
+.PHONY : astar_grid_plan
+
+# fast build rule for target.
+astar_grid_plan/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astar_grid_plan.dir/build.make CMakeFiles/astar_grid_plan.dir/build
+.PHONY : astar_grid_plan/fast
+
+src/astar_grid_plan.o: src/astar_grid_plan.cpp.o
+.PHONY : src/astar_grid_plan.o
+
+# target to build an object file
+src/astar_grid_plan.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astar_grid_plan.dir/build.make CMakeFiles/astar_grid_plan.dir/src/astar_grid_plan.cpp.o
+.PHONY : src/astar_grid_plan.cpp.o
+
+src/astar_grid_plan.i: src/astar_grid_plan.cpp.i
+.PHONY : src/astar_grid_plan.i
+
+# target to preprocess a source file
+src/astar_grid_plan.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astar_grid_plan.dir/build.make CMakeFiles/astar_grid_plan.dir/src/astar_grid_plan.cpp.i
+.PHONY : src/astar_grid_plan.cpp.i
+
+src/astar_grid_plan.s: src/astar_grid_plan.cpp.s
+.PHONY : src/astar_grid_plan.s
+
+# target to generate assembly for a file
+src/astar_grid_plan.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astar_grid_plan.dir/build.make CMakeFiles/astar_grid_plan.dir/src/astar_grid_plan.cpp.s
+.PHONY : src/astar_grid_plan.cpp.s
+
 src/astar_plan.o: src/astar_plan.cpp.o
 .PHONY : src/astar_plan.o
 
@@ -494,6 +531,7 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... astar_grid_plan"
 	@echo "... astar_plan"
 	@echo "... astar_search_lib"
 	@echo "... footstep_planner_lib"
@@ -504,6 +542,9 @@ help:
 	@echo "... tree_lib"
 	@echo "... utils_lib"
 	@echo "... visualizer_lib"
+	@echo "... src/astar_grid_plan.o"
+	@echo "... src/astar_grid_plan.i"
+	@echo "... src/astar_grid_plan.s"
 	@echo "... src/astar_plan.o"
 	@echo "... src/astar_plan.i"
 	@echo "... src/astar_plan.s"

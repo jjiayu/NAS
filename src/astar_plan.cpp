@@ -5,9 +5,6 @@
 #include "geometry.hpp"
 #include "constants.hpp"
 #include <iostream>
-#include <queue>
-#include <unordered_map>
-#include <vector>
 #include "astar_search.hpp"
 #include "footstep_planner.hpp"
 #include <vtkRendererCollection.h>
@@ -15,7 +12,7 @@
 int main() {
     using namespace nas;
 
-    std::cout << "=== A* Path Planning with Footstep Optimization ===" << std::endl;
+    std::cout << "=== A* Path Planning with Footstep Optimization (using Discretization) ===" << std::endl;
 
     // Create A* search instance
     AstarSearch astar_search;

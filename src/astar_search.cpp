@@ -250,32 +250,31 @@ std::vector<Node*> AstarSearch::get_children(Node* parent){
                 if ((this->cycle_detection_flag == true) && (cycle_path_detection(parent, stance_foot, surface.surface_id) == true)) {
                     continue; //the same surface visited 2 steps before
                 }
-                else{
-                    Node* child = new Node();
-                    child->parent_ptrs.push_back(parent);
-                    child->node_id = node_counter++;
-                    child->patch_vertices = polytope_surf_3d_intersect_pts;
-                    child->stance_foot = parent->stance_foot == 0 ?  1 : 0; //Alternate stance foot
-                    child->surface_id = surface.surface_id;
-                    child->depth = parent->depth + 1;
-                    child->patch_polygon_2d = polygon_2d_intersect_result;
-                    child->patch_polyhedron_3d = polytope_surf_3d_intersect_polygon;
-                    child->transformation_to_2d = surface.transform_to_surface;
-                    child->transformation_to_3d = surface.transform_to_3d;
-                    child->perimeter = compute_polygon_perimeter(polytope_surf_3d_intersect_polygon);
-                    child->centroid = get_centroid(polytope_surf_3d_intersect_pts);
-                    // Copy parent's pred_surface_ids and add parent's surface as new layer
-                    child->pred_surface_ids = parent->pred_surface_ids;
-                    child->pred_surface_ids[parent->stance_foot].push_back({parent->surface_id});
-                    
-                    // Initialize scores for A* search
-                    child->g_score = std::numeric_limits<double>::infinity();
-                    child->h_score = 0.0; // Will be computed when needed
-                    child->f_score = std::numeric_limits<double>::infinity();
-                    child->parent = nullptr; // Will be set during search
-                    
-                    children.push_back(child);
-                }
+
+                Node* child = new Node();
+                child->parent_ptrs.push_back(parent);
+                child->node_id = node_counter++;
+                child->patch_vertices = polytope_surf_3d_intersect_pts;
+                child->stance_foot = parent->stance_foot == 0 ?  1 : 0; //Alternate stance foot
+                child->surface_id = surface.surface_id;
+                child->depth = parent->depth + 1;
+                child->patch_polygon_2d = polygon_2d_intersect_result;
+                child->patch_polyhedron_3d = polytope_surf_3d_intersect_polygon;
+                child->transformation_to_2d = surface.transform_to_surface;
+                child->transformation_to_3d = surface.transform_to_3d;
+                child->perimeter = compute_polygon_perimeter(polytope_surf_3d_intersect_polygon);
+                child->centroid = get_centroid(polytope_surf_3d_intersect_pts);
+                // Copy parent's pred_surface_ids and add parent's surface as new layer
+                child->pred_surface_ids = parent->pred_surface_ids;
+                child->pred_surface_ids[parent->stance_foot].push_back({parent->surface_id});
+                
+                // Initialize scores for A* search
+                child->g_score = std::numeric_limits<double>::infinity();
+                child->h_score = 0.0; // Will be computed when needed
+                child->f_score = std::numeric_limits<double>::infinity();
+                child->parent = nullptr; // Will be set during search
+                
+                children.push_back(child);
             }
         }
     }

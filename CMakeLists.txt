@@ -108,6 +108,7 @@ target_link_libraries(footstep_planner_lib PRIVATE
 # Add executables
 add_executable(nas_plan src/nas_plan.cpp)
 add_executable(astar_plan src/astar_plan.cpp)
+add_executable(astar_grid_plan src/astar_grid_plan.cpp)
 
 # Link libraries for first executable
 target_link_libraries(nas_plan PRIVATE
@@ -127,8 +128,6 @@ target_link_libraries(nas_plan PRIVATE
 
 # Link libraries for A* planning executable
 target_link_libraries(astar_plan PRIVATE
-    footstep_planner_lib
-    astar_search_lib
     tree_lib
     utils_lib
     node_lib
@@ -138,12 +137,29 @@ target_link_libraries(astar_plan PRIVATE
     ${VTK_LIBRARIES}
     CGAL::CGAL
     yaml-cpp::yaml-cpp
+    astar_search_lib
+    footstep_planner_lib
     casadi::casadi
 )
 
+# Link libraries for grid A* planning executable
+target_link_libraries(astar_grid_plan PRIVATE
+    tree_lib
+    utils_lib
+    node_lib
+    surface_lib
+    geometry_lib
+    visualizer_lib
+    ${VTK_LIBRARIES}
+    CGAL::CGAL
+    yaml-cpp::yaml-cpp
+    astar_search_lib
+    footstep_planner_lib
+    casadi::casadi
+)
 
 # Enable VTK module autoinit for both executables
 vtk_module_autoinit(
-  TARGETS nas_plan astar_plan
+  TARGETS nas_plan astar_plan astar_grid_plan
   MODULES ${VTK_LIBRARIES}
 )

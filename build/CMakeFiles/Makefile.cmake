@@ -152,4 +152,5 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/footstep_planner_lib.dir/DependInfo.cmake"
   "CMakeFiles/nas_plan.dir/DependInfo.cmake"
   "CMakeFiles/astar_plan.dir/DependInfo.cmake"
+  "CMakeFiles/astar_grid_plan.dir/DependInfo.cmake"
   )
