@@ -46,6 +46,9 @@ AstarSearch::AstarSearch() {
     this->distance_metric = a_star_distance_metric;
     std::cout << "  - Distance Metric: " << this->distance_metric << std::endl;
 
+    this->cycle_detection_flag = cycle_detection;
+    std::cout << "  - Cycle Detection: " << (this->cycle_detection_flag ? "ON" : "OFF") << std::endl;
+
     // Initialize the start node
     Node* start_node = new Node();
     start_node->parent_ptrs = std::vector<Node*>();  // Empty vector for root node
@@ -244,7 +247,7 @@ std::vector<Node*> AstarSearch::get_children(Node* parent){
                 // Found intersection, create child node
                 // Filter children if it has been visited in 2 steps before (same foot), filter with surface ID
                 int stance_foot = parent->stance_foot == 0 ? 1 : 0; // Alternate stance foot
-                if (cycle_path_detection(parent, stance_foot, surface.surface_id)) {
+                if ((this->cycle_detection_flag == true) && (cycle_path_detection(parent, stance_foot, surface.surface_id) == true)) {
                     continue; //the same surface visited 2 steps before
                 }
                 else{

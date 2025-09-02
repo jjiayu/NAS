@@ -115,6 +115,7 @@ public:
 
     // A star realted
     std::string distance_metric;
+    bool cycle_detection_flag;
 
     // Counters
     int expansion_coount = 0;
