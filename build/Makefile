@@ -182,6 +182,19 @@ surface_lib/fast:
 .PHONY : surface_lib/fast
 
 #=============================================================================
+# Target rules for targets named grid_environment_lib
+
+# Build rule for target.
+grid_environment_lib: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 grid_environment_lib
+.PHONY : grid_environment_lib
+
+# fast build rule for target.
+grid_environment_lib/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/grid_environment_lib.dir/build.make CMakeFiles/grid_environment_lib.dir/build
+.PHONY : grid_environment_lib/fast
+
+#=============================================================================
 # Target rules for targets named visualizer_lib
 
 # Build rule for target.
@@ -206,6 +219,19 @@ astar_search_lib: cmake_check_build_system
 astar_search_lib/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/astar_search_lib.dir/build.make CMakeFiles/astar_search_lib.dir/build
 .PHONY : astar_search_lib/fast
+
+#=============================================================================
+# Target rules for targets named astar_grid_search_lib
+
+# Build rule for target.
+astar_grid_search_lib: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 astar_grid_search_lib
+.PHONY : astar_grid_search_lib
+
+# fast build rule for target.
+astar_grid_search_lib/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astar_grid_search_lib.dir/build.make CMakeFiles/astar_grid_search_lib.dir/build
+.PHONY : astar_grid_search_lib/fast
 
 #=============================================================================
 # Target rules for targets named footstep_planner_lib
@@ -259,6 +285,32 @@ astar_grid_plan/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/astar_grid_plan.dir/build.make CMakeFiles/astar_grid_plan.dir/build
 .PHONY : astar_grid_plan/fast
 
+#=============================================================================
+# Target rules for targets named test_grid_visualization
+
+# Build rule for target.
+test_grid_visualization: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_grid_visualization
+.PHONY : test_grid_visualization
+
+# fast build rule for target.
+test_grid_visualization/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_grid_visualization.dir/build.make CMakeFiles/test_grid_visualization.dir/build
+.PHONY : test_grid_visualization/fast
+
+#=============================================================================
+# Target rules for targets named test_auto_plot
+
+# Build rule for target.
+test_auto_plot: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_auto_plot
+.PHONY : test_auto_plot
+
+# fast build rule for target.
+test_auto_plot/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_auto_plot.dir/build.make CMakeFiles/test_auto_plot.dir/build
+.PHONY : test_auto_plot/fast
+
 src/astar_grid_plan.o: src/astar_grid_plan.cpp.o
 .PHONY : src/astar_grid_plan.o
 
@@ -282,6 +334,30 @@ src/astar_grid_plan.s: src/astar_grid_plan.cpp.s
 src/astar_grid_plan.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/astar_grid_plan.dir/build.make CMakeFiles/astar_grid_plan.dir/src/astar_grid_plan.cpp.s
 .PHONY : src/astar_grid_plan.cpp.s
+
+src/astar_grid_search.o: src/astar_grid_search.cpp.o
+.PHONY : src/astar_grid_search.o
+
+# target to build an object file
+src/astar_grid_search.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astar_grid_search_lib.dir/build.make CMakeFiles/astar_grid_search_lib.dir/src/astar_grid_search.cpp.o
+.PHONY : src/astar_grid_search.cpp.o
+
+src/astar_grid_search.i: src/astar_grid_search.cpp.i
+.PHONY : src/astar_grid_search.i
+
+# target to preprocess a source file
+src/astar_grid_search.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astar_grid_search_lib.dir/build.make CMakeFiles/astar_grid_search_lib.dir/src/astar_grid_search.cpp.i
+.PHONY : src/astar_grid_search.cpp.i
+
+src/astar_grid_search.s: src/astar_grid_search.cpp.s
+.PHONY : src/astar_grid_search.s
+
+# target to generate assembly for a file
+src/astar_grid_search.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astar_grid_search_lib.dir/build.make CMakeFiles/astar_grid_search_lib.dir/src/astar_grid_search.cpp.s
+.PHONY : src/astar_grid_search.cpp.s
 
 src/astar_plan.o: src/astar_plan.cpp.o
 .PHONY : src/astar_plan.o
@@ -378,6 +454,30 @@ src/geometry.s: src/geometry.cpp.s
 src/geometry.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/geometry_lib.dir/build.make CMakeFiles/geometry_lib.dir/src/geometry.cpp.s
 .PHONY : src/geometry.cpp.s
+
+src/grid_environment.o: src/grid_environment.cpp.o
+.PHONY : src/grid_environment.o
+
+# target to build an object file
+src/grid_environment.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/grid_environment_lib.dir/build.make CMakeFiles/grid_environment_lib.dir/src/grid_environment.cpp.o
+.PHONY : src/grid_environment.cpp.o
+
+src/grid_environment.i: src/grid_environment.cpp.i
+.PHONY : src/grid_environment.i
+
+# target to preprocess a source file
+src/grid_environment.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/grid_environment_lib.dir/build.make CMakeFiles/grid_environment_lib.dir/src/grid_environment.cpp.i
+.PHONY : src/grid_environment.cpp.i
+
+src/grid_environment.s: src/grid_environment.cpp.s
+.PHONY : src/grid_environment.s
+
+# target to generate assembly for a file
+src/grid_environment.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/grid_environment_lib.dir/build.make CMakeFiles/grid_environment_lib.dir/src/grid_environment.cpp.s
+.PHONY : src/grid_environment.cpp.s
 
 src/nas_plan.o: src/nas_plan.cpp.o
 .PHONY : src/nas_plan.o
@@ -523,6 +623,54 @@ src/visualizer.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/visualizer_lib.dir/build.make CMakeFiles/visualizer_lib.dir/src/visualizer.cpp.s
 .PHONY : src/visualizer.cpp.s
 
+test_auto_plot.o: test_auto_plot.cpp.o
+.PHONY : test_auto_plot.o
+
+# target to build an object file
+test_auto_plot.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_auto_plot.dir/build.make CMakeFiles/test_auto_plot.dir/test_auto_plot.cpp.o
+.PHONY : test_auto_plot.cpp.o
+
+test_auto_plot.i: test_auto_plot.cpp.i
+.PHONY : test_auto_plot.i
+
+# target to preprocess a source file
+test_auto_plot.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_auto_plot.dir/build.make CMakeFiles/test_auto_plot.dir/test_auto_plot.cpp.i
+.PHONY : test_auto_plot.cpp.i
+
+test_auto_plot.s: test_auto_plot.cpp.s
+.PHONY : test_auto_plot.s
+
+# target to generate assembly for a file
+test_auto_plot.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_auto_plot.dir/build.make CMakeFiles/test_auto_plot.dir/test_auto_plot.cpp.s
+.PHONY : test_auto_plot.cpp.s
+
+test_grid_visualization.o: test_grid_visualization.cpp.o
+.PHONY : test_grid_visualization.o
+
+# target to build an object file
+test_grid_visualization.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_grid_visualization.dir/build.make CMakeFiles/test_grid_visualization.dir/test_grid_visualization.cpp.o
+.PHONY : test_grid_visualization.cpp.o
+
+test_grid_visualization.i: test_grid_visualization.cpp.i
+.PHONY : test_grid_visualization.i
+
+# target to preprocess a source file
+test_grid_visualization.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_grid_visualization.dir/build.make CMakeFiles/test_grid_visualization.dir/test_grid_visualization.cpp.i
+.PHONY : test_grid_visualization.cpp.i
+
+test_grid_visualization.s: test_grid_visualization.cpp.s
+.PHONY : test_grid_visualization.s
+
+# target to generate assembly for a file
+test_grid_visualization.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_grid_visualization.dir/build.make CMakeFiles/test_grid_visualization.dir/test_grid_visualization.cpp.s
+.PHONY : test_grid_visualization.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -532,19 +680,26 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... astar_grid_plan"
+	@echo "... astar_grid_search_lib"
 	@echo "... astar_plan"
 	@echo "... astar_search_lib"
 	@echo "... footstep_planner_lib"
 	@echo "... geometry_lib"
+	@echo "... grid_environment_lib"
 	@echo "... nas_plan"
 	@echo "... node_lib"
 	@echo "... surface_lib"
+	@echo "... test_auto_plot"
+	@echo "... test_grid_visualization"
 	@echo "... tree_lib"
 	@echo "... utils_lib"
 	@echo "... visualizer_lib"
 	@echo "... src/astar_grid_plan.o"
 	@echo "... src/astar_grid_plan.i"
 	@echo "... src/astar_grid_plan.s"
+	@echo "... src/astar_grid_search.o"
+	@echo "... src/astar_grid_search.i"
+	@echo "... src/astar_grid_search.s"
 	@echo "... src/astar_plan.o"
 	@echo "... src/astar_plan.i"
 	@echo "... src/astar_plan.s"
@@ -557,6 +712,9 @@ help:
 	@echo "... src/geometry.o"
 	@echo "... src/geometry.i"
 	@echo "... src/geometry.s"
+	@echo "... src/grid_environment.o"
+	@echo "... src/grid_environment.i"
+	@echo "... src/grid_environment.s"
 	@echo "... src/nas_plan.o"
 	@echo "... src/nas_plan.i"
 	@echo "... src/nas_plan.s"
@@ -575,6 +733,12 @@ help:
 	@echo "... src/visualizer.o"
 	@echo "... src/visualizer.i"
 	@echo "... src/visualizer.s"
+	@echo "... test_auto_plot.o"
+	@echo "... test_auto_plot.i"
+	@echo "... test_auto_plot.s"
+	@echo "... test_grid_visualization.o"
+	@echo "... test_grid_visualization.i"
+	@echo "... test_grid_visualization.s"
 .PHONY : help
 
 
