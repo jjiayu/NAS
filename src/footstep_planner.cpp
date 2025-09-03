@@ -140,6 +140,7 @@ bool FootstepPlanner::plan(const int& stance_foot_flag_at_start,
         else {
             throw std::runtime_error("Invalid stance foot flag");
         }
+        
         reachability_constraints.push_back(mtimes(A_matrix, (footstep_pos_vars[footstep_cnt] - footstep_pos_vars[footstep_cnt-1])) - b_vector);
     }
     // Concatenate reachability constraints into a single vector
@@ -205,6 +206,7 @@ bool FootstepPlanner::plan(const int& stance_foot_flag_at_start,
         else {
             throw std::runtime_error("Invalid stance foot flag");
         }
+        
         com_constraints_next.push_back(mtimes(A_matrix, (footstep_pos_vars[footstep_cnt] - footstep_pos_vars[footstep_cnt-1])) - b_vector);
     }
     // Concatenate com constraints into a single vector
@@ -215,37 +217,8 @@ bool FootstepPlanner::plan(const int& stance_foot_flag_at_start,
     // CoM must stay inside the polytope based on the previous footstep's stance foot
     std::vector<casadi::SX> com_constraints;
     
-    for (int footstep_cnt = 1; footstep_cnt < path_nodes.size(); footstep_cnt++) {
-        // CoM position: above current footstep at com_z_height
-        casadi::SX com_position = casadi::SX::vertcat({
-            footstep_pos_vars[footstep_cnt](0),  // x
-            footstep_pos_vars[footstep_cnt](1),  // y
-            footstep_pos_vars[footstep_cnt](2) + com_z_height  // z (footstep_z + com_height)
-        });
-        
-        // Previous footstep position (stance foot)
-        casadi::SX previous_footstep_position = footstep_pos_vars[footstep_cnt-1];
-        
-        // Select polytope based on previous footstep's stance foot
-        casadi::SX A_com_matrix;
-        casadi::SX b_com_vector;
-        
-        if (path_nodes[footstep_cnt-1]->stance_foot == 0) { // Previous was LF, so CoM constrained by LF polytope
-            A_com_matrix = A_com_in_lf_casadi;
-            b_com_vector = b_com_in_lf_casadi;
-        } else if (path_nodes[footstep_cnt-1]->stance_foot == 1) { // Previous was RF, so CoM constrained by RF polytope
-            A_com_matrix = A_com_in_rf_casadi;
-            b_com_vector = b_com_in_rf_casadi;
-        } else {
-            throw std::runtime_error("Invalid previous stance foot flag for CoM constraint");
-        }
-        
-        // Create constraint: A_com * (com_position - previous_footstep_position) <= b_com
-        casadi::SX com_relative_position = com_position - previous_footstep_position;
-        casadi::SX com_constraint_expr = mtimes(A_com_matrix, com_relative_position) - b_com_vector;
-        com_constraints.push_back(com_constraint_expr);
-        
-    }
+    // NOTE: CoM constraints are disabled since CoM polytopes are not loaded
+    // Skipping CoM constraint creation to avoid uninitialized matrix errors
     
     // Concatenate CoM constraints into a single vector
     casadi::SX com_constraints_vec;

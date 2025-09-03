@@ -202,7 +202,7 @@ std::vector<Node*> AstarGridSearch::get_grid_children(Node* parent) {
     int parent_grid_y = parent_grid_coords.second;
     
     // Define search radius in grid cells (reasonable footstep reach)
-    int search_radius = static_cast<int>(std::ceil(3.0 / grid_env.get_cell_size())); // 3 meter radius
+    int search_radius = static_cast<int>(std::ceil(1.5 / grid_env.get_cell_size())); // 3 meter radius
     
     // Iterate through potential grid cells within reachability
     for (int dy = -search_radius; dy <= search_radius; ++dy) {
