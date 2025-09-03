@@ -13,6 +13,7 @@
 #include <memory>
 #include <boost/heap/fibonacci_heap.hpp>
 #include <boost/functional/hash.hpp>
+#include <Eigen/Dense>
 
 namespace nas {
 
@@ -120,9 +121,13 @@ public:
     // A star realted
     std::string distance_metric;
     bool cycle_detection_flag;
+    
+    // Cached half-space constraints for reachability polytopes
+    HalfSpacePolytopeConstraint rf_in_lf_constraint;
+    HalfSpacePolytopeConstraint lf_in_rf_constraint;
 
     // Counters
-    int expansion_coount = 0;
+    int expansion_count = 0;
 
     // Constructor
     AstarGridSearch();
@@ -132,6 +137,10 @@ public:
 
     // Get children method
     std::vector<Node*> get_children(Node* current_node);
+
+    bool is_point_in_reachability_polytope(const Point_3& relative_pos, const HalfSpacePolytopeConstraint& constraint);
+
+    std::vector<Node*> get_grid_children(Node* parent);
 
     // Plot path method
     void plot_path();

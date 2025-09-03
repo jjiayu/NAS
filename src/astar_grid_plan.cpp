@@ -19,5 +19,5 @@ int main() {
     // Create FootstepPlanner instance
 
     AstarGridSearch grid_search;
-    // grid_search.search();
+    grid_search.search();
 }
