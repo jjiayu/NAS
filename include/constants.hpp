@@ -11,6 +11,9 @@ const double com_z_height = 0.75;
 // A star related
 const std::string a_star_distance_metric = "gjk"; // "euclidean", "gjk"
 
+// Discrete a star related
+const double a_star_grid_resolution = 0.05; // meters
+
 const bool cycle_detection = true;
 
 // Define Foot stance status

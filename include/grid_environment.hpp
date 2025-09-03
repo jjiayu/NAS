@@ -3,6 +3,7 @@
 #include "types.hpp"
 #include "surface.hpp"
 #include <vector>
+#include "constants.hpp"
 
 namespace nas {
 
@@ -25,7 +26,7 @@ private:
     std::vector<std::vector<GridCell>> grid_;
     
 public:
-    GridEnvironment(double cell_size = 0.05);
+    GridEnvironment(double cell_size = a_star_grid_resolution);
     
     // Initialize grid from surfaces
     void initialize_from_surfaces(const std::vector<Surface>& surfaces);

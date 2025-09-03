@@ -16,6 +16,63 @@
 
 namespace nas {
 
+// Grid-specific hash function for nodes
+struct GridNodeHash {
+    size_t operator()(const Node* node) const {
+        // For grid-based search, hash based on grid position and stance foot
+        // Convert world position to grid coordinates
+        // Assuming we have access to grid environment through a static reference or similar
+        // For now, use quantized world coordinates as grid approximation
+        
+        // Quantize to grid cell resolution (0.05m default)
+        const double grid_resolution = a_star_grid_resolution;
+        int grid_x = static_cast<int>(std::round(node->centroid.x() / grid_resolution));
+        int grid_y = static_cast<int>(std::round(node->centroid.y() / grid_resolution));
+        int grid_z = static_cast<int>(std::round(node->centroid.z() / grid_resolution));
+        
+        // Use Boost's hash_combine for better distribution
+        size_t seed = 0;
+        boost::hash_combine(seed, grid_x);
+        boost::hash_combine(seed, grid_y);
+        boost::hash_combine(seed, grid_z);
+        boost::hash_combine(seed, node->stance_foot);  // Critical for grid-based search
+        boost::hash_combine(seed, node->surface_id);   // Include surface for completeness
+        
+        return seed;
+    }
+};
+
+// Grid-specific equality comparison for nodes
+struct GridNodeEqual {
+    bool operator()(const Node* a, const Node* b) const {
+        // For grid-based search, compare grid position and stance foot
+        const double grid_resolution = a_star_grid_resolution;
+        
+        int grid_x_a = static_cast<int>(std::round(a->centroid.x() / grid_resolution));
+        int grid_y_a = static_cast<int>(std::round(a->centroid.y() / grid_resolution));
+        int grid_z_a = static_cast<int>(std::round(a->centroid.z() / grid_resolution));
+        
+        int grid_x_b = static_cast<int>(std::round(b->centroid.x() / grid_resolution));
+        int grid_y_b = static_cast<int>(std::round(b->centroid.y() / grid_resolution));
+        int grid_z_b = static_cast<int>(std::round(b->centroid.z() / grid_resolution));
+        
+        // Compare grid coordinates, stance foot, and surface
+        return (grid_x_a == grid_x_b && 
+                grid_y_a == grid_y_b && 
+                grid_z_a == grid_z_b && 
+                a->stance_foot == b->stance_foot &&
+                a->surface_id == b->surface_id);
+    }
+};
+
+// Custom comparator for priority queue (same as in astar_search.hpp)
+struct CompareNodes {
+    bool operator()(const Node* a, const Node* b) const {
+        // We want the node with lower f_score to have higher priority
+        return a->f_score > b->f_score;
+    }
+};
+
 class AstarGridSearch {
 public:
     // Reachability Polytope
@@ -45,14 +102,14 @@ public:
     std::vector<Node*> result_path = {};
 
     // Open Set - using Boost.Heap for efficient decrease-key operations
-    // typedef boost::heap::fibonacci_heap<Node*, boost::heap::compare<CompareNodes>> OpenSet;
-    // OpenSet open_set;
+    typedef boost::heap::fibonacci_heap<Node*, boost::heap::compare<CompareNodes>> OpenSet;
+    OpenSet open_set;
 
     // Track handles for each node in open set (needed for decrease-key)
-    // std::unordered_map<Node*, OpenSet::handle_type, NodeHash, NodeEqual> node_handles;
+    std::unordered_map<Node*, OpenSet::handle_type, GridNodeHash, GridNodeEqual> node_handles;
 
     // Close set
-    // std::unordered_set<Node*, NodeHash, NodeEqual> closed_set;
+    std::unordered_set<Node*, GridNodeHash, GridNodeEqual> closed_set;
 
     // Computation time statistics
     double total_minkowski_time = 0.0;
