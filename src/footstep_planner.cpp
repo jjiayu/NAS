@@ -41,36 +41,36 @@ FootstepPlanner::FootstepPlanner() {
         this->b_lf_in_rf_casadi(i) = lf_in_rf_constraint.b(i);
     }
 
-    // CoM in Left Foot constraint forward polytope
-    load_obj(com_in_lf_path_forward, this->com_in_lf_polytope);
-    this->com_in_lf_constraint = convert_polytope_to_half_space_constraint(this->com_in_lf_polytope);
+    // // CoM in Left Foot constraint forward polytope
+    // load_obj(com_in_lf_path_forward, this->com_in_lf_polytope);
+    // this->com_in_lf_constraint = convert_polytope_to_half_space_constraint(this->com_in_lf_polytope);
 
-    // CoM in Right Foot constraint forward polytope
-    load_obj(com_in_rf_path_forward, this->com_in_rf_polytope);
-    this->com_in_rf_constraint = convert_polytope_to_half_space_constraint(this->com_in_rf_polytope);
+    // // CoM in Right Foot constraint forward polytope
+    // load_obj(com_in_rf_path_forward, this->com_in_rf_polytope);
+    // this->com_in_rf_constraint = convert_polytope_to_half_space_constraint(this->com_in_rf_polytope);
 
-    // Convert Eigen matrices to CasADi SX (for mtimes compatibility)
-    //   CoM in Left Foot constraint polytope
-    this->A_com_in_lf_casadi = casadi::SX::zeros(com_in_lf_constraint.A.rows(), com_in_lf_constraint.A.cols());
-    this->b_com_in_lf_casadi = casadi::SX::zeros(com_in_lf_constraint.b.size());
+    // // Convert Eigen matrices to CasADi SX (for mtimes compatibility)
+    // //   CoM in Left Foot constraint polytope
+    // this->A_com_in_lf_casadi = casadi::SX::zeros(com_in_lf_constraint.A.rows(), com_in_lf_constraint.A.cols());
+    // this->b_com_in_lf_casadi = casadi::SX::zeros(com_in_lf_constraint.b.size());
 
-    for (int i = 0; i < com_in_lf_constraint.A.rows(); ++i) {
-        for (int j = 0; j < com_in_lf_constraint.A.cols(); ++j) {
-            this->A_com_in_lf_casadi(i, j) = com_in_lf_constraint.A(i, j);
-        }
-        this->b_com_in_lf_casadi(i) = com_in_lf_constraint.b(i);
-    }
+    // for (int i = 0; i < com_in_lf_constraint.A.rows(); ++i) {
+    //     for (int j = 0; j < com_in_lf_constraint.A.cols(); ++j) {
+    //         this->A_com_in_lf_casadi(i, j) = com_in_lf_constraint.A(i, j);
+    //     }
+    //     this->b_com_in_lf_casadi(i) = com_in_lf_constraint.b(i);
+    // }
     
-    // CoM in Right Foot constraint forward polytope
-    this->A_com_in_rf_casadi = casadi::SX::zeros(com_in_rf_constraint.A.rows(), com_in_rf_constraint.A.cols());
-    this->b_com_in_rf_casadi = casadi::SX::zeros(com_in_rf_constraint.b.size());
+    // // CoM in Right Foot constraint forward polytope
+    // this->A_com_in_rf_casadi = casadi::SX::zeros(com_in_rf_constraint.A.rows(), com_in_rf_constraint.A.cols());
+    // this->b_com_in_rf_casadi = casadi::SX::zeros(com_in_rf_constraint.b.size());
 
-    for (int i = 0; i < com_in_rf_constraint.A.rows(); ++i) {
-        for (int j = 0; j < com_in_rf_constraint.A.cols(); ++j) {
-            this->A_com_in_rf_casadi(i, j) = com_in_rf_constraint.A(i, j);
-        }
-        this->b_com_in_rf_casadi(i) = com_in_rf_constraint.b(i);
-    }
+    // for (int i = 0; i < com_in_rf_constraint.A.rows(); ++i) {
+    //     for (int j = 0; j < com_in_rf_constraint.A.cols(); ++j) {
+    //         this->A_com_in_rf_casadi(i, j) = com_in_rf_constraint.A(i, j);
+    //     }
+    //     this->b_com_in_rf_casadi(i) = com_in_rf_constraint.b(i);
+    // }
 
 }
 

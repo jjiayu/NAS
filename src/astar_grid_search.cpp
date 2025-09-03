@@ -66,9 +66,15 @@ namespace nas {
     start_node->f_score = start_node->g_score + start_node->h_score;
     start_node->parent = nullptr;
 
-    // Initialize the open set
-    // this->node_handles[start_node] = this->open_set.push(start_node);
+    // TODO: Do we need surface id for the start node?
 
+    // Initialize the open set
+    this->node_handles[start_node] = this->open_set.push(start_node);
+
+    // Cache half-space constraints for reachability polytopes
+    this->rf_in_lf_constraint = convert_polytope_to_half_space_constraint(this->rf_in_lf_polytope);
+    this->lf_in_rf_constraint = convert_polytope_to_half_space_constraint(this->lf_in_rf_polytope);
+    
     // Plot grid environment after initialization
     std::cout << "\n[ Plotting Grid Environment ]" << std::endl;
     this->plot_grid_environment();
@@ -76,223 +82,202 @@ namespace nas {
 }
 
 void AstarGridSearch::search() {
-    // std::cout << "\n[ Start A* search ]" << std::endl;
+    std::cout << "\n[ Start Grid-based A* search ]" << std::endl;
 
-    // //timer start
-    // auto start_time = std::chrono::high_resolution_clock::now();
+    // Timer start
+    auto start_time = std::chrono::high_resolution_clock::now();
 
-    // // Main loop
-    // while (!open_set.empty()) {
-    //     // Get the node with the lowest f_score
-    //     Node* current_node = open_set.top();
-    //     open_set.pop();
-    //     this->expansion_coount++;
+    // Main loop
+    while (!open_set.empty()) {
+        // Get the node with the lowest f_score
+        Node* current_node = open_set.top();
+        open_set.pop();
+        this->expansion_count++;
         
-    //     // Remove from handles map since we're processing it
-    //     node_handles.erase(current_node);
+        // Remove from handles map since we're processing it
+        node_handles.erase(current_node);
 
-    //     // Check if we reached the goal
-    //     if (current_node->stance_foot == goal_stance_foot && 
-    //         current_node->check_if_node_contains_point(this->goal_location)) {
+        // Check if we reached the goal (grid-based goal checking)
+        if (current_node->stance_foot == goal_stance_foot) {
+            // Convert goal location to grid coordinates
+            auto goal_grid_coords = grid_env.world_to_grid(this->goal_location);
+            auto current_grid_coords = grid_env.world_to_grid(current_node->centroid);
             
-    //         //reached goaltimer end
-    //         auto end_time = std::chrono::high_resolution_clock::now();
-    //         auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time);
-    //         std::cout << "A-star Time taken: " << std::fixed << std::setprecision(3) << duration.count()/1000.0 << " milliseconds (ms)" << std::endl;
-    //         std::cout << "Total node expansion count: " << this->expansion_coount << std::endl;
-    //         std::cout << "Total minkowski time: " << this->total_minkowski_time << " ms" << std::endl;
-    //         std::cout << "Total clipping time: " << this->total_clipping_time << " ms" << std::endl;
-    //         std::cout << "Total plane-polytope intersection time: " << this->total_plane_polytope_intersect_time << " ms" << std::endl;
-    //         std::cout << "Total polygon intersection time: " << this->total_polygon_2d_intersect_time << " ms" << std::endl;
-            
-    //         //reconstruct the path
-    //         std::cout << "Goal reached!" << std::endl;
-    //         Node* current = current_node;
-    //         while (current != nullptr) {
-    //             this->result_path.push_back(current);
-    //             current = current->parent;
-    //         }
-    //         std::cout << "Path Found:  "<< std::endl;
-    //         std::reverse(this->result_path.begin(), this->result_path.end());
-    //         for (Node* node : this->result_path) {
-    //             std::cout << "Node ID: " << node->node_id << ", Surface ID: " << node->surface_id << ", Stance Foot: " << node->stance_foot << std::endl;
-    //         }
+            if (goal_grid_coords.first == current_grid_coords.first && 
+                goal_grid_coords.second == current_grid_coords.second) {
+                
+                // Reached goal - timer end
+                auto end_time = std::chrono::high_resolution_clock::now();
+                auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time);
+                std::cout << "Grid A-star Time taken: " << std::fixed << std::setprecision(3) << duration.count()/1000.0 << " milliseconds (ms)" << std::endl;
+                std::cout << "Total node expansion count: " << this->expansion_count << std::endl;
+                
+                // Reconstruct the path
+                std::cout << "Goal reached!" << std::endl;
+                Node* current = current_node;
+                while (current != nullptr) {
+                    this->result_path.push_back(current);
+                    current = current->parent;
+                }
+                std::cout << "Path Found with " << this->result_path.size() << " steps" << std::endl;
+                std::reverse(this->result_path.begin(), this->result_path.end());
+                for (Node* node : this->result_path) {
+                    std::cout << "Node ID: " << node->node_id << ", Grid: (" 
+                              << grid_env.world_to_grid(node->centroid).first << "," 
+                              << grid_env.world_to_grid(node->centroid).second << "), Stance Foot: " 
+                              << node->stance_foot << std::endl;
+                }
 
-    //         break;
-    //     }
+                return;
+            }
+        }
 
-    //     // Add the current node to the closed set
-    //     this->closed_set.insert(current_node);
+        // Add the current node to the closed set
+        this->closed_set.insert(current_node);
 
-    //     // Expand the current node
-    //     std::vector<Node*> children = get_children(current_node);
+        // Expand the current node (grid-based)
+        std::vector<Node*> children = get_grid_children(current_node);
         
-    //     // Loop over all the children
-    //     for (Node* child : children) {
-    //         // Check if the child is already in the closed set
-    //         if (closed_set.find(child) != closed_set.end()) {
-    //             continue;
-    //         }
+        // Loop over all the children
+        for (Node* child : children) {
+            // Check if the child is already in the closed set
+            if (closed_set.find(child) != closed_set.end()) {
+                delete child;
+                continue;
+            }
             
-    //         // Calculate the tentative g_score for this child
-    //         double tentative_g_score = current_node->g_score + compute_euclidean_distance(current_node->centroid, child->centroid);
-    //         double tentative_h_score = 0.0;
-    //         if (this->distance_metric == "gjk") {
-    //             tentative_h_score = calculate_gjk_distance_point_to_patch(child->patch_vertices, this->goal_location);
-    //         }
-    //         else if (this->distance_metric == "euclidean") {
-    //             tentative_h_score = compute_euclidean_distance(child->centroid, this->goal_location);
-    //         }
-    //         double tentative_f_score = tentative_g_score + tentative_h_score;
+            // Calculate the tentative g_score for this child
+            double tentative_g_score = current_node->g_score + compute_euclidean_distance(current_node->centroid, child->centroid);
+            double tentative_h_score = compute_euclidean_distance(child->centroid, this->goal_location);
+            double tentative_f_score = tentative_g_score + tentative_h_score;
             
-    //         // Check if this node is already in the open set
-    //         auto handle_it = node_handles.find(child);
-    //         if (handle_it == node_handles.end()) {
-    //             // New node - add to open set
-    //             child->g_score = tentative_g_score;
-    //             child->h_score = tentative_h_score;
-    //             child->f_score = tentative_f_score;
-    //             child->parent = current_node;
+            // Check if this node is already in the open set
+            auto handle_it = node_handles.find(child);
+            if (handle_it == node_handles.end()) {
+                // New node - add to open set
+                child->g_score = tentative_g_score;
+                child->h_score = tentative_h_score;
+                child->f_score = tentative_f_score;
+                child->parent = current_node;
                 
-    //             // Add to open set and store handle
-    //             node_handles[child] = open_set.push(child);
-    //         } else {
-    //             // Node exists in open set - check if this path is better
-    //             Node* existing_node = handle_it->first;
-    //             OpenSet::handle_type existing_handle = handle_it->second;
+                // Add to open set and store handle
+                node_handles[child] = open_set.push(child);
+            } else {
+                // Node exists in open set - check if this path is better
+                Node* existing_node = handle_it->first;
+                OpenSet::handle_type existing_handle = handle_it->second;
                 
-    //             if (tentative_g_score < existing_node->g_score) {
-    //                 // Better path found - update the existing node
-    //                 existing_node->g_score = tentative_g_score;
-    //                 existing_node->h_score = tentative_h_score;
-    //                 existing_node->f_score = tentative_f_score;
-    //                 existing_node->parent = current_node;
+                if (tentative_g_score < existing_node->g_score) {
+                    // Better path found - update the existing node
+                    existing_node->g_score = tentative_g_score;
+                    existing_node->h_score = tentative_h_score;
+                    existing_node->f_score = tentative_f_score;
+                    existing_node->parent = current_node;
                     
-    //                 // Update the heap (decrease-key operation)
-    //                 open_set.increase(existing_handle);
+                    // Update the heap (decrease-key operation)
+                    open_set.increase(existing_handle);
+                }
+                
+                // Delete child node as it is not needed anymore
+                delete child;
+            }
+        }
+    }
 
-    //                 // delete child node as it is not needed anymore
-    //                 delete child;
-    //             }
-    //         }
-    //     }
-    // }
-
-    std::cout << "\n[ A* search completed ]" << std::endl;
-    // std::cout << "Total nodes expanded: " << this->node_counter << std::endl;
-    // std::cout << "Total nodes in closed set: " << this->closed_set.size() << std::endl;
-    // std::cout << "Total nodes in open set: " << this->open_set.size() << std::endl;
+    std::cout << "\n[ Grid A* search completed - No path found ]" << std::endl;
+    std::cout << "Total nodes expanded: " << this->expansion_count << std::endl;
+    std::cout << "Total nodes in closed set: " << this->closed_set.size() << std::endl;
+    std::cout << "Total nodes in open set: " << this->open_set.size() << std::endl;
 }
 
-std::vector<Node*> AstarGridSearch::get_children(Node* parent){
-
+std::vector<Node*> AstarGridSearch::get_grid_children(Node* parent) {
     std::vector<Node*> children;
-
-    // // Step 1: Compute minkowski sum based on the patch vertices and the base polytope
-    // // TODO: make sure we get the correct base polytop
     
-    // auto start_time = std::chrono::high_resolution_clock::now();
+    // Get the appropriate cached reachability constraint based on current stance foot
+    const HalfSpacePolytopeConstraint& reachability_constraint = parent->stance_foot == LEFT_FOOT ? this->rf_in_lf_constraint : this->lf_in_rf_constraint;
     
-    // Polyhedron base_polytope = parent->stance_foot == 0 ? this->rf_in_lf_polytope : this->lf_in_rf_polytope;
-    // Polyhedron P_union = minkowski_sum(parent->patch_vertices, base_polytope);
+    // Get current grid position
+    auto parent_grid_coords = grid_env.world_to_grid(parent->centroid);
+    int parent_grid_x = parent_grid_coords.first;
+    int parent_grid_y = parent_grid_coords.second;
     
-    // auto end_time = std::chrono::high_resolution_clock::now();
-    // auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time);
-    // this->total_minkowski_time += duration.count() / 1000.0;
-
-    // // Step 2: Loop over all surfaces
-    // auto start_time_clipping = std::chrono::high_resolution_clock::now();
-    // for (const auto& surface : surfaces) {
-
-    //     // Sub-Step 1: Compute intersection between P_union and current surface
-    //     start_time = std::chrono::high_resolution_clock::now();
-    //     std::vector<Point_3> polytope_plane_intersect_pts_3d = compute_polytope_plane_intersection(surface.plane, P_union);
-    //     end_time = std::chrono::high_resolution_clock::now();
-    //     duration = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time);
-    //     this->total_plane_polytope_intersect_time += duration.count() / 1000.0;
-        
-    //     // Sub-Step 2: Compute intersection between polygons (if we have the polytope and the plane has intersection)
-
-    //     if (polytope_plane_intersect_pts_3d.size() > 2) {
-    //         // Convert 3d intersection points to 2d surface plane
-    //         std::vector<Point_2> polytope_plane_intersect_pts_2d = transform_3d_points_to_surface_plane(polytope_plane_intersect_pts_3d, surface.transform_to_surface);
-
-    //         // Convert polytope plane intersection points into convex hull
-    //         Polygon_2 polytope_plane_intersect_convex_hull;
-    //         CGAL::convex_hull_2(polytope_plane_intersect_pts_2d.begin(), polytope_plane_intersect_pts_2d.end(), std::back_inserter(polytope_plane_intersect_convex_hull));
-    //         std::vector<Point_2> polytope_plane_intersect_convex_hull_pts;
-    //         for (auto it = polytope_plane_intersect_convex_hull.vertices_begin(); it != polytope_plane_intersect_convex_hull.vertices_end(); ++it) {
-    //             polytope_plane_intersect_convex_hull_pts.push_back(*it);
-    //         }
-
-    //         //compute intersection between 2d intersection polygon (subject polygon) and the surface polygon (clipping polygon)
-    //         start_time = std::chrono::high_resolution_clock::now();
-
-    //         std::vector<Point_2> polygon_2d_intersect_pts = compute_2d_polygon_intersection(polytope_plane_intersect_convex_hull_pts, surface.vertices_2d);
+    // Define search radius in grid cells (reasonable footstep reach)
+    int search_radius = static_cast<int>(std::ceil(3.0 / grid_env.get_cell_size())); // 3 meter radius
+    
+    // Iterate through potential grid cells within reachability
+    for (int dy = -search_radius; dy <= search_radius; ++dy) {
+        for (int dx = -search_radius; dx <= search_radius; ++dx) {
+            int target_grid_x = parent_grid_x + dx;
+            int target_grid_y = parent_grid_y + dy;
             
-    //         end_time = std::chrono::high_resolution_clock::now();
-    //         duration = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time);
-    //         this->total_polygon_2d_intersect_time += duration.count() / 1000.0;
-
-    //         // Sub-Step 3: Convert the 2D intersection polygon to 3D (using the inverse transformation), only if we have polygon intersection result
-    //         //             Also create the child node
-    //         if (polygon_2d_intersect_pts.size() > 2) {
+            // Skip current position
+            if (dx == 0 && dy == 0) continue;
             
-    //             Polygon_2 polygon_2d_intersect_result;
-    //             CGAL::convex_hull_2(polygon_2d_intersect_pts.begin(), polygon_2d_intersect_pts.end(), std::back_inserter(polygon_2d_intersect_result));
-    //             std::vector<Point_3> polytope_surf_3d_intersect_pts = transform_2d_points_to_world(polygon_2d_intersect_pts, surface.transform_to_3d);
-    //             Polyhedron polytope_surf_3d_intersect_polygon;        // Create intersection polygon (just for visualization)
-    //             CGAL::convex_hull_3(polytope_surf_3d_intersect_pts.begin(), polytope_surf_3d_intersect_pts.end(), polytope_surf_3d_intersect_polygon);
+            // Check if target grid cell is valid and traversable
+            if (!grid_env.is_valid_cell(target_grid_x, target_grid_y) || 
+                !grid_env.is_traversable(target_grid_x, target_grid_y)) {
+                continue;
+            }
+            
+            // Get target grid cell center in world coordinates
+            Point_3 target_world_pos = grid_env.grid_to_world(target_grid_x, target_grid_y);
+            const auto& target_cell = grid_env.get_cell(target_grid_x, target_grid_y);
+            target_world_pos = Point_3(target_world_pos.x(), target_world_pos.y(), target_cell.height);
+            
+            // Check if target position is reachable using polytope
+            // Transform target position relative to parent position
+            Point_3 relative_pos = Point_3(
+                target_world_pos.x() - parent->centroid.x(),
+                target_world_pos.y() - parent->centroid.y(),
+                target_world_pos.z() - parent->centroid.z()
+            );
+            
+            // Check if relative position is inside reachability polytope
+            if (is_point_in_reachability_polytope(relative_pos, reachability_constraint)) {
+                // Create child node
+                Node* child = new Node();
+                child->parent_ptrs.push_back(parent);
+                child->node_id = node_counter++;
+                child->patch_vertices = std::vector<Point_3>({target_world_pos});
+                child->stance_foot = parent->stance_foot == LEFT_FOOT ? RIGHT_FOOT : LEFT_FOOT; // Alternate stance foot
+                child->surface_id = target_cell.surface_id;
+                child->depth = parent->depth + 1;
+                child->centroid = target_world_pos;
+                child->perimeter = 0.0; // Not used in grid-based search
                 
-    //             // // Visualization
-    //             // auto renderWindow = Visualizer::create_figure("3D Polytope-Surface Intersection Visualization"); 
-    //             // auto renderer = renderWindow->GetRenderers()->GetFirstRenderer();
-    //             // Visualizer::add_polyhedron(renderer, surface.polyhedron_3d, (double[]){0.7, 0.9, 1.0}, 0.3);  // Add Surface (light blue)
-    //             // Visualizer::add_polyhedron(renderer, P_union, (double[]){1.0, 0.7, 0.8}, 0.5);  // Add P_union (pink)
-    //             // Visualizer::add_polyhedron(renderer, polytope_surf_3d_intersect_polygon, (double[]){0.0, 1.0, 0.0}, 0.7);  // Add intersection polygon (green)
-    //             // Visualizer::add_points(renderer, polytope_surf_3d_intersect_pts, (double[]){1.0, 0.0, 0.0}, 0.05);  // Add intersection points (red)
-    //             // Visualizer::show(renderWindow);        // Show the 3D visualization
+                // Initialize scores for A* search
+                child->g_score = std::numeric_limits<double>::infinity();
+                child->h_score = 0.0;
+                child->f_score = std::numeric_limits<double>::infinity();
+                child->parent = nullptr; // Will be set during search
                 
-    //             // Found intersection, create child node
-    //             // Filter children if it has been visited in 2 steps before (same foot), filter with surface ID
-    //             int stance_foot = parent->stance_foot == 0 ? 1 : 0; // Alternate stance foot
-    //             if ((this->cycle_detection_flag == true) && (cycle_path_detection(parent, stance_foot, surface.surface_id) == true)) {
-    //                 continue; //the same surface visited 2 steps before
-    //             }
-
-    //             Node* child = new Node();
-    //             child->parent_ptrs.push_back(parent);
-    //             child->node_id = node_counter++;
-    //             child->patch_vertices = polytope_surf_3d_intersect_pts;
-    //             child->stance_foot = parent->stance_foot == 0 ?  1 : 0; //Alternate stance foot
-    //             child->surface_id = surface.surface_id;
-    //             child->depth = parent->depth + 1;
-    //             child->patch_polygon_2d = polygon_2d_intersect_result;
-    //             child->patch_polyhedron_3d = polytope_surf_3d_intersect_polygon;
-    //             child->transformation_to_2d = surface.transform_to_surface;
-    //             child->transformation_to_3d = surface.transform_to_3d;
-    //             child->perimeter = compute_polygon_perimeter(polytope_surf_3d_intersect_polygon);
-    //             child->centroid = get_centroid(polytope_surf_3d_intersect_pts);
-    //             // Copy parent's pred_surface_ids and add parent's surface as new layer
-    //             child->pred_surface_ids = parent->pred_surface_ids;
-    //             child->pred_surface_ids[parent->stance_foot].push_back({parent->surface_id});
-                
-    //             // Initialize scores for A* search
-    //             child->g_score = std::numeric_limits<double>::infinity();
-    //             child->h_score = 0.0; // Will be computed when needed
-    //             child->f_score = std::numeric_limits<double>::infinity();
-    //             child->parent = nullptr; // Will be set during search
-                
-    //             children.push_back(child);
-    //         }
-    //     }
-    // }
-    // auto end_time_clipping = std::chrono::high_resolution_clock::now();
-    // auto duration_clipping = std::chrono::duration_cast<std::chrono::microseconds>(end_time_clipping - start_time_clipping);
-    // this->total_clipping_time += duration_clipping.count() / 1000.0;
-
-
+                children.push_back(child);
+            }
+        }
+    }
+    
     return children;
+}
+
+bool AstarGridSearch::is_point_in_reachability_polytope(const Point_3& relative_pos, const HalfSpacePolytopeConstraint& constraint) {
+    // Convert Point_3 to Eigen vector
+    Eigen::Vector3d point;
+    point << CGAL::to_double(relative_pos.x()), 
+             CGAL::to_double(relative_pos.y()), 
+             CGAL::to_double(relative_pos.z());
+    
+    // Check if point satisfies all half-space constraints: A*x <= b
+    Eigen::VectorXd result = constraint.A * point;
+    
+    // Point is inside if all constraints are satisfied (with small tolerance)
+    const double tolerance = 1e-6;
+    for (int i = 0; i < result.size(); ++i) {
+        if (result(i) > constraint.b(i) + tolerance) {
+            return false;  // Point violates constraint i
+        }
+    }
+    
+    return true;  // Point satisfies all constraints
 }
 
 void AstarGridSearch::plot_grid_environment(){
