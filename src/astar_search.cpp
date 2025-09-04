@@ -56,6 +56,9 @@ AstarSearch::AstarSearch() {
     start_node->patch_vertices = std::vector<Point_3>({current_foot_pos});  // Already Point_3, no conversion needed
     start_node->stance_foot = current_stance_foot_flag;
     start_node->centroid = current_foot_pos;
+    if (foot_yaw_rotation_flag) {
+        start_node->foot_yaw = current_foot_yaw;
+    }
     start_node->perimeter = 0.0;
     start_node->g_score = 0;
     start_node->h_score = compute_euclidean_distance(current_foot_pos, this->goal_location);
@@ -185,6 +188,12 @@ std::vector<Node*> AstarSearch::get_children(Node* parent){
     auto start_time = std::chrono::high_resolution_clock::now();
     
     Polyhedron base_polytope = parent->stance_foot == 0 ? this->rf_in_lf_polytope : this->lf_in_rf_polytope;
+    
+    // Rotate the polytope based on the parent's foot yaw angle if foot yaw rotation is enabled
+    if (foot_yaw_rotation_flag == true) {
+        base_polytope = rotate_polyhedron_z(base_polytope, parent->foot_yaw);
+    }
+    
     Polyhedron P_union = minkowski_sum(parent->patch_vertices, base_polytope);
     
     auto end_time = std::chrono::high_resolution_clock::now();
@@ -245,36 +254,52 @@ std::vector<Node*> AstarSearch::get_children(Node* parent){
                 // Visualizer::show(renderWindow);        // Show the 3D visualization
                 
                 // Found intersection, create child node
-                // Filter children if it has been visited in 2 steps before (same foot), filter with surface ID
+                // Filter children if it has been detected as a cycle
                 int stance_foot = parent->stance_foot == 0 ? 1 : 0; // Alternate stance foot
                 if ((this->cycle_detection_flag == true) && (cycle_path_detection(parent, stance_foot, surface.surface_id) == true)) {
                     continue; //the same surface visited 2 steps before
                 }
 
-                Node* child = new Node();
-                child->parent_ptrs.push_back(parent);
-                child->node_id = node_counter++;
-                child->patch_vertices = polytope_surf_3d_intersect_pts;
-                child->stance_foot = parent->stance_foot == 0 ?  1 : 0; //Alternate stance foot
-                child->surface_id = surface.surface_id;
-                child->depth = parent->depth + 1;
-                child->patch_polygon_2d = polygon_2d_intersect_result;
-                child->patch_polyhedron_3d = polytope_surf_3d_intersect_polygon;
-                child->transformation_to_2d = surface.transform_to_surface;
-                child->transformation_to_3d = surface.transform_to_3d;
-                child->perimeter = compute_polygon_perimeter(polytope_surf_3d_intersect_polygon);
-                child->centroid = get_centroid(polytope_surf_3d_intersect_pts);
-                // Copy parent's pred_surface_ids and add parent's surface as new layer
-                child->pred_surface_ids = parent->pred_surface_ids;
-                child->pred_surface_ids[parent->stance_foot].push_back({parent->surface_id});
+                // Create child nodes with different foot yaw angles if rotation is enabled
+                std::vector<double> yaw_angles;
+                if (foot_yaw_rotation_flag) {
+                    // Generate discretized yaw angles: -num*increment, ..., -increment, 0, increment, ..., num*increment
+                    for (int i = -foot_yaw_angle_discretization_num; i <= foot_yaw_angle_discretization_num; ++i) {
+                        yaw_angles.push_back(i * foot_yaw_angle_increment);
+                    }
+                } else {
+                    // No rotation, use zero yaw angle
+                    yaw_angles.push_back(0.0);
+                }
                 
-                // Initialize scores for A* search
-                child->g_score = std::numeric_limits<double>::infinity();
-                child->h_score = 0.0; // Will be computed when needed
-                child->f_score = std::numeric_limits<double>::infinity();
-                child->parent = nullptr; // Will be set during search
-                
-                children.push_back(child);
+                // Create a child node for each yaw angle
+                for (double yaw_angle : yaw_angles) {
+                    Node* child = new Node();
+                    child->parent_ptrs.push_back(parent);
+                    child->node_id = node_counter++;
+                    child->patch_vertices = polytope_surf_3d_intersect_pts;
+                    child->stance_foot = parent->stance_foot == 0 ?  1 : 0; //Alternate stance foot
+                    child->surface_id = surface.surface_id;
+                    child->depth = parent->depth + 1;
+                    child->patch_polygon_2d = polygon_2d_intersect_result;
+                    child->patch_polyhedron_3d = polytope_surf_3d_intersect_polygon;
+                    child->transformation_to_2d = surface.transform_to_surface;
+                    child->transformation_to_3d = surface.transform_to_3d;
+                    child->perimeter = compute_polygon_perimeter(polytope_surf_3d_intersect_polygon);
+                    child->centroid = get_centroid(polytope_surf_3d_intersect_pts);
+                    child->foot_yaw = yaw_angle; // Set the foot yaw angle for this child
+                    // Copy parent's pred_surface_ids and add parent's surface as new layer
+                    child->pred_surface_ids = parent->pred_surface_ids;
+                    child->pred_surface_ids[parent->stance_foot].push_back({parent->surface_id});
+                    
+                    // Initialize scores for A* search
+                    child->g_score = std::numeric_limits<double>::infinity();
+                    child->h_score = 0.0; // Will be computed when needed
+                    child->f_score = std::numeric_limits<double>::infinity();
+                    child->parent = nullptr; // Will be set during search
+                    
+                    children.push_back(child);
+                }
             }
         }
     }

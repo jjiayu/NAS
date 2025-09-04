@@ -2,6 +2,7 @@
 #include "geometry.hpp"
 #include "node.hpp"
 #include <limits>
+#include <cmath>
 #include <coal/collision_object.h>
 #include <coal/shape/geometric_shapes.h>
 #include <coal/shape/convex.h>
@@ -477,6 +478,44 @@ SurfaceConstraint generate_surface_constraint(const Polyhedron& surface_3d){
     // std::cout << "  Rows 1-" << num_vertices << ": Vertical edge boundary constraints (" << num_vertices << " edges)" << std::endl;
 
     return constraint;
+}
+
+Polyhedron rotate_polyhedron_z(const Polyhedron& polytope, double yaw_angle) {
+    // Create rotation transformation around Z-axis using matrix constructor
+    // Rotation matrix for Z-axis: [cos(θ) -sin(θ) 0; sin(θ) cos(θ) 0; 0 0 1]
+    double cos_yaw = std::cos(yaw_angle);
+    double sin_yaw = std::sin(yaw_angle);
+    
+    Transformation rotation(
+        cos_yaw, -sin_yaw, 0.0, 0.0,
+        sin_yaw,  cos_yaw, 0.0, 0.0,
+        0.0,      0.0,     1.0, 0.0,
+        1.0
+    );
+    
+    // Create a copy of the polytope to transform
+    Polyhedron rotated_polytope = polytope;
+    
+    // Apply transformation directly to all vertices
+    for (auto v_it = rotated_polytope.vertices_begin(); v_it != rotated_polytope.vertices_end(); ++v_it) {
+        v_it->point() = rotation(v_it->point());
+    }
+    
+    // Note: Convex hull rebuild is NOT needed for pure rotations as they preserve convexity
+    // However, if numerical issues arise in practice, uncomment the following:
+    /*
+    // Optional: Rebuild convex hull for numerical robustness
+    std::vector<Point_3> rotated_vertices;
+    for (auto v_it = rotated_polytope.vertices_begin(); v_it != rotated_polytope.vertices_end(); ++v_it) {
+        rotated_vertices.push_back(v_it->point());
+    }
+    rotated_polytope.clear();
+    if (rotated_vertices.size() >= 4) {
+        CGAL::convex_hull_3(rotated_vertices.begin(), rotated_vertices.end(), rotated_polytope);
+    }
+    */
+    
+    return rotated_polytope;
 }
 
 

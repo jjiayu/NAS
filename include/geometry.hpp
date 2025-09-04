@@ -62,4 +62,7 @@ HalfSpacePolytopeConstraint convert_polytope_to_half_space_constraint(const Poly
 // Convert surface constraint to H-representation
 SurfaceConstraint generate_surface_constraint(const Polyhedron& surface_3d);
 
+// Rotate polyhedron around Z-axis by given angle in radians
+Polyhedron rotate_polyhedron_z(const Polyhedron& polytope, double yaw_angle);
+
 } // namespace nas
