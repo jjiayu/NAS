@@ -127,7 +127,6 @@ void AstarGridSearch::search() {
                               << grid_env.world_to_grid(node->centroid).second << "), Stance Foot: " 
                               << node->stance_foot << std::endl;
                 }
-
                 return;
             }
         }
@@ -276,7 +275,6 @@ bool AstarGridSearch::is_point_in_reachability_polytope(const Point_3& relative_
             return false;  // Point violates constraint i
         }
     }
-    
     return true;  // Point satisfies all constraints
 }
 

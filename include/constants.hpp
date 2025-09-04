@@ -24,6 +24,11 @@ const int RIGHT_FOOT = 1;  // Represents the right foot in stance
 const double foot_length = 0.22;//0.22;
 const double foot_width  = 0.12;//0.12;
 
+// Foot yaw angle range
+const double foot_yaw_angle_lb = -45; // radians
+const double foot_yaw_angle_ub = 45; // radians
+const int foot_yaw_angle_discretization = 15;
+
 // Merge Node Flag
 const bool merge_node_flag = true;
 
