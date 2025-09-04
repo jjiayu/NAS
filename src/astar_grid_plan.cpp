@@ -16,8 +16,12 @@ using namespace nas;
 int main() {
 
     std::cout << "=== A* Path Planning with Footstep Optimization (using |||Discretization|||) ===" << std::endl;
-    // Create FootstepPlanner instance
-
+    
     AstarGridSearch grid_search;
     grid_search.search();
+    
+    // Plot the grid environment with A* footstep results
+    grid_search.plot_grid_environment();
+    
+    return 0;
 }

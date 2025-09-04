@@ -77,7 +77,7 @@ namespace nas {
     
     // Plot grid environment after initialization
     std::cout << "\n[ Plotting Grid Environment ]" << std::endl;
-    this->plot_grid_environment();
+    // this->plot_grid_environment();
 
 }
 
@@ -210,10 +210,10 @@ std::vector<Node*> AstarGridSearch::get_grid_children(Node* parent) {
             int target_grid_x = parent_grid_x + dx;
             int target_grid_y = parent_grid_y + dy;
             
-            // Skip current position
+            // 1. Skip current position (cheapest check)
             if (dx == 0 && dy == 0) continue;
             
-            // Check if target grid cell is valid and traversable
+            // 2. Check grid validity and traversability (cheap grid lookup)
             if (!grid_env.is_valid_cell(target_grid_x, target_grid_y) || 
                 !grid_env.is_traversable(target_grid_x, target_grid_y)) {
                 continue;
@@ -328,11 +328,41 @@ void AstarGridSearch::plot_grid_environment(){
         std::cout << "Added " << non_traversable_points.size() << " non-traversable grid points at z=0" << std::endl;
     }
 
-    // Add start and goal positions if available
+    // Add A* path footstep positions if available
+    if (!this->result_path.empty()) {
+        std::vector<Point_3> left_foot_positions;
+        std::vector<Point_3> right_foot_positions;
+        
+        for (const auto& node : this->result_path) {
+            if (node->stance_foot == LEFT_FOOT) {
+                left_foot_positions.push_back(node->centroid);
+            } else {
+                right_foot_positions.push_back(node->centroid);
+            }
+        }
+        
+        // Add left foot positions (blue)
+        if (!left_foot_positions.empty()) {
+            double left_foot_color[3] = {0.0, 0.0, 1.0};  // Blue
+            Visualizer::add_points(renderer, left_foot_positions, left_foot_color, 0.06);
+            std::cout << "Added " << left_foot_positions.size() << " left foot positions (blue)" << std::endl;
+        }
+        
+        // Add right foot positions (red)
+        if (!right_foot_positions.empty()) {
+            double right_foot_color[3] = {1.0, 0.0, 0.0};  // Red
+            Visualizer::add_points(renderer, right_foot_positions, right_foot_color, 0.06);
+            std::cout << "Added " << right_foot_positions.size() << " right foot positions (red)" << std::endl;
+        }
+        
+        std::cout << "A* Path: " << this->result_path.size() << " footsteps visualized" << std::endl;
+    }
+
+    // Add start and goal positions
     double start_color[3] = {1.0, 1.0, 0.0};  // Yellow
     double goal_color[3] = {1.0, 0.0, 1.0};   // Magenta
-    Visualizer::add_points(renderer, {current_foot_pos}, start_color, 0.05);
-    Visualizer::add_points(renderer, {this->goal_location}, goal_color, 0.05);
+    Visualizer::add_points(renderer, {current_foot_pos}, start_color, 0.08);
+    Visualizer::add_points(renderer, {this->goal_location}, goal_color, 0.08);
 
     std::cout << "Grid Environment: " << grid_env.get_width() << "x" << grid_env.get_height() 
               << " cells, cell_size=" << grid_env.get_cell_size() << std::endl;
