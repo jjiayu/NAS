@@ -39,6 +39,12 @@ struct GridNodeHash {
         boost::hash_combine(seed, node->stance_foot);  // Critical for grid-based search
         boost::hash_combine(seed, node->surface_id);   // Include surface for completeness
         
+        // Include foot yaw angle in hash if rotation is enabled
+        if (foot_yaw_rotation_flag) {
+            int quantized_yaw = static_cast<int>(node->foot_yaw / foot_yaw_angle_increment);
+            boost::hash_combine(seed, quantized_yaw);
+        }
+        
         return seed;
     }
 };
@@ -58,11 +64,20 @@ struct GridNodeEqual {
         int grid_z_b = static_cast<int>(std::round(b->centroid.z() / grid_resolution));
         
         // Compare grid coordinates, stance foot, and surface
-        return (grid_x_a == grid_x_b && 
-                grid_y_a == grid_y_b && 
-                grid_z_a == grid_z_b && 
-                a->stance_foot == b->stance_foot &&
-                a->surface_id == b->surface_id);
+        bool basic_equal = (grid_x_a == grid_x_b && 
+                           grid_y_a == grid_y_b && 
+                           grid_z_a == grid_z_b && 
+                           a->stance_foot == b->stance_foot &&
+                           a->surface_id == b->surface_id);
+        
+        // If foot yaw rotation is enabled, also compare foot yaw angles
+        if (foot_yaw_rotation_flag && basic_equal) {
+            int quantized_yaw_a = static_cast<int>(a->foot_yaw / foot_yaw_angle_increment);
+            int quantized_yaw_b = static_cast<int>(b->foot_yaw / foot_yaw_angle_increment);
+            return quantized_yaw_a == quantized_yaw_b;
+        }
+        
+        return basic_equal;
     }
 };
 
@@ -135,11 +150,10 @@ public:
     // Main search method
     void search();
 
-    // Get children method
-    std::vector<Node*> get_children(Node* current_node);
 
     bool is_point_in_reachability_polytope(const Point_3& relative_pos, const HalfSpacePolytopeConstraint& constraint);
 
+    // Get children method
     std::vector<Node*> get_grid_children(Node* parent);
 
     // Plot path method
