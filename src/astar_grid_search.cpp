@@ -1,9 +1,15 @@
 #include "astar_grid_search.hpp"
+#include "constants.hpp"
+#include "geometry.hpp"
+#include <chrono>
+#include <algorithm>
+#include <limits>
+#include <iomanip>
+#include <cmath>
 #include "tree.hpp"
 #include "types.hpp"
 #include "visualizer.hpp"
 #include "utils.hpp"
-#include "geometry.hpp"
 #include <CGAL/IO/Polyhedron_iostream.h>
 #include <CGAL/IO/polygon_mesh_io.h>
 #include <CGAL/convex_hull_3.h>
@@ -60,6 +66,9 @@ namespace nas {
     start_node->patch_vertices = std::vector<Point_3>({current_foot_pos});  // Already Point_3, no conversion needed
     start_node->stance_foot = current_stance_foot_flag;
     start_node->centroid = current_foot_pos;
+    if (foot_yaw_rotation_flag) {
+        start_node->foot_yaw = current_foot_yaw;
+    }
     start_node->perimeter = 0.0;
     start_node->g_score = 0;
     start_node->h_score = compute_euclidean_distance(current_foot_pos, this->goal_location);
@@ -125,7 +134,12 @@ void AstarGridSearch::search() {
                     std::cout << "Node ID: " << node->node_id << ", Grid: (" 
                               << grid_env.world_to_grid(node->centroid).first << "," 
                               << grid_env.world_to_grid(node->centroid).second << "), Stance Foot: " 
-                              << node->stance_foot << std::endl;
+                              << node->stance_foot;
+                    if (foot_yaw_rotation_flag) {
+                        std::cout << ", Foot Yaw: " << std::fixed << std::setprecision(3) 
+                                  << node->foot_yaw << " rad (" << (node->foot_yaw * 180.0 / M_PI) << "°)";
+                    }
+                    std::cout << std::endl;
                 }
                 return;
             }
@@ -231,26 +245,54 @@ std::vector<Node*> AstarGridSearch::get_grid_children(Node* parent) {
                 target_world_pos.z() - parent->centroid.z()
             );
             
+            // If foot yaw rotation is enabled, rotate the relative position by the inverse of parent's yaw
+            // This accounts for the fact that the reachability polytope should be oriented according to the parent's foot yaw
+            if (foot_yaw_rotation_flag && parent->foot_yaw != 0.0) {
+                // Rotate relative position by negative parent yaw (inverse rotation)
+                double cos_yaw = std::cos(-parent->foot_yaw);
+                double sin_yaw = std::sin(-parent->foot_yaw);
+                
+                double rotated_x = cos_yaw * relative_pos.x() - sin_yaw * relative_pos.y();
+                double rotated_y = sin_yaw * relative_pos.x() + cos_yaw * relative_pos.y();
+                
+                relative_pos = Point_3(rotated_x, rotated_y, relative_pos.z());
+            }
+            
             // Check if relative position is inside reachability polytope
             if (is_point_in_reachability_polytope(relative_pos, reachability_constraint)) {
-                // Create child node
-                Node* child = new Node();
-                child->parent_ptrs.push_back(parent);
-                child->node_id = node_counter++;
-                child->patch_vertices = std::vector<Point_3>({target_world_pos});
-                child->stance_foot = parent->stance_foot == LEFT_FOOT ? RIGHT_FOOT : LEFT_FOOT; // Alternate stance foot
-                child->surface_id = target_cell.surface_id;
-                child->depth = parent->depth + 1;
-                child->centroid = target_world_pos;
-                child->perimeter = 0.0; // Not used in grid-based search
+                // Create child nodes with different foot yaw angles if rotation is enabled
+                std::vector<double> yaw_angles;
+                if (foot_yaw_rotation_flag) {
+                    // Generate discretized yaw angles: -num*increment, ..., -increment, 0, increment, ..., num*increment
+                    for (int i = -foot_yaw_angle_discretization_num; i <= foot_yaw_angle_discretization_num; ++i) {
+                        yaw_angles.push_back(i * foot_yaw_angle_increment);
+                    }
+                } else {
+                    // No rotation, use zero yaw angle
+                    yaw_angles.push_back(0.0);
+                }
                 
-                // Initialize scores for A* search
-                child->g_score = std::numeric_limits<double>::infinity();
-                child->h_score = 0.0;
-                child->f_score = std::numeric_limits<double>::infinity();
-                child->parent = nullptr; // Will be set during search
-                
-                children.push_back(child);
+                // Create a child node for each yaw angle
+                for (double yaw_angle : yaw_angles) {
+                    Node* child = new Node();
+                    child->parent_ptrs.push_back(parent);
+                    child->node_id = node_counter++;
+                    child->patch_vertices = std::vector<Point_3>({target_world_pos});
+                    child->stance_foot = parent->stance_foot == LEFT_FOOT ? RIGHT_FOOT : LEFT_FOOT; // Alternate stance foot
+                    child->surface_id = target_cell.surface_id;
+                    child->depth = parent->depth + 1;
+                    child->centroid = target_world_pos;
+                    child->foot_yaw = yaw_angle; // Set the foot yaw angle for this child
+                    child->perimeter = 0.0; // Not used in grid-based search
+                    
+                    // Initialize scores for A* search
+                    child->g_score = std::numeric_limits<double>::infinity();
+                    child->h_score = 0.0;
+                    child->f_score = std::numeric_limits<double>::infinity();
+                    child->parent = nullptr; // Will be set during search
+                    
+                    children.push_back(child);
+                }
             }
         }
     }

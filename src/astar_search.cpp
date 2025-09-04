@@ -109,7 +109,12 @@ void AstarSearch::search() {
             std::cout << "Path Found:  "<< std::endl;
             std::reverse(this->result_path.begin(), this->result_path.end());
             for (Node* node : this->result_path) {
-                std::cout << "Node ID: " << node->node_id << ", Surface ID: " << node->surface_id << ", Stance Foot: " << node->stance_foot << std::endl;
+                std::cout << "Node ID: " << node->node_id << ", Surface ID: " << node->surface_id << ", Stance Foot: " << node->stance_foot;
+                if (foot_yaw_rotation_flag) {
+                    std::cout << ", Foot Yaw: " << std::fixed << std::setprecision(3) 
+                              << node->foot_yaw << " rad (" << (node->foot_yaw * 180.0 / M_PI) << "°)";
+                }
+                std::cout << std::endl;
             }
 
             break;
