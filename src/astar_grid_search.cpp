@@ -159,9 +159,86 @@ void AstarGridSearch::search() {
                 continue;
             }
             
-            // Calculate the tentative g_score for this child
-            double tentative_g_score = current_node->g_score + compute_euclidean_distance(current_node->centroid, child->centroid);
-            double tentative_h_score = compute_euclidean_distance(child->centroid, this->goal_location);
+            // Calculate the tentative g_score for this child using mid-pose interpolation
+            
+            // Calculate mid-pose between current and child positions
+            Point_3 current_pos = current_node->centroid;
+            Point_3 child_pos = child->centroid;
+            Point_3 mid_pos((CGAL::to_double(current_pos.x()) + CGAL::to_double(child_pos.x())) / 2.0,
+                           (CGAL::to_double(current_pos.y()) + CGAL::to_double(child_pos.y())) / 2.0,
+                           (CGAL::to_double(current_pos.z()) + CGAL::to_double(child_pos.z())) / 2.0);
+            
+            // Calculate mid-orientation interpolation
+            double current_yaw = current_node->foot_yaw;
+            double child_yaw = child->foot_yaw;
+            double mid_yaw = current_yaw;
+            
+            if (foot_yaw_rotation_flag) {
+                // Handle angle wrapping for interpolation
+                double yaw_diff = child_yaw - current_yaw;
+                if (yaw_diff > M_PI) {
+                    yaw_diff -= 2 * M_PI;
+                } else if (yaw_diff < -M_PI) {
+                    yaw_diff += 2 * M_PI;
+                }
+                mid_yaw = current_yaw + yaw_diff / 2.0;
+                
+                // Normalize mid_yaw to [-π, π]
+                if (mid_yaw > M_PI) {
+                    mid_yaw -= 2 * M_PI;
+                } else if (mid_yaw < -M_PI) {
+                    mid_yaw += 2 * M_PI;
+                }
+            }
+            
+            // Calculate distance cost using mid-pose to mid-pose
+            // We need to calculate the previous mid-pose from parent to current
+            Point_3 prev_mid_pos = current_pos; // Default to current position if no parent
+            if (current_node->parent != nullptr) {
+                Point_3 parent_pos = current_node->parent->centroid;
+                prev_mid_pos = Point_3((CGAL::to_double(parent_pos.x()) + CGAL::to_double(current_pos.x())) / 2.0,
+                                      (CGAL::to_double(parent_pos.y()) + CGAL::to_double(current_pos.y())) / 2.0,
+                                      (CGAL::to_double(parent_pos.z()) + CGAL::to_double(current_pos.z())) / 2.0);
+            }
+            
+            double total_distance_cost = compute_euclidean_distance(prev_mid_pos, mid_pos);
+            
+            // Add yaw angle penalty based on mid-pose yaw change
+            double yaw_penalty = 0.0;
+            if (foot_yaw_rotation_flag) {
+                // Calculate previous mid-yaw
+                double prev_mid_yaw = current_yaw; // Default to current yaw if no parent
+                if (current_node->parent != nullptr) {
+                    double parent_yaw = current_node->parent->foot_yaw;
+                    double yaw_diff_parent = current_yaw - parent_yaw;
+                    if (yaw_diff_parent > M_PI) {
+                        yaw_diff_parent -= 2 * M_PI;
+                    } else if (yaw_diff_parent < -M_PI) {
+                        yaw_diff_parent += 2 * M_PI;
+                    }
+                    prev_mid_yaw = parent_yaw + yaw_diff_parent / 2.0;
+                    
+                    // Normalize prev_mid_yaw to [-π, π]
+                    if (prev_mid_yaw > M_PI) {
+                        prev_mid_yaw -= 2 * M_PI;
+                    } else if (prev_mid_yaw < -M_PI) {
+                        prev_mid_yaw += 2 * M_PI;
+                    }
+                }
+                
+                // Calculate yaw difference between previous mid-yaw and current mid-yaw
+                double yaw_diff = std::abs(mid_yaw - prev_mid_yaw);
+                // Normalize yaw difference to [0, π]
+                if (yaw_diff > M_PI) {
+                    yaw_diff = 2 * M_PI - yaw_diff;
+                }
+                // Apply yaw penalty (weight can be tuned)
+                double yaw_weight = 0.1;  // Adjust this weight as needed
+                yaw_penalty = yaw_weight * yaw_diff;
+            }
+            
+            double tentative_g_score = current_node->g_score + total_distance_cost + yaw_penalty;
+            double tentative_h_score = compute_euclidean_distance(mid_pos, this->goal_location);
             double tentative_f_score = tentative_g_score + tentative_h_score;
             
             // Check if this node is already in the open set
