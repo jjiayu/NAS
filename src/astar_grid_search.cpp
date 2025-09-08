@@ -263,9 +263,9 @@ std::vector<Node*> AstarGridSearch::get_grid_children(Node* parent) {
                 // Create child nodes with different foot yaw angles if rotation is enabled
                 std::vector<double> yaw_angles;
                 if (foot_yaw_rotation_flag) {
-                    // Generate discretized yaw angles: -num*increment, ..., -increment, 0, increment, ..., num*increment
+                    // Generate discretized yaw angles relative to parent's foot yaw
                     for (int i = -foot_yaw_angle_discretization_num; i <= foot_yaw_angle_discretization_num; ++i) {
-                        yaw_angles.push_back(i * foot_yaw_angle_increment);
+                        yaw_angles.push_back(parent->foot_yaw + i * foot_yaw_angle_increment);
                     }
                 } else {
                     // No rotation, use zero yaw angle
