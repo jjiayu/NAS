@@ -90,9 +90,15 @@ int main() {
     if (!computed_footsteps.empty()) {
         // std::cout << "Adding optimized footsteps..." << std::endl;
         
+        // Extract foot yaw angles from A* path nodes
+        std::vector<double> foot_yaw_angles;
+        for (const auto& node : astar_search.result_path) {
+            foot_yaw_angles.push_back(node->foot_yaw);
+        }
+        
         // Add optimized footsteps (cyan/blue with transparency)
         double footstep_color[3] = {0.0, 0.8, 1.0};  // Cyan
-        Visualizer::add_footsteps(renderer, computed_footsteps, footstep_color);
+        Visualizer::add_footsteps(renderer, computed_footsteps, footstep_color, 0.22, 0.12, foot_yaw_angles);
         
         // Add desired footstep positions for comparison (yellow/green)
         std::vector<Point_3> desired_footsteps;
@@ -106,7 +112,7 @@ int main() {
             }
         }
         double desired_color[3] = {1.0, 1.0, 0.0};  // Yellow
-        Visualizer::add_footsteps(renderer, desired_footsteps, desired_color);
+        Visualizer::add_footsteps(renderer, desired_footsteps, desired_color, 0.22, 0.12, foot_yaw_angles);
         
         // std::cout << "Added " << computed_footsteps.size() << " optimized footsteps (cyan)" << std::endl;
         // std::cout << "Added " << desired_footsteps.size() << " desired footsteps (yellow)" << std::endl;
@@ -139,19 +145,30 @@ int main() {
                 double ty = CGAL::to_double(current_footstep.y());
                 double tz = CGAL::to_double(current_footstep.z());
                 
-                // Create a translated copy of the polytope
-                Polyhedron translated_polytope = polytope_to_show;  // Copy the original
-                
-                // Apply translation using CGAL's transform function
-                Transformation translation(CGAL::TRANSLATION, Vector_3(tx, ty, tz));
-                
-                // Apply transformation to all vertices
-                for (auto v_it = translated_polytope.vertices_begin(); v_it != translated_polytope.vertices_end(); ++v_it) {
-                    v_it->point() = translation(v_it->point());
+                // Get foot yaw angle for rotation
+                double foot_yaw = 0.0;
+                if (j < foot_yaw_angles.size()) {
+                    foot_yaw = foot_yaw_angles[j];
                 }
                 
-                // Add the translated polytope to visualization
-                Visualizer::add_polyhedron(renderer, translated_polytope, polytope_color, 0.2);
+                // Create a transformed copy of the polytope
+                Polyhedron transformed_polytope = polytope_to_show;  // Copy the original
+                
+                // Apply rotation around Z-axis followed by translation
+                Transformation rotation(cos(foot_yaw), -sin(foot_yaw), 0, 0,
+                                      sin(foot_yaw),  cos(foot_yaw), 0, 0,
+                                      0,             0,            1, 0,
+                                      1);
+                Transformation translation(CGAL::TRANSLATION, Vector_3(tx, ty, tz));
+                Transformation combined_transform = translation * rotation;
+                
+                // Apply transformation to all vertices
+                for (auto v_it = transformed_polytope.vertices_begin(); v_it != transformed_polytope.vertices_end(); ++v_it) {
+                    v_it->point() = combined_transform(v_it->point());
+                }
+                
+                // Add the transformed polytope to visualization
+                Visualizer::add_polyhedron(renderer, transformed_polytope, polytope_color, 0.2);
                 
                 // std::cout << "Step " << j << " (" << polytope_description << ") at position [" 
                         //   << tx << ", " << ty << ", " << tz << "]" << std::endl;

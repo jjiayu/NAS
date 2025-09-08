@@ -156,7 +156,8 @@ void Visualizer::add_footsteps(vtkSmartPointer<vtkRenderer> renderer,
                               const std::vector<Point_3>& footstep_positions,
                               const double color[3],
                               double foot_length,
-                              double foot_width) {
+                              double foot_width,
+                              const std::vector<double>& foot_yaw_angles) {
     // Default color if none provided (blue for footsteps)
     double default_color[3] = {0.0, 0.5, 1.0};
     const double* final_color = color ? color : default_color;
@@ -167,17 +168,42 @@ void Visualizer::add_footsteps(vtkSmartPointer<vtkRenderer> renderer,
         double y = CGAL::to_double(pos.y());
         double z = CGAL::to_double(pos.z());
 
+        // Get foot yaw angle if provided
+        double foot_yaw = 0.0;
+        if (i < foot_yaw_angles.size()) {
+            foot_yaw = foot_yaw_angles[i];
+        }
+
         // Create a rectangular footstep representation
         auto footstepPoints = vtkSmartPointer<vtkPoints>::New();
         
-        // Define 4 corners of the foot rectangle (assuming foot aligned with x-axis)
+        // Define 4 corners of the foot rectangle in local coordinates
         double half_length = foot_length / 2.0;
         double half_width = foot_width / 2.0;
         
-        footstepPoints->InsertNextPoint(x - half_length, y - half_width, z + 0.01); // Bottom-left
-        footstepPoints->InsertNextPoint(x + half_length, y - half_width, z + 0.01); // Bottom-right
-        footstepPoints->InsertNextPoint(x + half_length, y + half_width, z + 0.01); // Top-right
-        footstepPoints->InsertNextPoint(x - half_length, y + half_width, z + 0.01); // Top-left
+        // Local coordinates (before rotation)
+        double local_corners[4][2] = {
+            {-half_length, -half_width}, // Bottom-left
+            { half_length, -half_width}, // Bottom-right
+            { half_length,  half_width}, // Top-right
+            {-half_length,  half_width}  // Top-left
+        };
+        
+        // Apply rotation and translation to each corner
+        for (int j = 0; j < 4; j++) {
+            double local_x = local_corners[j][0];
+            double local_y = local_corners[j][1];
+            
+            // Rotate by foot yaw angle
+            double rotated_x = local_x * cos(foot_yaw) - local_y * sin(foot_yaw);
+            double rotated_y = local_x * sin(foot_yaw) + local_y * cos(foot_yaw);
+            
+            // Translate to world position
+            double world_x = x + rotated_x;
+            double world_y = y + rotated_y;
+            
+            footstepPoints->InsertNextPoint(world_x, world_y, z + 0.01);
+        }
 
         // Create the rectangular face
         auto footstepFace = vtkSmartPointer<vtkCellArray>::New();

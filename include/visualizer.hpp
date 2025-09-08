@@ -53,7 +53,8 @@ public:
                              const std::vector<Point_3>& footstep_positions,
                              const double color[3] = nullptr,
                              double foot_length = 0.22,
-                             double foot_width = 0.12);
+                             double foot_width = 0.12,
+                             const std::vector<double>& foot_yaw_angles = {});
     
     static void add_coordinate_axes(vtkSmartPointer<vtkRenderer> renderer);
     
