@@ -22,6 +22,6 @@ int main() {
     
     // Plot the grid environment with A* footstep results
     grid_search.plot_grid_environment();
-    
+
     return 0;
 }

@@ -140,8 +140,38 @@ bool FootstepPlanner::plan(const int& stance_foot_flag_at_start,
         else {
             throw std::runtime_error("Invalid stance foot flag");
         }
+
         
-        reachability_constraints.push_back(mtimes(A_matrix, (footstep_pos_vars[footstep_cnt] - footstep_pos_vars[footstep_cnt-1])) - b_vector);
+        // Compute 3x3 rotation matrix based on previous foot yaw
+        casadi::SX R_yaw = casadi::SX::zeros(3, 3);
+        
+        if (foot_yaw_rotation_flag) {
+            double prev_foot_yaw = path_nodes[footstep_cnt-1]->foot_yaw;
+            casadi::SX cos_yaw = casadi::SX(cos(prev_foot_yaw));
+            casadi::SX sin_yaw = casadi::SX(sin(prev_foot_yaw));
+            
+            // 3x3 rotation matrix for Z-axis rotation (yaw)
+            R_yaw(0, 0) = cos_yaw;   // R11
+            R_yaw(0, 1) = -sin_yaw;  // R12
+            R_yaw(0, 2) = 0;         // R13
+            R_yaw(1, 0) = sin_yaw;   // R21
+            R_yaw(1, 1) = cos_yaw;   // R22
+            R_yaw(1, 2) = 0;         // R23
+            R_yaw(2, 0) = 0;         // R31
+            R_yaw(2, 1) = 0;         // R32
+            R_yaw(2, 2) = 1;         // R33
+        } else {
+            // Identity matrix when foot yaw rotation is disabled
+            R_yaw(0, 0) = 1;  R_yaw(0, 1) = 0;  R_yaw(0, 2) = 0;
+            R_yaw(1, 0) = 0;  R_yaw(1, 1) = 1;  R_yaw(1, 2) = 0;
+            R_yaw(2, 0) = 0;  R_yaw(2, 1) = 0;  R_yaw(2, 2) = 1;
+        }
+        
+        // Apply inverse rotation to relative position (transform to foot's local frame)
+        casadi::SX relative_pos = footstep_pos_vars[footstep_cnt] - footstep_pos_vars[footstep_cnt-1];
+        casadi::SX rotated_relative_pos = mtimes(R_yaw.T(), relative_pos);
+        
+        reachability_constraints.push_back(mtimes(A_matrix, rotated_relative_pos) - b_vector);
     }
     // Concatenate reachability constraints into a single vector
     casadi::SX reachability_constraints_vec = casadi::SX::vertcat(reachability_constraints);
@@ -169,9 +199,36 @@ bool FootstepPlanner::plan(const int& stance_foot_flag_at_start,
             throw std::runtime_error("Invalid previous stance foot flag for reverse reachability");
         }
         
+        // Compute 3x3 rotation matrix based on current foot yaw
+        casadi::SX R_yaw_curr = casadi::SX::zeros(3, 3);
+        
+        if (foot_yaw_rotation_flag) {
+            double curr_foot_yaw = path_nodes[footstep_cnt]->foot_yaw;
+            casadi::SX cos_yaw_curr = casadi::SX(cos(curr_foot_yaw));
+            casadi::SX sin_yaw_curr = casadi::SX(sin(curr_foot_yaw));
+            
+            // 3x3 rotation matrix for Z-axis rotation (yaw)
+            R_yaw_curr(0, 0) = cos_yaw_curr;   // R11
+            R_yaw_curr(0, 1) = -sin_yaw_curr;  // R12
+            R_yaw_curr(0, 2) = 0;              // R13
+            R_yaw_curr(1, 0) = sin_yaw_curr;   // R21
+            R_yaw_curr(1, 1) = cos_yaw_curr;   // R22
+            R_yaw_curr(1, 2) = 0;              // R23
+            R_yaw_curr(2, 0) = 0;              // R31
+            R_yaw_curr(2, 1) = 0;              // R32
+            R_yaw_curr(2, 2) = 1;              // R33
+        } else {
+            // Identity matrix when foot yaw rotation is disabled
+            R_yaw_curr(0, 0) = 1;  R_yaw_curr(0, 1) = 0;  R_yaw_curr(0, 2) = 0;
+            R_yaw_curr(1, 0) = 0;  R_yaw_curr(1, 1) = 1;  R_yaw_curr(1, 2) = 0;
+            R_yaw_curr(2, 0) = 0;  R_yaw_curr(2, 1) = 0;  R_yaw_curr(2, 2) = 1;
+        }
+
         // Constraint: A * (previous_foot - current_foot) <= b
+        // Apply inverse rotation to transform to current foot's local frame
         casadi::SX relative_position = footstep_pos_vars[footstep_cnt-1] - footstep_pos_vars[footstep_cnt];
-        casadi::SX constraint_expr = mtimes(A_matrix, relative_position) - b_vector;
+        casadi::SX rotated_relative_position = mtimes(R_yaw_curr.T(), relative_position);
+        casadi::SX constraint_expr = mtimes(A_matrix, rotated_relative_position) - b_vector;
         reachability_constraints_prev.push_back(constraint_expr);
         
     }
