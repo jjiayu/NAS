@@ -167,11 +167,11 @@ bool FootstepPlanner::plan(const int& stance_foot_flag_at_start,
             R_yaw(2, 0) = 0;  R_yaw(2, 1) = 0;  R_yaw(2, 2) = 1;
         }
         
-        // Apply inverse rotation to relative position (transform to foot's local frame)
+        // Convert world frame relative position to contact frame
         casadi::SX relative_pos = footstep_pos_vars[footstep_cnt] - footstep_pos_vars[footstep_cnt-1];
-        casadi::SX rotated_relative_pos = mtimes(R_yaw.T(), relative_pos);
+        casadi::SX relative_pos_contact_frame = mtimes(R_yaw.T(), relative_pos);
         
-        reachability_constraints.push_back(mtimes(A_matrix, rotated_relative_pos) - b_vector);
+        reachability_constraints.push_back(mtimes(A_matrix, relative_pos_contact_frame) - b_vector);
     }
     // Concatenate reachability constraints into a single vector
     casadi::SX reachability_constraints_vec = casadi::SX::vertcat(reachability_constraints);
@@ -225,10 +225,10 @@ bool FootstepPlanner::plan(const int& stance_foot_flag_at_start,
         }
 
         // Constraint: A * (previous_foot - current_foot) <= b
-        // Apply inverse rotation to transform to current foot's local frame
+        // Convert world frame relative position to contact frame
         casadi::SX relative_position = footstep_pos_vars[footstep_cnt-1] - footstep_pos_vars[footstep_cnt];
-        casadi::SX rotated_relative_position = mtimes(R_yaw_curr.T(), relative_position);
-        casadi::SX constraint_expr = mtimes(A_matrix, rotated_relative_position) - b_vector;
+        casadi::SX relative_position_contact_frame = mtimes(R_yaw_curr.T(), relative_position);
+        casadi::SX constraint_expr = mtimes(A_matrix, relative_position_contact_frame) - b_vector;
         reachability_constraints_prev.push_back(constraint_expr);
         
     }
@@ -384,7 +384,8 @@ bool FootstepPlanner::plan(const int& stance_foot_flag_at_start,
     casadi::DM final_footstep_constraints_ub = casadi::DM::zeros(final_footstep_constraints.size1());
 
     // Concatenate all constraint functions into a single vector
-    std::vector<casadi::SX> all_constraint_vectors = {reachability_constraints_vec, reachability_constraints_prev_vec, com_constraints_vec, surface_constraints_vec, initial_footstep_constraints, final_footstep_constraints};
+    // Temporarily remove backward reachability constraints to test feasibility
+    std::vector<casadi::SX> all_constraint_vectors = {reachability_constraints_vec, com_constraints_vec, surface_constraints_vec, initial_footstep_constraints, final_footstep_constraints};
     casadi::SX all_constraints = casadi::SX::vertcat(all_constraint_vectors);
 
     // Create QP problem
@@ -399,11 +400,10 @@ bool FootstepPlanner::plan(const int& stance_foot_flag_at_start,
 
     // Create solver arguments with proper types
     casadi::DMDict arg;
-    arg["x0"] = casadi::DM::zeros(all_vars.size1());
     
-    // Collect the bounds for all constraints
-    std::vector<casadi::DM> lbg_parts = {reachability_constraints_lb, reachability_constraints_prev_lb, com_constraints_lb, surface_constraints_lb, initial_footstep_constraints_lb, final_footstep_constraints_lb};
-    std::vector<casadi::DM> ubg_parts = {reachability_constraints_ub, reachability_constraints_prev_ub, com_constraints_ub, surface_constraints_ub, initial_footstep_constraints_ub, final_footstep_constraints_ub};
+    // Collect the bounds for all constraints (excluding backward reachability)
+    std::vector<casadi::DM> lbg_parts = {reachability_constraints_lb, com_constraints_lb, surface_constraints_lb, initial_footstep_constraints_lb, final_footstep_constraints_lb};
+    std::vector<casadi::DM> ubg_parts = {reachability_constraints_ub, com_constraints_ub, surface_constraints_ub, initial_footstep_constraints_ub, final_footstep_constraints_ub};
     
     arg["lbg"] = casadi::DM::vertcat(lbg_parts);
     arg["ubg"] = casadi::DM::vertcat(ubg_parts);
