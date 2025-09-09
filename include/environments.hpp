@@ -63,6 +63,23 @@ const std::vector<std::vector<Point_3>> TwoFlatSurfaces = {
     },
 };
 
+const std::vector<std::vector<Point_3>> Flat = {
+    // Surface 1
+    {
+        Point_3(-2.0, -1.0, 0.0),  // bottom left
+        Point_3(5.45, -1.0, 0.0),  // bottom right
+        Point_3(5.45, 1.0, 0.0),  // top right
+        Point_3(-2.0, 1.0, 0.0)   // top left
+    },
+    // // Surface 2: Another rectangle or surface
+    // {
+    //     Point_3(5.5,  0.0, 0.0),  // bottom left
+    //     Point_3(7.0, 0.0, 0.0),  // bottom right
+    //     Point_3(7.0, 1.0, 0.0),  // top right
+    //     Point_3(5.5,  1.0, 0.0)   // top left
+    // },
+};
+
 const std::vector<std::vector<Point_3>> LongStairs = {
     // Floor
     {
