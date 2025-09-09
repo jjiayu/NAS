@@ -182,13 +182,6 @@ void AstarGridSearch::search() {
                     yaw_diff += 2 * M_PI;
                 }
                 mid_yaw = current_yaw + yaw_diff / 2.0;
-                
-                // Normalize mid_yaw to [-π, π]
-                if (mid_yaw > M_PI) {
-                    mid_yaw -= 2 * M_PI;
-                } else if (mid_yaw < -M_PI) {
-                    mid_yaw += 2 * M_PI;
-                }
             }
             
             // Calculate distance cost using mid-pose to mid-pose
@@ -217,13 +210,6 @@ void AstarGridSearch::search() {
                         yaw_diff_parent += 2 * M_PI;
                     }
                     prev_mid_yaw = parent_yaw + yaw_diff_parent / 2.0;
-                    
-                    // Normalize prev_mid_yaw to [-π, π]
-                    if (prev_mid_yaw > M_PI) {
-                        prev_mid_yaw -= 2 * M_PI;
-                    } else if (prev_mid_yaw < -M_PI) {
-                        prev_mid_yaw += 2 * M_PI;
-                    }
                 }
                 
                 // Calculate yaw difference between previous mid-yaw and current mid-yaw
@@ -239,7 +225,7 @@ void AstarGridSearch::search() {
             
             double tentative_g_score = current_node->g_score + total_distance_cost + yaw_penalty;
             double tentative_h_score = compute_euclidean_distance(mid_pos, this->goal_location);
-            double tentative_f_score = tentative_g_score + tentative_h_score;
+            double tentative_f_score = tentative_g_score + 10*tentative_h_score;
             
             // Check if this node is already in the open set
             auto handle_it = node_handles.find(child);
