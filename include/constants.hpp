@@ -9,7 +9,7 @@ namespace nas {
 const double com_z_height = 0.75;
 
 // A star related
-const std::string a_star_distance_metric = "gjk"; // "euclidean", "gjk"
+const std::string a_star_distance_metric = "epa"; // "euclidean", "gjk", "epa"
 
 // Discrete a star related
 const double a_star_grid_resolution = 0.04; // meters
@@ -22,7 +22,7 @@ const int RIGHT_FOOT = 1;  // Represents the right foot in stance
 
 // Foot size information
 const double foot_length = 0.22;//0.22;
-const double foot_width  = 0.12;//0.12;
+const double foot_width  = 0.22;//0.12;
 
 // Foot yaw angle range
 const bool foot_yaw_rotation_flag = false;
@@ -47,7 +47,10 @@ const std::string com_in_rf_path_forward = "/Users/jiayu/Desktop/nas_ws/NAS/data
 
 // Define Goal Specificaitons
 const int stance_foot_at_goal = LEFT_FOOT;
-const Vector_3 goal_offset(0.0, 0.0, 0.0); // goal offset applied to move in the local frame of the goal surface (last surface)
+// const Vector_3 goal_offset(0.0, 0.0, 0.0); // goal offset applied to move in the local frame of the goal surface (last surface)
+
+const Vector_3 goal_offset(0.0, 1.0, 0.0); // for 3path NAS goal offset applied to move in the local frame of the goal surface (last surface)
+
 
 // Define Number of Steps (max number of steps)
 const int total_num_steps = 40;
@@ -77,7 +80,8 @@ const std::string node_search_method = "bruteforce"; // "bruteforce", "kdtree", 
 // const std::vector<std::vector<Point_3>> surf_list = LongStairs;
 // const std::vector<std::vector<Point_3>> surf_list = LongLongStairs;
 // const std::vector<std::vector<Point_3>> surf_list = ThreePathsScene;
+const std::vector<std::vector<Point_3>> surf_list = ThreePathsNAS;
 // const std::vector<std::vector<Point_3>> surf_list = Stairs_Up_Down;
-const std::vector<std::vector<Point_3>> surf_list = Flat;
+// const std::vector<std::vector<Point_3>> surf_list = Flat;
 
 }

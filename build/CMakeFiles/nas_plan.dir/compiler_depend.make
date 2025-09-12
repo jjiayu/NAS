@@ -3415,7 +3415,9 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
   /opt/homebrew/include/boost/utility/result_of.hpp \
   /opt/homebrew/include/boost/version.hpp \
   /opt/homebrew/include/coal/BV/AABB.h \
+  /opt/homebrew/include/coal/collision.h \
   /opt/homebrew/include/coal/collision_data.h \
+  /opt/homebrew/include/coal/collision_func_matrix.h \
   /opt/homebrew/include/coal/collision_object.h \
   /opt/homebrew/include/coal/config.hh \
   /opt/homebrew/include/coal/data_types.h \
@@ -4227,6 +4229,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/coal/data_types.h:
 
 /opt/homebrew/include/coal/collision_object.h:
+
+/opt/homebrew/include/coal/collision_func_matrix.h:
 
 /opt/homebrew/include/coal/collision_data.h:
 
@@ -9511,6 +9515,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: /Users/jiayu/Desktop/nas_ws/NAS/src/
 /opt/homebrew/include/CGAL/Compact_container.h:
 
 /opt/homebrew/include/CGAL/utils.h:
+
+/opt/homebrew/include/coal/collision.h:
 
 /opt/homebrew/Cellar/llvm/20.1.8/include/c++/v1/__type_traits/is_standard_layout.h:
 

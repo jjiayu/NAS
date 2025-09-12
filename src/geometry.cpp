@@ -249,6 +249,74 @@ double calculate_gjk_distance_point_to_patch(const std::vector<Point_3>& patch_p
     }
 }
 
+double calculate_epa_distance_point_to_patch(const std::vector<Point_3>& patch_points, const Point_3& goal) {
+    if (patch_points.size() < 3) {
+        std::cerr << "Error: Patch must have at least 3 points for EPA distance calculation" << std::endl;
+        return compute_euclidean_distance(goal, patch_points[0]); // Fallback to Euclidean
+    }
+    
+    // Convert CGAL types to COAL types directly
+    coal::Vec3s coal_goal(goal.x(), goal.y(), goal.z());
+    std::vector<coal::Vec3s> coal_patch_vertices;
+    coal_patch_vertices.reserve(patch_points.size());
+    for (const auto& point : patch_points) {
+        coal_patch_vertices.emplace_back(point.x(), point.y(), point.z());
+    }
+    
+    // Create a point as a very small sphere for EPA compatibility
+    auto point_shape = std::make_shared<coal::Sphere>(1e-6);
+    coal::CollisionObject point_obj(point_shape);
+    
+    // Set goal point position
+    coal::Transform3s point_tf = coal::Transform3s::Identity();
+    point_tf.translation() = coal_goal;
+    point_obj.setTransform(point_tf);
+    
+    // Create exact convex shape using COAL's Convex class
+    try {
+        // Prepare vertices and triangulation for the patch
+        auto vertices_ptr = std::make_shared<std::vector<coal::Vec3s>>(coal_patch_vertices);
+        std::vector<coal::Triangle> triangles;
+        
+        // Create fan triangulation from first vertex for convex polygon
+        for (size_t i = 1; i < coal_patch_vertices.size() - 1; ++i) {
+            triangles.push_back(coal::Triangle(0, i, i + 1));
+        }
+        auto triangles_ptr = std::make_shared<std::vector<coal::Triangle>>(triangles);
+        
+        // Create exact convex mesh for the patch
+        auto convex_shape = std::make_shared<coal::Convex<coal::Triangle>>(
+            vertices_ptr, coal_patch_vertices.size(),
+            triangles_ptr, triangles.size()
+        );
+        
+        coal::CollisionObject convex_obj(convex_shape);
+        coal::Transform3s convex_tf = coal::Transform3s::Identity();
+        convex_obj.setTransform(convex_tf);
+        
+        // Use COAL's distance function with EPA enabled for penetration cases
+        coal::DistanceRequest distance_request;
+        coal::DistanceResult distance_result;
+        
+        // Enable signed distance computation which uses EPA for penetrating objects
+        distance_request.enable_signed_distance = false;
+        
+        coal::distance(&point_obj, &convex_obj, distance_request, distance_result);
+        
+        // COAL automatically uses GJK for separated objects and EPA for penetrating objects
+        // For penetrating objects, min_distance will be negative (penetration depth)
+        // For separated objects, min_distance will be positive (separation distance)
+        // Return the absolute value as the distance metric
+        return std::abs(distance_result.min_distance);
+        
+    } catch (const std::exception& e) {
+        std::cerr << "COAL EPA distance calculation failed for patch: " << e.what() << std::endl;
+        // Fallback to Euclidean distance to patch centroid
+        Point_3 centroid = get_centroid(patch_points);
+        return compute_euclidean_distance(goal, centroid);
+    }
+}
+
 // Convert half-space polytope constraint to H-representation
 HalfSpacePolytopeConstraint convert_polytope_to_half_space_constraint(const Polyhedron& polytope){
     HalfSpacePolytopeConstraint constraint;

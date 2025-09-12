@@ -1038,4 +1038,188 @@ const std::vector<std::vector<Point_3>> Stairs_Up_Down = {
         }
     };
 
+const std::vector<std::vector<Point_3>> ThreePathsNAS = {
+    // Starting platform (larger for initial stance)
+    {
+        Point_3(-0.3, -4.0, 0.0),    // bottom left
+        Point_3(0.3, -4.0, 0.0),    // bottom right
+        Point_3(0.3, 2.0, 0.0),     // top right
+        Point_3(-0.3, 2.0, 0.0)      // top left
+    },
+
+    // Up Path 1
+    {
+        Point_3(0.32, 1.4, 0.0),    // bottom left
+        Point_3(0.72, 1.4, 0.0),   // bottom right
+        Point_3(0.72, 2.0, 0.0),    // top right
+        Point_3(0.32, 2.0, 0.0)      // top left
+    },
+
+    // Up Path 2
+    {
+        Point_3(0.74, 1.4, 0.0),    // bottom left
+        Point_3(1.32, 1.4, 0.0),   // bottom right
+        Point_3(1.32, 2.0, 0.0),    // top right
+        Point_3(0.74, 2.0, 0.0)      // top left
+    },
+
+    // Up Path 3
+    {
+        Point_3(1.34, 1.4, 0.0),    // bottom left
+        Point_3(2.52, 1.4, 0.0),   // bottom right
+        Point_3(2.52, 2.0, 0.0),    // top right
+        Point_3(1.34, 2.0, 0.0)      // top left
+    },    
+
+    // Up Path 4
+    {
+        Point_3(2.54, 1.4, 0.0),    // bottom left
+        Point_3(3.12, 1.4, 0.0),   // bottom right
+        Point_3(3.12, 2.0, 0.0),    // top right
+        Point_3(2.54, 2.0, 0.0)      // top left
+    },   
+
+    // Up Path 5
+    {
+        Point_3(3.14, 1.4, 0.0),    // bottom left
+        Point_3(3.72, 1.4, 0.0),   // bottom right
+        Point_3(3.72, 2.0, 0.0),    // top right
+        Point_3(3.14, 2.0, 0.0)      // top left
+    },   
+
+    // Up Path 5
+    {
+        Point_3(3.74, 1.4, 0.0),    // bottom left
+        Point_3(4.32, 1.4, 0.0),   // bottom right
+        Point_3(4.32, 2.0, 0.0),    // top right
+        Point_3(3.74, 2.0, 0.0)      // top left
+    },  
+
+
+    // Down
+    {
+        Point_3(0.32, -3.2, 0.0),    // bottom left
+        Point_3(1.2, -3.2, 0.0),   // bottom right
+        Point_3(1.2, -4.0, 0.0),    // top right
+        Point_3(0.32, -4.0, 0.0)      // top left
+    },
+
+    {
+        Point_3(1.22, -3.2, 0.0),    // bottom left
+        Point_3(2.2, -3.2, 0.0),   // bottom right
+        Point_3(2.2, -4.0, 0.0),    // top right
+        Point_3(1.22, -4.0, 0.0)      // top left
+    },
+
+    {
+        Point_3(2.22, -3.2, 0.0),    // bottom left
+        Point_3(3.2, -3.2, 0.0),   // bottom right
+        Point_3(3.2, -4.0, 0.0),    // top right
+        Point_3(2.22, -4.0, 0.0)      // top left
+    },
+
+    {
+        Point_3(3.22, -3.2, 0.0),    // bottom left
+        Point_3(4.32, -3.2, 0.0),   // bottom right
+        Point_3(4.32, -4.0, 0.0),    // top right
+        Point_3(3.22, -4.0, 0.0)      // top left
+    },
+
+    // Dead end
+    {
+        Point_3(0.32, -0.5, 0.0),    // bottom left
+        Point_3(2.0, -0.5, 0.0),   // bottom right
+        Point_3(2.0, 0.5, 0.0),    // top right
+        Point_3(0.32, 0.5, 0.0)      // top left
+    },
+
+    // End Surface
+    {
+        Point_3(4.34, -4.0, 0.0),    // bottom left
+        Point_3(4.94, -4.0, 0.0),    // bottom right
+        Point_3(4.94, 2.0, 0.0),     // top right
+        Point_3(4.34, 2.0, 0.0)      // top left
+    },
+
+    // // Up Path 2
+    // {
+    //     Point_3(0.4, -0.06, 0.0),    // bottom left
+    //     Point_3(0.62, -0.06, 0.0),   // bottom right
+    //     Point_3(0.62, 0.06, 0.0),    // top right
+    //     Point_3(0.4, 0.06, 0.0)      // top left
+    // },
+
+    // // Step 3 - Branch point (upper path)
+    // {
+    //     Point_3(0.8, 0.15, 0.0),     // bottom left
+    //     Point_3(1.02, 0.15, 0.0),    // bottom right
+    //     Point_3(1.02, 0.27, 0.0),    // top right
+    //     Point_3(0.8, 0.27, 0.0)      // top left
+    // },
+
+    // // Step 4 - Branch point (lower path)
+    // {
+    //     Point_3(0.8, -0.27, 0.0),    // bottom left
+    //     Point_3(1.02, -0.27, 0.0),   // bottom right
+    //     Point_3(1.02, -0.15, 0.0),   // top right
+    //     Point_3(0.8, -0.15, 0.0)     // top left
+    // },
+
+    // // Step 5 - Upper path continuation
+    // {
+    //     Point_3(1.2, 0.15, 0.0),     // bottom left
+    //     Point_3(1.42, 0.15, 0.0),    // bottom right
+    //     Point_3(1.42, 0.27, 0.0),    // top right
+    //     Point_3(1.2, 0.27, 0.0)      // top left
+    // },
+
+    // // Step 6 - Lower path continuation
+    // {
+    //     Point_3(1.2, -0.27, 0.0),    // bottom left
+    //     Point_3(1.42, -0.27, 0.0),   // bottom right
+    //     Point_3(1.42, -0.15, 0.0),   // top right
+    //     Point_3(1.2, -0.15, 0.0)     // top left
+    // },
+
+    // // Step 7 - Upper path turn
+    // {
+    //     Point_3(1.6, 0.0, 0.0),      // bottom left
+    //     Point_3(1.82, 0.0, 0.0),     // bottom right
+    //     Point_3(1.82, 0.12, 0.0),    // top right
+    //     Point_3(1.6, 0.12, 0.0)      // top left
+    // },
+
+    // // Step 8 - Lower path turn
+    // {
+    //     Point_3(1.6, -0.12, 0.0),    // bottom left
+    //     Point_3(1.82, -0.12, 0.0),   // bottom right
+    //     Point_3(1.82, 0.0, 0.0),     // top right
+    //     Point_3(1.6, 0.0, 0.0)       // top left
+    // },
+
+    // // Step 9 - Convergence point
+    // {
+    //     Point_3(2.0, -0.06, 0.0),    // bottom left
+    //     Point_3(2.22, -0.06, 0.0),   // bottom right
+    //     Point_3(2.22, 0.06, 0.0),    // top right
+    //     Point_3(2.0, 0.06, 0.0)      // top left
+    // },
+
+    // // Step 10 - Final approach
+    // {
+    //     Point_3(2.4, -0.06, 0.0),    // bottom left
+    //     Point_3(2.62, -0.06, 0.0),   // bottom right
+    //     Point_3(2.62, 0.06, 0.0),    // top right
+    //     Point_3(2.4, 0.06, 0.0)      // top left
+    // },
+
+    // // Goal platform (larger for final stance)
+    // {
+    //     Point_3(2.8, -0.2, 0.0),     // bottom left
+    //     Point_3(3.1, -0.2, 0.0),     // bottom right
+    //     Point_3(3.1, 0.2, 0.0),      // top right
+    //     Point_3(2.8, 0.2, 0.0)       // top left
+    // }
+};
+
 } // namespace nas

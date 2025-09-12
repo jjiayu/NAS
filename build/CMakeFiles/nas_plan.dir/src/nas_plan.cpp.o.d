@@ -3285,6 +3285,8 @@ CMakeFiles/nas_plan.dir/src/nas_plan.cpp.o: \
   /opt/homebrew/include/coal/narrowphase/gjk.h \
   /opt/homebrew/include/coal/narrowphase/minkowski_difference.h \
   /opt/homebrew/include/coal/narrowphase/support_functions.h \
+  /opt/homebrew/include/coal/collision.h \
+  /opt/homebrew/include/coal/collision_func_matrix.h \
   /Users/jiayu/Desktop/nas_ws/NAS/include/utils.hpp \
   /opt/homebrew/include/CGAL/convex_hull_3.h \
   /opt/homebrew/include/CGAL/license/Convex_hull_3.h \

@@ -1,6 +1,6 @@
 #include "astar_search.hpp"
-#include "tree.hpp"
-#include "types.hpp"
+#include "geometry.hpp"
+#include "constants.hpp"
 #include "visualizer.hpp"
 #include "utils.hpp"
 #include "geometry.hpp"
@@ -140,6 +140,9 @@ void AstarSearch::search() {
             double tentative_h_score = 0.0;
             if (this->distance_metric == "gjk") {
                 tentative_h_score = 100.0*calculate_gjk_distance_point_to_patch(child->patch_vertices, this->goal_location);
+            }
+            else if (this->distance_metric == "epa") {
+                tentative_h_score = 100.0*calculate_epa_distance_point_to_patch(child->patch_vertices, this->goal_location);
             }
             else if (this->distance_metric == "euclidean") {
                 tentative_h_score = compute_euclidean_distance(child->centroid, this->goal_location);

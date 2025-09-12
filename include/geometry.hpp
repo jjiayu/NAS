@@ -11,6 +11,7 @@
 #include <coal/shape/geometric_shapes.h>
 #include <coal/shape/convex.h>
 #include <coal/distance.h>
+#include <coal/collision.h>
 #include <Eigen/Dense>
 
 namespace nas {
@@ -55,6 +56,9 @@ double compute_euclidean_distance(const Point_3& start_location, const Point_3& 
 
 // COAL GJK distance computation function
 double calculate_gjk_distance_point_to_patch(const std::vector<Point_3>& patch_points, const Point_3& goal);
+
+// COAL EPA distance computation function
+double calculate_epa_distance_point_to_patch(const std::vector<Point_3>& patch_points, const Point_3& goal);
 
 // Convert half-space polytope constraint to H-representation
 HalfSpacePolytopeConstraint convert_polytope_to_half_space_constraint(const Polyhedron& polytope);
