@@ -59,6 +59,7 @@ AstarSearch::AstarSearch() {
     if (foot_yaw_rotation_flag) {
         start_node->foot_yaw = current_foot_yaw;
     }
+    start_node->depth = 0;
     start_node->perimeter = 0.0;
     start_node->g_score = 0;
     start_node->h_score = compute_euclidean_distance(current_foot_pos, this->goal_location);
@@ -133,10 +134,12 @@ void AstarSearch::search() {
             }
             
             // Calculate the tentative g_score for this child
-            double tentative_g_score = current_node->g_score + compute_euclidean_distance(current_node->centroid, child->centroid);
+            // g score with euclidean_distance
+            // double tentative_g_score = current_node->g_score + compute_euclidean_distance(current_node->centroid, child->centroid);
+            double tentative_g_score = current_node->g_score + 1.0;
             double tentative_h_score = 0.0;
             if (this->distance_metric == "gjk") {
-                tentative_h_score = calculate_gjk_distance_point_to_patch(child->patch_vertices, this->goal_location);
+                tentative_h_score = 100.0*calculate_gjk_distance_point_to_patch(child->patch_vertices, this->goal_location);
             }
             else if (this->distance_metric == "euclidean") {
                 tentative_h_score = compute_euclidean_distance(child->centroid, this->goal_location);
