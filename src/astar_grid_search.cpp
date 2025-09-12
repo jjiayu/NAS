@@ -66,6 +66,7 @@ namespace nas {
     start_node->patch_vertices = std::vector<Point_3>({current_foot_pos});  // Already Point_3, no conversion needed
     start_node->stance_foot = current_stance_foot_flag;
     start_node->centroid = current_foot_pos;
+    start_node->depth = 0;
     if (foot_yaw_rotation_flag) {
         start_node->foot_yaw = current_foot_yaw;
     }
@@ -225,9 +226,10 @@ void AstarGridSearch::search() {
                 yaw_penalty = yaw_weight * yaw_diff;
             }
             
-            double tentative_g_score = current_node->g_score + total_distance_cost + yaw_penalty;
+            // double tentative_g_score = current_node->g_score + total_distance_cost + yaw_penalty;
+            double tentative_g_score = current_node->g_score + 1.0;
             double tentative_h_score = compute_euclidean_distance(mid_pos, this->goal_location);
-            double tentative_f_score = tentative_g_score + 10.0*tentative_h_score;
+            double tentative_f_score = tentative_g_score + 100.0*tentative_h_score;
             
             // Check if this node is already in the open set
             auto handle_it = node_handles.find(child);
