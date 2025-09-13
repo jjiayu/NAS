@@ -1222,4 +1222,32 @@ const std::vector<std::vector<Point_3>> ThreePathsNAS = {
     // }
 };
 
+const std::vector<std::vector<Point_3>> NarrowPassage = {
+
+    // Starting Floor
+    {
+        Point_3(-2.0, -2.0, 0.0),    // bottom left
+        Point_3(2.0, -2.0, 0.0),    // bottom right
+        Point_3(2.0, 2.0, 0.0),     // top right
+        Point_3(-2.0, 2.0, 0.0)      // top left
+    },
+
+    // Passage
+    {
+        Point_3(2.0, -0.2, 0.0),    // bottom left
+        Point_3(6.0, -0.2, 0.0),    // bottom right
+        Point_3(6.0, 0.2, 0.0),     // top right
+        Point_3(2.0, 0.2, 0.0)      // top left
+    },
+
+    // Last Floor
+    {
+        Point_3(6.0, -2.0, 0.0),    // bottom left
+        Point_3(10.0, -2.0, 0.0),   // bottom right
+        Point_3(10.0, 2.0, 0.0),    // top right
+        Point_3(6.0, 2.0, 0.0)      // top left
+    }
+
+};
+
 } // namespace nas

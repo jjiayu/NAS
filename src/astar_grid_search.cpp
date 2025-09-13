@@ -229,7 +229,7 @@ void AstarGridSearch::search() {
             // double tentative_g_score = current_node->g_score + total_distance_cost + yaw_penalty;
             double tentative_g_score = current_node->g_score + 1.0;
             double tentative_h_score = compute_euclidean_distance(mid_pos, this->goal_location);
-            double tentative_f_score = tentative_g_score + 100.0*tentative_h_score;
+            double tentative_f_score = tentative_g_score + 10.0*tentative_h_score;
             
             // Check if this node is already in the open set
             auto handle_it = node_handles.find(child);
