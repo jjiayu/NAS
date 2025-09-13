@@ -12,7 +12,7 @@ const double com_z_height = 0.75;
 const std::string a_star_distance_metric = "epa"; // "euclidean", "gjk", "epa"
 
 // Discrete a star related
-const double a_star_grid_resolution = 0.04; // meters
+const double a_star_grid_resolution = 0.05; // meters
 
 const bool cycle_detection = true;
 
@@ -25,7 +25,7 @@ const double foot_length = 0.22;//0.22;
 const double foot_width  = 0.22;//0.12;
 
 // Foot yaw angle range
-const bool foot_yaw_rotation_flag = false;
+const bool foot_yaw_rotation_flag = true;
 const double current_foot_yaw = 0.0;
 const double foot_yaw_angle_increment = 10.0/180.0*M_PI; // radians (15 degrees)
 const int foot_yaw_angle_discretization_num = 3; // one side discretize times 3*foot_yaw_angle_discretization
@@ -80,8 +80,8 @@ const std::string node_search_method = "bruteforce"; // "bruteforce", "kdtree", 
 // const std::vector<std::vector<Point_3>> surf_list = LongStairs;
 // const std::vector<std::vector<Point_3>> surf_list = LongLongStairs;
 // const std::vector<std::vector<Point_3>> surf_list = ThreePathsScene;
-// const std::vector<std::vector<Point_3>> surf_list = ThreePathsNAS;
-const std::vector<std::vector<Point_3>> surf_list = NarrowPassage;
+const std::vector<std::vector<Point_3>> surf_list = ThreePathsNAS;
+// const std::vector<std::vector<Point_3>> surf_list = NarrowPassage;
 // const std::vector<std::vector<Point_3>> surf_list = Stairs_Up_Down;
 // const std::vector<std::vector<Point_3>> surf_list = Flat;
 
