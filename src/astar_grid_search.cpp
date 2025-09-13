@@ -264,6 +264,8 @@ void AstarGridSearch::search() {
         }
     }
 
+    auto failure_time = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now() - start_time);
+    std::cout << "If fail, then the computation time is: " << failure_time.count() / 1000.0 << " ms" << std::endl;
     std::cout << "\n[ Grid A* search completed - No path found ]" << std::endl;
     std::cout << "Total nodes expanded: " << this->expansion_count << std::endl;
     std::cout << "Total nodes in closed set: " << this->closed_set.size() << std::endl;
