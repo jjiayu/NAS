@@ -25,7 +25,7 @@ const double foot_length = 0.22;//0.22;
 const double foot_width  = 0.22;//0.12;
 
 // Foot yaw angle range
-const bool foot_yaw_rotation_flag = true;
+const bool foot_yaw_rotation_flag = false;
 const double current_foot_yaw = 0.0;
 const double foot_yaw_angle_increment = 10.0/180.0*M_PI; // radians (15 degrees)
 const int foot_yaw_angle_discretization_num = 3; // one side discretize times 3*foot_yaw_angle_discretization
@@ -81,8 +81,8 @@ const std::string node_search_method = "bruteforce"; // "bruteforce", "kdtree", 
 // const std::vector<std::vector<Point_3>> surf_list = LongLongStairs;
 // const std::vector<std::vector<Point_3>> surf_list = ThreePathsScene;
 // const std::vector<std::vector<Point_3>> surf_list = ThreePathsNAS;
-const std::vector<std::vector<Point_3>> surf_list = NarrowPassage;
-// const std::vector<std::vector<Point_3>> surf_list = Stairs_Up_Down;
+// const std::vector<std::vector<Point_3>> surf_list = NarrowPassage;
+const std::vector<std::vector<Point_3>> surf_list = Stairs_Up_Down;
 // const std::vector<std::vector<Point_3>> surf_list = Flat;
 
 }

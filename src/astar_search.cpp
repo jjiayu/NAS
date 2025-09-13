@@ -139,10 +139,10 @@ void AstarSearch::search() {
             double tentative_g_score = current_node->g_score + 1.0;
             double tentative_h_score = 0.0;
             if (this->distance_metric == "gjk") {
-                tentative_h_score = 100.0*calculate_gjk_distance_point_to_patch(child->patch_vertices, this->goal_location);
+                tentative_h_score = 10.0*calculate_gjk_distance_point_to_patch(child->patch_vertices, this->goal_location);
             }
             else if (this->distance_metric == "epa") {
-                tentative_h_score = 100.0*calculate_epa_distance_point_to_patch(child->patch_vertices, this->goal_location);
+                tentative_h_score = 10.0*calculate_epa_distance_point_to_patch(child->patch_vertices, this->goal_location);
             }
             else if (this->distance_metric == "euclidean") {
                 tentative_h_score = compute_euclidean_distance(child->centroid, this->goal_location);
@@ -297,7 +297,11 @@ std::vector<Node*> AstarSearch::get_children(Node* parent){
                     child->transformation_to_3d = surface.transform_to_3d;
                     child->perimeter = compute_polygon_perimeter(polytope_surf_3d_intersect_polygon);
                     child->centroid = get_centroid(polytope_surf_3d_intersect_pts);
-                    child->foot_yaw = yaw_angle; // Set the foot yaw angle for this child
+                    // Normalize yaw angle to [-π, π] range
+                    double normalized_yaw = yaw_angle;
+                    while (normalized_yaw > M_PI) normalized_yaw -= 2.0 * M_PI;
+                    while (normalized_yaw < -M_PI) normalized_yaw += 2.0 * M_PI;
+                    child->foot_yaw = normalized_yaw; // Set the normalized foot yaw angle for this child
                     // Copy parent's pred_surface_ids and add parent's surface as new layer
                     child->pred_surface_ids = parent->pred_surface_ids;
                     child->pred_surface_ids[parent->stance_foot].push_back({parent->surface_id});

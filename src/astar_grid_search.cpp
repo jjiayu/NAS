@@ -349,7 +349,11 @@ std::vector<Node*> AstarGridSearch::get_grid_children(Node* parent) {
                     child->surface_id = target_cell.surface_id;
                     child->depth = parent->depth + 1;
                     child->centroid = target_world_pos;
-                    child->foot_yaw = yaw_angle; // Set the foot yaw angle for this child
+                    // Normalize yaw angle to [-π, π] range
+                    double normalized_yaw = yaw_angle;
+                    while (normalized_yaw > M_PI) normalized_yaw -= 2.0 * M_PI;
+                    while (normalized_yaw < -M_PI) normalized_yaw += 2.0 * M_PI;
+                    child->foot_yaw = normalized_yaw; // Set the normalized foot yaw angle for this child
                     child->perimeter = 0.0; // Not used in grid-based search
                     
                     // Initialize scores for A* search
