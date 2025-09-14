@@ -2,8 +2,8 @@
 #include "constants.hpp"
 #include <casadi/casadi.hpp>
 #include <iostream>
-#include <limits>
 #include <chrono>
+#include <cmath>
 
 namespace nas {
 
@@ -118,8 +118,12 @@ bool FootstepPlanner::plan(const int& stance_foot_flag_at_start,
         footstep_pos_vars.push_back(casadi::SX::sym("step"+std::to_string(footstep_cnt),3));
     }
     
-    // Create alpha slack variable (single alpha for all patches)
-    casadi::SX alpha = casadi::SX::sym("alpha", 1);
+    // Create alpha slack variables (one for each intermediate footstep surface)
+    std::vector<casadi::SX> alpha_vars;
+    int num_intermediate_steps = path_nodes.size() - 2;  // Exclude first and last steps
+    for (int i = 0; i < num_intermediate_steps; i++) {
+        alpha_vars.push_back(casadi::SX::sym("alpha_" + std::to_string(i), 1));
+    }
 
     // Create objective function to minimize stride length and maximize alpha
     // Stride length = distance between footstep n and footstep n-2 (same foot)
@@ -142,9 +146,11 @@ bool FootstepPlanner::plan(const int& stance_foot_flag_at_start,
         objective += casadi::SX::dot(stride_vector, stride_vector);
     }
     
-    // Add negative alpha to maximize alpha (push footsteps toward patch centers)
+    // Add negative sum of alphas to maximize all alphas (push footsteps toward patch centers)
     double alpha_weight = 1000.0;  // Weight for alpha maximization
-    objective += -alpha_weight * alpha;
+    for (const auto& alpha : alpha_vars) {
+        objective += -alpha_weight * alpha;
+    }
 
     // Create Footstep Reachability constraints (next foot in previous foot's polytope)
     std::vector<casadi::SX> reachability_constraints;
@@ -324,20 +330,38 @@ bool FootstepPlanner::plan(const int& stance_foot_flag_at_start,
         SurfaceConstraint surface_constraint = generate_surface_constraint(path_nodes[footstep_cnt]->patch_polyhedron_3d);
         surface_constraint_cache.push_back(surface_constraint);
         
-        // Convert Eigen matrices to CasADi format
+        // Convert Eigen matrices to CasADi format with normalization
         casadi::SX A_surface_casadi = casadi::SX::zeros(surface_constraint.A.rows(), surface_constraint.A.cols());
         casadi::SX b_surface_casadi = casadi::SX::zeros(surface_constraint.b.size());
         
         for (int i = 0; i < surface_constraint.A.rows(); ++i) {
+            // Calculate norm of row i
+            double row_norm = 0.0;
             for (int j = 0; j < surface_constraint.A.cols(); ++j) {
-                A_surface_casadi(i, j) = surface_constraint.A(i, j);
+                row_norm += surface_constraint.A(i, j) * surface_constraint.A(i, j);
             }
-            b_surface_casadi(i) = surface_constraint.b(i);
+            row_norm = sqrt(row_norm);
+            
+            // Normalize row i and corresponding b value
+            if (row_norm > 1e-12) {  // Avoid division by zero
+                for (int j = 0; j < surface_constraint.A.cols(); ++j) {
+                    A_surface_casadi(i, j) = surface_constraint.A(i, j) / row_norm;
+                }
+                b_surface_casadi(i) = surface_constraint.b(i) / row_norm;
+            } else {
+                // Handle degenerate case (zero norm row)
+                for (int j = 0; j < surface_constraint.A.cols(); ++j) {
+                    A_surface_casadi(i, j) = surface_constraint.A(i, j);
+                }
+                b_surface_casadi(i) = surface_constraint.b(i);
+            }
         }
         
-        // Create constraint: A_surface * footstep_pos + alpha <= b_surface
-        // This becomes: A_surface * footstep_pos - b_surface + alpha <= 0
-        casadi::SX surface_constraint_expr = mtimes(A_surface_casadi, footstep_pos_vars[footstep_cnt]) - b_surface_casadi + alpha;
+        // Create constraint: A_surface * footstep_pos + alpha_i <= b_surface
+        // This becomes: A_surface * footstep_pos - b_surface + alpha_i <= 0
+        // footstep_cnt starts from 1, so alpha index is (footstep_cnt - 1)
+        int alpha_index = footstep_cnt - 1;
+        casadi::SX surface_constraint_expr = mtimes(A_surface_casadi, footstep_pos_vars[footstep_cnt]) - b_surface_casadi + alpha_vars[alpha_index];
         surface_constraints.push_back(surface_constraint_expr);
         
     }
@@ -379,9 +403,11 @@ bool FootstepPlanner::plan(const int& stance_foot_flag_at_start,
         surface_constraints_ub = casadi::DM::zeros(0);
     }
 
-    // Concatenate all footstep position variables and alpha into a single vector
+    // Concatenate all footstep position variables and alphas into a single vector
     std::vector<casadi::SX> all_vars_list = footstep_pos_vars;
-    all_vars_list.push_back(alpha);
+    for (const auto& alpha : alpha_vars) {
+        all_vars_list.push_back(alpha);
+    }
     casadi::SX all_vars = casadi::SX::vertcat(all_vars_list);
 
     // Create bounds for reachability constraints
@@ -431,8 +457,11 @@ bool FootstepPlanner::plan(const int& stance_foot_flag_at_start,
     casadi::DM lbx = -casadi::DM::inf(all_vars.size1());
     casadi::DM ubx = casadi::DM::inf(all_vars.size1());
     
-    // Alpha bounds: alpha >= 0 (last variable in all_vars)
-    lbx(all_vars.size1() - 1) = 0.0;  // alpha >= 0
+    // Alpha bounds: all alphas >= 0 (last num_intermediate_steps variables in all_vars)
+    int num_footstep_vars = footstep_pos_vars.size() * 3;  // 3 coordinates per footstep
+    for (int i = 0; i < num_intermediate_steps; i++) {
+        lbx(num_footstep_vars + i) = 0.0;  // alpha_i >= 0
+    }
     
     arg["lbx"] = lbx;
     arg["ubx"] = ubx;
@@ -466,10 +495,13 @@ bool FootstepPlanner::plan(const int& stance_foot_flag_at_start,
 
             std::cout << "\n=== QP Solution ===" << std::endl;
             
-            // Extract alpha value (last variable in solution vector)
-            casadi::DM alpha_value = x_opt(x_opt.size1() - 1);
-            std::cout << "\n[ Alpha Value (Patch Center Margin) ]" << std::endl;
-            std::cout << "Alpha = " << alpha_value << std::endl;
+            // Extract alpha values (last num_intermediate_steps variables in solution vector)
+            std::cout << "\n[ Alpha Values (Patch Center Margins) ]" << std::endl;
+            int num_footstep_vars = footstep_pos_vars.size() * 3;  // 3 coordinates per footstep
+            for (int i = 0; i < num_intermediate_steps; i++) {
+                casadi::DM alpha_value = x_opt(num_footstep_vars + i);
+                std::cout << "Alpha_" << i << " (Step " << (i+1) << ") = " << alpha_value << std::endl;
+            }
 
             // Print the footstep positions (extract from solution)
             std::cout << "\n[ Footstep Positions ]" << std::endl;
