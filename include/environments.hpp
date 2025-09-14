@@ -1127,10 +1127,10 @@ const std::vector<std::vector<Point_3>> ThreePathsNAS = {
 
     // Dead end
     {
-        Point_3(0.32, -0.5, 0.0),    // bottom left
-        Point_3(2.0, -0.5, 0.0),   // bottom right
-        Point_3(2.0, 0.5, 0.0),    // top right
-        Point_3(0.32, 0.5, 0.0)      // top left
+        Point_3(0.32, -1.0, 0.0),    // bottom left
+        Point_3(1.5, -1.0, 0.0),   // bottom right
+        Point_3(1.5, -2.0, 0.0),    // top right
+        Point_3(0.32, -2.0, 0.0)      // top left
     },
 
     // End Surface
@@ -1140,86 +1140,6 @@ const std::vector<std::vector<Point_3>> ThreePathsNAS = {
         Point_3(4.94, 2.0, 0.0),     // top right
         Point_3(4.34, 2.0, 0.0)      // top left
     },
-
-    // // Up Path 2
-    // {
-    //     Point_3(0.4, -0.06, 0.0),    // bottom left
-    //     Point_3(0.62, -0.06, 0.0),   // bottom right
-    //     Point_3(0.62, 0.06, 0.0),    // top right
-    //     Point_3(0.4, 0.06, 0.0)      // top left
-    // },
-
-    // // Step 3 - Branch point (upper path)
-    // {
-    //     Point_3(0.8, 0.15, 0.0),     // bottom left
-    //     Point_3(1.02, 0.15, 0.0),    // bottom right
-    //     Point_3(1.02, 0.27, 0.0),    // top right
-    //     Point_3(0.8, 0.27, 0.0)      // top left
-    // },
-
-    // // Step 4 - Branch point (lower path)
-    // {
-    //     Point_3(0.8, -0.27, 0.0),    // bottom left
-    //     Point_3(1.02, -0.27, 0.0),   // bottom right
-    //     Point_3(1.02, -0.15, 0.0),   // top right
-    //     Point_3(0.8, -0.15, 0.0)     // top left
-    // },
-
-    // // Step 5 - Upper path continuation
-    // {
-    //     Point_3(1.2, 0.15, 0.0),     // bottom left
-    //     Point_3(1.42, 0.15, 0.0),    // bottom right
-    //     Point_3(1.42, 0.27, 0.0),    // top right
-    //     Point_3(1.2, 0.27, 0.0)      // top left
-    // },
-
-    // // Step 6 - Lower path continuation
-    // {
-    //     Point_3(1.2, -0.27, 0.0),    // bottom left
-    //     Point_3(1.42, -0.27, 0.0),   // bottom right
-    //     Point_3(1.42, -0.15, 0.0),   // top right
-    //     Point_3(1.2, -0.15, 0.0)     // top left
-    // },
-
-    // // Step 7 - Upper path turn
-    // {
-    //     Point_3(1.6, 0.0, 0.0),      // bottom left
-    //     Point_3(1.82, 0.0, 0.0),     // bottom right
-    //     Point_3(1.82, 0.12, 0.0),    // top right
-    //     Point_3(1.6, 0.12, 0.0)      // top left
-    // },
-
-    // // Step 8 - Lower path turn
-    // {
-    //     Point_3(1.6, -0.12, 0.0),    // bottom left
-    //     Point_3(1.82, -0.12, 0.0),   // bottom right
-    //     Point_3(1.82, 0.0, 0.0),     // top right
-    //     Point_3(1.6, 0.0, 0.0)       // top left
-    // },
-
-    // // Step 9 - Convergence point
-    // {
-    //     Point_3(2.0, -0.06, 0.0),    // bottom left
-    //     Point_3(2.22, -0.06, 0.0),   // bottom right
-    //     Point_3(2.22, 0.06, 0.0),    // top right
-    //     Point_3(2.0, 0.06, 0.0)      // top left
-    // },
-
-    // // Step 10 - Final approach
-    // {
-    //     Point_3(2.4, -0.06, 0.0),    // bottom left
-    //     Point_3(2.62, -0.06, 0.0),   // bottom right
-    //     Point_3(2.62, 0.06, 0.0),    // top right
-    //     Point_3(2.4, 0.06, 0.0)      // top left
-    // },
-
-    // // Goal platform (larger for final stance)
-    // {
-    //     Point_3(2.8, -0.2, 0.0),     // bottom left
-    //     Point_3(3.1, -0.2, 0.0),     // bottom right
-    //     Point_3(3.1, 0.2, 0.0),      // top right
-    //     Point_3(2.8, 0.2, 0.0)       // top left
-    // }
 };
 
 const std::vector<std::vector<Point_3>> NarrowPassage = {
