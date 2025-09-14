@@ -81,8 +81,8 @@ const std::string node_search_method = "bruteforce"; // "bruteforce", "kdtree", 
 // const std::vector<std::vector<Point_3>> surf_list = LongLongStairs;
 // const std::vector<std::vector<Point_3>> surf_list = ThreePathsScene;
 // const std::vector<std::vector<Point_3>> surf_list = ThreePathsNAS;
-const std::vector<std::vector<Point_3>> surf_list = NarrowPassage;
-// const std::vector<std::vector<Point_3>> surf_list = Stairs_Up_Down;
+// const std::vector<std::vector<Point_3>> surf_list = NarrowPassage;
+const std::vector<std::vector<Point_3>> surf_list = Stairs_Up_Down;
 // const std::vector<std::vector<Point_3>> surf_list = Flat;
 
 }
