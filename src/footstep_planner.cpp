@@ -4,6 +4,7 @@
 #include <iostream>
 #include <limits>
 #include <chrono>
+#include <cmath>
 
 namespace nas {
 
@@ -324,15 +325,31 @@ bool FootstepPlanner::plan(const int& stance_foot_flag_at_start,
         SurfaceConstraint surface_constraint = generate_surface_constraint(path_nodes[footstep_cnt]->patch_polyhedron_3d);
         surface_constraint_cache.push_back(surface_constraint);
         
-        // Convert Eigen matrices to CasADi format
+        // Convert Eigen matrices to CasADi format with normalization
         casadi::SX A_surface_casadi = casadi::SX::zeros(surface_constraint.A.rows(), surface_constraint.A.cols());
         casadi::SX b_surface_casadi = casadi::SX::zeros(surface_constraint.b.size());
         
         for (int i = 0; i < surface_constraint.A.rows(); ++i) {
+            // Calculate norm of row i
+            double row_norm = 0.0;
             for (int j = 0; j < surface_constraint.A.cols(); ++j) {
-                A_surface_casadi(i, j) = surface_constraint.A(i, j);
+                row_norm += surface_constraint.A(i, j) * surface_constraint.A(i, j);
             }
-            b_surface_casadi(i) = surface_constraint.b(i);
+            row_norm = sqrt(row_norm);
+            
+            // Normalize row i and corresponding b value
+            if (row_norm > 1e-12) {  // Avoid division by zero
+                for (int j = 0; j < surface_constraint.A.cols(); ++j) {
+                    A_surface_casadi(i, j) = surface_constraint.A(i, j) / row_norm;
+                }
+                b_surface_casadi(i) = surface_constraint.b(i) / row_norm;
+            } else {
+                // Handle degenerate case (zero norm row)
+                for (int j = 0; j < surface_constraint.A.cols(); ++j) {
+                    A_surface_casadi(i, j) = surface_constraint.A(i, j);
+                }
+                b_surface_casadi(i) = surface_constraint.b(i);
+            }
         }
         
         // Create constraint: A_surface * footstep_pos + alpha <= b_surface
