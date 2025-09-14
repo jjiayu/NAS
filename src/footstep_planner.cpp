@@ -3,6 +3,7 @@
 #include <casadi/casadi.hpp>
 #include <iostream>
 #include <limits>
+#include <chrono>
 
 namespace nas {
 
@@ -421,9 +422,13 @@ bool FootstepPlanner::plan(const int& stance_foot_flag_at_start,
     arg["lbg"] = casadi::DM::vertcat(lbg_parts);
     arg["ubg"] = casadi::DM::vertcat(ubg_parts);
 
-    // Solve QP with error handling
+    // Solve QP with error handling and timing
+    auto qp_start_time = std::chrono::high_resolution_clock::now();
     try {
         casadi::DMDict result = solver(arg);
+        auto qp_end_time = std::chrono::high_resolution_clock::now();
+        auto qp_duration = std::chrono::duration_cast<std::chrono::microseconds>(qp_end_time - qp_start_time);
+        std::cout << "\n⏱️  QP Computation Time: " << qp_duration.count() / 1000.0 << " ms" << std::endl;
         
         // Print QP solver status
         casadi::Dict stats = solver.stats();
@@ -471,6 +476,9 @@ bool FootstepPlanner::plan(const int& stance_foot_flag_at_start,
         }
         
     } catch (const casadi::CasadiException& e) {
+        auto qp_end_time = std::chrono::high_resolution_clock::now();
+        auto qp_duration = std::chrono::duration_cast<std::chrono::microseconds>(qp_end_time - qp_start_time);
+        std::cout << "\n⏱️  QP Computation Time: " << qp_duration.count() / 1000.0 << " ms (failed)" << std::endl;
         std::cout << "\n✗ QP solver failed with CasADi exception: " << e.what() << std::endl;
         std::cout << "   This path is infeasible - skipping to next iteration" << std::endl;
         
@@ -480,6 +488,9 @@ bool FootstepPlanner::plan(const int& stance_foot_flag_at_start,
         // Don't re-throw the exception - let the caller handle the failure gracefully
         return false;  // Failure
     } catch (const std::exception& e) {
+        auto qp_end_time = std::chrono::high_resolution_clock::now();
+        auto qp_duration = std::chrono::duration_cast<std::chrono::microseconds>(qp_end_time - qp_start_time);
+        std::cout << "\n⏱️  QP Computation Time: " << qp_duration.count() / 1000.0 << " ms (failed)" << std::endl;
         std::cout << "\n✗ QP solver failed with exception: " << e.what() << std::endl;
         std::cout << "   This path is infeasible - skipping to next iteration" << std::endl;
         
