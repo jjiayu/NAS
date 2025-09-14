@@ -117,11 +117,24 @@ bool FootstepPlanner::plan(const int& stance_foot_flag_at_start,
         footstep_pos_vars.push_back(casadi::SX::sym("step"+std::to_string(footstep_cnt),3));
     }
 
-    // Create objective function (empty)
+    // Create objective function to minimize stride length
+    // Stride length = distance between footstep n and footstep n-2 (same foot)
+    // Special case: for n=1, minimize distance to stance foot (n=0)
     casadi::SX objective = 0;
-    for (int footstep_cnt = 0; footstep_cnt < path_nodes.size(); footstep_cnt++) {
-        casadi::SX deviation = footstep_pos_vars[footstep_cnt] - desired_footstep_positions[footstep_cnt];
-        objective += casadi::SX::dot(deviation, deviation);
+    
+    for (int footstep_cnt = 1; footstep_cnt < path_nodes.size(); footstep_cnt++) {
+        casadi::SX stride_vector;
+        
+        if (footstep_cnt == 1) {
+            // First footstep (n=1): minimize distance to stance foot (n=0)
+            stride_vector = footstep_pos_vars[1] - footstep_pos_vars[0];
+        } else {
+            // Regular case (n>=2): minimize distance between same foot (n and n-2)
+            stride_vector = footstep_pos_vars[footstep_cnt] - footstep_pos_vars[footstep_cnt-2];
+        }
+        
+        // Add squared stride length to objective
+        objective += casadi::SX::dot(stride_vector, stride_vector);
     }
 
     // Create Footstep Reachability constraints (next foot in previous foot's polytope)
