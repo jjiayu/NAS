@@ -25,7 +25,7 @@ const double foot_length = 0.22;//0.22;
 const double foot_width  = 0.22;//0.12;
 
 // Foot yaw angle range
-const bool foot_yaw_rotation_flag = false;
+const bool foot_yaw_rotation_flag = true;
 const double current_foot_yaw = 0.0;
 const double foot_yaw_angle_increment = 10.0/180.0*M_PI; // radians (15 degrees)
 const int foot_yaw_angle_discretization_num = 3; // one side discretize times 3*foot_yaw_angle_discretization
