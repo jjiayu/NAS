@@ -1,8 +1,10 @@
 #include "astar_search.hpp"
-#include "geometry.hpp"
+#include "types.hpp"
 #include "constants.hpp"
 #include "visualizer.hpp"
 #include "utils.hpp"
+#include "geometry.hpp"
+#include <cmath>
 #include "geometry.hpp"
 #include <CGAL/IO/Polyhedron_iostream.h>
 #include <CGAL/IO/polygon_mesh_io.h>

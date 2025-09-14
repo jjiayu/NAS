@@ -47,9 +47,9 @@ const std::string com_in_rf_path_forward = "/Users/jiayu/Desktop/nas_ws/NAS/data
 
 // Define Goal Specificaitons
 const int stance_foot_at_goal = LEFT_FOOT;
-const Vector_3 goal_offset(0.0, 0.0, 0.0); // goal offset applied to move in the local frame of the goal surface (last surface)
+// const Vector_3 goal_offset(0.0, 0.0, 0.0); // goal offset applied to move in the local frame of the goal surface (last surface)
 
-// const Vector_3 goal_offset(0.0, 1.0, 0.0); // for 3path NAS goal offset applied to move in the local frame of the goal surface (last surface)
+const Vector_3 goal_offset(0.0, 1.0, 0.0); // for 3path NAS goal offset applied to move in the local frame of the goal surface (last surface)
 
 
 // Define Number of Steps (max number of steps)
