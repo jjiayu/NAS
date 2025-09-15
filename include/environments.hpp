@@ -1154,10 +1154,10 @@ const std::vector<std::vector<Point_3>> NarrowPassage = {
 
     // Passage
     {
-        Point_3(2.0, -0.15, 0.0),    // bottom left
-        Point_3(6.0, -0.15, 0.0),    // bottom right
-        Point_3(6.0, 0.15, 0.0),     // top right
-        Point_3(2.0, 0.15, 0.0)      // top left
+        Point_3(2.0, -0.12, 0.0),    // bottom left
+        Point_3(6.0, -0.12, 0.0),    // bottom right
+        Point_3(6.0, 0.12, 0.0),     // top right
+        Point_3(2.0, 0.12, 0.0)      // top left
     },
 
     // Last Floor
