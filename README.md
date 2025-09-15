@@ -21,8 +21,8 @@ brew install cgal boost nlohmann-json
 
 ### Build Instructions
 ```bash
-# Clone the repository
-git clone <repository-url>
+# Clone the repository and checkout devel branch
+git clone -b devel <repository-url>
 cd NAS
 
 # Create build directory
