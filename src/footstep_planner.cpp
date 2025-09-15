@@ -380,10 +380,16 @@ bool FootstepPlanner::plan(const int& stance_foot_flag_at_start,
             }
         }
         
-        // Create constraint: A_surface * footstep_pos + alpha <= b_surface
-        // This becomes: A_surface * footstep_pos - b_surface + alpha <= 0
-        casadi::SX surface_constraint_expr = mtimes(A_surface_casadi, footstep_pos_vars[footstep_cnt]) - b_surface_casadi + alpha;
-        surface_constraints.push_back(surface_constraint_expr);
+        // Separate plane constraint (row 0) from boundary constraints (rows 1+)
+        // Row 0: Plane constraint (equality) - footstep must stay ON the surface
+        casadi::SX plane_constraint_expr = mtimes(A_surface_casadi(0, casadi::Slice()), footstep_pos_vars[footstep_cnt]) - b_surface_casadi(0);
+        surface_constraints.push_back(plane_constraint_expr);
+        
+        // Rows 1+: Boundary constraints (inequalities) - footstep must stay within patch boundaries with alpha margin
+        for (int i = 1; i < surface_constraint.A.rows(); ++i) {
+            casadi::SX boundary_constraint_expr = mtimes(A_surface_casadi(i, casadi::Slice()), footstep_pos_vars[footstep_cnt]) - b_surface_casadi(i) + alpha;
+            surface_constraints.push_back(boundary_constraint_expr);
+        }
         
     }
     
