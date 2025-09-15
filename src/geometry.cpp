@@ -2,6 +2,11 @@
 #include "geometry.hpp"
 #include "node.hpp"
 #include <limits>
+#include <cmath>
+#include <coal/collision_object.h>
+#include <coal/shape/geometric_shapes.h>
+#include <coal/shape/convex.h>
+#include <coal/distance.h>
 namespace nas {
 
 std::vector<Point_2> transform_3d_points_to_surface_plane(const std::vector<Point_3>& points, const Transformation& transformation) {
@@ -181,6 +186,135 @@ double compute_polygon_perimeter(const Polyhedron& polyhedron){
 
 double compute_euclidean_distance(const Point_3& start_location, const Point_3& end_location){
     return CGAL::sqrt(CGAL::squared_distance(start_location, end_location));
+}
+
+double calculate_gjk_distance_point_to_patch(const std::vector<Point_3>& patch_points, const Point_3& goal) {
+    if (patch_points.size() < 3) {
+        std::cerr << "Error: Patch must have at least 3 points for GJK distance calculation" << std::endl;
+        return compute_euclidean_distance(goal, patch_points[0]); // Fallback to Euclidean
+    }
+    
+    // Convert CGAL types to COAL types directly
+    coal::Vec3s coal_goal(goal.x(), goal.y(), goal.z());
+    std::vector<coal::Vec3s> coal_patch_vertices;
+    coal_patch_vertices.reserve(patch_points.size());
+    for (const auto& point : patch_points) {
+        coal_patch_vertices.emplace_back(point.x(), point.y(), point.z());
+    }
+    
+    // Create a point as a very small sphere for GJK compatibility
+    auto point_shape = std::make_shared<coal::Sphere>(1e-6);
+    coal::CollisionObject point_obj(point_shape);
+    
+    // Set goal point position
+    coal::Transform3s point_tf = coal::Transform3s::Identity();
+    point_tf.translation() = coal_goal;
+    point_obj.setTransform(point_tf);
+    
+    // Create exact convex shape using COAL's Convex class
+    try {
+        // Prepare vertices and triangulation for the patch
+        auto vertices_ptr = std::make_shared<std::vector<coal::Vec3s>>(coal_patch_vertices);
+        std::vector<coal::Triangle> triangles;
+        
+        // Create fan triangulation from first vertex for convex polygon
+        for (size_t i = 1; i < coal_patch_vertices.size() - 1; ++i) {
+            triangles.push_back(coal::Triangle(0, i, i + 1));
+        }
+        auto triangles_ptr = std::make_shared<std::vector<coal::Triangle>>(triangles);
+        
+        // Create exact convex mesh for the patch
+        auto convex_shape = std::make_shared<coal::Convex<coal::Triangle>>(
+            vertices_ptr, coal_patch_vertices.size(),
+            triangles_ptr, triangles.size()
+        );
+        
+        coal::CollisionObject convex_obj(convex_shape);
+        coal::Transform3s convex_tf = coal::Transform3s::Identity();
+        convex_obj.setTransform(convex_tf);
+        
+        // Compute exact GJK distance from goal point to patch
+        coal::DistanceRequest request;
+        coal::DistanceResult result;
+        
+        coal::distance(&point_obj, &convex_obj, request, result);
+        
+        return result.min_distance;
+        
+    } catch (const std::exception& e) {
+        std::cerr << "COAL convex shape creation failed for patch: " << e.what() << std::endl;
+        // Fallback to Euclidean distance to patch centroid
+        Point_3 centroid = get_centroid(patch_points);
+        return compute_euclidean_distance(goal, centroid);
+    }
+}
+
+double calculate_epa_distance_point_to_patch(const std::vector<Point_3>& patch_points, const Point_3& goal) {
+    if (patch_points.size() < 3) {
+        std::cerr << "Error: Patch must have at least 3 points for EPA distance calculation" << std::endl;
+        return compute_euclidean_distance(goal, patch_points[0]); // Fallback to Euclidean
+    }
+    
+    // Convert CGAL types to COAL types directly
+    coal::Vec3s coal_goal(goal.x(), goal.y(), goal.z());
+    std::vector<coal::Vec3s> coal_patch_vertices;
+    coal_patch_vertices.reserve(patch_points.size());
+    for (const auto& point : patch_points) {
+        coal_patch_vertices.emplace_back(point.x(), point.y(), point.z());
+    }
+    
+    // Create a point as a very small sphere for EPA compatibility
+    auto point_shape = std::make_shared<coal::Sphere>(1e-6);
+    coal::CollisionObject point_obj(point_shape);
+    
+    // Set goal point position
+    coal::Transform3s point_tf = coal::Transform3s::Identity();
+    point_tf.translation() = coal_goal;
+    point_obj.setTransform(point_tf);
+    
+    // Create exact convex shape using COAL's Convex class
+    try {
+        // Prepare vertices and triangulation for the patch
+        auto vertices_ptr = std::make_shared<std::vector<coal::Vec3s>>(coal_patch_vertices);
+        std::vector<coal::Triangle> triangles;
+        
+        // Create fan triangulation from first vertex for convex polygon
+        for (size_t i = 1; i < coal_patch_vertices.size() - 1; ++i) {
+            triangles.push_back(coal::Triangle(0, i, i + 1));
+        }
+        auto triangles_ptr = std::make_shared<std::vector<coal::Triangle>>(triangles);
+        
+        // Create exact convex mesh for the patch
+        auto convex_shape = std::make_shared<coal::Convex<coal::Triangle>>(
+            vertices_ptr, coal_patch_vertices.size(),
+            triangles_ptr, triangles.size()
+        );
+        
+        coal::CollisionObject convex_obj(convex_shape);
+        coal::Transform3s convex_tf = coal::Transform3s::Identity();
+        convex_obj.setTransform(convex_tf);
+        
+        // Use COAL's distance function with EPA enabled for penetration cases
+        coal::DistanceRequest distance_request;
+        coal::DistanceResult distance_result;
+        
+        // Enable signed distance computation which uses EPA for penetrating objects
+        distance_request.enable_signed_distance = false;
+        
+        coal::distance(&point_obj, &convex_obj, distance_request, distance_result);
+        
+        // COAL automatically uses GJK for separated objects and EPA for penetrating objects
+        // For penetrating objects, min_distance will be negative (penetration depth)
+        // For separated objects, min_distance will be positive (separation distance)
+        // Return the absolute value as the distance metric
+        return std::abs(distance_result.min_distance);
+        
+    } catch (const std::exception& e) {
+        std::cerr << "COAL EPA distance calculation failed for patch: " << e.what() << std::endl;
+        // Fallback to Euclidean distance to patch centroid
+        Point_3 centroid = get_centroid(patch_points);
+        return compute_euclidean_distance(goal, centroid);
+    }
 }
 
 // Convert half-space polytope constraint to H-representation
@@ -412,6 +546,44 @@ SurfaceConstraint generate_surface_constraint(const Polyhedron& surface_3d){
     // std::cout << "  Rows 1-" << num_vertices << ": Vertical edge boundary constraints (" << num_vertices << " edges)" << std::endl;
 
     return constraint;
+}
+
+Polyhedron rotate_polyhedron_z(const Polyhedron& polytope, double yaw_angle) {
+    // Create rotation transformation around Z-axis using matrix constructor
+    // Rotation matrix for Z-axis: [cos(θ) -sin(θ) 0; sin(θ) cos(θ) 0; 0 0 1]
+    double cos_yaw = std::cos(yaw_angle);
+    double sin_yaw = std::sin(yaw_angle);
+    
+    Transformation rotation(
+        cos_yaw, -sin_yaw, 0.0, 0.0,
+        sin_yaw,  cos_yaw, 0.0, 0.0,
+        0.0,      0.0,     1.0, 0.0,
+        1.0
+    );
+    
+    // Create a copy of the polytope to transform
+    Polyhedron rotated_polytope = polytope;
+    
+    // Apply transformation directly to all vertices
+    for (auto v_it = rotated_polytope.vertices_begin(); v_it != rotated_polytope.vertices_end(); ++v_it) {
+        v_it->point() = rotation(v_it->point());
+    }
+    
+    // Note: Convex hull rebuild is NOT needed for pure rotations as they preserve convexity
+    // However, if numerical issues arise in practice, uncomment the following:
+    /*
+    // Optional: Rebuild convex hull for numerical robustness
+    std::vector<Point_3> rotated_vertices;
+    for (auto v_it = rotated_polytope.vertices_begin(); v_it != rotated_polytope.vertices_end(); ++v_it) {
+        rotated_vertices.push_back(v_it->point());
+    }
+    rotated_polytope.clear();
+    if (rotated_vertices.size() >= 4) {
+        CGAL::convex_hull_3(rotated_vertices.begin(), rotated_vertices.end(), rotated_polytope);
+    }
+    */
+    
+    return rotated_polytope;
 }
 
 

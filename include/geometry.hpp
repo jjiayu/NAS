@@ -5,12 +5,13 @@
 #include <CGAL/Simple_cartesian.h>
 #include <CGAL/linear_least_squares_fitting_3.h>
 #include <CGAL/Plane_3.h>
-#include <CGAL/Point_3.h>
-#include <CGAL/Vector_3.h>
-#include <CGAL/Polygon_2.h>
-#include <CGAL/convex_hull_3.h>
 #include <CGAL/convex_hull_2.h>
 #include <CGAL/Aff_transformation_3.h>
+#include <coal/collision_object.h>
+#include <coal/shape/geometric_shapes.h>
+#include <coal/shape/convex.h>
+#include <coal/distance.h>
+#include <coal/collision.h>
 #include <Eigen/Dense>
 
 namespace nas {
@@ -53,10 +54,19 @@ double compare_polygon_similarity_3d(const std::vector<Point_3>& polygon1, const
 
 double compute_euclidean_distance(const Point_3& start_location, const Point_3& end_location);
 
+// COAL GJK distance computation function
+double calculate_gjk_distance_point_to_patch(const std::vector<Point_3>& patch_points, const Point_3& goal);
+
+// COAL EPA distance computation function
+double calculate_epa_distance_point_to_patch(const std::vector<Point_3>& patch_points, const Point_3& goal);
+
 // Convert half-space polytope constraint to H-representation
 HalfSpacePolytopeConstraint convert_polytope_to_half_space_constraint(const Polyhedron& polytope);
 
 // Convert surface constraint to H-representation
 SurfaceConstraint generate_surface_constraint(const Polyhedron& surface_3d);
+
+// Rotate polyhedron around Z-axis by given angle in radians
+Polyhedron rotate_polyhedron_z(const Polyhedron& polytope, double yaw_angle);
 
 } // namespace nas

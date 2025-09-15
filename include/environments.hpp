@@ -63,6 +63,23 @@ const std::vector<std::vector<Point_3>> TwoFlatSurfaces = {
     },
 };
 
+const std::vector<std::vector<Point_3>> Flat = {
+    // Surface 1
+    {
+        Point_3(-2.0, -1.0, 0.0),  // bottom left
+        Point_3(5.45, -1.0, 0.0),  // bottom right
+        Point_3(5.45, 1.0, 0.0),  // top right
+        Point_3(-2.0, 1.0, 0.0)   // top left
+    },
+    // // Surface 2: Another rectangle or surface
+    // {
+    //     Point_3(5.5,  0.0, 0.0),  // bottom left
+    //     Point_3(7.0, 0.0, 0.0),  // bottom right
+    //     Point_3(7.0, 1.0, 0.0),  // top right
+    //     Point_3(5.5,  1.0, 0.0)   // top left
+    // },
+};
+
 const std::vector<std::vector<Point_3>> LongStairs = {
     // Floor
     {
@@ -967,58 +984,190 @@ const std::vector<std::vector<Point_3>> Stairs_Up_Down = {
         // Floor
         {
             Point_3(-1.8, -1., 0.0),   // bottom left
-            Point_3(0.3, -1., 0.0),   // bottom right
-            Point_3(0.3, 1., 0.0),    // top right
+            Point_3(0.6, -1., 0.0),   // bottom right
+            Point_3(0.6, 1., 0.0),    // top right
             Point_3(-1.8, 1., 0.0)     // top left
         },
     
         // Step 1
         {
-            Point_3(0.3, -0.16, 0.1),   // bottom left
-            Point_3(0.6, -0.16, 0.1),    // bottom right
-            Point_3(0.6, 0.6, 0.1),      // top right
-            Point_3(0.3, 0.6, 0.1)      // top left
+            Point_3(0.6, -0.16, 0.1),   // bottom left
+            Point_3(1.2, -0.16, 0.1),    // bottom right
+            Point_3(1.2, 0.6, 0.1),      // top right
+            Point_3(0.6, 0.6, 0.1)      // top left
         },
     
         // Step 2
         {
-            Point_3(0.6, -0.16, 0.2),    // bottom left
-            Point_3(0.9, -0.16, 0.2),    // bottom right
-            Point_3(0.9, 0.6, 0.2),      // top right
-            Point_3(0.6, 0.6, 0.2)       // top left
+            Point_3(1.2, -0.16, 0.2),    // bottom left
+            Point_3(1.8, -0.16, 0.2),    // bottom right
+            Point_3(1.8, 0.6, 0.2),      // top right
+            Point_3(1.2, 0.6, 0.2)       // top left
         },
     
         // Step 3
         {
-            Point_3(0.9, -0.16, 0.3),    // bottom left
-            Point_3(1.8, -0.16, 0.3),    // bottom right
-            Point_3(1.8, 0.6, 0.3),      // top right
-            Point_3(0.9, 0.6, 0.3)       // top left
+            Point_3(1.8, -0.16, 0.3),    // bottom left
+            Point_3(2.4, -0.16, 0.3),    // bottom right
+            Point_3(2.4, 0.6, 0.3),      // top right
+            Point_3(1.8, 0.6, 0.3)       // top left
         },
     
         // Step 4
         {
-            Point_3(1.8, -0.16, 0.2),    // bottom left
-            Point_3(2.1, -0.16, 0.2),    // bottom right
-            Point_3(2.1, 0.6, 0.2),      // top right
-            Point_3(1.8, 0.6, 0.2)       // top left
+            Point_3(2.4, -0.16, 0.2),    // bottom left
+            Point_3(3.0, -0.16, 0.2),    // bottom right
+            Point_3(3.0, 0.6, 0.2),      // top right
+            Point_3(2.4, 0.6, 0.2)       // top left
         },
 
         // Step 5
         {
-            Point_3(2.1, -0.16, 0.1),    // bottom left
-            Point_3(2.4, -0.16, 0.1),    // bottom right
-            Point_3(2.4, 0.6, 0.1),      // top right
-            Point_3(2.1, 0.6, 0.1)       // top left
+            Point_3(3.0, -0.16, 0.1),    // bottom left
+            Point_3(3.6, -0.16, 0.1),    // bottom right
+            Point_3(3.6, 0.6, 0.1),      // top right
+            Point_3(3.0, 0.6, 0.1)       // top left
         },
 
         // Step 6
         {
-            Point_3(2.4, -0.16, 0.0),    // bottom left
-            Point_3(2.7, -0.16, 0.0),    // bottom right
-            Point_3(2.7, 0.6, 0.0),      // top right
-            Point_3(2.4, 0.6, 0.0)       // top left
+            Point_3(3.6, -0.16, 0.0),    // bottom left
+            Point_3(4.2, -0.16, 0.0),    // bottom right
+            Point_3(4.2, 0.6, 0.0),      // top right
+            Point_3(3.6, 0.6, 0.0)       // top left
         }
     };
+
+const std::vector<std::vector<Point_3>> ThreePathsNAS = {
+    // Starting platform (larger for initial stance)
+    {
+        Point_3(-0.3, -4.0, 0.0),    // bottom left
+        Point_3(0.3, -4.0, 0.0),    // bottom right
+        Point_3(0.3, 2.0, 0.0),     // top right
+        Point_3(-0.3, 2.0, 0.0)      // top left
+    },
+
+    // Up Path 1
+    {
+        Point_3(0.32, 1.4, 0.0),    // bottom left
+        Point_3(0.72, 1.4, 0.0),   // bottom right
+        Point_3(0.72, 2.0, 0.0),    // top right
+        Point_3(0.32, 2.0, 0.0)      // top left
+    },
+
+    // Up Path 2
+    {
+        Point_3(0.74, 1.4, 0.0),    // bottom left
+        Point_3(1.32, 1.4, 0.0),   // bottom right
+        Point_3(1.32, 2.0, 0.0),    // top right
+        Point_3(0.74, 2.0, 0.0)      // top left
+    },
+
+    // Up Path 3
+    {
+        Point_3(1.34, 1.4, 0.0),    // bottom left
+        Point_3(2.52, 1.4, 0.0),   // bottom right
+        Point_3(2.52, 2.0, 0.0),    // top right
+        Point_3(1.34, 2.0, 0.0)      // top left
+    },    
+
+    // Up Path 4
+    {
+        Point_3(2.54, 1.4, 0.0),    // bottom left
+        Point_3(3.12, 1.4, 0.0),   // bottom right
+        Point_3(3.12, 2.0, 0.0),    // top right
+        Point_3(2.54, 2.0, 0.0)      // top left
+    },   
+
+    // Up Path 5
+    {
+        Point_3(3.14, 1.4, 0.0),    // bottom left
+        Point_3(3.72, 1.4, 0.0),   // bottom right
+        Point_3(3.72, 2.0, 0.0),    // top right
+        Point_3(3.14, 2.0, 0.0)      // top left
+    },   
+
+    // Up Path 5
+    {
+        Point_3(3.74, 1.4, 0.0),    // bottom left
+        Point_3(4.32, 1.4, 0.0),   // bottom right
+        Point_3(4.32, 2.0, 0.0),    // top right
+        Point_3(3.74, 2.0, 0.0)      // top left
+    },  
+
+
+    // Down
+    {
+        Point_3(0.32, -3.2, 0.0),    // bottom left
+        Point_3(1.2, -3.2, 0.0),   // bottom right
+        Point_3(1.2, -4.0, 0.0),    // top right
+        Point_3(0.32, -4.0, 0.0)      // top left
+    },
+
+    {
+        Point_3(1.22, -3.2, 0.0),    // bottom left
+        Point_3(2.2, -3.2, 0.0),   // bottom right
+        Point_3(2.2, -4.0, 0.0),    // top right
+        Point_3(1.22, -4.0, 0.0)      // top left
+    },
+
+    {
+        Point_3(2.22, -3.2, 0.0),    // bottom left
+        Point_3(3.2, -3.2, 0.0),   // bottom right
+        Point_3(3.2, -4.0, 0.0),    // top right
+        Point_3(2.22, -4.0, 0.0)      // top left
+    },
+
+    {
+        Point_3(3.22, -3.2, 0.0),    // bottom left
+        Point_3(4.32, -3.2, 0.0),   // bottom right
+        Point_3(4.32, -4.0, 0.0),    // top right
+        Point_3(3.22, -4.0, 0.0)      // top left
+    },
+
+    // Dead end
+    {
+        Point_3(0.32, -1.0, 0.0),    // bottom left
+        Point_3(1.5, -1.0, 0.0),   // bottom right
+        Point_3(1.5, -2.0, 0.0),    // top right
+        Point_3(0.32, -2.0, 0.0)      // top left
+    },
+
+    // End Surface
+    {
+        Point_3(4.34, -4.0, 0.0),    // bottom left
+        Point_3(4.94, -4.0, 0.0),    // bottom right
+        Point_3(4.94, 2.0, 0.0),     // top right
+        Point_3(4.34, 2.0, 0.0)      // top left
+    },
+};
+
+const std::vector<std::vector<Point_3>> NarrowPassage = {
+
+    // Starting Floor
+    {
+        Point_3(-2.0, -2.0, 0.0),    // bottom left
+        Point_3(2.0, -2.0, 0.0),    // bottom right
+        Point_3(2.0, 2.0, 0.0),     // top right
+        Point_3(-2.0, 2.0, 0.0)      // top left
+    },
+
+    // Passage
+    {
+        Point_3(2.0, -0.15, 0.0),    // bottom left
+        Point_3(6.0, -0.15, 0.0),    // bottom right
+        Point_3(6.0, 0.15, 0.0),     // top right
+        Point_3(2.0, 0.15, 0.0)      // top left
+    },
+
+    // Last Floor
+    {
+        Point_3(6.0, -2.0, 0.0),    // bottom left
+        Point_3(10.0, -2.0, 0.0),   // bottom right
+        Point_3(10.0, 2.0, 0.0),    // top right
+        Point_3(6.0, 2.0, 0.0)      // top left
+    }
+
+};
 
 } // namespace nas

@@ -3,8 +3,38 @@
 #include <casadi/casadi.hpp>
 #include <iostream>
 #include <limits>
+#include <chrono>
+#include <cmath>
+#include <nlohmann/json.hpp>
+#include <fstream>
+#include <cstdlib>
+#include <filesystem>
 
 namespace nas {
+
+// Footstep structure for JSON export
+struct Footstep {
+    double x, y, z;
+    std::string foot; // "left" or "right"
+    double timing;
+    double yaw; // yaw angle in radians
+};
+
+// Function to save footsteps to JSON file
+void saveFootsteps(const std::vector<Footstep>& footsteps, const std::string& filename) {
+    nlohmann::json j;
+    
+    for (size_t i = 0; i < footsteps.size(); ++i) {
+        j["footsteps"][i]["position"] = {footsteps[i].x, footsteps[i].y, footsteps[i].z};
+        j["footsteps"][i]["foot"] = footsteps[i].foot;
+        j["footsteps"][i]["timing"] = footsteps[i].timing;
+        j["footsteps"][i]["yaw"] = footsteps[i].yaw;
+    }
+    
+    std::ofstream file(filename);
+    file << j.dump(4);
+    file.close();
+}
 
 FootstepPlanner::FootstepPlanner() {
 
@@ -41,36 +71,36 @@ FootstepPlanner::FootstepPlanner() {
         this->b_lf_in_rf_casadi(i) = lf_in_rf_constraint.b(i);
     }
 
-    // CoM in Left Foot constraint forward polytope
-    load_obj(com_in_lf_path_forward, this->com_in_lf_polytope);
-    this->com_in_lf_constraint = convert_polytope_to_half_space_constraint(this->com_in_lf_polytope);
+    // // CoM in Left Foot constraint forward polytope
+    // load_obj(com_in_lf_path_forward, this->com_in_lf_polytope);
+    // this->com_in_lf_constraint = convert_polytope_to_half_space_constraint(this->com_in_lf_polytope);
 
-    // CoM in Right Foot constraint forward polytope
-    load_obj(com_in_rf_path_forward, this->com_in_rf_polytope);
-    this->com_in_rf_constraint = convert_polytope_to_half_space_constraint(this->com_in_rf_polytope);
+    // // CoM in Right Foot constraint forward polytope
+    // load_obj(com_in_rf_path_forward, this->com_in_rf_polytope);
+    // this->com_in_rf_constraint = convert_polytope_to_half_space_constraint(this->com_in_rf_polytope);
 
-    // Convert Eigen matrices to CasADi SX (for mtimes compatibility)
-    //   CoM in Left Foot constraint polytope
-    this->A_com_in_lf_casadi = casadi::SX::zeros(com_in_lf_constraint.A.rows(), com_in_lf_constraint.A.cols());
-    this->b_com_in_lf_casadi = casadi::SX::zeros(com_in_lf_constraint.b.size());
+    // // Convert Eigen matrices to CasADi SX (for mtimes compatibility)
+    // //   CoM in Left Foot constraint polytope
+    // this->A_com_in_lf_casadi = casadi::SX::zeros(com_in_lf_constraint.A.rows(), com_in_lf_constraint.A.cols());
+    // this->b_com_in_lf_casadi = casadi::SX::zeros(com_in_lf_constraint.b.size());
 
-    for (int i = 0; i < com_in_lf_constraint.A.rows(); ++i) {
-        for (int j = 0; j < com_in_lf_constraint.A.cols(); ++j) {
-            this->A_com_in_lf_casadi(i, j) = com_in_lf_constraint.A(i, j);
-        }
-        this->b_com_in_lf_casadi(i) = com_in_lf_constraint.b(i);
-    }
+    // for (int i = 0; i < com_in_lf_constraint.A.rows(); ++i) {
+    //     for (int j = 0; j < com_in_lf_constraint.A.cols(); ++j) {
+    //         this->A_com_in_lf_casadi(i, j) = com_in_lf_constraint.A(i, j);
+    //     }
+    //     this->b_com_in_lf_casadi(i) = com_in_lf_constraint.b(i);
+    // }
     
-    // CoM in Right Foot constraint forward polytope
-    this->A_com_in_rf_casadi = casadi::SX::zeros(com_in_rf_constraint.A.rows(), com_in_rf_constraint.A.cols());
-    this->b_com_in_rf_casadi = casadi::SX::zeros(com_in_rf_constraint.b.size());
+    // // CoM in Right Foot constraint forward polytope
+    // this->A_com_in_rf_casadi = casadi::SX::zeros(com_in_rf_constraint.A.rows(), com_in_rf_constraint.A.cols());
+    // this->b_com_in_rf_casadi = casadi::SX::zeros(com_in_rf_constraint.b.size());
 
-    for (int i = 0; i < com_in_rf_constraint.A.rows(); ++i) {
-        for (int j = 0; j < com_in_rf_constraint.A.cols(); ++j) {
-            this->A_com_in_rf_casadi(i, j) = com_in_rf_constraint.A(i, j);
-        }
-        this->b_com_in_rf_casadi(i) = com_in_rf_constraint.b(i);
-    }
+    // for (int i = 0; i < com_in_rf_constraint.A.rows(); ++i) {
+    //     for (int j = 0; j < com_in_rf_constraint.A.cols(); ++j) {
+    //         this->A_com_in_rf_casadi(i, j) = com_in_rf_constraint.A(i, j);
+    //     }
+    //     this->b_com_in_rf_casadi(i) = com_in_rf_constraint.b(i);
+    // }
 
 }
 
@@ -116,13 +146,34 @@ bool FootstepPlanner::plan(const int& stance_foot_flag_at_start,
     for (int footstep_cnt = 0; footstep_cnt < path_nodes.size(); footstep_cnt++) {
         footstep_pos_vars.push_back(casadi::SX::sym("step"+std::to_string(footstep_cnt),3));
     }
+    
+    // Create alpha slack variable (single alpha for all patches)
+    casadi::SX alpha = casadi::SX::sym("alpha", 1);
 
-    // Create objective function (empty)
+    // Create objective function to minimize stride length and maximize alpha
+    // Stride length = distance between footstep n and footstep n-2 (same foot)
+    // Special case: for n=1, minimize distance to stance foot (n=0)
+    // Also maximize alpha (minimize -alpha) to push footsteps toward patch centers
     casadi::SX objective = 0;
-    for (int footstep_cnt = 0; footstep_cnt < path_nodes.size(); footstep_cnt++) {
-        casadi::SX deviation = footstep_pos_vars[footstep_cnt] - desired_footstep_positions[footstep_cnt];
-        objective += casadi::SX::dot(deviation, deviation);
+    
+    for (int footstep_cnt = 1; footstep_cnt < path_nodes.size(); footstep_cnt++) {
+        casadi::SX stride_vector;
+        
+        if (footstep_cnt == 1) {
+            // First footstep (n=1): minimize distance to stance foot (n=0)
+            stride_vector = footstep_pos_vars[1] - footstep_pos_vars[0];
+        } else {
+            // Regular case (n>=2): minimize distance between same foot (n and n-2)
+            stride_vector = footstep_pos_vars[footstep_cnt] - footstep_pos_vars[footstep_cnt-2];
+        }
+        
+        // Add squared stride length to objective
+        objective += casadi::SX::dot(stride_vector, stride_vector);
     }
+    
+    // Add negative alpha to maximize alpha (push footsteps toward patch centers)
+    double alpha_weight = 10.0;  // Weight for alpha maximization
+    objective += -alpha_weight * alpha;
 
     // Create Footstep Reachability constraints (next foot in previous foot's polytope)
     std::vector<casadi::SX> reachability_constraints;
@@ -140,7 +191,38 @@ bool FootstepPlanner::plan(const int& stance_foot_flag_at_start,
         else {
             throw std::runtime_error("Invalid stance foot flag");
         }
-        reachability_constraints.push_back(mtimes(A_matrix, (footstep_pos_vars[footstep_cnt] - footstep_pos_vars[footstep_cnt-1])) - b_vector);
+
+        
+        // Compute 3x3 rotation matrix based on previous foot yaw
+        casadi::SX R_yaw = casadi::SX::zeros(3, 3);
+        
+        if (foot_yaw_rotation_flag) {
+            double prev_foot_yaw = path_nodes[footstep_cnt-1]->foot_yaw;
+            casadi::SX cos_yaw = casadi::SX(cos(prev_foot_yaw));
+            casadi::SX sin_yaw = casadi::SX(sin(prev_foot_yaw));
+            
+            // 3x3 rotation matrix for Z-axis rotation (yaw)
+            R_yaw(0, 0) = cos_yaw;   // R11
+            R_yaw(0, 1) = -sin_yaw;  // R12
+            R_yaw(0, 2) = 0;         // R13
+            R_yaw(1, 0) = sin_yaw;   // R21
+            R_yaw(1, 1) = cos_yaw;   // R22
+            R_yaw(1, 2) = 0;         // R23
+            R_yaw(2, 0) = 0;         // R31
+            R_yaw(2, 1) = 0;         // R32
+            R_yaw(2, 2) = 1;         // R33
+        } else {
+            // Identity matrix when foot yaw rotation is disabled
+            R_yaw(0, 0) = 1;  R_yaw(0, 1) = 0;  R_yaw(0, 2) = 0;
+            R_yaw(1, 0) = 0;  R_yaw(1, 1) = 1;  R_yaw(1, 2) = 0;
+            R_yaw(2, 0) = 0;  R_yaw(2, 1) = 0;  R_yaw(2, 2) = 1;
+        }
+        
+        // Convert world frame relative position to contact frame
+        casadi::SX relative_pos = footstep_pos_vars[footstep_cnt] - footstep_pos_vars[footstep_cnt-1];
+        casadi::SX relative_pos_contact_frame = mtimes(R_yaw.T(), relative_pos);
+        
+        reachability_constraints.push_back(mtimes(A_matrix, relative_pos_contact_frame) - b_vector);
     }
     // Concatenate reachability constraints into a single vector
     casadi::SX reachability_constraints_vec = casadi::SX::vertcat(reachability_constraints);
@@ -168,9 +250,36 @@ bool FootstepPlanner::plan(const int& stance_foot_flag_at_start,
             throw std::runtime_error("Invalid previous stance foot flag for reverse reachability");
         }
         
+        // Compute 3x3 rotation matrix based on current foot yaw
+        casadi::SX R_yaw_curr = casadi::SX::zeros(3, 3);
+        
+        if (foot_yaw_rotation_flag) {
+            double curr_foot_yaw = path_nodes[footstep_cnt]->foot_yaw;
+            casadi::SX cos_yaw_curr = casadi::SX(cos(curr_foot_yaw));
+            casadi::SX sin_yaw_curr = casadi::SX(sin(curr_foot_yaw));
+            
+            // 3x3 rotation matrix for Z-axis rotation (yaw)
+            R_yaw_curr(0, 0) = cos_yaw_curr;   // R11
+            R_yaw_curr(0, 1) = -sin_yaw_curr;  // R12
+            R_yaw_curr(0, 2) = 0;              // R13
+            R_yaw_curr(1, 0) = sin_yaw_curr;   // R21
+            R_yaw_curr(1, 1) = cos_yaw_curr;   // R22
+            R_yaw_curr(1, 2) = 0;              // R23
+            R_yaw_curr(2, 0) = 0;              // R31
+            R_yaw_curr(2, 1) = 0;              // R32
+            R_yaw_curr(2, 2) = 1;              // R33
+        } else {
+            // Identity matrix when foot yaw rotation is disabled
+            R_yaw_curr(0, 0) = 1;  R_yaw_curr(0, 1) = 0;  R_yaw_curr(0, 2) = 0;
+            R_yaw_curr(1, 0) = 0;  R_yaw_curr(1, 1) = 1;  R_yaw_curr(1, 2) = 0;
+            R_yaw_curr(2, 0) = 0;  R_yaw_curr(2, 1) = 0;  R_yaw_curr(2, 2) = 1;
+        }
+
         // Constraint: A * (previous_foot - current_foot) <= b
+        // Convert world frame relative position to contact frame
         casadi::SX relative_position = footstep_pos_vars[footstep_cnt-1] - footstep_pos_vars[footstep_cnt];
-        casadi::SX constraint_expr = mtimes(A_matrix, relative_position) - b_vector;
+        casadi::SX relative_position_contact_frame = mtimes(R_yaw_curr.T(), relative_position);
+        casadi::SX constraint_expr = mtimes(A_matrix, relative_position_contact_frame) - b_vector;
         reachability_constraints_prev.push_back(constraint_expr);
         
     }
@@ -205,6 +314,7 @@ bool FootstepPlanner::plan(const int& stance_foot_flag_at_start,
         else {
             throw std::runtime_error("Invalid stance foot flag");
         }
+        
         com_constraints_next.push_back(mtimes(A_matrix, (footstep_pos_vars[footstep_cnt] - footstep_pos_vars[footstep_cnt-1])) - b_vector);
     }
     // Concatenate com constraints into a single vector
@@ -215,37 +325,8 @@ bool FootstepPlanner::plan(const int& stance_foot_flag_at_start,
     // CoM must stay inside the polytope based on the previous footstep's stance foot
     std::vector<casadi::SX> com_constraints;
     
-    for (int footstep_cnt = 1; footstep_cnt < path_nodes.size(); footstep_cnt++) {
-        // CoM position: above current footstep at com_z_height
-        casadi::SX com_position = casadi::SX::vertcat({
-            footstep_pos_vars[footstep_cnt](0),  // x
-            footstep_pos_vars[footstep_cnt](1),  // y
-            footstep_pos_vars[footstep_cnt](2) + com_z_height  // z (footstep_z + com_height)
-        });
-        
-        // Previous footstep position (stance foot)
-        casadi::SX previous_footstep_position = footstep_pos_vars[footstep_cnt-1];
-        
-        // Select polytope based on previous footstep's stance foot
-        casadi::SX A_com_matrix;
-        casadi::SX b_com_vector;
-        
-        if (path_nodes[footstep_cnt-1]->stance_foot == 0) { // Previous was LF, so CoM constrained by LF polytope
-            A_com_matrix = A_com_in_lf_casadi;
-            b_com_vector = b_com_in_lf_casadi;
-        } else if (path_nodes[footstep_cnt-1]->stance_foot == 1) { // Previous was RF, so CoM constrained by RF polytope
-            A_com_matrix = A_com_in_rf_casadi;
-            b_com_vector = b_com_in_rf_casadi;
-        } else {
-            throw std::runtime_error("Invalid previous stance foot flag for CoM constraint");
-        }
-        
-        // Create constraint: A_com * (com_position - previous_footstep_position) <= b_com
-        casadi::SX com_relative_position = com_position - previous_footstep_position;
-        casadi::SX com_constraint_expr = mtimes(A_com_matrix, com_relative_position) - b_com_vector;
-        com_constraints.push_back(com_constraint_expr);
-        
-    }
+    // NOTE: CoM constraints are disabled since CoM polytopes are not loaded
+    // Skipping CoM constraint creation to avoid uninitialized matrix errors
     
     // Concatenate CoM constraints into a single vector
     casadi::SX com_constraints_vec;
@@ -272,20 +353,43 @@ bool FootstepPlanner::plan(const int& stance_foot_flag_at_start,
         SurfaceConstraint surface_constraint = generate_surface_constraint(path_nodes[footstep_cnt]->patch_polyhedron_3d);
         surface_constraint_cache.push_back(surface_constraint);
         
-        // Convert Eigen matrices to CasADi format
+        // Convert Eigen matrices to CasADi format with normalization
         casadi::SX A_surface_casadi = casadi::SX::zeros(surface_constraint.A.rows(), surface_constraint.A.cols());
         casadi::SX b_surface_casadi = casadi::SX::zeros(surface_constraint.b.size());
         
         for (int i = 0; i < surface_constraint.A.rows(); ++i) {
+            // Calculate norm of row i
+            double row_norm = 0.0;
             for (int j = 0; j < surface_constraint.A.cols(); ++j) {
-                A_surface_casadi(i, j) = surface_constraint.A(i, j);
+                row_norm += surface_constraint.A(i, j) * surface_constraint.A(i, j);
             }
-            b_surface_casadi(i) = surface_constraint.b(i);
+            row_norm = sqrt(row_norm);
+            
+            // Normalize row i and corresponding b value
+            if (row_norm > 1e-12) {  // Avoid division by zero
+                for (int j = 0; j < surface_constraint.A.cols(); ++j) {
+                    A_surface_casadi(i, j) = surface_constraint.A(i, j) / row_norm;
+                }
+                b_surface_casadi(i) = surface_constraint.b(i) / row_norm;
+            } else {
+                // Handle degenerate case (zero norm row)
+                for (int j = 0; j < surface_constraint.A.cols(); ++j) {
+                    A_surface_casadi(i, j) = surface_constraint.A(i, j);
+                }
+                b_surface_casadi(i) = surface_constraint.b(i);
+            }
         }
         
-        // Create constraint: A_surface * footstep_pos <= b_surface
-        casadi::SX surface_constraint_expr = mtimes(A_surface_casadi, footstep_pos_vars[footstep_cnt]) - b_surface_casadi;
-        surface_constraints.push_back(surface_constraint_expr);
+        // Separate plane constraint (row 0) from boundary constraints (rows 1+)
+        // Row 0: Plane constraint (equality) - footstep must stay ON the surface
+        casadi::SX plane_constraint_expr = mtimes(A_surface_casadi(0, casadi::Slice()), footstep_pos_vars[footstep_cnt]) - b_surface_casadi(0);
+        surface_constraints.push_back(plane_constraint_expr);
+        
+        // Rows 1+: Boundary constraints (inequalities) - footstep must stay within patch boundaries with alpha margin
+        for (int i = 1; i < surface_constraint.A.rows(); ++i) {
+            casadi::SX boundary_constraint_expr = mtimes(A_surface_casadi(i, casadi::Slice()), footstep_pos_vars[footstep_cnt]) - b_surface_casadi(i) + alpha;
+            surface_constraints.push_back(boundary_constraint_expr);
+        }
         
     }
     
@@ -326,8 +430,10 @@ bool FootstepPlanner::plan(const int& stance_foot_flag_at_start,
         surface_constraints_ub = casadi::DM::zeros(0);
     }
 
-    // Concatenate all footstep position variables into a single vector
-    casadi::SX all_vars = casadi::SX::vertcat(footstep_pos_vars);
+    // Concatenate all footstep position variables and alpha into a single vector
+    std::vector<casadi::SX> all_vars_list = footstep_pos_vars;
+    all_vars_list.push_back(alpha);
+    casadi::SX all_vars = casadi::SX::vertcat(all_vars_list);
 
     // Create bounds for reachability constraints
     casadi::DM reachability_constraints_lb = -casadi::DM::inf(reachability_constraints_vec.size1());
@@ -354,7 +460,8 @@ bool FootstepPlanner::plan(const int& stance_foot_flag_at_start,
     casadi::DM final_footstep_constraints_ub = casadi::DM::zeros(final_footstep_constraints.size1());
 
     // Concatenate all constraint functions into a single vector
-    std::vector<casadi::SX> all_constraint_vectors = {reachability_constraints_vec, reachability_constraints_prev_vec, com_constraints_vec, surface_constraints_vec, initial_footstep_constraints, final_footstep_constraints};
+    // Temporarily remove backward reachability constraints to test feasibility
+    std::vector<casadi::SX> all_constraint_vectors = {reachability_constraints_vec, com_constraints_vec, surface_constraints_vec, initial_footstep_constraints, final_footstep_constraints};
     casadi::SX all_constraints = casadi::SX::vertcat(all_constraint_vectors);
 
     // Create QP problem
@@ -369,18 +476,32 @@ bool FootstepPlanner::plan(const int& stance_foot_flag_at_start,
 
     // Create solver arguments with proper types
     casadi::DMDict arg;
-    arg["x0"] = casadi::DM::zeros(all_vars.size1());
     
-    // Collect the bounds for all constraints
-    std::vector<casadi::DM> lbg_parts = {reachability_constraints_lb, reachability_constraints_prev_lb, com_constraints_lb, surface_constraints_lb, initial_footstep_constraints_lb, final_footstep_constraints_lb};
-    std::vector<casadi::DM> ubg_parts = {reachability_constraints_ub, reachability_constraints_prev_ub, com_constraints_ub, surface_constraints_ub, initial_footstep_constraints_ub, final_footstep_constraints_ub};
+    // Set bounds for decision variables
+    // Footstep positions: no bounds (unbounded)
+    casadi::DM lbx = -casadi::DM::inf(all_vars.size1());
+    casadi::DM ubx = casadi::DM::inf(all_vars.size1());
+    
+    // Alpha bounds: alpha >= 0 (last variable in all_vars)
+    lbx(all_vars.size1() - 1) = 0.0;  // alpha >= 0
+    
+    arg["lbx"] = lbx;
+    arg["ubx"] = ubx;
+    
+    // Collect the bounds for all constraints (excluding backward reachability)
+    std::vector<casadi::DM> lbg_parts = {reachability_constraints_lb, com_constraints_lb, surface_constraints_lb, initial_footstep_constraints_lb, final_footstep_constraints_lb};
+    std::vector<casadi::DM> ubg_parts = {reachability_constraints_ub, com_constraints_ub, surface_constraints_ub, initial_footstep_constraints_ub, final_footstep_constraints_ub};
     
     arg["lbg"] = casadi::DM::vertcat(lbg_parts);
     arg["ubg"] = casadi::DM::vertcat(ubg_parts);
 
-    // Solve QP with error handling
+    // Solve QP with error handling and timing
+    auto qp_start_time = std::chrono::high_resolution_clock::now();
     try {
         casadi::DMDict result = solver(arg);
+        auto qp_end_time = std::chrono::high_resolution_clock::now();
+        auto qp_duration = std::chrono::duration_cast<std::chrono::microseconds>(qp_end_time - qp_start_time);
+        std::cout << "\n⏱️  QP Computation Time: " << qp_duration.count() / 1000.0 << " ms" << std::endl;
         
         // Print QP solver status
         casadi::Dict stats = solver.stats();
@@ -395,6 +516,11 @@ bool FootstepPlanner::plan(const int& stance_foot_flag_at_start,
             std::cout << "\n✓ QP solved successfully!" << std::endl;
 
             std::cout << "\n=== QP Solution ===" << std::endl;
+            
+            // Extract alpha value (last variable in solution vector)
+            casadi::DM alpha_value = x_opt(x_opt.size1() - 1);
+            std::cout << "\n[ Alpha Value (Patch Center Margin) ]" << std::endl;
+            std::cout << "Alpha = " << alpha_value << std::endl;
 
             // Print the footstep positions (extract from solution)
             std::cout << "\n[ Footstep Positions ]" << std::endl;
@@ -412,11 +538,48 @@ bool FootstepPlanner::plan(const int& stance_foot_flag_at_start,
 
             // Store the computed footsteps for later use
             computed_footsteps.clear();
+            std::vector<Footstep> footsteps_for_json;
+            
             for (int i = 0; i < footstep_pos_vars.size(); i++) {
                 double x = static_cast<double>(x_opt(i*3 + 0));
                 double y = static_cast<double>(x_opt(i*3 + 1));
                 double z = static_cast<double>(x_opt(i*3 + 2));
                 computed_footsteps.push_back(Point_3(x, y, z));
+                
+                // Create footstep data for JSON export
+                Footstep fs;
+                fs.x = x;
+                fs.y = y;
+                fs.z = z;
+                
+                // Determine foot type and yaw angle based on stance_foot from path nodes
+                if (i < path_nodes.size()) {
+                    fs.foot = (path_nodes[i]->stance_foot == LEFT_FOOT) ? "left" : "right";
+                    fs.yaw = path_nodes[i]->foot_yaw; // Extract yaw angle from path node
+                } else {
+                    // Default for any extra footsteps
+                    fs.foot = "unknown";
+                    fs.yaw = 0.0; // Default yaw angle
+                }
+                
+                // Simple timing based on step index (can be refined later)
+                fs.timing = i * 0.5; // 0.5 seconds per step
+                
+                footsteps_for_json.push_back(fs);
+            }
+            
+            // Save footsteps to JSON file
+            try {
+                std::string output_dir = std::string(getenv("HOME")) + "/Desktop/whole_body_opt_ws/orc/reactive_control/tsid/";
+                std::string output_path = output_dir + "footsteps_output.json";
+                
+                // Create directory if it doesn't exist
+                std::filesystem::create_directories(output_dir);
+                
+                saveFootsteps(footsteps_for_json, output_path);
+                std::cout << "\n✓ Footsteps saved to " << output_path << std::endl;
+            } catch (const std::exception& e) {
+                std::cout << "\n⚠️  Failed to save JSON file: " << e.what() << std::endl;
             }
             
             return true;  // Success
@@ -428,6 +591,9 @@ bool FootstepPlanner::plan(const int& stance_foot_flag_at_start,
         }
         
     } catch (const casadi::CasadiException& e) {
+        auto qp_end_time = std::chrono::high_resolution_clock::now();
+        auto qp_duration = std::chrono::duration_cast<std::chrono::microseconds>(qp_end_time - qp_start_time);
+        std::cout << "\n⏱️  QP Computation Time: " << qp_duration.count() / 1000.0 << " ms (failed)" << std::endl;
         std::cout << "\n✗ QP solver failed with CasADi exception: " << e.what() << std::endl;
         std::cout << "   This path is infeasible - skipping to next iteration" << std::endl;
         
@@ -437,6 +603,9 @@ bool FootstepPlanner::plan(const int& stance_foot_flag_at_start,
         // Don't re-throw the exception - let the caller handle the failure gracefully
         return false;  // Failure
     } catch (const std::exception& e) {
+        auto qp_end_time = std::chrono::high_resolution_clock::now();
+        auto qp_duration = std::chrono::duration_cast<std::chrono::microseconds>(qp_end_time - qp_start_time);
+        std::cout << "\n⏱️  QP Computation Time: " << qp_duration.count() / 1000.0 << " ms (failed)" << std::endl;
         std::cout << "\n✗ QP solver failed with exception: " << e.what() << std::endl;
         std::cout << "   This path is infeasible - skipping to next iteration" << std::endl;
         

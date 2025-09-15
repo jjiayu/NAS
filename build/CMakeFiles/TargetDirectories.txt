@@ -3,10 +3,15 @@
 /Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles/tree_lib.dir
 /Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles/geometry_lib.dir
 /Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles/surface_lib.dir
+/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles/grid_environment_lib.dir
 /Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles/visualizer_lib.dir
 /Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles/astar_search_lib.dir
+/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles/astar_grid_search_lib.dir
 /Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles/footstep_planner_lib.dir
 /Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles/nas_plan.dir
 /Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles/astar_plan.dir
+/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles/astar_grid_plan.dir
+/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles/test_grid_visualization.dir
+/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles/test_auto_plot.dir
 /Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles/edit_cache.dir
 /Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles/rebuild_cache.dir

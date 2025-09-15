@@ -43,6 +43,12 @@ struct NodeHash {
         boost::hash_combine(seed, node->surface_id);
         boost::hash_combine(seed, node->stance_foot);
         
+        // Include foot yaw angle in hash if rotation is enabled
+        if (foot_yaw_rotation_flag) {
+            int quantized_yaw = static_cast<int>(node->foot_yaw / foot_yaw_angle_increment);
+            boost::hash_combine(seed, quantized_yaw);
+        }
+        
         return seed;
     }
 };
@@ -63,12 +69,21 @@ struct NodeEqual {
         int quantized_perimeter_b = static_cast<int>(b->perimeter / node_similarity_threshold);
         
         // Compare quantized coordinates, perimeter, and other properties
-        return (x_a == x_b && 
-                y_a == y_b && 
-                z_a == z_b && 
-                quantized_perimeter_a == quantized_perimeter_b &&
-                a->surface_id == b->surface_id && 
-                a->stance_foot == b->stance_foot);
+        bool basic_equal = (x_a == x_b && 
+                           y_a == y_b && 
+                           z_a == z_b && 
+                           quantized_perimeter_a == quantized_perimeter_b &&
+                           a->surface_id == b->surface_id && 
+                           a->stance_foot == b->stance_foot);
+        
+        // If foot yaw rotation is enabled, also compare foot yaw angles
+        if (foot_yaw_rotation_flag && basic_equal) {
+            int quantized_yaw_a = static_cast<int>(a->foot_yaw / foot_yaw_angle_increment);
+            int quantized_yaw_b = static_cast<int>(b->foot_yaw / foot_yaw_angle_increment);
+            return quantized_yaw_a == quantized_yaw_b;
+        }
+        
+        return basic_equal;
     }
 };
 
@@ -112,6 +127,10 @@ public:
     double total_clipping_time = 0.0;
     double total_plane_polytope_intersect_time = 0.0;
     double total_polygon_2d_intersect_time = 0.0;
+
+    // A star realted
+    std::string distance_metric;
+    bool cycle_detection_flag;
 
     // Counters
     int expansion_coount = 0;

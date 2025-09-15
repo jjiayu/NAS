@@ -28,6 +28,7 @@ public:
         double perimeter; // The perimeter of the patch
         Point_3 centroid; // The centroid of the patch
         std::vector<std::vector<std::vector<int>>> pred_surface_ids;
+        double foot_yaw;
 
         // For A* search
         Node* parent; // Pointer to the parent node
@@ -37,5 +38,4 @@ public:
 
         bool check_if_node_contains_point(const Point_3& point);
     };
-
 }

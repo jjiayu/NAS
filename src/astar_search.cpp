@@ -1,8 +1,10 @@
 #include "astar_search.hpp"
-#include "tree.hpp"
 #include "types.hpp"
+#include "constants.hpp"
 #include "visualizer.hpp"
 #include "utils.hpp"
+#include "geometry.hpp"
+#include <cmath>
 #include "geometry.hpp"
 #include <CGAL/IO/Polyhedron_iostream.h>
 #include <CGAL/IO/polygon_mesh_io.h>
@@ -43,6 +45,12 @@ AstarSearch::AstarSearch() {
          goal_stance_foot == 1 ? "RIGHT FOOT (1)" : "INVALID") << std::endl;
     std::cout << "  - Goal Location (World Frame): " << this->goal_location << std::endl;
 
+    this->distance_metric = a_star_distance_metric;
+    std::cout << "  - Distance Metric: " << this->distance_metric << std::endl;
+
+    this->cycle_detection_flag = cycle_detection;
+    std::cout << "  - Cycle Detection: " << (this->cycle_detection_flag ? "ON" : "OFF") << std::endl;
+
     // Initialize the start node
     Node* start_node = new Node();
     start_node->parent_ptrs = std::vector<Node*>();  // Empty vector for root node
@@ -50,6 +58,10 @@ AstarSearch::AstarSearch() {
     start_node->patch_vertices = std::vector<Point_3>({current_foot_pos});  // Already Point_3, no conversion needed
     start_node->stance_foot = current_stance_foot_flag;
     start_node->centroid = current_foot_pos;
+    if (foot_yaw_rotation_flag) {
+        start_node->foot_yaw = current_foot_yaw;
+    }
+    start_node->depth = 0;
     start_node->perimeter = 0.0;
     start_node->g_score = 0;
     start_node->h_score = compute_euclidean_distance(current_foot_pos, this->goal_location);
@@ -100,9 +112,13 @@ void AstarSearch::search() {
             std::cout << "Path Found:  "<< std::endl;
             std::reverse(this->result_path.begin(), this->result_path.end());
             for (Node* node : this->result_path) {
-                std::cout << "Node ID: " << node->node_id << ", Surface ID: " << node->surface_id << ", Stance Foot: " << node->stance_foot << std::endl;
+                std::cout << "Node ID: " << node->node_id << ", Surface ID: " << node->surface_id << ", Stance Foot: " << node->stance_foot;
+                if (foot_yaw_rotation_flag) {
+                    std::cout << ", Foot Yaw: " << std::fixed << std::setprecision(3) 
+                              << node->foot_yaw << " rad (" << (node->foot_yaw * 180.0 / M_PI) << "°)";
+                }
+                std::cout << std::endl;
             }
-
             break;
         }
 
@@ -120,8 +136,19 @@ void AstarSearch::search() {
             }
             
             // Calculate the tentative g_score for this child
-            double tentative_g_score = current_node->g_score + compute_euclidean_distance(current_node->centroid, child->centroid);
-            double tentative_h_score = compute_euclidean_distance(child->centroid, this->goal_location);
+            // g score with euclidean_distance
+            // double tentative_g_score = current_node->g_score + compute_euclidean_distance(current_node->centroid, child->centroid);
+            double tentative_g_score = current_node->g_score + 1.0;
+            double tentative_h_score = 0.0;
+            if (this->distance_metric == "gjk") {
+                tentative_h_score = 10.0*calculate_gjk_distance_point_to_patch(child->patch_vertices, this->goal_location);
+            }
+            else if (this->distance_metric == "epa") {
+                tentative_h_score = 10.0*calculate_epa_distance_point_to_patch(child->patch_vertices, this->goal_location);
+            }
+            else if (this->distance_metric == "euclidean") {
+                tentative_h_score = compute_euclidean_distance(child->centroid, this->goal_location);
+            }
             double tentative_f_score = tentative_g_score + tentative_h_score;
             
             // Check if this node is already in the open set
@@ -157,6 +184,8 @@ void AstarSearch::search() {
         }
     }
 
+    auto failure_time = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now() - start_time);
+    std::cout << "If fail, then the computation time is: " << failure_time.count() / 1000.0 << " ms" << std::endl;
     std::cout << "\n[ A* search completed ]" << std::endl;
     std::cout << "Total nodes expanded: " << this->node_counter << std::endl;
     std::cout << "Total nodes in closed set: " << this->closed_set.size() << std::endl;
@@ -173,6 +202,12 @@ std::vector<Node*> AstarSearch::get_children(Node* parent){
     auto start_time = std::chrono::high_resolution_clock::now();
     
     Polyhedron base_polytope = parent->stance_foot == 0 ? this->rf_in_lf_polytope : this->lf_in_rf_polytope;
+    
+    // Rotate the polytope based on the parent's foot yaw angle if foot yaw rotation is enabled
+    if (foot_yaw_rotation_flag == true) {
+        base_polytope = rotate_polyhedron_z(base_polytope, parent->foot_yaw);
+    }
+    
     Polyhedron P_union = minkowski_sum(parent->patch_vertices, base_polytope);
     
     auto end_time = std::chrono::high_resolution_clock::now();
@@ -233,12 +268,26 @@ std::vector<Node*> AstarSearch::get_children(Node* parent){
                 // Visualizer::show(renderWindow);        // Show the 3D visualization
                 
                 // Found intersection, create child node
-                // Filter children if it has been visited in 2 steps before (same foot), filter with surface ID
+                // Filter children if it has been detected as a cycle
                 int stance_foot = parent->stance_foot == 0 ? 1 : 0; // Alternate stance foot
-                if (cycle_path_detection(parent, stance_foot, surface.surface_id)) {
+                if ((this->cycle_detection_flag == true) && (cycle_path_detection(parent, stance_foot, surface.surface_id) == true)) {
                     continue; //the same surface visited 2 steps before
                 }
-                else{
+
+                // Create child nodes with different foot yaw angles if rotation is enabled
+                std::vector<double> yaw_angles;
+                if (foot_yaw_rotation_flag) {
+                    // Generate discretized yaw angles relative to parent's foot yaw
+                    for (int i = -foot_yaw_angle_discretization_num; i <= foot_yaw_angle_discretization_num; ++i) {
+                        yaw_angles.push_back(parent->foot_yaw + i * foot_yaw_angle_increment);
+                    }
+                } else {
+                    // No rotation, use zero yaw angle
+                    yaw_angles.push_back(0.0);
+                }
+                
+                // Create a child node for each yaw angle
+                for (double yaw_angle : yaw_angles) {
                     Node* child = new Node();
                     child->parent_ptrs.push_back(parent);
                     child->node_id = node_counter++;
@@ -252,6 +301,11 @@ std::vector<Node*> AstarSearch::get_children(Node* parent){
                     child->transformation_to_3d = surface.transform_to_3d;
                     child->perimeter = compute_polygon_perimeter(polytope_surf_3d_intersect_polygon);
                     child->centroid = get_centroid(polytope_surf_3d_intersect_pts);
+                    // Normalize yaw angle to [-π, π] range
+                    double normalized_yaw = yaw_angle;
+                    while (normalized_yaw > M_PI) normalized_yaw -= 2.0 * M_PI;
+                    while (normalized_yaw < -M_PI) normalized_yaw += 2.0 * M_PI;
+                    child->foot_yaw = normalized_yaw; // Set the normalized foot yaw angle for this child
                     // Copy parent's pred_surface_ids and add parent's surface as new layer
                     child->pred_surface_ids = parent->pred_surface_ids;
                     child->pred_surface_ids[parent->stance_foot].push_back({parent->surface_id});

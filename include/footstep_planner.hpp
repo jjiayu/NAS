@@ -28,8 +28,8 @@ class FootstepPlanner {
         // Half-space polytope constraint
         HalfSpacePolytopeConstraint rf_in_lf_constraint;
         HalfSpacePolytopeConstraint lf_in_rf_constraint;
-        HalfSpacePolytopeConstraint com_in_lf_constraint;
-        HalfSpacePolytopeConstraint com_in_rf_constraint;
+        // HalfSpacePolytopeConstraint com_in_lf_constraint;
+        // HalfSpacePolytopeConstraint com_in_rf_constraint;
 
         // CasADi matrices will be created in the implementation file
         // No need to expose CasADi types in the header

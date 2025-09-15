@@ -5,9 +5,6 @@
 #include "geometry.hpp"
 #include "constants.hpp"
 #include <iostream>
-#include <queue>
-#include <unordered_map>
-#include <vector>
 #include "astar_search.hpp"
 #include "footstep_planner.hpp"
 #include <vtkRendererCollection.h>
@@ -15,7 +12,7 @@
 int main() {
     using namespace nas;
 
-    std::cout << "=== A* Path Planning with Footstep Optimization ===" << std::endl;
+    std::cout << "=== A* Path Planning with Footstep Optimization (using Discretization) ===" << std::endl;
 
     // Create A* search instance
     AstarSearch astar_search;
@@ -93,26 +90,29 @@ int main() {
     if (!computed_footsteps.empty()) {
         // std::cout << "Adding optimized footsteps..." << std::endl;
         
-        // Add optimized footsteps (cyan/blue with transparency)
-        double footstep_color[3] = {0.0, 0.8, 1.0};  // Cyan
-        Visualizer::add_footsteps(renderer, computed_footsteps, footstep_color);
-        
-        // Add desired footstep positions for comparison (yellow/green)
-        std::vector<Point_3> desired_footsteps;
-        for (size_t j = 0; j < astar_search.result_path.size(); j++) {
-            if (j == 0) {
-                desired_footsteps.push_back(current_foot_pos);
-            } else if (j == astar_search.result_path.size() - 1) {
-                desired_footsteps.push_back(astar_search.goal_location);
-            } else {
-                desired_footsteps.push_back(astar_search.result_path[j]->centroid);
-            }
+        // Extract foot yaw angles from A* path nodes
+        std::vector<double> foot_yaw_angles;
+        for (const auto& node : astar_search.result_path) {
+            foot_yaw_angles.push_back(node->foot_yaw);
         }
-        double desired_color[3] = {1.0, 1.0, 0.0};  // Yellow
-        Visualizer::add_footsteps(renderer, desired_footsteps, desired_color);
         
-        // std::cout << "Added " << computed_footsteps.size() << " optimized footsteps (cyan)" << std::endl;
-        // std::cout << "Added " << desired_footsteps.size() << " desired footsteps (yellow)" << std::endl;
+        // Add optimized footsteps with red/blue coloring based on stance foot
+        for (size_t j = 0; j < computed_footsteps.size(); j++) {
+            double footstep_color[3];
+            if (j < astar_search.result_path.size()) {
+                if (astar_search.result_path[j]->stance_foot == LEFT_FOOT) {
+                    footstep_color[0] = 1.0; footstep_color[1] = 0.0; footstep_color[2] = 0.0; // Red for left foot
+                } else {
+                    footstep_color[0] = 0.0; footstep_color[1] = 0.0; footstep_color[2] = 1.0; // Blue for right foot
+                }
+            } else {
+                // Default color for any extra footsteps
+                footstep_color[0] = 0.5; footstep_color[1] = 0.5; footstep_color[2] = 0.5; // Gray
+            }
+            
+            double yaw_angle = (j < foot_yaw_angles.size()) ? foot_yaw_angles[j] : 0.0;
+            Visualizer::add_footsteps(renderer, {computed_footsteps[j]}, footstep_color, 0.22, 0.12, {yaw_angle});
+        }
 
         // Add reachability polytopes at each footstep position
         // std::cout << "\n=== Adding reachability polytopes at footstep positions ===" << std::endl;
@@ -142,19 +142,30 @@ int main() {
                 double ty = CGAL::to_double(current_footstep.y());
                 double tz = CGAL::to_double(current_footstep.z());
                 
-                // Create a translated copy of the polytope
-                Polyhedron translated_polytope = polytope_to_show;  // Copy the original
-                
-                // Apply translation using CGAL's transform function
-                Transformation translation(CGAL::TRANSLATION, Vector_3(tx, ty, tz));
-                
-                // Apply transformation to all vertices
-                for (auto v_it = translated_polytope.vertices_begin(); v_it != translated_polytope.vertices_end(); ++v_it) {
-                    v_it->point() = translation(v_it->point());
+                // Get foot yaw angle for rotation
+                double foot_yaw = 0.0;
+                if (j < foot_yaw_angles.size()) {
+                    foot_yaw = foot_yaw_angles[j];
                 }
                 
-                // Add the translated polytope to visualization
-                Visualizer::add_polyhedron(renderer, translated_polytope, polytope_color, 0.2);
+                // Create a transformed copy of the polytope
+                Polyhedron transformed_polytope = polytope_to_show;  // Copy the original
+                
+                // Apply rotation around Z-axis followed by translation
+                Transformation rotation(cos(foot_yaw), -sin(foot_yaw), 0, 0,
+                                      sin(foot_yaw),  cos(foot_yaw), 0, 0,
+                                      0,             0,            1, 0,
+                                      1);
+                Transformation translation(CGAL::TRANSLATION, Vector_3(tx, ty, tz));
+                Transformation combined_transform = translation * rotation;
+                
+                // Apply transformation to all vertices
+                for (auto v_it = transformed_polytope.vertices_begin(); v_it != transformed_polytope.vertices_end(); ++v_it) {
+                    v_it->point() = combined_transform(v_it->point());
+                }
+                
+                // Add the transformed polytope to visualization
+                Visualizer::add_polyhedron(renderer, transformed_polytope, polytope_color, 0.2);
                 
                 // std::cout << "Step " << j << " (" << polytope_description << ") at position [" 
                         //   << tx << ", " << ty << ", " << tz << "]" << std::endl;
@@ -171,8 +182,7 @@ int main() {
     std::cout << "  - Start position (red point)" << std::endl;
     std::cout << "  - Goal position (green point)" << std::endl;
     std::cout << "  - A* path patches (red=left foot stance, blue=right foot stance)" << std::endl;
-    std::cout << "  - Optimized footsteps (cyan)" << std::endl;
-    std::cout << "  - Desired footsteps (yellow)" << std::endl;
+    std::cout << "  - Optimized footsteps (red=left foot stance, blue=right foot stance)" << std::endl;
     std::cout << "  - Reachability polytopes at each step (alternating colors)" << std::endl;
     std::cout << "Close the visualization window to exit." << std::endl;
     
