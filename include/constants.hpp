@@ -51,7 +51,6 @@ const Vector_3 goal_offset(0.0, 0.0, 0.0); // goal offset applied to move in the
 
 // const Vector_3 goal_offset(0.0, 1.0, 0.0); // for 3path NAS goal offset applied to move in the local frame of the goal surface (last surface)
 
-
 // Define Number of Steps (max number of steps)
 const int total_num_steps = 40;
 
@@ -84,5 +83,4 @@ const std::string node_search_method = "bruteforce"; // "bruteforce", "kdtree", 
 // const std::vector<std::vector<Point_3>> surf_list = NarrowPassage;
 const std::vector<std::vector<Point_3>> surf_list = Stairs_Up_Down;
 // const std::vector<std::vector<Point_3>> surf_list = Flat;
-
 }
