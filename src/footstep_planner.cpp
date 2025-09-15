@@ -5,8 +5,36 @@
 #include <limits>
 #include <chrono>
 #include <cmath>
+#include <nlohmann/json.hpp>
+#include <fstream>
+#include <cstdlib>
+#include <filesystem>
 
 namespace nas {
+
+// Footstep structure for JSON export
+struct Footstep {
+    double x, y, z;
+    std::string foot; // "left" or "right"
+    double timing;
+    double yaw; // yaw angle in radians
+};
+
+// Function to save footsteps to JSON file
+void saveFootsteps(const std::vector<Footstep>& footsteps, const std::string& filename) {
+    nlohmann::json j;
+    
+    for (size_t i = 0; i < footsteps.size(); ++i) {
+        j["footsteps"][i]["position"] = {footsteps[i].x, footsteps[i].y, footsteps[i].z};
+        j["footsteps"][i]["foot"] = footsteps[i].foot;
+        j["footsteps"][i]["timing"] = footsteps[i].timing;
+        j["footsteps"][i]["yaw"] = footsteps[i].yaw;
+    }
+    
+    std::ofstream file(filename);
+    file << j.dump(4);
+    file.close();
+}
 
 FootstepPlanner::FootstepPlanner() {
 
@@ -144,7 +172,7 @@ bool FootstepPlanner::plan(const int& stance_foot_flag_at_start,
     }
     
     // Add negative alpha to maximize alpha (push footsteps toward patch centers)
-    double alpha_weight = 1000.0;  // Weight for alpha maximization
+    double alpha_weight = 10.0;  // Weight for alpha maximization
     objective += -alpha_weight * alpha;
 
     // Create Footstep Reachability constraints (next foot in previous foot's polytope)
@@ -504,11 +532,48 @@ bool FootstepPlanner::plan(const int& stance_foot_flag_at_start,
 
             // Store the computed footsteps for later use
             computed_footsteps.clear();
+            std::vector<Footstep> footsteps_for_json;
+            
             for (int i = 0; i < footstep_pos_vars.size(); i++) {
                 double x = static_cast<double>(x_opt(i*3 + 0));
                 double y = static_cast<double>(x_opt(i*3 + 1));
                 double z = static_cast<double>(x_opt(i*3 + 2));
                 computed_footsteps.push_back(Point_3(x, y, z));
+                
+                // Create footstep data for JSON export
+                Footstep fs;
+                fs.x = x;
+                fs.y = y;
+                fs.z = z;
+                
+                // Determine foot type and yaw angle based on stance_foot from path nodes
+                if (i < path_nodes.size()) {
+                    fs.foot = (path_nodes[i]->stance_foot == LEFT_FOOT) ? "left" : "right";
+                    fs.yaw = path_nodes[i]->foot_yaw; // Extract yaw angle from path node
+                } else {
+                    // Default for any extra footsteps
+                    fs.foot = "unknown";
+                    fs.yaw = 0.0; // Default yaw angle
+                }
+                
+                // Simple timing based on step index (can be refined later)
+                fs.timing = i * 0.5; // 0.5 seconds per step
+                
+                footsteps_for_json.push_back(fs);
+            }
+            
+            // Save footsteps to JSON file
+            try {
+                std::string output_dir = std::string(getenv("HOME")) + "/Desktop/whole_body_opt_ws/orc/reactive_control/tsid/";
+                std::string output_path = output_dir + "footsteps_output.json";
+                
+                // Create directory if it doesn't exist
+                std::filesystem::create_directories(output_dir);
+                
+                saveFootsteps(footsteps_for_json, output_path);
+                std::cout << "\n✓ Footsteps saved to " << output_path << std::endl;
+            } catch (const std::exception& e) {
+                std::cout << "\n⚠️  Failed to save JSON file: " << e.what() << std::endl;
             }
             
             return true;  // Success
