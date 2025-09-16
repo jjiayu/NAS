@@ -329,6 +329,12 @@ std::vector<Node*> AstarGridSearch::get_grid_children(Node* parent) {
             
             // Check if relative position is inside reachability polytope
             if (is_point_in_reachability_polytope(relative_pos, reachability_constraint)) {
+                // Filter children if it has been detected as a cycle
+                int stance_foot = parent->stance_foot == LEFT_FOOT ? RIGHT_FOOT : LEFT_FOOT; // Alternate stance foot
+                if ((this->cycle_detection_flag == true) && (cycle_path_detection(parent, stance_foot, target_cell.surface_id) == true)) {
+                    continue; //the same surface visited 2 steps before
+                }
+                
                 // Create child nodes with different foot yaw angles if rotation is enabled
                 std::vector<double> yaw_angles;
                 if (foot_yaw_rotation_flag) {
@@ -357,6 +363,10 @@ std::vector<Node*> AstarGridSearch::get_grid_children(Node* parent) {
                     while (normalized_yaw < -M_PI) normalized_yaw += 2.0 * M_PI;
                     child->foot_yaw = normalized_yaw; // Set the normalized foot yaw angle for this child
                     child->perimeter = 0.0; // Not used in grid-based search
+                    
+                    // Copy parent's pred_surface_ids and add parent's surface as new layer
+                    child->pred_surface_ids = parent->pred_surface_ids;
+                    child->pred_surface_ids[parent->stance_foot].push_back({parent->surface_id});
                     
                     // Initialize scores for A* search
                     child->g_score = std::numeric_limits<double>::infinity();
