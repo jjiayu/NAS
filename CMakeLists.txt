@@ -5,8 +5,6 @@ if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release)
 endif()
 
-set(CMAKE_BUILD_TYPE Release)
-
 project(
   nas
   VERSION 1.0
@@ -18,15 +16,14 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Set Homebrew paths for Apple Silicon
-set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "/opt/homebrew/opt/cgal")
-set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "/opt/homebrew/opt/vtk@9.2")
+set(CMAKE_PREFIX_PATH $ENV{CONDA_PREFIX})
 
 # Use PkgConfig to find FreeType (Homebrew doesn't provide CMake config)
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(FREETYPE REQUIRED freetype2)
 
 # Set custom path for CasADi
-set(CMAKE_PREFIX_PATH "/Users/jiayu/local" ${CMAKE_PREFIX_PATH})
+
 
 # Find required packages
 find_package(CGAL REQUIRED)
@@ -43,15 +40,20 @@ find_package(VTK 9.2 REQUIRED COMPONENTS
 )
 find_package(yaml-cpp REQUIRED)
 find_package(CasADi REQUIRED)
+find_library(COAL_LIB coal REQUIRED)
 
 # Add the include directory
 include_directories(include)
 include_directories(${VTK_INCLUDE_DIRS})
-include_directories("/opt/homebrew/include")  # For CGAL headers
 include_directories(${EIGEN3_INCLUDE_DIR})  # For Eigen3 headers
 
 # Add library with source files
 add_library(utils_lib src/utils.cpp)
+target_include_directories(utils_lib PRIVATE
+    include
+    ${VTK_INCLUDE_DIRS}
+    ${EIGEN3_INCLUDE_DIR}
+)
 add_library(node_lib src/node.cpp)
 add_library(tree_lib src/tree.cpp)
 add_library(geometry_lib src/geometry.cpp)
@@ -81,8 +83,9 @@ target_link_libraries(visualizer_lib PRIVATE
 )
 target_link_libraries(geometry_lib PRIVATE
     CGAL::CGAL
-    /opt/homebrew/lib/libcoal.dylib
+    ${COAL_LIB}
 )
+
 target_include_directories(geometry_lib PRIVATE /opt/homebrew/include)
 target_link_libraries(surface_lib PRIVATE 
     utils_lib
