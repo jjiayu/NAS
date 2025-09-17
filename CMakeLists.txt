@@ -45,6 +45,7 @@ find_library(COAL_LIB coal REQUIRED)
 # Add the include directory
 include_directories(include)
 include_directories(${VTK_INCLUDE_DIRS})
+include_directories($ENV{CONDA_PREFIX}/include)  # coal
 include_directories(${EIGEN3_INCLUDE_DIR})  # For Eigen3 headers
 
 # Add library with source files
@@ -86,7 +87,7 @@ target_link_libraries(geometry_lib PRIVATE
     ${COAL_LIB}
 )
 
-target_include_directories(geometry_lib PRIVATE /opt/homebrew/include)
+target_include_directories(geometry_lib PRIVATE include)
 target_link_libraries(surface_lib PRIVATE 
     utils_lib
     geometry_lib
