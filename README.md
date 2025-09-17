@@ -9,10 +9,21 @@
 - CasADi optimization library
 - nlohmann/json library
 - Boost libraries
+- coal
 
-### Dependencies Installation (macOS)
+### Dependencies Installation 
+#### (macOS)
 ```bash
 # Install via Homebrew
+brew install cgal boost nlohmann-json
+
+# Install CasADi (follow official instructions)
+# https://web.casadi.org/get/
+
+#### (Ubuntu 24)
+```bash
+# Install via conda
+conda install -c conda-forge cgal casadi nlohmann_json boost coal
 brew install cgal boost nlohmann-json
 
 # Install CasADi (follow official instructions)
