@@ -24,7 +24,6 @@ brew install cgal boost nlohmann-json
 ```bash
 # Install via conda
 conda install -c conda-forge cgal casadi nlohmann_json boost coal
-brew install cgal boost nlohmann-json
 
 # Install CasADi (follow official instructions)
 # https://web.casadi.org/get/
