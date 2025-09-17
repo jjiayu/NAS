@@ -27,9 +27,14 @@ brew install cgal boost nlohmann-json
 ```bash
 # install CGAL dependencies
 sudo apt install libfreetype6-dev pkg-config libgmp-dev libmpfr-dev
+install CGAL from source https://github.com/CGAL/cgal/releases/tag/v6.0.1
+tar xf CGAL-6.0.1.tar.xz
+cd CGAL-6.0.1
+make .
+sudo make install
 
 # Install via conda
-conda create -n YOURENVNAME python=3.11 cgal casadi nlohmann_json boost coal vtk=9.2
+conda create -n YOURENVNAME -c conda-forge python=3.11 casadi nlohmann_json coal vtk=9.2
 
 
 ### Build Instructions
