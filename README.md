@@ -9,8 +9,11 @@
 - CasADi optimization library
 - nlohmann/json library
 - Boost libraries
+- freetype2
 - coal
-
+- VTK
+- yaml-cpp
+- 
 ### Dependencies Installation 
 #### (macOS)
 ```bash
@@ -22,8 +25,11 @@ brew install cgal boost nlohmann-json
 
 #### (Ubuntu 24)
 ```bash
+# install CGAL dependencies
+sudo apt install libfreetype6-dev pkg-config libgmp-dev libmpfr-dev
+
 # Install via conda
-conda create -n YOURENVNAME python=3.11 cgal casadi nlohmann_json boost coal 
+conda create -n YOURENVNAME python=3.11 cgal casadi nlohmann_json boost coal vtk=9.2
 
 
 ### Build Instructions
