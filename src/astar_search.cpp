@@ -12,6 +12,7 @@
 #include <CGAL/intersections.h>
 #include <CGAL/Polygon_mesh_processing/corefinement.h>
 #include <CGAL/Polygon_mesh_processing/triangulate_faces.h>
+#include <cstdlib>
 #include <vtkRendererCollection.h>
 #include <fstream>
 #include <algorithm>
@@ -90,7 +91,9 @@ void AstarSearch::search() {
 
         // Check if we reached the goal
         if (current_node->stance_foot == goal_stance_foot && 
-            current_node->check_if_node_contains_point(this->goal_location)) {
+            current_node->check_if_node_contains_point(this->goal_location)
+            && abs(current_node->foot_yaw) < foot_yaw_angle_increment
+            && abs(current_node->parent->foot_yaw) < foot_yaw_angle_increment) {
             
             //reached goaltimer end
             auto end_time = std::chrono::high_resolution_clock::now();
@@ -138,7 +141,7 @@ void AstarSearch::search() {
             // Calculate the tentative g_score for this child
             // g score with euclidean_distance
             // double tentative_g_score = current_node->g_score + compute_euclidean_distance(current_node->centroid, child->centroid);
-            double tentative_g_score = current_node->g_score + 1.0;
+            double tentative_g_score = current_node->g_score + 1.0 + 1*abs(child->foot_yaw);
             double tentative_h_score = 0.0;
             if (this->distance_metric == "gjk") {
                 tentative_h_score = 10.0*calculate_gjk_distance_point_to_patch(child->patch_vertices, this->goal_location);

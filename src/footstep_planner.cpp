@@ -168,7 +168,7 @@ bool FootstepPlanner::plan(const int& stance_foot_flag_at_start,
         }
         
         // Add squared stride length to objective
-        objective += casadi::SX::dot(stride_vector, stride_vector);
+        objective += casadi::SX::dot(stride_vector, stride_vector) + 10*casadi::SX::pow(stride_vector(1), 2);
     }
     
     // Add negative alpha to maximize alpha (push footsteps toward patch centers)
