@@ -116,7 +116,9 @@ void AstarGridSearch::search() {
             auto current_grid_coords = grid_env.world_to_grid(current_node->centroid);
             
             if (goal_grid_coords.first == current_grid_coords.first && 
-                goal_grid_coords.second == current_grid_coords.second) {
+                goal_grid_coords.second == current_grid_coords.second
+                && abs(current_node->foot_yaw) < foot_yaw_angle_increment
+                && abs(current_node->parent->foot_yaw) < foot_yaw_angle_increment) {
                 
                 // Reached goal - timer end
                 auto end_time = std::chrono::high_resolution_clock::now();
@@ -227,7 +229,7 @@ void AstarGridSearch::search() {
             }
             
             // double tentative_g_score = current_node->g_score + total_distance_cost + yaw_penalty;
-            double tentative_g_score = current_node->g_score + 1.0;
+            double tentative_g_score = current_node->g_score + 1.0 + 1*abs(child->foot_yaw);
             double tentative_h_score = compute_euclidean_distance(mid_pos, this->goal_location);
             double tentative_f_score = tentative_g_score + 10.0*tentative_h_score;
             
