@@ -188,12 +188,12 @@ CMakeFiles/node_lib.dir/clean:
 # Target rules for target CMakeFiles/tree_lib.dir
 
 # All Build rule for target.
-CMakeFiles/tree_lib.dir/all: CMakeFiles/surface_lib.dir/all
-CMakeFiles/tree_lib.dir/all: CMakeFiles/grid_environment_lib.dir/all
-CMakeFiles/tree_lib.dir/all: CMakeFiles/visualizer_lib.dir/all
 CMakeFiles/tree_lib.dir/all: CMakeFiles/utils_lib.dir/all
 CMakeFiles/tree_lib.dir/all: CMakeFiles/node_lib.dir/all
 CMakeFiles/tree_lib.dir/all: CMakeFiles/geometry_lib.dir/all
+CMakeFiles/tree_lib.dir/all: CMakeFiles/surface_lib.dir/all
+CMakeFiles/tree_lib.dir/all: CMakeFiles/grid_environment_lib.dir/all
+CMakeFiles/tree_lib.dir/all: CMakeFiles/visualizer_lib.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/tree_lib.dir/build.make CMakeFiles/tree_lib.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/tree_lib.dir/build.make CMakeFiles/tree_lib.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=25,26 "Built target tree_lib"
@@ -290,9 +290,9 @@ CMakeFiles/surface_lib.dir/clean:
 # Target rules for target CMakeFiles/grid_environment_lib.dir
 
 # All Build rule for target.
-CMakeFiles/grid_environment_lib.dir/all: CMakeFiles/surface_lib.dir/all
 CMakeFiles/grid_environment_lib.dir/all: CMakeFiles/utils_lib.dir/all
 CMakeFiles/grid_environment_lib.dir/all: CMakeFiles/geometry_lib.dir/all
+CMakeFiles/grid_environment_lib.dir/all: CMakeFiles/surface_lib.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/grid_environment_lib.dir/build.make CMakeFiles/grid_environment_lib.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/grid_environment_lib.dir/build.make CMakeFiles/grid_environment_lib.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=13,14 "Built target grid_environment_lib"
@@ -324,10 +324,10 @@ CMakeFiles/grid_environment_lib.dir/clean:
 # Target rules for target CMakeFiles/visualizer_lib.dir
 
 # All Build rule for target.
-CMakeFiles/visualizer_lib.dir/all: CMakeFiles/surface_lib.dir/all
-CMakeFiles/visualizer_lib.dir/all: CMakeFiles/grid_environment_lib.dir/all
 CMakeFiles/visualizer_lib.dir/all: CMakeFiles/utils_lib.dir/all
 CMakeFiles/visualizer_lib.dir/all: CMakeFiles/geometry_lib.dir/all
+CMakeFiles/visualizer_lib.dir/all: CMakeFiles/surface_lib.dir/all
+CMakeFiles/visualizer_lib.dir/all: CMakeFiles/grid_environment_lib.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/visualizer_lib.dir/build.make CMakeFiles/visualizer_lib.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/visualizer_lib.dir/build.make CMakeFiles/visualizer_lib.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=29,30 "Built target visualizer_lib"
@@ -359,13 +359,13 @@ CMakeFiles/visualizer_lib.dir/clean:
 # Target rules for target CMakeFiles/astar_search_lib.dir
 
 # All Build rule for target.
-CMakeFiles/astar_search_lib.dir/all: CMakeFiles/surface_lib.dir/all
-CMakeFiles/astar_search_lib.dir/all: CMakeFiles/grid_environment_lib.dir/all
-CMakeFiles/astar_search_lib.dir/all: CMakeFiles/visualizer_lib.dir/all
 CMakeFiles/astar_search_lib.dir/all: CMakeFiles/utils_lib.dir/all
 CMakeFiles/astar_search_lib.dir/all: CMakeFiles/node_lib.dir/all
 CMakeFiles/astar_search_lib.dir/all: CMakeFiles/tree_lib.dir/all
 CMakeFiles/astar_search_lib.dir/all: CMakeFiles/geometry_lib.dir/all
+CMakeFiles/astar_search_lib.dir/all: CMakeFiles/surface_lib.dir/all
+CMakeFiles/astar_search_lib.dir/all: CMakeFiles/grid_environment_lib.dir/all
+CMakeFiles/astar_search_lib.dir/all: CMakeFiles/visualizer_lib.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/astar_search_lib.dir/build.make CMakeFiles/astar_search_lib.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/astar_search_lib.dir/build.make CMakeFiles/astar_search_lib.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=7,8 "Built target astar_search_lib"
@@ -397,13 +397,13 @@ CMakeFiles/astar_search_lib.dir/clean:
 # Target rules for target CMakeFiles/astar_grid_search_lib.dir
 
 # All Build rule for target.
-CMakeFiles/astar_grid_search_lib.dir/all: CMakeFiles/surface_lib.dir/all
-CMakeFiles/astar_grid_search_lib.dir/all: CMakeFiles/grid_environment_lib.dir/all
-CMakeFiles/astar_grid_search_lib.dir/all: CMakeFiles/visualizer_lib.dir/all
 CMakeFiles/astar_grid_search_lib.dir/all: CMakeFiles/utils_lib.dir/all
 CMakeFiles/astar_grid_search_lib.dir/all: CMakeFiles/node_lib.dir/all
 CMakeFiles/astar_grid_search_lib.dir/all: CMakeFiles/tree_lib.dir/all
 CMakeFiles/astar_grid_search_lib.dir/all: CMakeFiles/geometry_lib.dir/all
+CMakeFiles/astar_grid_search_lib.dir/all: CMakeFiles/surface_lib.dir/all
+CMakeFiles/astar_grid_search_lib.dir/all: CMakeFiles/grid_environment_lib.dir/all
+CMakeFiles/astar_grid_search_lib.dir/all: CMakeFiles/visualizer_lib.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/astar_grid_search_lib.dir/build.make CMakeFiles/astar_grid_search_lib.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/astar_grid_search_lib.dir/build.make CMakeFiles/astar_grid_search_lib.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=3,4 "Built target astar_grid_search_lib"
@@ -435,14 +435,14 @@ CMakeFiles/astar_grid_search_lib.dir/clean:
 # Target rules for target CMakeFiles/footstep_planner_lib.dir
 
 # All Build rule for target.
-CMakeFiles/footstep_planner_lib.dir/all: CMakeFiles/surface_lib.dir/all
-CMakeFiles/footstep_planner_lib.dir/all: CMakeFiles/grid_environment_lib.dir/all
-CMakeFiles/footstep_planner_lib.dir/all: CMakeFiles/visualizer_lib.dir/all
-CMakeFiles/footstep_planner_lib.dir/all: CMakeFiles/astar_search_lib.dir/all
 CMakeFiles/footstep_planner_lib.dir/all: CMakeFiles/utils_lib.dir/all
 CMakeFiles/footstep_planner_lib.dir/all: CMakeFiles/node_lib.dir/all
 CMakeFiles/footstep_planner_lib.dir/all: CMakeFiles/tree_lib.dir/all
 CMakeFiles/footstep_planner_lib.dir/all: CMakeFiles/geometry_lib.dir/all
+CMakeFiles/footstep_planner_lib.dir/all: CMakeFiles/surface_lib.dir/all
+CMakeFiles/footstep_planner_lib.dir/all: CMakeFiles/grid_environment_lib.dir/all
+CMakeFiles/footstep_planner_lib.dir/all: CMakeFiles/visualizer_lib.dir/all
+CMakeFiles/footstep_planner_lib.dir/all: CMakeFiles/astar_search_lib.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/footstep_planner_lib.dir/build.make CMakeFiles/footstep_planner_lib.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/footstep_planner_lib.dir/build.make CMakeFiles/footstep_planner_lib.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=9,10 "Built target footstep_planner_lib"
@@ -474,15 +474,15 @@ CMakeFiles/footstep_planner_lib.dir/clean:
 # Target rules for target CMakeFiles/nas_plan.dir
 
 # All Build rule for target.
+CMakeFiles/nas_plan.dir/all: CMakeFiles/utils_lib.dir/all
+CMakeFiles/nas_plan.dir/all: CMakeFiles/node_lib.dir/all
+CMakeFiles/nas_plan.dir/all: CMakeFiles/tree_lib.dir/all
+CMakeFiles/nas_plan.dir/all: CMakeFiles/geometry_lib.dir/all
 CMakeFiles/nas_plan.dir/all: CMakeFiles/surface_lib.dir/all
 CMakeFiles/nas_plan.dir/all: CMakeFiles/grid_environment_lib.dir/all
 CMakeFiles/nas_plan.dir/all: CMakeFiles/visualizer_lib.dir/all
 CMakeFiles/nas_plan.dir/all: CMakeFiles/astar_search_lib.dir/all
 CMakeFiles/nas_plan.dir/all: CMakeFiles/footstep_planner_lib.dir/all
-CMakeFiles/nas_plan.dir/all: CMakeFiles/utils_lib.dir/all
-CMakeFiles/nas_plan.dir/all: CMakeFiles/node_lib.dir/all
-CMakeFiles/nas_plan.dir/all: CMakeFiles/tree_lib.dir/all
-CMakeFiles/nas_plan.dir/all: CMakeFiles/geometry_lib.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/nas_plan.dir/build.make CMakeFiles/nas_plan.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/nas_plan.dir/build.make CMakeFiles/nas_plan.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=15,16 "Built target nas_plan"
@@ -514,15 +514,15 @@ CMakeFiles/nas_plan.dir/clean:
 # Target rules for target CMakeFiles/astar_plan.dir
 
 # All Build rule for target.
+CMakeFiles/astar_plan.dir/all: CMakeFiles/utils_lib.dir/all
+CMakeFiles/astar_plan.dir/all: CMakeFiles/node_lib.dir/all
+CMakeFiles/astar_plan.dir/all: CMakeFiles/tree_lib.dir/all
+CMakeFiles/astar_plan.dir/all: CMakeFiles/geometry_lib.dir/all
 CMakeFiles/astar_plan.dir/all: CMakeFiles/surface_lib.dir/all
 CMakeFiles/astar_plan.dir/all: CMakeFiles/grid_environment_lib.dir/all
 CMakeFiles/astar_plan.dir/all: CMakeFiles/visualizer_lib.dir/all
 CMakeFiles/astar_plan.dir/all: CMakeFiles/astar_search_lib.dir/all
 CMakeFiles/astar_plan.dir/all: CMakeFiles/footstep_planner_lib.dir/all
-CMakeFiles/astar_plan.dir/all: CMakeFiles/utils_lib.dir/all
-CMakeFiles/astar_plan.dir/all: CMakeFiles/node_lib.dir/all
-CMakeFiles/astar_plan.dir/all: CMakeFiles/tree_lib.dir/all
-CMakeFiles/astar_plan.dir/all: CMakeFiles/geometry_lib.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/astar_plan.dir/build.make CMakeFiles/astar_plan.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/astar_plan.dir/build.make CMakeFiles/astar_plan.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=5,6 "Built target astar_plan"
@@ -554,16 +554,16 @@ CMakeFiles/astar_plan.dir/clean:
 # Target rules for target CMakeFiles/astar_grid_plan.dir
 
 # All Build rule for target.
+CMakeFiles/astar_grid_plan.dir/all: CMakeFiles/utils_lib.dir/all
+CMakeFiles/astar_grid_plan.dir/all: CMakeFiles/node_lib.dir/all
+CMakeFiles/astar_grid_plan.dir/all: CMakeFiles/tree_lib.dir/all
+CMakeFiles/astar_grid_plan.dir/all: CMakeFiles/geometry_lib.dir/all
 CMakeFiles/astar_grid_plan.dir/all: CMakeFiles/surface_lib.dir/all
 CMakeFiles/astar_grid_plan.dir/all: CMakeFiles/grid_environment_lib.dir/all
 CMakeFiles/astar_grid_plan.dir/all: CMakeFiles/visualizer_lib.dir/all
 CMakeFiles/astar_grid_plan.dir/all: CMakeFiles/astar_search_lib.dir/all
 CMakeFiles/astar_grid_plan.dir/all: CMakeFiles/astar_grid_search_lib.dir/all
 CMakeFiles/astar_grid_plan.dir/all: CMakeFiles/footstep_planner_lib.dir/all
-CMakeFiles/astar_grid_plan.dir/all: CMakeFiles/utils_lib.dir/all
-CMakeFiles/astar_grid_plan.dir/all: CMakeFiles/node_lib.dir/all
-CMakeFiles/astar_grid_plan.dir/all: CMakeFiles/tree_lib.dir/all
-CMakeFiles/astar_grid_plan.dir/all: CMakeFiles/geometry_lib.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/astar_grid_plan.dir/build.make CMakeFiles/astar_grid_plan.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/astar_grid_plan.dir/build.make CMakeFiles/astar_grid_plan.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=1,2 "Built target astar_grid_plan"
@@ -595,14 +595,14 @@ CMakeFiles/astar_grid_plan.dir/clean:
 # Target rules for target CMakeFiles/test_grid_visualization.dir
 
 # All Build rule for target.
-CMakeFiles/test_grid_visualization.dir/all: CMakeFiles/surface_lib.dir/all
-CMakeFiles/test_grid_visualization.dir/all: CMakeFiles/grid_environment_lib.dir/all
-CMakeFiles/test_grid_visualization.dir/all: CMakeFiles/visualizer_lib.dir/all
-CMakeFiles/test_grid_visualization.dir/all: CMakeFiles/astar_grid_search_lib.dir/all
 CMakeFiles/test_grid_visualization.dir/all: CMakeFiles/utils_lib.dir/all
 CMakeFiles/test_grid_visualization.dir/all: CMakeFiles/node_lib.dir/all
 CMakeFiles/test_grid_visualization.dir/all: CMakeFiles/tree_lib.dir/all
 CMakeFiles/test_grid_visualization.dir/all: CMakeFiles/geometry_lib.dir/all
+CMakeFiles/test_grid_visualization.dir/all: CMakeFiles/surface_lib.dir/all
+CMakeFiles/test_grid_visualization.dir/all: CMakeFiles/grid_environment_lib.dir/all
+CMakeFiles/test_grid_visualization.dir/all: CMakeFiles/visualizer_lib.dir/all
+CMakeFiles/test_grid_visualization.dir/all: CMakeFiles/astar_grid_search_lib.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_grid_visualization.dir/build.make CMakeFiles/test_grid_visualization.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_grid_visualization.dir/build.make CMakeFiles/test_grid_visualization.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=23,24 "Built target test_grid_visualization"
@@ -634,14 +634,14 @@ CMakeFiles/test_grid_visualization.dir/clean:
 # Target rules for target CMakeFiles/test_auto_plot.dir
 
 # All Build rule for target.
-CMakeFiles/test_auto_plot.dir/all: CMakeFiles/surface_lib.dir/all
-CMakeFiles/test_auto_plot.dir/all: CMakeFiles/grid_environment_lib.dir/all
-CMakeFiles/test_auto_plot.dir/all: CMakeFiles/visualizer_lib.dir/all
-CMakeFiles/test_auto_plot.dir/all: CMakeFiles/astar_grid_search_lib.dir/all
 CMakeFiles/test_auto_plot.dir/all: CMakeFiles/utils_lib.dir/all
 CMakeFiles/test_auto_plot.dir/all: CMakeFiles/node_lib.dir/all
 CMakeFiles/test_auto_plot.dir/all: CMakeFiles/tree_lib.dir/all
 CMakeFiles/test_auto_plot.dir/all: CMakeFiles/geometry_lib.dir/all
+CMakeFiles/test_auto_plot.dir/all: CMakeFiles/surface_lib.dir/all
+CMakeFiles/test_auto_plot.dir/all: CMakeFiles/grid_environment_lib.dir/all
+CMakeFiles/test_auto_plot.dir/all: CMakeFiles/visualizer_lib.dir/all
+CMakeFiles/test_auto_plot.dir/all: CMakeFiles/astar_grid_search_lib.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_auto_plot.dir/build.make CMakeFiles/test_auto_plot.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_auto_plot.dir/build.make CMakeFiles/test_auto_plot.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles --progress-num=21,22 "Built target test_auto_plot"

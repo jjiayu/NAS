@@ -42,10 +42,10 @@ const bool merge_node_flag = true;
 // "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/LF_constraints_in_RF.obj";
 const std::string rf_in_lf_path_antecedent =
     "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/"
-    "LF_antecedent_CUTZ.obj";
+    "LF_antecedent_CUTZ_s0p8.obj";
 const std::string lf_in_rf_path_antecedent =
     "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/"
-    "RF_antecedent_CUTZ.obj";
+    "RF_antecedent_CUTZ_s0p8.obj";
 
 // for A* and footstep planning qp, we use forward polytopes
 const std::string rf_in_lf_path_forward =
@@ -54,6 +54,16 @@ const std::string rf_in_lf_path_forward =
 const std::string lf_in_rf_path_forward =
     "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/"
     "LF_constraints_in_RF_quasi_flat_REDUCED.obj";
+
+// Original footstep polytopes
+const std::string origin_rf_in_lf_path_forward =
+    "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/"
+    "RF_constraints_in_LF_quasi_flat_REDUCED.obj";
+const std::string origin_lf_in_rf_path_forward =
+    "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/"
+    "LF_constraints_in_RF_quasi_flat_REDUCED.obj";
+
+// Not used
 const std::string com_in_lf_path_forward =
     "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/"
     "COM_constraints_in_LF_effector_frame_REDUCED.obj";
@@ -102,8 +112,8 @@ const std::string node_search_method =
 // const std::vector<std::vector<Point_3>> surf_list = LongLongStairs;
 // const std::vector<std::vector<Point_3>> surf_list = ThreePathsScene;
 // const std::vector<std::vector<Point_3>> surf_list = ThreePathsNAS; //----
-const std::vector<std::vector<Point_3>> surf_list = NarrowPassage;
-// const std::vector<std::vector<Point_3>> surf_list = AllTerrain;
+// const std::vector<std::vector<Point_3>> surf_list = NarrowPassage;
+const std::vector<std::vector<Point_3>> surf_list = AllTerrain;
 // const std::vector<std::vector<Point_3>> surf_list = Stairs_Up_Down;
 // const std::vector<std::vector<Point_3>> surf_list = Flat;
 } // namespace nas
