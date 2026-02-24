@@ -262,6 +262,9 @@ CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
 CasADi_DIR:PATH=/Users/jiayu/local/lib/cmake/casadi
 
 //Path to a file.
+EIGEN3_INCLUDE_DIR:PATH=/opt/homebrew/include/eigen3
+
+//Path to a file.
 EXPAT_INCLUDE_DIR:PATH=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk/usr/include
 
 //Path to a library.
@@ -481,6 +484,8 @@ CMAKE_EXE_LINKER_FLAGS_MINSIZEREL-ADVANCED:INTERNAL=1
 CMAKE_EXE_LINKER_FLAGS_RELEASE-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO
 CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_EXPORT_COMPILE_COMMANDS
+CMAKE_EXPORT_COMPILE_COMMANDS-ADVANCED:INTERNAL=1
 //Name of external makefile project generator.
 CMAKE_EXTRA_GENERATOR:INTERNAL=
 //Name of generator.

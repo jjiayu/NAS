@@ -4,7 +4,7 @@
 # compile CXX with /opt/homebrew/opt/llvm/bin/clang++
 CXX_DEFINES = -DCASADI_SNPRINTF=snprintf -DCGAL_USE_GMPXX=1 -DGLAD_API_CALL_EXPORT -DGL_SILENCE_DEPRECATION -Dkiss_fft_scalar=double -DvtkRenderingCore_AUTOINIT_INCLUDE=\"/Users/jiayu/Desktop/nas_ws/NAS/build/CMakeFiles/vtkModuleAutoInit_ef581ebbf3812c41155eb6cbf7fd17d1.h\"
 
-CXX_INCLUDES = -I/Users/jiayu/Desktop/nas_ws/NAS/include -isystem /opt/homebrew/include -isystem /opt/homebrew/include/vtk-9.5 -isystem /opt/homebrew/include/vtk-9.5/token -isystem /opt/homebrew/include/vtk-9.5/vtkkissfft -isystem /opt/homebrew/include/vtk-9.5/vtkglad -isystem /opt/homebrew/include/freetype2 -isystem /opt/homebrew/opt/cgal/include -isystem /Users/jiayu/local/include
+CXX_INCLUDES = -I/Users/jiayu/Desktop/nas_ws/NAS/include -I/opt/homebrew/include/eigen3 -isystem /opt/homebrew/include -isystem /opt/homebrew/include/vtk-9.5 -isystem /opt/homebrew/include/vtk-9.5/token -isystem /opt/homebrew/include/vtk-9.5/vtkkissfft -isystem /opt/homebrew/include/vtk-9.5/vtkglad -isystem /opt/homebrew/include/freetype2 -isystem /opt/homebrew/opt/cgal/include -isystem /Users/jiayu/local/include
 
 CXX_FLAGSarm64 = -O3 -DNDEBUG -std=gnu++20 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk
 

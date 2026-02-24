@@ -31,7 +31,16 @@ set(CMAKE_PREFIX_PATH "/Users/jiayu/local" ${CMAKE_PREFIX_PATH})
 # Find required packages
 find_package(CGAL REQUIRED)
 find_package(Boost REQUIRED)
-find_package(Eigen3 REQUIRED)
+# Eigen3: Homebrew on Apple Silicon puts headers in /opt/homebrew/include/eigen3
+# The CMake config is broken (no version file), so we locate headers manually.
+find_path(EIGEN3_INCLUDE_DIR NAMES Eigen/Core
+  HINTS /opt/homebrew/include/eigen3 /usr/local/include/eigen3
+  NO_DEFAULT_PATH
+)
+if(NOT EIGEN3_INCLUDE_DIR)
+  message(FATAL_ERROR "Could not find Eigen3 headers. Install with: brew install eigen")
+endif()
+message(STATUS "Found Eigen3 headers: ${EIGEN3_INCLUDE_DIR}")
 find_package(VTK 9.2 REQUIRED COMPONENTS 
   CommonCore
   CommonDataModel
@@ -47,8 +56,8 @@ find_package(CasADi REQUIRED)
 # Add the include directory
 include_directories(include)
 include_directories(${VTK_INCLUDE_DIRS})
-include_directories("/opt/homebrew/include")  # For CGAL headers
-include_directories(${EIGEN3_INCLUDE_DIR})  # For Eigen3 headers
+include_directories("/opt/homebrew/include")  # For CGAL, coal, etc.
+include_directories(${EIGEN3_INCLUDE_DIR})          # For Eigen3 headers (coal depends on this)
 
 # Add library with source files
 add_library(utils_lib src/utils.cpp)
