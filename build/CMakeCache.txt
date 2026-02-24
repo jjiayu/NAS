@@ -14,14 +14,11 @@
 # EXTERNAL cache entries
 ########################
 
-//Build VTK with shared libraries.
-BUILD_SHARED_LIBS:BOOL=ON
-
 //Activate the debug messages of the script FindBoost
 Boost_DEBUG:BOOL=OFF
 
 //The directory containing a CMake configuration file for Boost.
-Boost_DIR:PATH=/opt/homebrew/lib/cmake/Boost-1.89.0
+Boost_DIR:PATH=/opt/homebrew/lib/cmake/Boost-1.90.0
 
 //Path to a file.
 Boost_INCLUDE_DIR:PATH=/opt/homebrew/include
@@ -66,17 +63,17 @@ CMAKE_BUILD_TYPE:STRING=Debug
 //Enable/Disable color output during build.
 CMAKE_COLOR_MAKEFILE:BOOL=ON
 
-//CXX compiler
-CMAKE_CXX_COMPILER:STRING=/opt/homebrew/opt/llvm/bin/clang++
+//No help, variable specified on the command line.
+CMAKE_CXX_COMPILER:FILEPATH=/opt/homebrew/opt/llvm/bin/clang++
 
 //LLVM archiver
-CMAKE_CXX_COMPILER_AR:FILEPATH=/opt/homebrew/Cellar/llvm/20.1.8/bin/llvm-ar
+CMAKE_CXX_COMPILER_AR:FILEPATH=/opt/homebrew/Cellar/llvm/21.1.8/bin/llvm-ar
 
 //`clang-scan-deps` dependency scanner
-CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS:FILEPATH=/opt/homebrew/Cellar/llvm/20.1.8/bin/clang-scan-deps
+CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS:FILEPATH=/opt/homebrew/Cellar/llvm/21.1.8/bin/clang-scan-deps
 
 //Generate index for LLVM archive
-CMAKE_CXX_COMPILER_RANLIB:FILEPATH=/opt/homebrew/Cellar/llvm/20.1.8/bin/llvm-ranlib
+CMAKE_CXX_COMPILER_RANLIB:FILEPATH=/opt/homebrew/Cellar/llvm/21.1.8/bin/llvm-ranlib
 
 //Flags used by the CXX compiler during all build types.
 CMAKE_CXX_FLAGS:STRING=
@@ -170,7 +167,7 @@ CMAKE_OSX_DEPLOYMENT_TARGET:STRING=
 
 //The product will be built against the headers and libraries located
 // inside the indicated SDK.
-CMAKE_OSX_SYSROOT:PATH=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.0.sdk
+CMAKE_OSX_SYSROOT:PATH=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk
 
 //Value Computed by CMake
 CMAKE_PROJECT_DESCRIPTION:STATIC=
@@ -264,14 +261,14 @@ CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
 //The directory containing a CMake configuration file for CasADi.
 CasADi_DIR:PATH=/Users/jiayu/local/lib/cmake/casadi
 
-//Directory containing the Eigen3 header files
-EIGEN3_INCLUDE_DIR:PATH=/opt/homebrew/include/eigen3
-
 //Path to a file.
-EXPAT_INCLUDE_DIR:PATH=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.0.sdk/usr/include
+EXPAT_INCLUDE_DIR:PATH=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk/usr/include
 
 //Path to a library.
-EXPAT_LIBRARY:FILEPATH=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.0.sdk/usr/lib/libexpat.tbd
+EXPAT_LIBRARY:FILEPATH=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk/usr/lib/libexpat.tbd
+
+//The directory containing a CMake configuration file for Eigen3.
+Eigen3_DIR:PATH=/opt/homebrew/share/eigen3/cmake
 
 //Eigen include directory
 Eigen3_INCLUDE_DIR:PATH=/opt/homebrew/include/eigen3
@@ -363,19 +360,19 @@ TIFF_LIBRARY_RELEASE:FILEPATH=/opt/homebrew/lib/libtiff.dylib
 Tiff_DIR:PATH=Tiff_DIR-NOTFOUND
 
 //The directory containing a CMake configuration file for VTK.
-VTK_DIR:PATH=/opt/homebrew/lib/cmake/vtk-9.4
+VTK_DIR:PATH=/opt/homebrew/lib/cmake/vtk-9.5
 
 //Path to a file.
-ZLIB_INCLUDE_DIR:PATH=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.0.sdk/usr/include
+ZLIB_INCLUDE_DIR:PATH=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk/usr/include
 
 //Path to a library.
 ZLIB_LIBRARY_DEBUG:FILEPATH=ZLIB_LIBRARY_DEBUG-NOTFOUND
 
 //Path to a library.
-ZLIB_LIBRARY_RELEASE:FILEPATH=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.0.sdk/usr/lib/libz.tbd
+ZLIB_LIBRARY_RELEASE:FILEPATH=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk/usr/lib/libz.tbd
 
 //The directory containing a CMake configuration file for boost_headers.
-boost_headers_DIR:PATH=/opt/homebrew/lib/cmake/boost_headers-1.89.0
+boost_headers_DIR:PATH=/opt/homebrew/lib/cmake/boost_headers-1.90.0
 
 //double-conversion include directory
 double-conversion_INCLUDE_DIR:PATH=/opt/homebrew/include/double-conversion
@@ -402,7 +399,7 @@ nlohmann_json_DIR:PATH=/opt/homebrew/share/cmake/nlohmann_json
 pkgcfg_lib_FREETYPE_freetype:FILEPATH=/opt/homebrew/opt/freetype/lib/libfreetype.dylib
 
 //Path to a library.
-pkgcfg_lib_PC_EXPAT_expat:FILEPATH=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.0.sdk/usr/lib/libexpat.tbd
+pkgcfg_lib_PC_EXPAT_expat:FILEPATH=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk/usr/lib/libexpat.tbd
 
 //The directory containing a CMake configuration file for pugixml.
 pugixml_DIR:PATH=/opt/homebrew/lib/cmake/pugixml
@@ -570,33 +567,27 @@ EXPAT_LIBRARY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: Eigen3_INCLUDE_DIR
 Eigen3_INCLUDE_DIR-ADVANCED:INTERNAL=1
 //Details about finding Boost
-FIND_PACKAGE_MESSAGE_DETAILS_Boost:INTERNAL=[/opt/homebrew/lib/cmake/Boost-1.89.0/BoostConfig.cmake][c ][v1.89.0()]
+FIND_PACKAGE_MESSAGE_DETAILS_Boost:INTERNAL=[/opt/homebrew/lib/cmake/Boost-1.90.0/BoostConfig.cmake][c ][v1.90.0()]
 //Details about finding EXPAT
-FIND_PACKAGE_MESSAGE_DETAILS_EXPAT:INTERNAL=[/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.0.sdk/usr/lib/libexpat.tbd][/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.0.sdk/usr/include][v2.7.1()]
-//Details about finding Eigen3
-FIND_PACKAGE_MESSAGE_DETAILS_Eigen3:INTERNAL=[/opt/homebrew/include/eigen3][v3.4.0(3.1.0)]
+FIND_PACKAGE_MESSAGE_DETAILS_EXPAT:INTERNAL=[/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk/usr/lib/libexpat.tbd][/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk/usr/include][v2.7.1(2.5.0)]
 //Details about finding Freetype
-FIND_PACKAGE_MESSAGE_DETAILS_Freetype:INTERNAL=[/opt/homebrew/lib/libfreetype.dylib][/opt/homebrew/include/freetype2][v2.13.3()]
-//Details about finding GMP
-FIND_PACKAGE_MESSAGE_DETAILS_GMP:INTERNAL=[/opt/homebrew/lib/libgmp.dylib][/opt/homebrew/include][v()]
+FIND_PACKAGE_MESSAGE_DETAILS_Freetype:INTERNAL=[/opt/homebrew/lib/libfreetype.dylib][/opt/homebrew/include/freetype2][v2.14.1()]
 //Details about finding JPEG
 FIND_PACKAGE_MESSAGE_DETAILS_JPEG:INTERNAL=[/opt/homebrew/lib/libjpeg.dylib][/opt/homebrew/include][v80()]
 //Details about finding LZ4
 FIND_PACKAGE_MESSAGE_DETAILS_LZ4:INTERNAL=[/opt/homebrew/lib/liblz4.dylib][/opt/homebrew/include][v1.10.0()]
 //Details about finding LZMA
-FIND_PACKAGE_MESSAGE_DETAILS_LZMA:INTERNAL=[/opt/homebrew/lib/liblzma.dylib][/opt/homebrew/include][v5.8.1()]
-//Details about finding MPFR
-FIND_PACKAGE_MESSAGE_DETAILS_MPFR:INTERNAL=[/opt/homebrew/lib/libmpfr.dylib][/opt/homebrew/include][v()]
+FIND_PACKAGE_MESSAGE_DETAILS_LZMA:INTERNAL=[/opt/homebrew/lib/liblzma.dylib][/opt/homebrew/include][v5.8.2()]
 //Details about finding PNG
-FIND_PACKAGE_MESSAGE_DETAILS_PNG:INTERNAL=[/opt/homebrew/lib/libpng.dylib][/opt/homebrew/include][v1.6.50()]
+FIND_PACKAGE_MESSAGE_DETAILS_PNG:INTERNAL=[/opt/homebrew/lib/libpng.dylib][/opt/homebrew/include][v1.6.53()]
 //Details about finding PkgConfig
 FIND_PACKAGE_MESSAGE_DETAILS_PkgConfig:INTERNAL=[/opt/homebrew/bin/pkg-config][v2.5.1()]
 //Details about finding TIFF
-FIND_PACKAGE_MESSAGE_DETAILS_TIFF:INTERNAL=[/opt/homebrew/lib/libtiff.dylib][/opt/homebrew/include][c ][v4.7.0()]
+FIND_PACKAGE_MESSAGE_DETAILS_TIFF:INTERNAL=[/opt/homebrew/lib/libtiff.dylib][/opt/homebrew/include][c ][v4.7.1()]
 //Details about finding Threads
 FIND_PACKAGE_MESSAGE_DETAILS_Threads:INTERNAL=[TRUE][v()]
 //Details about finding ZLIB
-FIND_PACKAGE_MESSAGE_DETAILS_ZLIB:INTERNAL=[/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.0.sdk/usr/lib/libz.tbd][/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.0.sdk/usr/include][c ][v1.2.12()]
+FIND_PACKAGE_MESSAGE_DETAILS_ZLIB:INTERNAL=[/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk/usr/lib/libz.tbd][/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk/usr/include][c ][v1.2.12()]
 //Details about finding double-conversion
 FIND_PACKAGE_MESSAGE_DETAILS_double-conversion:INTERNAL=[/opt/homebrew/lib/libdouble-conversion.dylib][/opt/homebrew/include/double-conversion][v()]
 //Details about finding nlohmann_json
@@ -632,16 +623,16 @@ FREETYPE_STATIC_CFLAGS:INTERNAL=-I/opt/homebrew/opt/freetype/include/freetype2;-
 FREETYPE_STATIC_CFLAGS_I:INTERNAL=
 FREETYPE_STATIC_CFLAGS_OTHER:INTERNAL=
 FREETYPE_STATIC_INCLUDE_DIRS:INTERNAL=/opt/homebrew/opt/freetype/include/freetype2;/opt/homebrew/opt/libpng/include/libpng16
-FREETYPE_STATIC_LDFLAGS:INTERNAL=-L/opt/homebrew/opt/freetype/lib;-lfreetype;-lbz2;-L/opt/homebrew/opt/libpng/lib;-lpng16;-L/usr/lib;-lz
+FREETYPE_STATIC_LDFLAGS:INTERNAL=-L/opt/homebrew/opt/freetype/lib;-lfreetype;-L/usr/lib;-lbz2;-L/opt/homebrew/opt/libpng/lib;-lpng16;-lz
 FREETYPE_STATIC_LDFLAGS_OTHER:INTERNAL=
 FREETYPE_STATIC_LIBDIR:INTERNAL=
 FREETYPE_STATIC_LIBRARIES:INTERNAL=freetype;bz2;png16;z
-FREETYPE_STATIC_LIBRARY_DIRS:INTERNAL=/opt/homebrew/opt/freetype/lib;/opt/homebrew/opt/libpng/lib;/usr/lib
+FREETYPE_STATIC_LIBRARY_DIRS:INTERNAL=/opt/homebrew/opt/freetype/lib;/usr/lib;/opt/homebrew/opt/libpng/lib
 FREETYPE_STATIC_LIBS:INTERNAL=
 FREETYPE_STATIC_LIBS_L:INTERNAL=
 FREETYPE_STATIC_LIBS_OTHER:INTERNAL=
 FREETYPE_STATIC_LIBS_PATHS:INTERNAL=
-FREETYPE_VERSION:INTERNAL=26.2.20
+FREETYPE_VERSION:INTERNAL=26.4.20
 FREETYPE_freetype2_INCLUDEDIR:INTERNAL=
 FREETYPE_freetype2_LIBDIR:INTERNAL=
 FREETYPE_freetype2_PREFIX:INTERNAL=
@@ -660,7 +651,7 @@ PC_EXPAT_CFLAGS:INTERNAL=
 PC_EXPAT_CFLAGS_I:INTERNAL=
 PC_EXPAT_CFLAGS_OTHER:INTERNAL=
 PC_EXPAT_FOUND:INTERNAL=1
-PC_EXPAT_INCLUDEDIR:INTERNAL=/Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk/usr/include
+PC_EXPAT_INCLUDEDIR:INTERNAL=/Library/Developer/CommandLineTools/SDKs/MacOSX26.sdk/usr/include
 PC_EXPAT_INCLUDE_DIRS:INTERNAL=
 PC_EXPAT_LDFLAGS:INTERNAL=-L/usr/lib;-lexpat
 PC_EXPAT_LDFLAGS_OTHER:INTERNAL=
@@ -672,7 +663,7 @@ PC_EXPAT_LIBS_L:INTERNAL=
 PC_EXPAT_LIBS_OTHER:INTERNAL=
 PC_EXPAT_LIBS_PATHS:INTERNAL=
 PC_EXPAT_MODULE_NAME:INTERNAL=expat
-PC_EXPAT_PREFIX:INTERNAL=/Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk/usr
+PC_EXPAT_PREFIX:INTERNAL=/Library/Developer/CommandLineTools/SDKs/MacOSX26.sdk/usr
 PC_EXPAT_STATIC_CFLAGS:INTERNAL=-DXML_STATIC
 PC_EXPAT_STATIC_CFLAGS_I:INTERNAL=
 PC_EXPAT_STATIC_CFLAGS_OTHER:INTERNAL=-DXML_STATIC
