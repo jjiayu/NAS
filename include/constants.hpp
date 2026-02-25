@@ -42,18 +42,18 @@ const bool merge_node_flag = true;
 // "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/LF_constraints_in_RF.obj";
 const std::string rf_in_lf_path_antecedent =
     "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/"
-    "LF_antecedent_CUTZ_s0p8.obj";
+    "LF_antecedent_CUTZ.obj";
 const std::string lf_in_rf_path_antecedent =
     "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/"
-    "RF_antecedent_CUTZ_s0p8.obj";
+    "RF_antecedent_CUTZ.obj";
 
 // for A* and footstep planning qp, we use forward polytopes
 const std::string rf_in_lf_path_forward =
     "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/"
-    "RF_constraints_in_LF_quasi_flat_REDUCED.obj";
+    "RF_constraints_in_LF_quasi_flat_REDUCED_s0p7.obj";
 const std::string lf_in_rf_path_forward =
     "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/"
-    "LF_constraints_in_RF_quasi_flat_REDUCED.obj";
+    "LF_constraints_in_RF_quasi_flat_REDUCED_s0p7.obj";
 
 // Original footstep polytopes
 const std::string origin_rf_in_lf_path_forward =

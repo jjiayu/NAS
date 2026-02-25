@@ -1175,12 +1175,12 @@ const std::vector<std::vector<Point_3>> NarrowPassage = {
 const std::vector<std::vector<Point_3>> AllTerrain = []() {
   std::vector<std::vector<Point_3>> combined;
 
-  // 1. Add Stairs_Up_Down (X range: [-1.8, 4.2])
+  // 1. Add Stairs_Up_Down (X range: [-1.8, 4.8])
   combined.insert(combined.end(), Stairs_Up_Down.begin(), Stairs_Up_Down.end());
 
   // 2. Add ThreePathsNAS (Original X: [-0.3, 4.94])
-  // Shift to connect to Stairs_Up_Down end (X=4.8). Offset = 4.8 - (-0.3)
-  // = 5.1
+  // Shift to connect to Stairs_Up_Down end (X=4.8). Offset = 4.8 - (-0.3) = 5.1
+  // After shift, ThreePathsNAS occupies X=[4.8, 10.04]
   Vector_3 shift2(5.1, 0.0, 0.0);
   for (const auto &surf : ThreePathsNAS) {
     std::vector<Point_3> shifted_surf;
@@ -1190,19 +1190,17 @@ const std::vector<std::vector<Point_3>> AllTerrain = []() {
     combined.push_back(shifted_surf);
   }
 
-  //   // 3. Add NarrowPassage (Original X: [-2.0, 10.0])
-  //   // Shift to connect to shifted ThreePathsNAS end (X=9.44). Offset = 9.44
-  //   + 0.6
-  //   // -
-  //   // (-2.0) = 12.04 //11.44
-  //   Vector_3 shift3(12.04, 0.0, 0.0);
-  //   for (const auto &surf : NarrowPassage) {
-  //     std::vector<Point_3> shifted_surf;
-  //     for (const auto &pt : surf) {
-  //       shifted_surf.push_back(pt + shift3);
-  //     }
-  //     combined.push_back(shifted_surf);
-  //   }
+  // 3. Add NarrowPassage (Original X: [-2.0, 10.0])
+  // Shift to connect to shifted ThreePathsNAS end (X=10.04). Offset = 10.04 -
+  // (-2.0) = 12.04 After shift, NarrowPassage occupies X=[10.04, 22.0]
+  Vector_3 shift3(12.04, 0.0, 0.0);
+  for (const auto &surf : NarrowPassage) {
+    std::vector<Point_3> shifted_surf;
+    for (const auto &pt : surf) {
+      shifted_surf.push_back(pt + shift3);
+    }
+    combined.push_back(shifted_surf);
+  }
 
   return combined;
 }();
