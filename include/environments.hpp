@@ -974,6 +974,65 @@ const std::vector<std::vector<Point_3>> ThreePathsScene = {
         Point_3(2.05, -0.15, 0.0)  // top left
     }};
 
+const std::vector<std::vector<Point_3>> Stairs_Up_Down_Original = {
+    // Floor
+    {
+        Point_3(-1.8, -1., 0.0), // bottom left
+        Point_3(0.6, -1., 0.0),  // bottom right
+        Point_3(0.6, 1., 0.0),   // top right
+        Point_3(-1.8, 1., 0.0)   // top left
+    },
+
+    // Step 1
+    {
+        Point_3(0.6, -0.16, 0.1), // bottom left
+        Point_3(1.2, -0.16, 0.1), // bottom right
+        Point_3(1.2, 0.6, 0.1),   // top right
+        Point_3(0.6, 0.6, 0.1)    // top left
+    },
+
+    // Step 2
+    {
+        Point_3(1.2, -0.16, 0.2), // bottom left
+        Point_3(1.8, -0.16, 0.2), // bottom right
+        Point_3(1.8, 0.6, 0.2),   // top right
+        Point_3(1.2, 0.6, 0.2)    // top left
+    },
+
+    // Step 3
+    {
+        Point_3(1.8, -0.16, 0.3), // bottom left
+        Point_3(2.4, -0.16, 0.3), // bottom right
+        Point_3(2.4, 0.6, 0.3),   // top right
+        Point_3(1.8, 0.6, 0.3)    // top left
+    },
+
+    // Step 4
+    {
+        Point_3(2.4, -0.16, 0.2), // bottom left
+        Point_3(3.0, -0.16, 0.2), // bottom right
+        Point_3(3.0, 0.6, 0.2),   // top right
+        Point_3(2.4, 0.6, 0.2)    // top left
+    },
+
+    // Step 5
+    {
+        Point_3(3.0, -0.16, 0.1), // bottom left
+        Point_3(3.6, -0.16, 0.1), // bottom right
+        Point_3(3.6, 0.6, 0.1),   // top right
+        Point_3(3.0, 0.6, 0.1)    // top left
+    },
+
+    // Step 6
+    {
+        Point_3(3.6, -0.16, 0.0), // bottom left
+        Point_3(4.2, -0.16, 0.0), // bottom right
+        Point_3(4.2, 0.6, 0.0),   // top right
+        Point_3(3.6, 0.6, 0.0)    // top left
+    }
+
+};
+
 const std::vector<std::vector<Point_3>> Stairs_Up_Down = {
     // Floor
     {
@@ -1181,7 +1240,7 @@ const std::vector<std::vector<Point_3>> AllTerrain = []() {
   // 2. Add ThreePathsNAS (Original X: [-0.3, 4.94])
   // Shift to connect to Stairs_Up_Down end (X=4.8). Offset = 4.8 - (-0.3) = 5.1
   // After shift, ThreePathsNAS occupies X=[4.8, 10.04]
-  Vector_3 shift2(5.1, 0.0, 0.0);
+  Vector_3 shift2(5.1, 0.0, 0.0); // 5.1
   for (const auto &surf : ThreePathsNAS) {
     std::vector<Point_3> shifted_surf;
     for (const auto &pt : surf) {
@@ -1193,7 +1252,7 @@ const std::vector<std::vector<Point_3>> AllTerrain = []() {
   // 3. Add NarrowPassage (Original X: [-2.0, 10.0])
   // Shift to connect to shifted ThreePathsNAS end (X=10.04). Offset = 10.04 -
   // (-2.0) = 12.04 After shift, NarrowPassage occupies X=[10.04, 22.0]
-  Vector_3 shift3(12.04, 0.0, 0.0);
+  Vector_3 shift3(12.04, 0.0, 0.0); // 12.04
   for (const auto &surf : NarrowPassage) {
     std::vector<Point_3> shifted_surf;
     for (const auto &pt : surf) {

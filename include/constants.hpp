@@ -12,7 +12,7 @@ const double com_z_height = 0.75;
 const std::string a_star_distance_metric = "epa"; // "euclidean", "gjk", "epa"
 
 // Discrete a star related
-const double a_star_grid_resolution = 0.1; // meters
+const double a_star_grid_resolution = 0.05; // meters
 
 const bool cycle_detection = true;
 
@@ -50,10 +50,10 @@ const std::string lf_in_rf_path_antecedent =
 // for A* and footstep planning qp, we use forward polytopes
 const std::string rf_in_lf_path_forward =
     "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/"
-    "RF_constraints_in_LF_quasi_flat_REDUCED_s0p7.obj";
+    "RF_constraints_in_LF_quasi_flat_REDUCED_s0p8.obj";
 const std::string lf_in_rf_path_forward =
     "/Users/jiayu/Desktop/nas_ws/NAS/data/constraints_files/"
-    "LF_constraints_in_RF_quasi_flat_REDUCED_s0p7.obj";
+    "LF_constraints_in_RF_quasi_flat_REDUCED_s0p8.obj";
 
 // Original footstep polytopes
 const std::string origin_rf_in_lf_path_forward =
@@ -87,7 +87,7 @@ const int current_stance_foot_flag = RIGHT_FOOT;
 // const Point_3 current_foot_pos(2.2, 0.7, 0.0); // starting point for two flat
 // const Point_3 current_foot_pos(0.1, 0.0, 0.0); // starting point for stairs
 const Point_3
-    current_foot_pos(0.0, 0.0,
+    current_foot_pos(0.0, 0.1,
                      0.0); // starting point for long stairs and longlong stairs
 // const Point_3 current_foot_pos(6.25, 0.5, 0.0);
 
