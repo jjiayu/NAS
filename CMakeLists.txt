@@ -8,15 +8,17 @@ endif()
 project(
   nas
   VERSION 1.0
-  LANGUAGES CXX
+  LANGUAGES C CXX
 )
 
 # Set C++ standard
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Set Homebrew paths for Apple Silicon
-set(CMAKE_PREFIX_PATH $ENV{CONDA_PREFIX})
+# Add conda prefix to search paths if available
+if(DEFINED ENV{CONDA_PREFIX} AND NOT "$ENV{CONDA_PREFIX}" STREQUAL "")
+  list(APPEND CMAKE_PREFIX_PATH "$ENV{CONDA_PREFIX}")
+endif()
 
 # Use PkgConfig to find FreeType (Homebrew doesn't provide CMake config)
 find_package(PkgConfig REQUIRED)
@@ -26,10 +28,10 @@ pkg_check_modules(FREETYPE REQUIRED freetype2)
 
 
 # Find required packages
+find_package(Eigen3 REQUIRED)
 find_package(CGAL REQUIRED)
 find_package(Boost REQUIRED)
-find_package(Eigen3 REQUIRED)
-find_package(VTK 9.2 REQUIRED COMPONENTS 
+find_package(VTK 9.1 REQUIRED COMPONENTS 
   CommonCore
   CommonDataModel
   FiltersSources
@@ -40,12 +42,14 @@ find_package(VTK 9.2 REQUIRED COMPONENTS
 )
 find_package(yaml-cpp REQUIRED)
 find_package(CasADi REQUIRED)
-find_library(COAL_LIB coal REQUIRED)
+find_package(coal REQUIRED)
 
 # Add the include directory
 include_directories(include)
 include_directories(${VTK_INCLUDE_DIRS})
-include_directories($ENV{CONDA_PREFIX}/include)  # coal
+if(DEFINED ENV{CONDA_PREFIX} AND NOT "$ENV{CONDA_PREFIX}" STREQUAL "")
+  include_directories("$ENV{CONDA_PREFIX}/include")
+endif()
 include_directories(${EIGEN3_INCLUDE_DIR})  # For Eigen3 headers
 
 # Add library with source files
@@ -84,7 +88,7 @@ target_link_libraries(visualizer_lib PRIVATE
 )
 target_link_libraries(geometry_lib PRIVATE
     CGAL::CGAL
-    ${COAL_LIB}
+    coal::coal
 )
 
 target_include_directories(geometry_lib PRIVATE include)

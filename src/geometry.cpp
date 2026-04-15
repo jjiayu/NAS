@@ -3,6 +3,7 @@
 #include "node.hpp"
 #include <limits>
 #include <cmath>
+#include <numeric>
 #include <coal/collision_object.h>
 #include <coal/shape/geometric_shapes.h>
 #include <coal/shape/convex.h>
