@@ -6,8 +6,8 @@ But de ce fichier : reprendre exactement où on s'est arrêté si la session s'i
 
 ## Où on en est là, maintenant
 
-**Étape courante : Stage A, phase 0 — 0a-0d faits, 0e en cours (session autonome, utilisateur absent pour la nuit).**
-**Prochaine action : lancer la capture sur tous les scénarios d'`environments.hpp` (script 0e), puis 0f/0g.**
+**Étape courante : Stage A, phase 0 terminée côté CASSR/astar (NAS bloqué, voir avertissement). Passage à la phase 1 (`talosReachability`).**
+**Prochaine action : créer `talosReachability/` (structure calquée sur go2Reachability, sans script de génération).**
 
 Rien n'a encore été créé dans le repo pour le cœur de la réécriture (pas de `core/`, `planners/`, etc.) — seul l'outillage de la phase 0 existe (`tests/golden_capture.cpp`, `docs/paper-deltas.md`).
 
@@ -17,14 +17,14 @@ Rien n'a encore été créé dans le repo pour le cœur de la réécriture (pas 
 
 ## Stage A — parité fonctionnelle
 
-- [ ] 0. Golden references (séquences + QP + perf, 3 scénarios du papier)
+- [x] 0. Golden references — CASSR/astar complet (10/11 scénarios). **NAS incomplet, bloqué** (cf. avertissement ci-dessus) : golden NAS = fichiers d'erreur uniquement pour l'instant, à re-capturer une fois le fichier `.obj` manquant résolu.
   - [x] 0a. Vérifier que le repo actuel compile proprement ici — OK avec `cmake --build build -j2` (jamais plus de 3-4 jobs sur cette machine, RAM très contrainte : ~1.9 Gi libres sur 14 Gi, swap plein — `-j$(nproc)`=12 a été tué par l'OOM killer)
   - [x] 0b. Papier CASSR obtenu — pas de mapping strict à 3 scénarios requis, on capture tous les scénarios d'`environments.hpp` qui marchent (cf. PLAN.md pour les chiffres de référence Table I)
   - [x] 0c. Écrire `golden_capture.cpp` — fait, testé sur NarrowPassage (astar OK, 29 steps = chiffre exact du papier ; nas échoue proprement, cf. bloqueur ci-dessus)
   - [x] 0d. Format JSON dans `tests/golden/` — un fichier par (scénario × planner)
   - [x] 0e. Script de bascule de tous les scénarios d'`environments.hpp` — écrit (`tests/capture_golden_references.sh`), lancé en arrière-plan sur les 11 scénarios
-  - [ ] 0f. Lancer, sanity check des fichiers produits
-  - [ ] 0g. Commit golden + outil de capture
+  - [x] 0f. Lancé sur les 11 scénarios — 10/11 astar OK (`TwoFlatSurfaces` ne trouve pas de chemin, gardé tel quel, non débuggé). Sanity check fort : `NarrowPassage`=29 pas et `ThreePathsNAS`=19 pas matchent exactement Table I du papier (narrow passage / local minima avec rotation)
+  - [x] 0g. Committé (`071c4be`, `5faaceb`)
 - [ ] 1. `talosReachability`
 - [ ] 2. `core/geometry` + `core/surface`
 - [ ] 3. `core/reachability` (couche 0)
@@ -61,6 +61,7 @@ _(aucune pour l'instant — tout ce qui a été tranché est dans PLAN.md)_
 
 ## Journal
 
+- **2026-09-17** (soir, session autonome) : phase 0 menée à bien côté CASSR/astar — `golden_capture.cpp` écrit et testé (`231095a`), `docs/paper-deltas.md` créé et seedé (`626daba`), script de bascule multi-scénarios écrit (`071c4be`), capture lancée sur les 11 scénarios d'`environments.hpp` et committée (`5faaceb`) : 10/11 réussissent côté astar, `TwoFlatSurfaces` ne trouve pas de chemin (gardé tel quel). Deux scénarios confirment le mapping papier par match exact du nombre de pas : `NarrowPassage`=29, `ThreePathsNAS`=19. **NAS/Tree reste bloqué** sur toute la phase 0 : `constants.hpp` référence un fichier `LF_antecedent_CUTZ.obj` inexistant dans `data/constraints_files/` — pas de correction tentée (aucun candidat de remplacement fiable), documenté dans `docs/paper-deltas.md`, à trancher par l'utilisateur. Aussi trouvé et corrigé au passage : `AstarSearch`'s start node avait `surface_id` jamais initialisé (mémoire non déterministe) — neutralisé dans la capture, logué. Passage à la phase 1.
 - **2026-09-17** : analyse complète du repo actuel (libs, pipeline de reachability, NAS vs CASSR) + analyse de `go2Reachability`/`go2Motion`. Plan complet discuté et arbitré (QP backends, viz, bindings Python, talosReachability, tests, stages A/B, cleanup). `PLAN.md` et `PROGRESS.md` créés et commités (`db33476`). Phase 0 détaillée en sous-étapes 0a-0g dans PLAN.md. Implémentation pas encore démarrée — prochaine action concrète : 0a.
 - **2026-09-17** : papier CASSR fourni par l'utilisateur (attaché en conversation, pas de fichier local). Scope de la capture golden élargi : tous les scénarios d'`environments.hpp` qui marchent, pas juste les 3 du papier — B3 de Stage B absorbé dans la phase 0. Repères Table I du papier ajoutés dans PLAN.md pour sanity-check.
 - **2026-09-17** : trouvé `/media/stonneau/data/dev/linux/cassr/` et `/media/stonneau/data/dev/linux/cursor/nas/` (essai antérieur non versionné, ~avril 2026, structure proche du plan actuel — geometry2d/3d, a_star, qp_footsteps avec quadprog vendorisé, viz SVG). **Tranché par l'utilisateur : ignorer complètement, ça ne marchait pas.** Ne pas ré-explorer ces dossiers dans une session future.
