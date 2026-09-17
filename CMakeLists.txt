@@ -138,6 +138,9 @@ add_executable(astar_plan src/astar_plan.cpp)
 add_executable(astar_grid_plan src/astar_grid_plan.cpp)
 add_executable(test_grid_visualization test_grid_visualization.cpp)
 add_executable(test_auto_plot test_auto_plot.cpp)
+add_executable(test_bench_operations test_bench_operations.cpp)
+add_executable(test_print_paths test_print_paths.cpp)
+add_executable(golden_capture tests/golden_capture.cpp)
 
 # Link libraries for first executable
 target_link_libraries(nas_plan PRIVATE
@@ -219,6 +222,42 @@ target_link_libraries(test_auto_plot PRIVATE
 
 # Enable VTK module autoinit for all executables
 vtk_module_autoinit(
-  TARGETS nas_plan astar_plan astar_grid_plan test_grid_visualization test_auto_plot
+  TARGETS nas_plan astar_plan astar_grid_plan test_grid_visualization test_auto_plot test_bench_operations golden_capture
   MODULES ${VTK_LIBRARIES}
+)
+
+# Link libraries for bench operations
+target_link_libraries(test_bench_operations PRIVATE
+    utils_lib
+    node_lib
+    surface_lib
+    geometry_lib
+    CGAL::CGAL
+    Boost::boost
+)
+
+target_link_libraries(test_print_paths PRIVATE
+    utils_lib
+    node_lib
+    surface_lib
+    geometry_lib
+    CGAL::CGAL
+    Boost::boost
+)
+
+# Link libraries for golden_capture (Stage A phase 0, see PLAN.md) — mirrors
+# astar_plan's dependency set since it drives the same AstarSearch/Tree/
+# FootstepPlanner classes, minus any actual VTK usage (headless capture).
+target_link_libraries(golden_capture PRIVATE
+    tree_lib
+    utils_lib
+    node_lib
+    surface_lib
+    geometry_lib
+    visualizer_lib
+    ${VTK_LIBRARIES}
+    CGAL::CGAL
+    astar_search_lib
+    footstep_planner_lib
+    casadi::casadi
 )
