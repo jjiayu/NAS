@@ -1,0 +1,11 @@
+# --- talosReachabilityConfig.cmake.in ---
+# Portable config file for talosReachability
+
+# Path to the directory containing this config file
+get_filename_component(TALOSREACHABILITY_CONFIG_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+
+# Path to reachability constraints relative to config file
+set(TALOSREACHABILITY_CONSTRAINTS_DIR "${TALOSREACHABILITY_CONFIG_DIR}/../reachability_constraints")
+
+# Mark package as found
+set(TALOSREACHABILITY_FOUND TRUE)
