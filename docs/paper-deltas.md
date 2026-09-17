@@ -25,6 +25,8 @@ Format court style ADR : quoi, où, pourquoi (si connu). Alimenté en continu à
 
 - **`compare_polygon_similarity_3d` déclarée mais jamais implémentée** dans l'ancien `geometry.hpp`/`geometry.cpp` (aucune définition, jamais appelée — link-error latent si jamais utilisée). Trouvé le 2026-09-17 (phase 2) en portant `core/geometry`. Exclue de la nouvelle API publique.
 - **`is_leftside_of_edge`** n'existe que comme helper interne de l'ancien clip Sutherland-Hodgman — plus nécessaire avec le clip CGAL natif (phase 2), donc pas repris dans `core/geometry`.
+- **`Surface`'s constructeur prenait `int& surface_idx`** (référence non-const) alors que la valeur n'est jamais modifiée — sémantique trompeuse (laisse penser à un paramètre de sortie). Corrigé en `int surface_idx` (par valeur) dans `core/surface` (phase 2).
+- **`#include "utils.hpp"` inutilisé dans l'ancien `surface.hpp`** — `Surface` n'appelle jamais `load_obj`/`cycle_path_detection`. Retiré dans le port.
 
 ## À vérifier
 
