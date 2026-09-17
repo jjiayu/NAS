@@ -6,16 +6,16 @@ But de ce fichier : reprendre exactement où on s'est arrêté si la session s'i
 
 ## Où on en est là, maintenant
 
-**Étape courante : phase 0 détaillée dans PLAN.md, pas encore commencée.**
-**Prochaine action : 0a (vérifier que le repo actuel compile sur cette machine).**
+**Étape courante : Stage A, phase 0 — 0a et 0b faits.**
+**Prochaine action : 0c (écrire `golden_capture.cpp`).**
 
 Rien n'a encore été créé dans le repo pour la réécriture (pas de `core/`, `planners/`, etc.). Seuls `PLAN.md` et ce fichier existent à ce stade.
 
 ## Stage A — parité fonctionnelle
 
 - [ ] 0. Golden references (séquences + QP + perf, 3 scénarios du papier)
-  - [ ] 0a. Vérifier que le repo actuel compile proprement ici
-  - [ ] 0b. Confirmer le mapping scénarios papier ↔ `environments.hpp`
+  - [x] 0a. Vérifier que le repo actuel compile proprement ici — OK avec `cmake --build build -j2` (jamais plus de 3-4 jobs sur cette machine, RAM très contrainte : ~1.9 Gi libres sur 14 Gi, swap plein — `-j$(nproc)`=12 a été tué par l'OOM killer)
+  - [x] 0b. Papier CASSR obtenu — pas de mapping strict à 3 scénarios requis, on capture tous les scénarios d'`environments.hpp` qui marchent (cf. PLAN.md pour les chiffres de référence Table I)
   - [ ] 0c. Écrire `golden_capture.cpp`
   - [ ] 0d. Format JSON dans `tests/golden/`
   - [ ] 0e. Script de bascule des 3 scénarios (édite `constants.hpp` + rebuild)
@@ -58,3 +58,5 @@ _(aucune pour l'instant — tout ce qui a été tranché est dans PLAN.md)_
 ## Journal
 
 - **2026-09-17** : analyse complète du repo actuel (libs, pipeline de reachability, NAS vs CASSR) + analyse de `go2Reachability`/`go2Motion`. Plan complet discuté et arbitré (QP backends, viz, bindings Python, talosReachability, tests, stages A/B, cleanup). `PLAN.md` et `PROGRESS.md` créés et commités (`db33476`). Phase 0 détaillée en sous-étapes 0a-0g dans PLAN.md. Implémentation pas encore démarrée — prochaine action concrète : 0a.
+- **2026-09-17** : papier CASSR fourni par l'utilisateur (attaché en conversation, pas de fichier local). Scope de la capture golden élargi : tous les scénarios d'`environments.hpp` qui marchent, pas juste les 3 du papier — B3 de Stage B absorbé dans la phase 0. Repères Table I du papier ajoutés dans PLAN.md pour sanity-check.
+- **2026-09-17** : trouvé `/media/stonneau/data/dev/linux/cassr/` et `/media/stonneau/data/dev/linux/cursor/nas/` (essai antérieur non versionné, ~avril 2026, structure proche du plan actuel — geometry2d/3d, a_star, qp_footsteps avec quadprog vendorisé, viz SVG). **Tranché par l'utilisateur : ignorer complètement, ça ne marchait pas.** Ne pas ré-explorer ces dossiers dans une session future.

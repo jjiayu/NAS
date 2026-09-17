@@ -76,7 +76,13 @@ Critère de sortie **unique** : séquence de nœuds golden (égalité stricte : 
 
 **Prérequis (à faire avant tout le reste) :**
 - 0a. Vérifier que le repo actuel compile proprement sur cette machine — pas encore vérifié dans cette session ; le portage Linux est en cours avec des changements non commités (`CMakeLists.txt`, `geometry.*`, `types.hpp`, `visualizer.hpp`, `astar_search.cpp`, `surface.cpp`, `tree.cpp`). Si ça ne build pas, rien d'autre n'est possible.
-- 0b. Confirmer le mapping exact entre les 3 scénarios du papier CASSR (stairs / local minima / narrow passage) et les noms dans `environments.hpp`. Non vérifié formellement contre le texte/figures du papier. Meilleure hypothèse actuelle : `NarrowPassage` (sans ambiguïté), `LongStairs` ou `LongLongStairs` pour "stairs", `ThreePathsNAS` ou `ThreePathsScene` pour "local minima" — à trancher avant de figer les golden, pas après.
+- 0b. **Résolu (papier obtenu, 2026-09-17)** — pas besoin de restreindre à exactement 3 scénarios : on capture golden pour **tous les scénarios d'`environments.hpp` qui marchent** (produisent un résultat, succès ou échec propre — pas de crash/hang), on garde ce qui marche, on ignore ce qui ne marche pas sans chercher à le réparer maintenant. Ça absorbe ce qui était prévu en B3 (golden étendu) — supprimé de Stage B, fait ici directement.
+
+  Repères du papier (section VII-D, Table I) pour sanity-check une fois les scénarios identifiés — CASSR, colonnes A*/QP/Total en ms, Nodes, Steps :
+  - **Stairs** : sans rotation 4.67±0.17 / 8.51±0.88 / 13.18±0.91, 16 nodes, 15 steps. Avec rotation 10.00±0.15 / 4.74±0.60 / 14.75±0.53, 33 nodes, 11 steps.
+  - **Local Minima** : sans rotation 8.08±0.26 / 33.18±3.03 / 41.27±2.85, 42 nodes, 25 steps. Avec rotation 33.66±0.9 / 14.61±0.92 / 48.27±0.70, 92 nodes, 19 steps.
+  - **Narrow Passage** : sans rotation **Fail** (pas de solution — attendu, le papier dit que la rotation est nécessaire pour progresser). Avec rotation 60.41±0.46 / 64.72±1.22 / 125.13±1.43, 88 nodes, 29 steps.
+  - Correspondance avec `environments.hpp` (noms exacts) : `NarrowPassage` quasi certain (nom + comportement "Fail sans rotation" à vérifier). Stairs/Local Minima pas nommés explicitement dans le papier — à identifier par les nombres de pas une fois la capture lancée (`Stairs`/`LongStairs`/`LongLongStairs` pour "stairs" ; `ThreePathsNAS`/`ThreePathsScene` pour "local minima"), sans bloquer dessus vu qu'on garde tout ce qui marche de toute façon.
 
 **Outil de capture** (temporaire, vit uniquement dans le repo actuel, pas repris dans la réécriture — même statut que `test_bench_operations.cpp`) :
 - 0c. Nouvel exécutable `golden_capture.cpp`, ajouté à `CMakeLists.txt` comme les autres binaires de test. Pour le scénario actif (compile-time, comme le reste du repo aujourd'hui) :
@@ -87,7 +93,7 @@ Critère de sortie **unique** : séquence de nœuds golden (égalité stricte : 
 - 0d. Format JSON (nlohmann déjà dépendance, déjà le pattern de `footstep_planner.cpp::saveFootsteps`) — un fichier par (scénario × planner) dans `tests/golden/`.
 
 **Exécution :**
-- 0e. Petit script shell qui édite les lignes actives de `constants.hpp` (`surf_list`, `current_foot_pos`) pour chacun des 3 scénarios, rebuild, lance `golden_capture`, sauve le JSON — évite 3 manipulations manuelles et rend la capture re-jouable (utile pour B7, déterminisme cross-machine).
+- 0e. Petit script shell qui édite les lignes actives de `constants.hpp` (`surf_list`, `current_foot_pos`) pour chacun des scénarios d'`environments.hpp`, rebuild, lance `golden_capture`, sauve le JSON si ça marche (skip proprement sinon, sans debugger le scénario cassé) — rend la capture re-jouable (utile pour B7, déterminisme cross-machine).
 - 0f. Lancer, relire les fichiers produits pour un sanity check (chemin plausible, pas de NaN/valeurs aberrantes).
 - 0g. Commit des fichiers golden + de l'outil de capture, mise à jour de PROGRESS.md.
 
@@ -95,7 +101,7 @@ Critère de sortie **unique** : séquence de nœuds golden (égalité stricte : 
 
 - B1. Comparaison géométrique de la reachability : aire de différence symétrique sur les patches enfants (`CGAL::Polygon_set_2`), comparaison de `P_union` isolé, round-trip H-rep de `convert_polytope_to_half_space_constraint`.
 - B2. Cas dégénérés/limites : quasi-coplanaire, aire~0, bord de patch/surface, lacet ±π.
-- B3. Golden étendu aux 11 scénarios d'`environments.hpp` (pas juste les 3 du papier).
+- ~~B3. Golden étendu aux 11 scénarios~~ — absorbé dans la phase 0 (2026-09-17) : on capture déjà tous les scénarios qui marchent dès le départ, pas seulement les 3 du papier.
 - B4. Complétude d'énumération NAS : comparer tout l'ensemble de chemins à profondeur minimale (`find_paths_to_root`), pas juste un chemin.
 - B5. Correction de l'infaisabilité QP : mêmes chemins précis jugés infaisables ancien/nouveau, pas juste un taux similaire.
 - B6. Mémoire longue durée de vie : boucle de `plan()` en process long, surveillance fuite/croissance (nouveau besoin, motivé par l'usage Python live).
