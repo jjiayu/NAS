@@ -34,6 +34,9 @@ apps/                # drivers CLI minces (nas_plan / astar_plan / astar_grid_pl
 viz/                 # découplée du cœur, jamais une dépendance obligatoire
 bindings/            # Python (nanobind)
 talosReachability/  # package séparé (nested pour l'instant), packaging des assets Talos existants
+tests/
+  golden/            # références figées capturées sur l'ancien repo (phase 0)
+  perf/               # harness de benchmark (évolution de test_bench_operations.cpp)
 ```
 
 ## Décisions clés
@@ -54,7 +57,7 @@ Commits unitaires par classe/feature/test ajoutée pendant l'implémentation, me
 
 Critère de sortie **unique** : séquence de nœuds golden (égalité stricte : surface_id, stance_foot, yaw), positions QP (tolérance, validé via casadi d'abord), perf comparable (temps + nombre d'expansions). Rien du Stage B n'entre dans ce critère.
 
-0. Golden references : séquences de nœuds (`nas_plan` tous chemins, `astar_plan` result_path) + positions QP (CasADi actuel) + temps de référence (minkowski/clipping/intersect/expansions déjà instrumentés dans `AstarSearch`/`Tree`), sur les 3 scénarios du papier pour démarrer.
+0. Golden references : séquences de nœuds (`nas_plan` tous chemins, `astar_plan` result_path) + positions QP (CasADi actuel) + temps de référence (minkowski/clipping/intersect/expansions déjà instrumentés dans `AstarSearch`/`Tree`), sur les 3 scénarios du papier pour démarrer. **Détail des sous-étapes ci-dessous.**
 1. `talosReachability` (packaging, cf. ci-dessus).
 2. `core/geometry` + `core/surface` — port dé-globalisé ; remplacer le clip 2D fait main (Sutherland-Hodgman) par `CGAL::intersection` sur `Polygon_2`/`Polygon_with_holes_2` (déjà typedef `Polygon_set_2` dans `types.hpp`, jamais utilisé).
 3. `core/reachability` — `ReachabilityModel`, couche 0 seulement.
@@ -68,6 +71,25 @@ Critère de sortie **unique** : séquence de nœuds golden (égalité stricte : 
 11. `viz/` découplée — prototype meshcat-cpp + export minimal pour figures.
 12. `bindings/` Python (nanobind) — DTO plat de résultat, GIL relâché pendant le solve, couche 0 seulement.
 13. `planners/grid_astar_search` — baseline, priorité basse.
+
+### Phase 0 en détail — Golden references
+
+**Prérequis (à faire avant tout le reste) :**
+- 0a. Vérifier que le repo actuel compile proprement sur cette machine — pas encore vérifié dans cette session ; le portage Linux est en cours avec des changements non commités (`CMakeLists.txt`, `geometry.*`, `types.hpp`, `visualizer.hpp`, `astar_search.cpp`, `surface.cpp`, `tree.cpp`). Si ça ne build pas, rien d'autre n'est possible.
+- 0b. Confirmer le mapping exact entre les 3 scénarios du papier CASSR (stairs / local minima / narrow passage) et les noms dans `environments.hpp`. Non vérifié formellement contre le texte/figures du papier. Meilleure hypothèse actuelle : `NarrowPassage` (sans ambiguïté), `LongStairs` ou `LongLongStairs` pour "stairs", `ThreePathsNAS` ou `ThreePathsScene` pour "local minima" — à trancher avant de figer les golden, pas après.
+
+**Outil de capture** (temporaire, vit uniquement dans le repo actuel, pas repris dans la réécriture — même statut que `test_bench_operations.cpp`) :
+- 0c. Nouvel exécutable `golden_capture.cpp`, ajouté à `CMakeLists.txt` comme les autres binaires de test. Pour le scénario actif (compile-time, comme le reste du repo aujourd'hui) :
+  - `AstarSearch::search()` → dump du `result_path` (depth, surface_id, stance_foot, foot_yaw, centroid) + les compteurs déjà accumulés (`total_minkowski_time`, `total_clipping_time`, `total_plane_polytope_intersect_time`, `total_polygon_2d_intersect_time`, `expansion_coount`) + temps de recherche total.
+  - `Tree::expand` + `find_nodes_containing_current_stance_foot_brute_force` (`node_search_method` forcé à `"bruteforce"` — pas kdtree/knn, ce dernier n'étant pas implémenté) + `find_paths_to_root` → dump de **tous** les chemins à la profondeur minimale, pas juste un (gratuit à capturer maintenant, rend le golden déjà exploitable pour B4 plus tard sans re-capture) + temps de `Tree::expand`.
+  - `FootstepPlanner::plan()` sur le `result_path` CASSR et sur chaque chemin NAS à profondeur minimale → dump des `computed_footsteps`, succès/échec, temps de résolution QP.
+  - Inclut le SHA du commit du repo au moment de la capture, dans le fichier produit, pour traçabilité.
+- 0d. Format JSON (nlohmann déjà dépendance, déjà le pattern de `footstep_planner.cpp::saveFootsteps`) — un fichier par (scénario × planner) dans `tests/golden/`.
+
+**Exécution :**
+- 0e. Petit script shell qui édite les lignes actives de `constants.hpp` (`surf_list`, `current_foot_pos`) pour chacun des 3 scénarios, rebuild, lance `golden_capture`, sauve le JSON — évite 3 manipulations manuelles et rend la capture re-jouable (utile pour B7, déterminisme cross-machine).
+- 0f. Lancer, relire les fichiers produits pour un sanity check (chemin plausible, pas de NaN/valeurs aberrantes).
+- 0g. Commit des fichiers golden + de l'outil de capture, mise à jour de PROGRESS.md.
 
 ## Stage B — Rajouter les tests qu'il manque (après Stage A seulement)
 

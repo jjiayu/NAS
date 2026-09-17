@@ -6,14 +6,21 @@ But de ce fichier : reprendre exactement où on s'est arrêté si la session s'i
 
 ## Où on en est là, maintenant
 
-**Étape courante : aucune — planification terminée, implémentation pas commencée.**
-**Prochaine action : Stage A, phase 0 (golden references).**
+**Étape courante : phase 0 détaillée dans PLAN.md, pas encore commencée.**
+**Prochaine action : 0a (vérifier que le repo actuel compile sur cette machine).**
 
 Rien n'a encore été créé dans le repo pour la réécriture (pas de `core/`, `planners/`, etc.). Seuls `PLAN.md` et ce fichier existent à ce stade.
 
 ## Stage A — parité fonctionnelle
 
 - [ ] 0. Golden references (séquences + QP + perf, 3 scénarios du papier)
+  - [ ] 0a. Vérifier que le repo actuel compile proprement ici
+  - [ ] 0b. Confirmer le mapping scénarios papier ↔ `environments.hpp`
+  - [ ] 0c. Écrire `golden_capture.cpp`
+  - [ ] 0d. Format JSON dans `tests/golden/`
+  - [ ] 0e. Script de bascule des 3 scénarios (édite `constants.hpp` + rebuild)
+  - [ ] 0f. Lancer, sanity check des fichiers produits
+  - [ ] 0g. Commit golden + outil de capture
 - [ ] 1. `talosReachability`
 - [ ] 2. `core/geometry` + `core/surface`
 - [ ] 3. `core/reachability` (couche 0)
@@ -50,4 +57,4 @@ _(aucune pour l'instant — tout ce qui a été tranché est dans PLAN.md)_
 
 ## Journal
 
-- **2026-09-17** : analyse complète du repo actuel (libs, pipeline de reachability, NAS vs CASSR) + analyse de `go2Reachability`/`go2Motion`. Plan complet discuté et arbitré (QP backends, viz, bindings Python, talosReachability, tests, stages A/B, cleanup). `PLAN.md` et `PROGRESS.md` créés. Implémentation pas encore démarrée.
+- **2026-09-17** : analyse complète du repo actuel (libs, pipeline de reachability, NAS vs CASSR) + analyse de `go2Reachability`/`go2Motion`. Plan complet discuté et arbitré (QP backends, viz, bindings Python, talosReachability, tests, stages A/B, cleanup). `PLAN.md` et `PROGRESS.md` créés et commités (`db33476`). Phase 0 détaillée en sous-étapes 0a-0g dans PLAN.md. Implémentation pas encore démarrée — prochaine action concrète : 0a.
