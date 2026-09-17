@@ -6,8 +6,8 @@ But de ce fichier : reprendre exactement où on s'est arrêté si la session s'i
 
 ## Où on en est là, maintenant
 
-**Étape courante : Stage A, phase 0 terminée côté CASSR/astar (NAS bloqué, voir avertissement). Passage à la phase 1 (`talosReachability`).**
-**Prochaine action : créer `talosReachability/` (structure calquée sur go2Reachability, sans script de génération).**
+**Étape courante : phases 0 (CASSR/astar terminée, NAS bloqué) et 1 (`talosReachability`) faites. Passage à la phase 2 (`core/geometry` + `core/surface`).**
+**Prochaine action : port dé-globalisé de la géométrie, remplacer le clip 2D fait main par CGAL natif.**
 
 Rien n'a encore été créé dans le repo pour le cœur de la réécriture (pas de `core/`, `planners/`, etc.) — seul l'outillage de la phase 0 existe (`tests/golden_capture.cpp`, `docs/paper-deltas.md`).
 
@@ -25,7 +25,7 @@ Rien n'a encore été créé dans le repo pour le cœur de la réécriture (pas 
   - [x] 0e. Script de bascule de tous les scénarios d'`environments.hpp` — écrit (`tests/capture_golden_references.sh`), lancé en arrière-plan sur les 11 scénarios
   - [x] 0f. Lancé sur les 11 scénarios — 10/11 astar OK (`TwoFlatSurfaces` ne trouve pas de chemin, gardé tel quel, non débuggé). Sanity check fort : `NarrowPassage`=29 pas et `ThreePathsNAS`=19 pas matchent exactement Table I du papier (narrow passage / local minima avec rotation)
   - [x] 0g. Committé (`071c4be`, `5faaceb`)
-- [ ] 1. `talosReachability`
+- [x] 1. `talosReachability` — créé, testé (build+install+find_package C++ et import Python OK, 14 fichiers), committé (`3671112`)
 - [ ] 2. `core/geometry` + `core/surface`
 - [ ] 3. `core/reachability` (couche 0)
 - [ ] 4. `core/node` + `core/expansion`
@@ -61,6 +61,7 @@ _(aucune pour l'instant — tout ce qui a été tranché est dans PLAN.md)_
 
 ## Journal
 
+- **2026-09-17** (soir, session autonome, suite) : phase 1 faite — `talosReachability/` créé (structure identique à go2Reachability, 14 `.obj` copiés tels quels depuis `data/constraints_files/`, pas de renommage). Sanity-check complet : build+install dans un préfixe de test, `find_package` C++ et `import` Python résolvent correctement les 14 fichiers. Un piège trouvé et contourné : `.gitignore` a une règle générique `*.obj` (probablement pensée pour des objets compilés Windows) qui bloquait le `git add` normal — les fichiers originaux de `data/constraints_files/` étaient déjà trackés en force pour la même raison, j'ai fait pareil (`git add -f`) pour rester cohérent. Committé (`3671112`). `docs/paper-deltas.md` affiné : confirmé que les 4 fichiers CoM manquent réellement (pas juste du code commenté par prudence). Passage à la phase 2.
 - **2026-09-17** (soir, session autonome) : phase 0 menée à bien côté CASSR/astar — `golden_capture.cpp` écrit et testé (`231095a`), `docs/paper-deltas.md` créé et seedé (`626daba`), script de bascule multi-scénarios écrit (`071c4be`), capture lancée sur les 11 scénarios d'`environments.hpp` et committée (`5faaceb`) : 10/11 réussissent côté astar, `TwoFlatSurfaces` ne trouve pas de chemin (gardé tel quel). Deux scénarios confirment le mapping papier par match exact du nombre de pas : `NarrowPassage`=29, `ThreePathsNAS`=19. **NAS/Tree reste bloqué** sur toute la phase 0 : `constants.hpp` référence un fichier `LF_antecedent_CUTZ.obj` inexistant dans `data/constraints_files/` — pas de correction tentée (aucun candidat de remplacement fiable), documenté dans `docs/paper-deltas.md`, à trancher par l'utilisateur. Aussi trouvé et corrigé au passage : `AstarSearch`'s start node avait `surface_id` jamais initialisé (mémoire non déterministe) — neutralisé dans la capture, logué. Passage à la phase 1.
 - **2026-09-17** : analyse complète du repo actuel (libs, pipeline de reachability, NAS vs CASSR) + analyse de `go2Reachability`/`go2Motion`. Plan complet discuté et arbitré (QP backends, viz, bindings Python, talosReachability, tests, stages A/B, cleanup). `PLAN.md` et `PROGRESS.md` créés et commités (`db33476`). Phase 0 détaillée en sous-étapes 0a-0g dans PLAN.md. Implémentation pas encore démarrée — prochaine action concrète : 0a.
 - **2026-09-17** : papier CASSR fourni par l'utilisateur (attaché en conversation, pas de fichier local). Scope de la capture golden élargi : tous les scénarios d'`environments.hpp` qui marchent, pas juste les 3 du papier — B3 de Stage B absorbé dans la phase 0. Repères Table I du papier ajoutés dans PLAN.md pour sanity-check.
