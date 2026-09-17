@@ -6,8 +6,10 @@ But de ce fichier : reprendre exactement où on s'est arrêté si la session s'i
 
 ## Où on en est là, maintenant
 
-**Étape courante : phases 0, 1, 2 faites (voir détail ci-dessous). Passage à la phase 3 (`core/reachability`).**
-**Prochaine action : `ReachabilityModel`, contrat couche 0 (chemins explicites, cf. PLAN.md).**
+**Étape courante : phases 0, 1, 2, 3 faites (voir détail ci-dessous). Passage à la phase 4 (`core/node` + `core/expansion`).**
+**Prochaine action : généraliser `Node` (N effecteurs, possession explicite pool/arena) puis extraire la fonction `get_children` unifiée.**
+
+**Note pour la suite (pas encore fait) : les modules `core/*` sont pour l'instant des projets CMake indépendants, pas raccordés entre eux ni au build racine de NAS — chacun teste sa propre pièce isolément. Le raccordement en un seul build cohérent est repoussé à la phase 9/10 (`config/`/`apps/`), pas avant.**
 
 Rien n'a encore été créé dans le repo pour le cœur de la réécriture (pas de `core/`, `planners/`, etc.) — seul l'outillage de la phase 0 existe (`tests/golden_capture.cpp`, `docs/paper-deltas.md`).
 
@@ -27,7 +29,7 @@ Rien n'a encore été créé dans le repo pour le cœur de la réécriture (pas 
   - [x] 0g. Committé (`071c4be`, `5faaceb`)
 - [x] 1. `talosReachability` — créé, testé (build+install+find_package C++ et import Python OK, 14 fichiers), committé (`3671112`)
 - [x] 2. `core/geometry` + `core/surface` — les deux portés, testés (9 + 7 tests dirigés, tous passent), committés (`e56dd1f`, `04db66f`). Clip 2D remplacé par CGAL natif, validé sur 4 cas (overlap partiel, aucun, contenu, identique). Modules autonomes (add_subdirectory entre eux), pas encore raccordés au build racine.
-- [ ] 3. `core/reachability` (couche 0)
+- [x] 3. `core/reachability` (couche 0) — `ReachabilityModel` avec manifeste explicite `{chemin, effecteur mobile, effecteur support, direction}`, pas de parsing de noms de fichiers (décision : la sémantique antecedent Talos est ambiguë, voir `docs/paper-deltas.md`). 7 tests, testés contre les vrais assets `talosReachability`. Committé (`992f065`).
 - [ ] 4. `core/node` + `core/expansion`
 - [ ] 5. Port CASSR (`planners/astar_search`)
 - [ ] 6. Port NAS (`planners/tree_search`)
@@ -61,6 +63,7 @@ _(aucune pour l'instant — tout ce qui a été tranché est dans PLAN.md)_
 
 ## Journal
 
+- **2026-09-17** (soir, session autonome, suite) : phase 3 faite — `core/reachability` ajouté : `ReachabilityModel::load()` prend un manifeste explicite (pas de parsing de noms de fichiers) suite à la découverte que le nommage antecedent de Talos est réellement ambigu, pas juste "pas encore mappé" — `RF_antecedent_CUTZ_2.obj` sert à la direction `lf_in_rf` dans l'ancien `constants.hpp`, et le fichier `LF_antecedent` correspondant n'existe même pas. Plutôt que deviner, la couche 0 fait porter cette décision à l'appelant. Testé contre les vrais fichiers de `talosReachability` (pas seulement des données synthétiques) — 7 tests, tous passent. Committé (`992f065`). Passage à la phase 4.
 - **2026-09-17** (soir, session autonome, suite) : phase 2 faite — `core/geometry` porté (types + fonctions géométriques, quasi verbatim, aucune ne lisait de global) avec le clip 2D remplacé par `CGAL::intersection` natif sur `Polygon_2` (9 tests dirigés, tous passent : overlap partiel, aucun overlap, contenu, identique, + minkowski_sum/get_centroid). `core/surface` porté (foot_length/foot_width en paramètres de constructeur au lieu de globals, `surface_idx` corrigé en passage par valeur, include `utils.hpp` inutilisé retiré — 7 tests dirigés, tous passent). Deux modules CMake autonomes pour l'instant (surface dépend de geometry via `add_subdirectory`), pas encore raccordés au build racine — décision délibérée pour ne pas risquer de casser le build existant (validé par les golden references) pendant que le reste de `core/` se construit. Committés (`e56dd1f`, `04db66f`). Journal des écarts enrichi de 3 nouvelles entrées trouvées en portant. Passage à la phase 3.
 - **2026-09-17** (soir, session autonome, suite) : phase 1 faite — `talosReachability/` créé (structure identique à go2Reachability, 14 `.obj` copiés tels quels depuis `data/constraints_files/`, pas de renommage). Sanity-check complet : build+install dans un préfixe de test, `find_package` C++ et `import` Python résolvent correctement les 14 fichiers. Un piège trouvé et contourné : `.gitignore` a une règle générique `*.obj` (probablement pensée pour des objets compilés Windows) qui bloquait le `git add` normal — les fichiers originaux de `data/constraints_files/` étaient déjà trackés en force pour la même raison, j'ai fait pareil (`git add -f`) pour rester cohérent. Committé (`3671112`). `docs/paper-deltas.md` affiné : confirmé que les 4 fichiers CoM manquent réellement (pas juste du code commenté par prudence). Passage à la phase 2.
 - **2026-09-17** (soir, session autonome) : phase 0 menée à bien côté CASSR/astar — `golden_capture.cpp` écrit et testé (`231095a`), `docs/paper-deltas.md` créé et seedé (`626daba`), script de bascule multi-scénarios écrit (`071c4be`), capture lancée sur les 11 scénarios d'`environments.hpp` et committée (`5faaceb`) : 10/11 réussissent côté astar, `TwoFlatSurfaces` ne trouve pas de chemin (gardé tel quel). Deux scénarios confirment le mapping papier par match exact du nombre de pas : `NarrowPassage`=29, `ThreePathsNAS`=19. **NAS/Tree reste bloqué** sur toute la phase 0 : `constants.hpp` référence un fichier `LF_antecedent_CUTZ.obj` inexistant dans `data/constraints_files/` — pas de correction tentée (aucun candidat de remplacement fiable), documenté dans `docs/paper-deltas.md`, à trancher par l'utilisateur. Aussi trouvé et corrigé au passage : `AstarSearch`'s start node avait `surface_id` jamais initialisé (mémoire non déterministe) — neutralisé dans la capture, logué. Passage à la phase 1.
