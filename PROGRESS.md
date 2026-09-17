@@ -6,19 +6,23 @@ But de ce fichier : reprendre exactement où on s'est arrêté si la session s'i
 
 ## Où on en est là, maintenant
 
-**Étape courante : Stage A, phase 0 — 0a et 0b faits.**
-**Prochaine action : 0c (écrire `golden_capture.cpp`).**
+**Étape courante : Stage A, phase 0 — 0a-0d faits, 0e en cours (session autonome, utilisateur absent pour la nuit).**
+**Prochaine action : lancer la capture sur tous les scénarios d'`environments.hpp` (script 0e), puis 0f/0g.**
 
-Rien n'a encore été créé dans le repo pour la réécriture (pas de `core/`, `planners/`, etc.). Seuls `PLAN.md` et ce fichier existent à ce stade.
+Rien n'a encore été créé dans le repo pour le cœur de la réécriture (pas de `core/`, `planners/`, etc.) — seul l'outillage de la phase 0 existe (`tests/golden_capture.cpp`, `docs/paper-deltas.md`).
+
+**⚠️ Bloqueur pour vous au réveil** : NAS/`Tree` ne peut pas tourner du tout actuellement — `constants.hpp` pointe vers `LF_antecedent_CUTZ.obj`/`RF_antecedent_CUTZ.obj`, qui n'existent pas dans `data/constraints_files/` (aucun fichier `LF_antecedent_*` du tout). Je n'ai pas deviné de remplacement. Détail dans `docs/paper-deltas.md`. Les golden CASSR/astar ne sont pas affectées.
+
+**Rappel environnement** : le shell ne garde pas l'activation conda entre mes appels — toujours `source .../conda.sh && conda activate rwa` dans la même commande qu'un `cmake`/build.
 
 ## Stage A — parité fonctionnelle
 
 - [ ] 0. Golden references (séquences + QP + perf, 3 scénarios du papier)
   - [x] 0a. Vérifier que le repo actuel compile proprement ici — OK avec `cmake --build build -j2` (jamais plus de 3-4 jobs sur cette machine, RAM très contrainte : ~1.9 Gi libres sur 14 Gi, swap plein — `-j$(nproc)`=12 a été tué par l'OOM killer)
   - [x] 0b. Papier CASSR obtenu — pas de mapping strict à 3 scénarios requis, on capture tous les scénarios d'`environments.hpp` qui marchent (cf. PLAN.md pour les chiffres de référence Table I)
-  - [ ] 0c. Écrire `golden_capture.cpp`
-  - [ ] 0d. Format JSON dans `tests/golden/`
-  - [ ] 0e. Script de bascule des 3 scénarios (édite `constants.hpp` + rebuild)
+  - [x] 0c. Écrire `golden_capture.cpp` — fait, testé sur NarrowPassage (astar OK, 29 steps = chiffre exact du papier ; nas échoue proprement, cf. bloqueur ci-dessus)
+  - [x] 0d. Format JSON dans `tests/golden/` — un fichier par (scénario × planner)
+  - [x] 0e. Script de bascule de tous les scénarios d'`environments.hpp` — écrit (`tests/capture_golden_references.sh`), lancé en arrière-plan sur les 11 scénarios
   - [ ] 0f. Lancer, sanity check des fichiers produits
   - [ ] 0g. Commit golden + outil de capture
 - [ ] 1. `talosReachability`
