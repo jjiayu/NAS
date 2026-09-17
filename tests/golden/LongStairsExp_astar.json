@@ -1,0 +1,93 @@
+{
+  "footstep_plan": {
+    "footsteps": [],
+    "qp_time_ms": 11.274874,
+    "success": false
+  },
+  "git_sha": "626daba5ececfc84209336879e8eb9609edc427b",
+  "nodes": [
+    {
+      "centroid": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "depth": 0,
+      "foot_yaw": 0.0,
+      "node_id": 0,
+      "stance_foot": 1,
+      "surface_id": null
+    },
+    {
+      "centroid": [
+        -0.2074247101842808,
+        0.5092252080990802,
+        0.0
+      ],
+      "depth": 1,
+      "foot_yaw": -0.5235987755982988,
+      "node_id": 1,
+      "stance_foot": 0,
+      "surface_id": 0
+    },
+    {
+      "centroid": [
+        -0.17648611433567402,
+        -0.03625137769872676,
+        0.0
+      ],
+      "depth": 2,
+      "foot_yaw": -1.0471975511965976,
+      "node_id": 15,
+      "stance_foot": 1,
+      "surface_id": 0
+    },
+    {
+      "centroid": [
+        0.26634745525824466,
+        -0.6964845011618369,
+        0.09999999999999999
+      ],
+      "depth": 3,
+      "foot_yaw": -0.6981317007977317,
+      "node_id": 41,
+      "stance_foot": 0,
+      "surface_id": 2
+    },
+    {
+      "centroid": [
+        -0.15617939506586137,
+        -0.6809811664892343,
+        0.0
+      ],
+      "depth": 4,
+      "foot_yaw": -1.2217304763960306,
+      "node_id": 92,
+      "stance_foot": 1,
+      "surface_id": 0
+    },
+    {
+      "centroid": [
+        0.27,
+        -0.75,
+        0.1
+      ],
+      "depth": 5,
+      "foot_yaw": -1.7453292519943293,
+      "node_id": 1954,
+      "stance_foot": 0,
+      "surface_id": 2
+    }
+  ],
+  "planner": "astar",
+  "scenario": "LongStairsExp",
+  "success": true,
+  "timing_ms": {
+    "clipping": 15.78,
+    "expansion_count": 249,
+    "minkowski": 78.39799999999997,
+    "plane_polytope_intersect": 4.836999999999957,
+    "polygon_2d_intersect": 0.17900000000000013,
+    "search_total": 97.636111
+  }
+}

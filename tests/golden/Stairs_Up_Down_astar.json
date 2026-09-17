@@ -1,0 +1,165 @@
+{
+  "footstep_plan": {
+    "footsteps": [],
+    "qp_time_ms": 28.603956,
+    "success": false
+  },
+  "git_sha": "626daba5ececfc84209336879e8eb9609edc427b",
+  "nodes": [
+    {
+      "centroid": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "depth": 0,
+      "foot_yaw": 0.0,
+      "node_id": 0,
+      "stance_foot": 1,
+      "surface_id": null
+    },
+    {
+      "centroid": [
+        0.08460423763285356,
+        0.4697014385201972,
+        0.0
+      ],
+      "depth": 1,
+      "foot_yaw": -0.5235987755982988,
+      "node_id": 1,
+      "stance_foot": 0,
+      "surface_id": 0
+    },
+    {
+      "centroid": [
+        -0.3067389773151172,
+        0.08826301542673332,
+        0.0
+      ],
+      "depth": 2,
+      "foot_yaw": -1.0471975511965976,
+      "node_id": 8,
+      "stance_foot": 1,
+      "surface_id": 0
+    },
+    {
+      "centroid": [
+        1.3372726868618916,
+        0.14736994377467447,
+        0.19999999999999998
+      ],
+      "depth": 3,
+      "foot_yaw": -0.6981317007977317,
+      "node_id": 34,
+      "stance_foot": 0,
+      "surface_id": 2
+    },
+    {
+      "centroid": [
+        1.4116649115301367,
+        0.10903558366432109,
+        0.19999999999999998
+      ],
+      "depth": 4,
+      "foot_yaw": -1.2217304763960306,
+      "node_id": 92,
+      "stance_foot": 1,
+      "surface_id": 2
+    },
+    {
+      "centroid": [
+        2.129070944656846,
+        0.25707369773819294,
+        0.3
+      ],
+      "depth": 5,
+      "foot_yaw": -0.8726646259971647,
+      "node_id": 111,
+      "stance_foot": 0,
+      "surface_id": 3
+    },
+    {
+      "centroid": [
+        2.1271412398873117,
+        0.2135312318497127,
+        0.3
+      ],
+      "depth": 6,
+      "foot_yaw": -1.3962634015954634,
+      "node_id": 162,
+      "stance_foot": 1,
+      "surface_id": 3
+    },
+    {
+      "centroid": [
+        2.7,
+        0.21999999999999997,
+        0.2
+      ],
+      "depth": 7,
+      "foot_yaw": -0.8726646259971645,
+      "node_id": 196,
+      "stance_foot": 0,
+      "surface_id": 4
+    },
+    {
+      "centroid": [
+        2.6948114229484,
+        0.24080692181214217,
+        0.19999999999999998
+      ],
+      "depth": 8,
+      "foot_yaw": -1.3962634015954634,
+      "node_id": 274,
+      "stance_foot": 1,
+      "surface_id": 4
+    },
+    {
+      "centroid": [
+        3.3000000000000003,
+        0.21999999999999997,
+        0.1
+      ],
+      "depth": 9,
+      "foot_yaw": -0.8726646259971645,
+      "node_id": 308,
+      "stance_foot": 0,
+      "surface_id": 5
+    },
+    {
+      "centroid": [
+        3.2948114229484005,
+        0.24080692181214222,
+        0.09999999999999999
+      ],
+      "depth": 10,
+      "foot_yaw": -1.3962634015954634,
+      "node_id": 400,
+      "stance_foot": 1,
+      "surface_id": 5
+    },
+    {
+      "centroid": [
+        3.9,
+        0.21999999999999997,
+        0.0
+      ],
+      "depth": 11,
+      "foot_yaw": -1.919862177193762,
+      "node_id": 414,
+      "stance_foot": 0,
+      "surface_id": 6
+    }
+  ],
+  "planner": "astar",
+  "scenario": "Stairs_Up_Down",
+  "success": true,
+  "timing_ms": {
+    "clipping": 5.512000000000001,
+    "expansion_count": 33,
+    "minkowski": 15.477000000000002,
+    "plane_polytope_intersect": 2.126999999999991,
+    "polygon_2d_intersect": 0.07300000000000005,
+    "search_total": 22.273239
+  }
+}

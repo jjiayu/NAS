@@ -1,0 +1,13 @@
+Golden capture run — 2026-09-17T15:56:35Z, git_sha=626daba5ececfc84209336879e8eb9609edc427b
+
+NarrowPassage: ran — astar success=True, nas success=False
+Stairs: ran — astar success=True, nas success=False
+TwoFlatSurfaces: ran — astar success=False, nas success=False
+LongStairs: ran — astar success=True, nas success=False
+LongLongStairs: ran — astar success=True, nas success=False
+Flat: ran — astar success=True, nas success=False
+LongStairsComplete: ran — astar success=True, nas success=False
+LongStairsExp: ran — astar success=True, nas success=False
+ThreePathsScene: ran — astar success=True, nas success=False
+Stairs_Up_Down: ran — astar success=True, nas success=False
+ThreePathsNAS: ran — astar success=True, nas success=False

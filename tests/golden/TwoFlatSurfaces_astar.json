@@ -1,0 +1,15 @@
+{
+  "git_sha": "626daba5ececfc84209336879e8eb9609edc427b",
+  "nodes": [],
+  "planner": "astar",
+  "scenario": "TwoFlatSurfaces",
+  "success": false,
+  "timing_ms": {
+    "clipping": 0.014,
+    "expansion_count": 1,
+    "minkowski": 0.099,
+    "plane_polytope_intersect": 0.007,
+    "polygon_2d_intersect": 0.0,
+    "search_total": 0.116537
+  }
+}
