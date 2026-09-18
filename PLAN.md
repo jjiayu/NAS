@@ -84,7 +84,7 @@ Critère de sortie **unique** : séquence de nœuds golden (égalité stricte : 
   - **Explicitement hors scope** : la duplication de boilerplate CMake entre modules (chaque `CMakeLists.txt` répète la détection CONDA_PREFIX, etc.) — c'est un artefact temporaire du choix de garder chaque module buildable seul (voir décisions clés) qui disparaît naturellement à la phase 9/10 (build racine consolidé), pas la peine de le corriger deux fois.
 9. `config/` — RobotModel/Scenario/PlannerConfig runtime, migration d'`environments.hpp`. **Ajout (2026-09-18)** : prévoir un import de scène depuis fichier STL (parser + regroupement des triangles coplanaires en surfaces convexes) plutôt que des listes de points codées en dur comme aujourd'hui — noté, pas encore détaillé/implémenté.
 10. `apps/` — drivers CLI minces.
-11. `viz/` découplée — prototype meshcat-cpp + export minimal pour figures.
+11. `viz/` découplée — prototype meshcat-cpp + export minimal pour figures. **`tests/viz_dump/dump_plan.cpp` (2026-09-18) est déjà la graine de la moitié "export statique"** — outil permanent (pas supprimé), généralisé à n'importe quel scénario de `tests/fixtures`, dump JSON (surfaces/chemin/pas) consommé par un rendu SVG à la demande. Reste à faire à cette phase : la moitié meshcat-cpp interactive.
 12. `bindings/` Python (nanobind) — DTO plat de résultat, GIL relâché pendant le solve, couche 0 seulement.
 13. `planners/grid_astar_search` — baseline, priorité basse.
 
