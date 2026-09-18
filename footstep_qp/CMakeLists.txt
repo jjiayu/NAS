@@ -16,6 +16,15 @@ endif()
 
 find_package(Eigen3 REQUIRED)
 find_package(eiquadprog REQUIRED)
+find_package(CGAL REQUIRED)
+find_package(Boost REQUIRED)
+
+if(NOT TARGET nas_core_expansion)
+  add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../core/expansion ${CMAKE_CURRENT_BINARY_DIR}/_expansion)
+endif()
+if(NOT TARGET nas_planners_astar_search)
+  add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../planners/astar_search ${CMAKE_CURRENT_BINARY_DIR}/_astar_search)
+endif()
 
 add_library(nas_footstep_qp_backend src/quadprog_backend.cpp)
 target_include_directories(nas_footstep_qp_backend PUBLIC
@@ -26,7 +35,25 @@ target_link_libraries(nas_footstep_qp_backend PUBLIC
     eiquadprog::eiquadprog
 )
 
+add_library(nas_footstep_qp src/footstep_qp.cpp)
+target_include_directories(nas_footstep_qp PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+)
+target_link_libraries(nas_footstep_qp PUBLIC
+    nas_footstep_qp_backend
+    nas_core_expansion
+    CGAL::CGAL
+)
+
 enable_testing()
 add_executable(nas_footstep_qp_backend_tests tests/test_quadprog_backend.cpp)
 target_link_libraries(nas_footstep_qp_backend_tests PRIVATE nas_footstep_qp_backend)
 add_test(NAME nas_footstep_qp_backend_tests COMMAND nas_footstep_qp_backend_tests)
+
+add_executable(nas_footstep_qp_golden_test tests/test_footstep_qp_golden.cpp)
+target_link_libraries(nas_footstep_qp_golden_test PRIVATE nas_footstep_qp nas_planners_astar_search)
+target_compile_definitions(nas_footstep_qp_golden_test PRIVATE
+    TALOS_REACHABILITY_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../talosReachability/data/reachability_constraints"
+    GOLDEN_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../tests/golden"
+)
+add_test(NAME nas_footstep_qp_golden_test COMMAND nas_footstep_qp_golden_test)
