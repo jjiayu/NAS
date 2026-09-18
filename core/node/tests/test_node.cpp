@@ -53,6 +53,15 @@ void test_node_defaults() {
     check(n->parent == nullptr, "Node::parent defaults to nullptr");
 }
 
+void test_node_pool_assigns_sequential_ids() {
+    NodePool pool;
+    Node* a = pool.create();
+    Node* b = pool.create();
+    Node* c = pool.create();
+    check(a->node_id == 0 && b->node_id == 1 && c->node_id == 2,
+          "NodePool::create() assigns sequential node_id (0, 1, 2, ...)");
+}
+
 void test_contains_point() {
     NodePool pool;
     Node* n = pool.create();
@@ -100,6 +109,7 @@ int main() {
     test_other_foot();
     test_node_pool_pointer_stability();
     test_node_defaults();
+    test_node_pool_assigns_sequential_ids();
     test_contains_point();
     test_cycle_path_detection_no_parent();
     test_cycle_path_detection_empty_history();

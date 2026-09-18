@@ -94,8 +94,11 @@ bool cycle_path_detection(const Node* parent, StanceFoot current_stance_foot, in
 // allocation bookkeeping (no unique_ptr indirection needed).
 class NodePool {
 public:
+    // Assigns node_id sequentially so planners don't each need their own
+    // counter (the old code had AstarSearch/Tree each own one separately).
     Node* create() {
         nodes_.emplace_back();
+        nodes_.back().node_id = next_id_++;
         return &nodes_.back();
     }
 
@@ -103,6 +106,7 @@ public:
 
 private:
     std::deque<Node> nodes_;
+    int next_id_ = 0;
 };
 
 } // namespace nas
