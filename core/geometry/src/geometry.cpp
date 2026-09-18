@@ -12,7 +12,6 @@
 
 #include <algorithm>
 #include <cmath>
-#include <iostream>
 #include <limits>
 #include <numeric>
 #include <stdexcept>
@@ -89,9 +88,12 @@ double is_leftside_of_edge(const Point_2& point, const Point_2& edge_start, cons
 // implementation was tried and reverted here because it crashed on the
 // real NarrowPassage scenario's near-degenerate shrunk "Passage" polygon.
 std::vector<Point_2> compute_2d_polygon_intersection(const std::vector<Point_2>& subject_polygon, const std::vector<Point_2>& clip_polygon) {
+    // Both polygons come from a convex hull upstream (expand_node,
+    // Surface's own constructor) and are never empty in practice — an
+    // empty polygon here means a caller broke that invariant, not a
+    // recoverable geometric edge case (see docs/paper-deltas.md, 8d-1).
     if (subject_polygon.empty() || clip_polygon.empty()) {
-        std::cerr << "One of the input polygons is empty" << std::endl;
-        return std::vector<Point_2>();
+        throw std::invalid_argument("compute_2d_polygon_intersection: subject/clip polygon must not be empty");
     }
 
     std::vector<Point_2> output_list = subject_polygon;
@@ -158,9 +160,11 @@ double compute_euclidean_distance(const Point_3& start_location, const Point_3& 
 }
 
 double calculate_gjk_distance_point_to_patch(const std::vector<Point_3>& patch_points, const Point_3& goal) {
+    // A real patch always has >=3 vertices by construction (expand_node
+    // checks this before creating a Node) — this guards a caller contract,
+    // not a recoverable geometric edge case.
     if (patch_points.size() < 3) {
-        std::cerr << "Error: Patch must have at least 3 points for GJK distance calculation" << std::endl;
-        return compute_euclidean_distance(goal, patch_points[0]);
+        throw std::invalid_argument("calculate_gjk_distance_point_to_patch: patch must have at least 3 points");
     }
 
     coal::Vec3s coal_goal(goal.x(), goal.y(), goal.z());
@@ -198,17 +202,22 @@ double calculate_gjk_distance_point_to_patch(const std::vector<Point_3>& patch_p
         coal::distance(&point_obj, &convex_obj, request, result);
         return result.min_distance;
 
-    } catch (const std::exception& e) {
-        std::cerr << "COAL convex shape creation failed for patch: " << e.what() << std::endl;
+    } catch (const std::exception&) {
+        // Unlike the precondition above, this is coal itself failing on
+        // otherwise-valid input (e.g. a numerically thin/degenerate
+        // triangle fan) — a genuine runtime condition, not a caller error.
+        // Falling back to centroid distance is a deliberate, kept-from-the-
+        // old-code choice rather than propagating the failure — see
+        // docs/paper-deltas.md, 8d-1.
         Point_3 centroid = get_centroid(patch_points);
         return compute_euclidean_distance(goal, centroid);
     }
 }
 
 double calculate_epa_distance_point_to_patch(const std::vector<Point_3>& patch_points, const Point_3& goal) {
+    // Same reasoning as calculate_gjk_distance_point_to_patch above.
     if (patch_points.size() < 3) {
-        std::cerr << "Error: Patch must have at least 3 points for EPA distance calculation" << std::endl;
-        return compute_euclidean_distance(goal, patch_points[0]);
+        throw std::invalid_argument("calculate_epa_distance_point_to_patch: patch must have at least 3 points");
     }
 
     coal::Vec3s coal_goal(goal.x(), goal.y(), goal.z());
@@ -248,8 +257,8 @@ double calculate_epa_distance_point_to_patch(const std::vector<Point_3>& patch_p
         coal::distance(&point_obj, &convex_obj, distance_request, distance_result);
         return std::abs(distance_result.min_distance);
 
-    } catch (const std::exception& e) {
-        std::cerr << "COAL EPA distance calculation failed for patch: " << e.what() << std::endl;
+    } catch (const std::exception&) {
+        // Same reasoning as the catch block in calculate_gjk_distance_point_to_patch.
         Point_3 centroid = get_centroid(patch_points);
         return compute_euclidean_distance(goal, centroid);
     }
@@ -288,8 +297,11 @@ HalfSpacePolytopeConstraint convert_polytope_to_half_space_constraint(const Poly
 
         Plane_3 plane(p1, p2, p3);
 
+        // A single degenerate facet in an otherwise-valid polytope is
+        // tolerated by skipping it (the constraint just gets one fewer
+        // row) — this can legitimately happen from floating-point noise
+        // in the source .obj mesh, it isn't a caller error (8d-1).
         if (plane.is_degenerate()) {
-            std::cout << "\033[1;33mWarning: Degenerate facet detected, skipping...\033[0m" << std::endl;
             continue;
         }
 
@@ -300,7 +312,7 @@ HalfSpacePolytopeConstraint convert_polytope_to_half_space_constraint(const Poly
 
         double norm = std::sqrt(a*a + b*b + c*c);
         if (norm <= 1e-12) {
-            std::cout << "\033[1;33mWarning: Zero normal vector detected, skipping...\033[0m" << std::endl;
+            // Same reasoning as the degenerate-facet check above.
             continue;
         }
         a /= norm; b /= norm; c /= norm; d /= norm;
@@ -351,8 +363,12 @@ SurfaceConstraint generate_surface_constraint(const Polyhedron& surface_3d) {
 
     double norm = std::sqrt(a*a + b*b + c*c);
     if (norm <= 1e-12) {
-        std::cout << "\033[1;33mWarning: Zero normal vector detected, skipping...\033[0m" << std::endl;
-        return SurfaceConstraint();
+        // Unlike a single degenerate facet on a polytope (tolerated in
+        // convert_polytope_to_half_space_constraint above), a zero-normal
+        // fit here means the *entire* surface's plane fit degenerated —
+        // silently returning an empty constraint would let a surface
+        // vanish from the QP without anyone noticing. Throw instead (8d-1).
+        throw std::runtime_error("generate_surface_constraint: degenerate plane fit (zero normal vector)");
     }
     a /= norm; b /= norm; c /= norm; d /= norm;
 
