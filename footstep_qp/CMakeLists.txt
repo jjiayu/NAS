@@ -25,6 +25,10 @@ endif()
 if(NOT TARGET nas_planners_astar_search)
   add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../planners/astar_search ${CMAKE_CURRENT_BINARY_DIR}/_astar_search)
 endif()
+# Must come after astar_search (see tests/fixtures/CMakeLists.txt).
+if(NOT TARGET nas_test_fixtures)
+  add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../tests/fixtures ${CMAKE_CURRENT_BINARY_DIR}/_fixtures)
+endif()
 
 add_library(nas_footstep_qp_backend src/quadprog_backend.cpp)
 target_include_directories(nas_footstep_qp_backend PUBLIC
@@ -51,7 +55,7 @@ target_link_libraries(nas_footstep_qp_backend_tests PRIVATE nas_footstep_qp_back
 add_test(NAME nas_footstep_qp_backend_tests COMMAND nas_footstep_qp_backend_tests)
 
 add_executable(nas_footstep_qp_golden_test tests/test_footstep_qp_golden.cpp)
-target_link_libraries(nas_footstep_qp_golden_test PRIVATE nas_footstep_qp nas_planners_astar_search)
+target_link_libraries(nas_footstep_qp_golden_test PRIVATE nas_footstep_qp nas_planners_astar_search nas_test_fixtures)
 target_compile_definitions(nas_footstep_qp_golden_test PRIVATE
     TALOS_REACHABILITY_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../talosReachability/data/reachability_constraints"
     GOLDEN_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../tests/golden"
