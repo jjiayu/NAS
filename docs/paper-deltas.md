@@ -2,6 +2,14 @@
 
 Format court style ADR : quoi, où, pourquoi (si connu). Alimenté en continu à chaque phase de [PLAN.md](../PLAN.md), pas seulement en fin de projet.
 
+## Points identifiés pour le refactor (phase 8d, PLAN.md)
+
+Liste de départ trouvée en auditant le code le 2026-09-18 (pas exhaustive — à compléter en faisant le refactor) :
+
+- **`core/geometry/src/geometry.cpp`** : 8 occurrences de `std::cerr`/`std::cout` en dur dans une lib censée être pure (y compris des codes couleur ANSI dans `convert_polytope_to_half_space_constraint`/`generate_surface_constraint`). Gestion d'erreur incohérente selon la fonction : certaines `throw`, d'autres impriment et retournent vide, d'autres (`calculate_gjk_distance_point_to_patch`/`epa`) attrapent silencieusement toute exception et retombent sur une distance au centroïde sans le signaler à l'appelant. Tout hérité de l'ancien code sans être remis en question — n'affecte pas le résultat golden mais n'est pas une bonne pratique pour une lib.
+- **`Node`** (`core/node`) : reste un "fourre-tout" avec des champs qui n'ont de sens que pour un seul des deux planners (`kd_left_ptr`/`kd_right_ptr` pour Tree, `g_score`/`h_score`/`f_score` pour AstarSearch), commentés comme tels mais pas séparés en types propres. Choix assumé contre la sur-ingénierie à l'époque (phase 4) — à reconsidérer pendant le refactor une fois qu'on voit l'usage réel des deux planners côte à côte.
+- Autres conventions à identifier en auditant plus largement (nommage, const-correctness, passage par valeur vs référence, etc.) — cette liste s'enrichira pendant la planification détaillée de 8d.
+
 ## Choix d'implémentation non spécifiés par les papiers
 
 - **Seuil de fusion de nœuds** `node_similarity_threshold = 0.02` m (centroïde + périmètre) — [constants.hpp](../include/constants.hpp). Le papier CASSR (`nodeAlreadyExpanded()`, Sec. V-B.3) dit juste "set empirically to 2 cm", donc la valeur est confirmée par le papier, mais reste un choix empirique à documenter comme tel.

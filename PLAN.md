@@ -61,15 +61,20 @@ Commits unitaires par classe/feature/test ajoutée pendant l'implémentation, me
 
 Critère de sortie **unique** : séquence de nœuds golden (égalité stricte : surface_id, stance_foot, yaw), positions QP (tolérance, validé via casadi d'abord), perf comparable (temps + nombre d'expansions). Rien du Stage B n'entre dans ce critère.
 
+**Ordre d'exécution révisé (2026-09-18)** : les numéros de phase ci-dessous reflètent la conception, pas l'ordre d'exécution. Décidé avec l'utilisateur : terminer CASSR complètement (5 → 7 → 8 → 8b) plutôt que de passer à NAS (6) tout de suite, puisque NAS est de toute façon bloqué et que ça donne une implémentation de référence complète et propre à suivre pour NAS plus tard. Séquence réelle : **5 (fait) → 7 → 8 → 8b → 8c (commit propre) → 8d (refactor qualité, planifié en détail avant d'y aller) → 6 (NAS) → 9 → 10 → ...**
+
 0. Golden references : séquences de nœuds (`nas_plan` tous chemins, `astar_plan` result_path) + positions QP (CasADi actuel) + temps de référence (minkowski/clipping/intersect/expansions déjà instrumentés dans `AstarSearch`/`Tree`), sur les 3 scénarios du papier pour démarrer. **Détail des sous-étapes ci-dessous.**
 1. `talosReachability` (packaging, cf. ci-dessus).
-2. `core/geometry` + `core/surface` — port dé-globalisé ; remplacer le clip 2D fait main (Sutherland-Hodgman) par `CGAL::intersection` sur `Polygon_2`/`Polygon_with_holes_2` (déjà typedef `Polygon_set_2` dans `types.hpp`, jamais utilisé).
+2. `core/geometry` + `core/surface` — port dé-globalisé. **Note (2026-09-18) :** un remplacement du clip 2D fait main par `CGAL::intersection` natif a été tenté puis **abandonné** (segfault sur `NarrowPassage`, voir docs/paper-deltas.md) — `compute_2d_polygon_intersection` est revenu à l'implémentation Sutherland-Hodgman d'origine.
 3. `core/reachability` — `ReachabilityModel`, couche 0 seulement.
 4. `core/node` (possession explicite) + `core/expansion` (fonction `get_children` unifiée).
-5. Port CASSR (`planners/astar_search`) → diff vs golden.
-6. Port NAS (`planners/tree_search`) → diff vs golden.
-7. `footstep_qp` — interface `QPBackend` (quadprog défaut, proxqp optionnelle isolée, casadi temporaire).
+5. Port CASSR (`planners/astar_search`) → diff vs golden. **FAIT (2026-09-18)** : match exact sur `NarrowPassage` (30/30 nœuds) et `ThreePathsNAS` (20/20 nœuds).
+6. Port NAS (`planners/tree_search`) → diff vs golden. **Repoussé après 8d** (voir "Ordre d'exécution révisé" ci-dessous) — bloqué de toute façon par le fichier antecedent manquant.
+7. `footstep_qp` — interface `QPBackend` (quadprog défaut, proxqp optionnelle isolée, casadi temporaire). **En cours.**
 8. Parité QP : new+casadi vs ancien casadi (doit matcher) puis new+quadprog/proxqp vs golden (tolérance). Retrait de casadi une fois validé.
+8b. Comparaison de performance : CASSR neuf vs golden (temps de recherche, nombre d'expansions) + comparaison des backends QP entre eux (quadprog/proxqp/casadi).
+8c. Checkpoint : une fois 7/8/8b satisfaisants, commit propre de tout avant de passer au refactor.
+8d. Refactor qualité de code — **à planifier en détail avant exécution**, pas immédiatement (voir "Points identifiés pour le refactor" dans docs/paper-deltas.md pour la liste de départ : `std::cerr`/`std::cout` + codes ANSI dans `core/geometry`, gestion d'erreur incohérente throw/print/fallback-silencieux, organisation des champs de `Node`, autres conventions à identifier en le faisant). Re-validation complète de la suite de tests après coup — aucune régression tolérée.
 9. `config/` — RobotModel/Scenario/PlannerConfig runtime, migration d'`environments.hpp`.
 10. `apps/` — drivers CLI minces.
 11. `viz/` découplée — prototype meshcat-cpp + export minimal pour figures.
