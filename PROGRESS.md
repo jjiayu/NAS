@@ -9,7 +9,7 @@ But de ce fichier : reprendre exactement où on s'est arrêté si la session s'i
 **Étape courante : CASSR complet et validé. Refactor 8d en cours : 8d-1, 8d-2, 8d-3, 8d-4 faits. Reste 8d-5, 8d-6.**
 **Prochaine action : 8d-5, cohérence de nommage/style à travers tous les modules.**
 
-**Pause demandée par l'utilisateur (2026-09-18)** : session arrêtée ici à la demande de l'utilisateur juste après le commit 8d-4. Rien en cours, tout committé, repartir directement sur 8d-5.
+**Décision (2026-09-18, suite)** : NAS (phase 6) mis de côté explicitement pour l'instant par l'utilisateur — on ne teste pas NAS à ce stade, indépendamment du blocage antecedent ci-dessous. Conséquence : le **Nettoyage final est différé** aussi (suppose l'ancien code entièrement remplacé, NAS inclus). On continue sur 8d puis 9/10/11/12/13 (pas NAS-dépendants), NAS repoussé en tout dernier.
 
 **Note pour la suite (pas encore fait) : les modules `core/*` sont pour l'instant des projets CMake indépendants, pas raccordés entre eux ni au build racine de NAS — chacun teste sa propre pièce isolément. Le raccordement en un seul build cohérent est repoussé à la phase 9/10 (`config/`/`apps/`), pas avant.**
 
@@ -36,7 +36,7 @@ Rien n'a encore été créé dans le repo pour le cœur de la réécriture (pas 
 - [x] 3. `core/reachability` (couche 0) — `ReachabilityModel` avec manifeste explicite `{chemin, effecteur mobile, effecteur support, direction}`, pas de parsing de noms de fichiers (décision : la sémantique antecedent Talos est ambiguë, voir `docs/paper-deltas.md`). 7 tests, testés contre les vrais assets `talosReachability`. Committé (`992f065`).
 - [x] 4. `core/node` + `core/expansion` — `Node` (2 effecteurs, `NodePool` avec node_id séquentiel), `expand_node` unifié (paramétré rotation + direction forward/antecedent, pas de GaitSequencer). Testé contre les vrais assets forward de `talosReachability` (rotation fan-out, alternance, cycle detection). 23 tests passent sur les 5 modules `core/*` via ctest. Committé (`267f3d8`, `4103dc9`, `cad540a`).
 - [x] 5. Port CASSR (`planners/astar_search`) — `AstarSearch` dé-globalisé, expansion déléguée à `core/expansion`. **Match exact contre le golden sur 2 scénarios réels** (NarrowPassage 30/30 nœuds, ThreePathsNAS 20/20 nœuds, tous les champs). A révélé et corrigé un crash du clip CGAL natif (voir ci-dessous). Committé (`9d17fcd`, `9172f91`).
-- [ ] 6. Port NAS (`planners/tree_search`)
+- [ ] 6. Port NAS (`planners/tree_search`) — **mis de côté explicitement (2026-09-18), fait en dernier après 9-13**
 - [x] 7. `footstep_qp` + `QPBackend` — `QPProblem`/`QuadprogBackend` (eiquadprog, 7 tests analytiques) + formulation (`solve_footstep_qp`). Régularisation de Tikhonov nécessaire (Hessien semi-défini positif seul, Cholesky d'eiquadprog exige strictement défini positif). Committé (`7eb8c97`, `31d5a6d`).
 - [x] 8. Parité QP — quadprog vs golden sur `ThreePathsNAS` : écart max **3.8e-08 m** (précision machine). Décision : le backend CasADi intermédiaire prévu pour isoler formulation/solveur n'est plus nécessaire, ce résultat valide déjà les deux à la fois, à une tolérance bien plus fine qu'espéré.
 - [x] 8b. Comparaison de performance — recherche ~11-13% plus rapide (expansions identiques exactement), QP ~53x plus rapide (quadprog vs CasADi+qpOASES). Trouvaille : le nouveau QP réussit sur `NarrowPassage` là où l'ancien échouait (amélioration de robustesse, pas un bug). Committé (`cd98ff7`).

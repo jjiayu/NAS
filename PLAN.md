@@ -61,7 +61,9 @@ Commits unitaires par classe/feature/test ajoutée pendant l'implémentation, me
 
 Critère de sortie **unique** : séquence de nœuds golden (égalité stricte : surface_id, stance_foot, yaw), positions QP (tolérance, validé via casadi d'abord), perf comparable (temps + nombre d'expansions). Rien du Stage B n'entre dans ce critère.
 
-**Ordre d'exécution révisé (2026-09-18)** : les numéros de phase ci-dessous reflètent la conception, pas l'ordre d'exécution. Décidé avec l'utilisateur : terminer CASSR complètement (5 → 7 → 8 → 8b) plutôt que de passer à NAS (6) tout de suite, puisque NAS est de toute façon bloqué et que ça donne une implémentation de référence complète et propre à suivre pour NAS plus tard. Séquence réelle : **5 (fait) → 7 → 8 → 8b → 8c (commit propre) → 8d (refactor qualité, planifié en détail avant d'y aller) → 6 (NAS) → 9 → 10 → ...**
+**Ordre d'exécution révisé (2026-09-18)** : les numéros de phase ci-dessous reflètent la conception, pas l'ordre d'exécution. Décidé avec l'utilisateur : terminer CASSR complètement (5 → 7 → 8 → 8b) plutôt que de passer à NAS (6) tout de suite, puisque NAS est de toute façon bloqué et que ça donne une implémentation de référence complète et propre à suivre pour NAS plus tard. Séquence réelle : **5 (fait) → 7 → 8 → 8b → 8c (commit propre) → 8d (refactor qualité, en cours) → 9 → 10 → ... → 6 (NAS) en dernier, quand débloqué.**
+
+**Décision (2026-09-18, suite)** : phase 6 (NAS) est mise de côté explicitement pour l'instant, pas seulement "après 8d" — on ne teste pas NAS à ce stade du tout, indépendamment du blocage antecedent. Conséquence directe : le **Nettoyage final reste différé** lui aussi (il suppose l'ancien code entièrement remplacé, NAS inclus) — voir section "Nettoyage final" plus bas. On continue sur 9/10/11/12/13 (CASSR/infra, pas NAS-dépendants) en attendant.
 
 0. Golden references : séquences de nœuds (`nas_plan` tous chemins, `astar_plan` result_path) + positions QP (CasADi actuel) + temps de référence (minkowski/clipping/intersect/expansions déjà instrumentés dans `AstarSearch`/`Tree`), sur les 3 scénarios du papier pour démarrer. **Détail des sous-étapes ci-dessous.**
 1. `talosReachability` (packaging, cf. ci-dessus).
@@ -69,7 +71,7 @@ Critère de sortie **unique** : séquence de nœuds golden (égalité stricte : 
 3. `core/reachability` — `ReachabilityModel`, couche 0 seulement.
 4. `core/node` (possession explicite) + `core/expansion` (fonction `get_children` unifiée).
 5. Port CASSR (`planners/astar_search`) → diff vs golden. **FAIT (2026-09-18)** : match exact sur `NarrowPassage` (30/30 nœuds) et `ThreePathsNAS` (20/20 nœuds).
-6. Port NAS (`planners/tree_search`) → diff vs golden. **Repoussé après 8d** (voir "Ordre d'exécution révisé" ci-dessous) — bloqué de toute façon par le fichier antecedent manquant.
+6. Port NAS (`planners/tree_search`) → diff vs golden. **Repoussé en dernier, après 9-13** (voir "Ordre d'exécution révisé" ci-dessus) — mis de côté explicitement par décision utilisateur (2026-09-18), pas seulement bloqué par le fichier antecedent manquant.
 7. `footstep_qp` — interface `QPBackend` (quadprog défaut, proxqp optionnelle isolée, casadi temporaire). **En cours.**
 8. Parité QP : new+casadi vs ancien casadi (doit matcher) puis new+quadprog/proxqp vs golden (tolérance). Retrait de casadi une fois validé.
 8b. Comparaison de performance : CASSR neuf vs golden (temps de recherche, nombre d'expansions) + comparaison des backends QP entre eux (quadprog/proxqp/casadi).
@@ -125,6 +127,8 @@ Critère de sortie **unique** : séquence de nœuds golden (égalité stricte : 
 - B8. Loader testé contre les vraies données go2Reachability (N=4 effecteurs, 12 paires + CoM) — sans intégration Go2 complète.
 
 ## Nettoyage final (après Stage B)
+
+**Différé tant que la phase 6 (NAS) n'est pas faite** (décision 2026-09-18) : l'ancien code reste la seule implémentation NAS qui marche, il ne peut pas être supprimé avant que `planners/tree_search` existe côté nouveau code.
 
 - Suppression de l'ancien code C++ (implémentation actuelle NAS/CASSR) une fois le nouveau seul à faire foi.
 - Suppression des tests devenus inutiles : `test_bench_operations.cpp`/`test_print_paths.cpp` une fois remplacés par un vrai `tests/perf/`, binaires/scripts de capture des golden une fois plus nécessaires, `test_grid_visualization.cpp`/`test_auto_plot.cpp` si non repris.
