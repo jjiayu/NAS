@@ -11,6 +11,8 @@ But de ce fichier : reprendre exactement où on s'est arrêté si la session s'i
 
 **Note pour la suite (pas encore fait) : les modules `core/*` sont pour l'instant des projets CMake indépendants, pas raccordés entre eux ni au build racine de NAS — chacun teste sa propre pièce isolément. Le raccordement en un seul build cohérent est repoussé à la phase 9/10 (`config/`/`apps/`), pas avant.**
 
+**Décision (2026-09-18)** : le blocage NAS (fichiers antecedent manquants/ambigus, cf. avertissement plus haut) ne concerne que `Tree`/NAS — `AstarSearch`/CASSR ne charge jamais les chemins antecedent. Donc les phases 4+ continuent à être validées contre **CASSR uniquement** tant que le blocage NAS n'est pas résolu ; NAS reste un gap tracké et différé, pas un blocage sur le reste du plan.
+
 Rien n'a encore été créé dans le repo pour le cœur de la réécriture (pas de `core/`, `planners/`, etc.) — seul l'outillage de la phase 0 existe (`tests/golden_capture.cpp`, `docs/paper-deltas.md`).
 
 **⚠️ Bloqueur pour vous au réveil** : NAS/`Tree` ne peut pas tourner du tout actuellement — `constants.hpp` pointe vers `LF_antecedent_CUTZ.obj`/`RF_antecedent_CUTZ.obj`, qui n'existent pas dans `data/constraints_files/` (aucun fichier `LF_antecedent_*` du tout). Je n'ai pas deviné de remplacement. Détail dans `docs/paper-deltas.md`. Les golden CASSR/astar ne sont pas affectées.
