@@ -3,7 +3,7 @@
 #include <CGAL/Polyhedron_incremental_builder_3.h>
 #include <CGAL/convex_hull_2.h>
 #include <CGAL/convex_hull_3.h>
-#include <CGAL/Boolean_set_operations_2.h>
+#include <CGAL/intersections.h>
 #include <CGAL/linear_least_squares_fitting_3.h>
 #include <coal/collision_object.h>
 #include <coal/shape/geometric_shapes.h>
@@ -80,47 +80,68 @@ std::vector<Point_3> compute_polytope_plane_intersection(const Plane_3& plane, c
     return intersection_points;
 }
 
-// Intersects two (expected-simple, typically convex) 2D polygons using
-// CGAL's native boolean set operations instead of a hand-rolled clip — see
-// docs/paper-deltas.md for the rationale. CGAL::intersection on Polygon_2
-// requires counter-clockwise-oriented simple polygons and can in general
-// return several disjoint Polygon_with_holes_2 pieces; for our convex-hull
-// inputs there should be at most one hole-free piece, but we defensively
-// pick the largest-area outer boundary if CGAL still returns more than one.
+double is_leftside_of_edge(const Point_2& point, const Point_2& edge_start, const Point_2& edge_end) {
+    return ((edge_end.x() - edge_start.x()) * (point.y() - edge_start.y()) -
+            (edge_end.y() - edge_start.y()) * (point.x() - edge_start.x()));
+}
+
+// Sutherland-Hodgman clip. See the header comment: a CGAL-native
+// implementation was tried and reverted here because it crashed on the
+// real NarrowPassage scenario's near-degenerate shrunk "Passage" polygon.
 std::vector<Point_2> compute_2d_polygon_intersection(const std::vector<Point_2>& subject_polygon, const std::vector<Point_2>& clip_polygon) {
-    if (subject_polygon.size() < 3 || clip_polygon.size() < 3) {
-        return {};
+    if (subject_polygon.empty() || clip_polygon.empty()) {
+        std::cerr << "One of the input polygons is empty" << std::endl;
+        return std::vector<Point_2>();
     }
 
-    Polygon_2 p1(subject_polygon.begin(), subject_polygon.end());
-    Polygon_2 p2(clip_polygon.begin(), clip_polygon.end());
+    std::vector<Point_2> output_list = subject_polygon;
 
-    if (!p1.is_simple() || !p2.is_simple()) {
-        std::cerr << "compute_2d_polygon_intersection: non-simple input polygon, returning empty" << std::endl;
-        return {};
-    }
+    auto clip_end = clip_polygon.end();
+    for (auto clip_it = clip_polygon.begin(); clip_it != clip_end; ++clip_it) {
+        if (output_list.empty()) {
+            return std::vector<Point_2>();
+        }
 
-    if (p1.orientation() == CGAL::CLOCKWISE) p1.reverse_orientation();
-    if (p2.orientation() == CGAL::CLOCKWISE) p2.reverse_orientation();
+        Point_2 edge_start = *clip_it;
+        Point_2 edge_end = (std::next(clip_it) == clip_end) ? clip_polygon.front() : *std::next(clip_it);
 
-    std::vector<Polygon_with_holes_2> pieces;
-    CGAL::intersection(p1, p2, std::back_inserter(pieces));
+        std::vector<Point_2> input_list = output_list;
+        output_list.clear();
 
-    if (pieces.empty()) {
-        return {};
-    }
+        for (size_t i = 0; i < input_list.size(); i++) {
+            Point_2 current_point = input_list[i];
+            Point_2 prev_point = input_list[(i + input_list.size() - 1) % input_list.size()];
 
-    const Polygon_with_holes_2* best = &pieces.front();
-    double best_area = std::abs(CGAL::to_double(best->outer_boundary().area()));
-    for (const auto& piece : pieces) {
-        double area = std::abs(CGAL::to_double(piece.outer_boundary().area()));
-        if (area > best_area) {
-            best = &piece;
-            best_area = area;
+            Line_2 line(edge_start, edge_end);
+            Segment_2 edge(prev_point, current_point);
+
+            bool current_inside = is_leftside_of_edge(current_point, edge_start, edge_end) >= 0;
+            bool prev_inside = is_leftside_of_edge(prev_point, edge_start, edge_end) >= 0;
+
+            if (current_inside) {
+                if (!prev_inside) {
+                    auto result = CGAL::intersection(edge, line);
+                    if (result) {
+                        Point_2 intersection_point;
+                        if (CGAL::assign(intersection_point, *result)) {
+                            output_list.push_back(intersection_point);
+                        }
+                    }
+                }
+                output_list.push_back(current_point);
+            } else if (prev_inside) {
+                auto result = CGAL::intersection(edge, line);
+                if (result) {
+                    Point_2 intersection_point;
+                    if (CGAL::assign(intersection_point, *result)) {
+                        output_list.push_back(intersection_point);
+                    }
+                }
+            }
         }
     }
 
-    return std::vector<Point_2>(best->outer_boundary().vertices_begin(), best->outer_boundary().vertices_end());
+    return output_list;
 }
 
 double compute_polygon_perimeter(const Polyhedron& polyhedron) {

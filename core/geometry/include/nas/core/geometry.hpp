@@ -35,12 +35,15 @@ Polyhedron minkowski_sum(const std::vector<Point_3>& patch_vertices, const Polyh
 
 std::vector<Point_3> compute_polytope_plane_intersection(const Plane_3& plane, const Polyhedron& polytope);
 
-// 2D polygon intersection. Both inputs are expected to be simple polygons
-// (typically convex hulls); the implementation delegates to CGAL's native
-// boolean set operations (CGAL::intersection on Polygon_2) rather than a
-// hand-rolled clip — see docs/paper-deltas.md for why this replaced the
-// original Sutherland-Hodgman implementation.
+// 2D polygon intersection (Sutherland-Hodgman clip). A CGAL-native
+// replacement (CGAL::intersection on Polygon_2) was tried here first but
+// reverted: it crashed (segfault inside CGAL's arrangement/surface-sweep
+// code) on the real NarrowPassage scenario, whose "Passage" surface
+// shrinks to a ~2cm-wide near-degenerate rectangle after the foot-size
+// margin — see docs/paper-deltas.md "Tentatives abandonnées".
 std::vector<Point_2> compute_2d_polygon_intersection(const std::vector<Point_2>& subject_polygon, const std::vector<Point_2>& clip_polygon);
+
+double is_leftside_of_edge(const Point_2& point, const Point_2& edge_start, const Point_2& edge_end);
 
 double compute_polygon_perimeter(const Polyhedron& polyhedron);
 
