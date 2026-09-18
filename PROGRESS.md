@@ -6,8 +6,8 @@ But de ce fichier : reprendre exactement où on s'est arrêté si la session s'i
 
 ## Où on en est là, maintenant
 
-**Étape courante : phases 0, 1, 2, 3 faites (voir détail ci-dessous). Passage à la phase 4 (`core/node` + `core/expansion`).**
-**Prochaine action : généraliser `Node` (N effecteurs, possession explicite pool/arena) puis extraire la fonction `get_children` unifiée.**
+**Étape courante : phases 0, 1, 2, 3 faites. Scope de la phase 4 clarifié avec l'utilisateur (2026-09-18) : 2 effecteurs seulement, pas de GaitSequencer, rotation paramétrée mais désactivée côté NAS pour l'instant — voir PLAN.md.**
+**Prochaine action : implémenter `core/node` (stance_foot binaire, possession pool/arena) puis `core/expansion` (get_children unifié, paramétré rotation+direction).**
 
 **Note pour la suite (pas encore fait) : les modules `core/*` sont pour l'instant des projets CMake indépendants, pas raccordés entre eux ni au build racine de NAS — chacun teste sa propre pièce isolément. Le raccordement en un seul build cohérent est repoussé à la phase 9/10 (`config/`/`apps/`), pas avant.**
 
