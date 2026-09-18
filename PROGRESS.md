@@ -6,8 +6,8 @@ But de ce fichier : reprendre exactement où on s'est arrêté si la session s'i
 
 ## Où on en est là, maintenant
 
-**Étape courante : phases 0-5 faites. `AstarSearch` porté et validé contre le golden (match exact sur 2 scénarios). Passage à la phase 6 (port NAS, `planners/tree_search`) — mais NAS reste bloqué (fichiers antecedent manquants, voir avertissement plus haut), donc à voir avec l'utilisateur comment traiter cette phase.**
-**Prochaine action : décider avec l'utilisateur si on attaque la phase 6 malgré le blocage NAS (ex: porter Tree quand même et le documenter comme non testé), ou si on saute à la phase 7 (`footstep_qp`) en attendant.**
+**Étape courante : phases 0-5 faites. Ordre d'exécution révisé avec l'utilisateur (2026-09-18) : finir CASSR complètement avant de revenir à NAS — voir PLAN.md "Ordre d'exécution révisé". Séquence : 7 → 8 → 8b (perf) → 8c (commit propre) → 8d (refactor qualité, planifié en détail avant d'y aller) → 6 (NAS).**
+**Prochaine action : phase 7, `footstep_qp` + interface `QPBackend` (quadprog défaut, proxqp isolée, casadi temporaire pour valider la parité de formulation).**
 
 **Note pour la suite (pas encore fait) : les modules `core/*` sont pour l'instant des projets CMake indépendants, pas raccordés entre eux ni au build racine de NAS — chacun teste sa propre pièce isolément. Le raccordement en un seul build cohérent est repoussé à la phase 9/10 (`config/`/`apps/`), pas avant.**
 
@@ -35,8 +35,11 @@ Rien n'a encore été créé dans le repo pour le cœur de la réécriture (pas 
 - [x] 4. `core/node` + `core/expansion` — `Node` (2 effecteurs, `NodePool` avec node_id séquentiel), `expand_node` unifié (paramétré rotation + direction forward/antecedent, pas de GaitSequencer). Testé contre les vrais assets forward de `talosReachability` (rotation fan-out, alternance, cycle detection). 23 tests passent sur les 5 modules `core/*` via ctest. Committé (`267f3d8`, `4103dc9`, `cad540a`).
 - [x] 5. Port CASSR (`planners/astar_search`) — `AstarSearch` dé-globalisé, expansion déléguée à `core/expansion`. **Match exact contre le golden sur 2 scénarios réels** (NarrowPassage 30/30 nœuds, ThreePathsNAS 20/20 nœuds, tous les champs). A révélé et corrigé un crash du clip CGAL natif (voir ci-dessous). Committé (`9d17fcd`, `9172f91`).
 - [ ] 6. Port NAS (`planners/tree_search`)
-- [ ] 7. `footstep_qp` + `QPBackend`
+- [ ] 7. `footstep_qp` + `QPBackend` — en cours
 - [ ] 8. Parité QP (casadi puis quadprog/proxqp)
+- [ ] 8b. Comparaison de performance (recherche + backends QP)
+- [ ] 8c. Checkpoint commit propre
+- [ ] 8d. Refactor qualité de code (planification détaillée d'abord, puis exécution + re-validation complète)
 - [ ] 9. `config/`
 - [ ] 10. `apps/`
 - [ ] 11. `viz/` découplée
@@ -65,6 +68,7 @@ _(aucune pour l'instant — tout ce qui a été tranché est dans PLAN.md)_
 
 ## Journal
 
+- **2026-09-18** (suite) : audit qualité de code demandé par l'utilisateur — bilan honnête : `core/reachability`/`core/node`/`core/surface`/`core/expansion`/`planners/astar_search` ont une gestion d'erreur cohérente (throw uniquement) et une vraie conception neuve par endroits (ReachabilityModel, NodePool). `core/geometry` en revanche porte tel quel les défauts de l'ancien code (8x `std::cerr`/`std::cout` dont des codes ANSI, gestion d'erreur incohérente). `Node` reste un fourre-tout à deux planners, assumé contre la sur-ingénierie mais pas idéal. Décision : finir CASSR complet (7→8→8b) d'abord, puis refactor dédié (8d, planifié en détail avant exécution) plutôt que de corriger au fil de l'eau. Ordre d'exécution révisé dans PLAN.md, points de refactor pré-listés dans `docs/paper-deltas.md`. Committé (`a80e64f`). Passage à la phase 7.
 - **2026-09-18** (suite) : phase 5 faite — `planners/astar_search` porté, `AstarSearch` dé-globalisé (config par constructeur), expansion déléguée à `core/expansion`. Validation contre le golden de la phase 0 : match exact sur `NarrowPassage` (30/30 nœuds) et `ThreePathsNAS` (20/20 nœuds), tous les champs (depth, stance_foot, foot_yaw, surface_id). Cette validation a immédiatement payé : elle a révélé un **segfault** du clip CGAL natif introduit en phase 2 (`compute_2d_polygon_intersection`) sur la surface "Passage" du scénario NarrowPassage, qui devient quasi-dégénérée (~2cm de large) une fois rétrécie par la taille du pied — CGAL plante dans son code d'arrangement interne. Revert vers l'implémentation Sutherland-Hodgman originale (prouvée correcte, c'est elle qui a produit le golden), documenté comme tentative abandonnée dans `docs/paper-deltas.md` plutôt que silencieusement retiré. Committé (`9d17fcd`, `9172f91`). Suite à discuter avec l'utilisateur : phase 6 (NAS) reste bloquée par le fichier antecedent manquant.
 - **2026-09-18** : scope de phase 4 clarifié avec l'utilisateur (2 effecteurs seulement, pas de GaitSequencer ; rotation paramétrée dans `core/expansion` mais désactivée côté NAS pour l'instant). `core/node` porté : `Node` biped avec `surface_id` par défaut à -1 (corrige à la source le bug trouvé en phase 0) et `NodePool` (deque, pointeurs stables, node_id séquentiel) — 14 tests. `core/expansion` ajouté : `expand_node` unifie enfin `Tree::get_children`/`AstarSearch::get_children`, paramétré par `ReachabilityDirection` et `rotation_enabled` — testé contre les vrais assets forward de `talosReachability` (rotation fan-out 2n+1, alternance de pied, cycle detection bloque/autorise correctement) — 9 tests. Les 5 modules `core/*` passent tous via ctest (23 tests). Phase 4 terminée, Stage A a maintenant tout son socle commun. Passage à la phase 5.
 - **2026-09-17** (soir, session autonome, suite) : phase 3 faite — `core/reachability` ajouté : `ReachabilityModel::load()` prend un manifeste explicite (pas de parsing de noms de fichiers) suite à la découverte que le nommage antecedent de Talos est réellement ambigu, pas juste "pas encore mappé" — `RF_antecedent_CUTZ_2.obj` sert à la direction `lf_in_rf` dans l'ancien `constants.hpp`, et le fichier `LF_antecedent` correspondant n'existe même pas. Plutôt que deviner, la couche 0 fait porter cette décision à l'appelant. Testé contre les vrais fichiers de `talosReachability` (pas seulement des données synthétiques) — 7 tests, tous passent. Committé (`992f065`). Passage à la phase 4.
