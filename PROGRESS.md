@@ -6,8 +6,8 @@ But de ce fichier : reprendre exactement où on s'est arrêté si la session s'i
 
 ## Où on en est là, maintenant
 
-**Étape courante : CASSR complet (phases 5, 7, 8 faites) — recherche ET QP matchent le golden. Passage à 8b (comparaison de performance).**
-**Prochaine action : mesurer temps de recherche + résolution QP du nouveau pipeline, comparer aux temps de référence du golden (phase 0).**
+**Étape courante : CASSR complet et validé (phases 5, 7, 8, 8b, 8c faites) — séquence de nœuds exacte, QP à 3.8e-08m du golden, perf comparable voire meilleure. Reste 8d (refactor) avant de reprendre la phase 6 (NAS).**
+**Prochaine action : écrire le plan détaillé du refactor 8d (demandé par l'utilisateur avant toute exécution), le proposer, puis l'exécuter si validé.**
 
 **Note pour la suite (pas encore fait) : les modules `core/*` sont pour l'instant des projets CMake indépendants, pas raccordés entre eux ni au build racine de NAS — chacun teste sa propre pièce isolément. Le raccordement en un seul build cohérent est repoussé à la phase 9/10 (`config/`/`apps/`), pas avant.**
 
@@ -37,9 +37,9 @@ Rien n'a encore été créé dans le repo pour le cœur de la réécriture (pas 
 - [ ] 6. Port NAS (`planners/tree_search`)
 - [x] 7. `footstep_qp` + `QPBackend` — `QPProblem`/`QuadprogBackend` (eiquadprog, 7 tests analytiques) + formulation (`solve_footstep_qp`). Régularisation de Tikhonov nécessaire (Hessien semi-défini positif seul, Cholesky d'eiquadprog exige strictement défini positif). Committé (`7eb8c97`, `31d5a6d`).
 - [x] 8. Parité QP — quadprog vs golden sur `ThreePathsNAS` : écart max **3.8e-08 m** (précision machine). Décision : le backend CasADi intermédiaire prévu pour isoler formulation/solveur n'est plus nécessaire, ce résultat valide déjà les deux à la fois, à une tolérance bien plus fine qu'espéré.
-- [ ] 8b. Comparaison de performance (recherche + résolution QP, neuf vs golden) — en cours
-- [ ] 8c. Checkpoint commit propre
-- [ ] 8d. Refactor qualité de code (planification détaillée d'abord, puis exécution + re-validation complète)
+- [x] 8b. Comparaison de performance — recherche ~11-13% plus rapide (expansions identiques exactement), QP ~53x plus rapide (quadprog vs CasADi+qpOASES). Trouvaille : le nouveau QP réussit sur `NarrowPassage` là où l'ancien échouait (amélioration de robustesse, pas un bug). Committé (`cd98ff7`).
+- [x] 8c. Checkpoint commit propre — vérifié, tout committé (seuls les fichiers pré-existants du portage Linux, hors périmètre, restent non commités).
+- [ ] 8d. Refactor qualité de code — **plan détaillé à écrire avant exécution** (demandé explicitement par l'utilisateur)
 - [ ] 9. `config/`
 - [ ] 10. `apps/`
 - [ ] 11. `viz/` découplée
