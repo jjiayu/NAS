@@ -24,11 +24,15 @@ endif()
 if(NOT TARGET nas_planners_astar_search)
   add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../../planners/astar_search ${CMAKE_CURRENT_BINARY_DIR}/_astar_search)
 endif()
+if(NOT TARGET nas_test_fixtures)
+  add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../fixtures ${CMAKE_CURRENT_BINARY_DIR}/_fixtures)
+endif()
 
 add_executable(nas_compare_perf compare_perf.cpp)
 target_link_libraries(nas_compare_perf PRIVATE
     nas_footstep_qp
     nas_footstep_qp_backend
     nas_planners_astar_search
+    nas_test_fixtures
     CGAL::CGAL
 )
