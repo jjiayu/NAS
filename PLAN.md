@@ -82,7 +82,7 @@ Critère de sortie **unique** : séquence de nœuds golden (égalité stricte : 
   - 8d-5. Revue de cohérence de nommage/style à travers tous les modules.
   - 8d-6. `ctest` complet après **chaque** sous-étape ci-dessus, pas seulement à la fin — aucune régression tolérée.
   - **Explicitement hors scope** : la duplication de boilerplate CMake entre modules (chaque `CMakeLists.txt` répète la détection CONDA_PREFIX, etc.) — c'est un artefact temporaire du choix de garder chaque module buildable seul (voir décisions clés) qui disparaît naturellement à la phase 9/10 (build racine consolidé), pas la peine de le corriger deux fois.
-9. `config/` — RobotModel/Scenario/PlannerConfig runtime, migration d'`environments.hpp`.
+9. `config/` — RobotModel/Scenario/PlannerConfig runtime, migration d'`environments.hpp`. **Ajout (2026-09-18)** : prévoir un import de scène depuis fichier STL (parser + regroupement des triangles coplanaires en surfaces convexes) plutôt que des listes de points codées en dur comme aujourd'hui — noté, pas encore détaillé/implémenté.
 10. `apps/` — drivers CLI minces.
 11. `viz/` découplée — prototype meshcat-cpp + export minimal pour figures.
 12. `bindings/` Python (nanobind) — DTO plat de résultat, GIL relâché pendant le solve, couche 0 seulement.
