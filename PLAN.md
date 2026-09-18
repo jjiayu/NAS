@@ -18,12 +18,14 @@ Ce document est la référence stable de l'architecture cible et du séquencemen
 ```
 core/geometry      # types + opérations géométriques (CGAL), agnostique au robot
 core/surface        # Surface — inchangé dans l'esprit
-core/node           # Node généralisé à N effecteurs (pas juste 2 pieds), possession explicite (pool/arena)
+core/node           # Node — stance_foot binaire (2 effecteurs), possession explicite (pool/arena).
+                     #   Pas de généralisation N-effecteurs pour l'instant (décision 2026-09-18, voir Décisions clés).
 core/reachability   # ReachabilityModel — query(moving_effector, support_effector) -> Polyhedron
                      #   couche 0 SEULEMENT pour l'instant : chemins/répertoire de fichiers .obj explicites en entrée.
                      #   Pas de découverte automatique de package (find_package/import générique) — écarté pour l'instant.
-core/expansion      # fonction d'expansion unifiée (le get_children commun à NAS et CASSR)
-core/gait           # GaitSequencer — quel effecteur bouge ensuite (trivial L/R pour biped aujourd'hui)
+core/expansion      # fonction d'expansion unifiée (le get_children commun à NAS et CASSR), paramétrée par
+                     #   rotation (on/off) et direction (forward/antecedent). Alternance L/R codée en dur —
+                     #   pas de GaitSequencer (descoped, décision 2026-09-18).
 planners/
   tree_search        # NAS — BFS exhaustif arrière, multi-parents
   astar_search        # CASSR — best-first avant, heuristique EPA/GJK
@@ -46,6 +48,8 @@ tests/
 - **Reachability loading** : couche 0 uniquement — chemins explicites. Pas de couche de découverte de package pour l'instant (conçue puis explicitement écartée : "j'aime pas trop le sucre pour l'instant"). Plus tard, en Python seulement : possibilité de construire un planner en lui passant un package qui sait extraire ses propres fichiers — forme exacte non spécifiée, à concevoir le moment venu.
 - **Bindings Python** : nanobind pressenti par défaut (pas Boost.Python+eigenpy comme Pinocchio/coal — acceptable tant qu'il n'y a pas d'interop directe avec des objets Pinocchio/coal vivants dans le même process).
 - **Node ownership** : pool/arena explicite (plus de `new` orphelin comme dans le code actuel) — condition nécessaire pour un usage "live" depuis un process Python longue durée.
+- **Portée effecteurs (2026-09-18)** : design à 2 effecteurs seulement (biped) pour l'instant — pas de généralisation N-effecteurs anticipée dans `core/node`/`core/expansion`, pas de `GaitSequencer`. On ne sait pas encore comment une extension future (quadrupède ou autre) se présenterait, donc pas la peine de la deviner — ça simplifie le design. `core/reachability` garde ses clés en `std::string` (déjà fait, pas remis en cause), mais rien d'autre n'anticipe N>2.
+- **Rotation dans `core/expansion` (2026-09-18)** : la fonction d'expansion unifiée prend la rotation en paramètre (fan-out sur lacets discrétisés, comme CASSR aujourd'hui), mais l'appel côté NAS/Tree la laisse désactivée pour l'instant — comportement identique à l'actuel (NAS ne fait pas de rotation). La rotation est explicitement voulue pour NAS à terme, d'où le paramètre dès maintenant plutôt qu'un comportement figé par planner.
 - **talosReachability** : structure calquée sur `/media/stonneau/data/dev/linux/go2Reachability` (CMakeLists.txt glob+install, `.cmake.in` généré, config Python générée exposant `TALOSREACHABILITY_CONSTRAINTS_DIR`) mais SANS pipeline de génération Pinocchio — juste install des `.obj` déjà dans `data/constraints_files/`. Nested dans NAS pour l'instant, pensé pour extraction en repo sibling plus tard. Garder la distinction forward/antecedent dans le nommage (Talos en a besoin, Go2 non).
 - **Quadrupède (Go2)** : explicitement différé, Talos d'abord. Repos siblings pertinents pour plus tard : `go2Reachability` (génération Pinocchio, 4 effecteurs, 12 paires + CoM/pied, pas d'antecedent) et `go2Motion` (SL1M/Gurobi pour la combinatoire, Pink/TSID/ndcurves/meshcat pour le reste ; `sl1m.Problem(constraint_paths=...)` est un bon précédent d'API). Piste notée : remplacer SL1M par CASSR dans `go2Motion/test_sl1m.py` comme comparaison directe.
 
