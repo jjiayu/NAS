@@ -28,6 +28,9 @@ Format court style ADR : quoi, où, pourquoi (si connu). Alimenté en continu à
 - **`Surface`'s constructeur prenait `int& surface_idx`** (référence non-const) alors que la valeur n'est jamais modifiée — sémantique trompeuse (laisse penser à un paramètre de sortie). Corrigé en `int surface_idx` (par valeur) dans `core/surface` (phase 2).
 - **`#include "utils.hpp"` inutilisé dans l'ancien `surface.hpp`** — `Surface` n'appelle jamais `load_obj`/`cycle_path_detection`. Retiré dans le port.
 
+- **`surface_id` par défaut = -1** (corrigé à la source dans `core/node`, phase 4) — l'ancien `Node` n'avait pas de valeur par défaut, ce qui causait la lecture de mémoire non initialisée sur le nœud de départ d'`AstarSearch` (déjà loguée plus haut, contournée dans `golden_capture` par un `null` explicite). `core/node::Node::surface_id` vaut maintenant `-1` par défaut, donc plus besoin de ce contournement une fois `planners/astar_search` porté (phase 5).
+- **Init `g_score=inf`/`h_score=0`/`f_score=inf` dans l'ancien `AstarSearch::get_children` était du code mort** — la boucle `search()` réécrit systématiquement ces champs pour chaque enfant juste après, donc l'init dans `get_children` n'avait aucun effet. `core/expansion`'s `expand_node` (phase 4) ne touche donc pas du tout ces champs — responsabilité du planner (phase 5/6), pas de l'expansion.
+
 ## À vérifier
 
 - Incohérence `foot_width` dans `constants.hpp` : valeur active `0.22`, commentaire à côté dit `0.12` — laquelle est correcte ?
