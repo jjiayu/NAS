@@ -22,14 +22,21 @@ std::vector<Node*> expand_node(Node* parent,
 
     // moving = the foot about to make the next contact (the child's
     // stance foot); support = the foot currently planted (the parent's).
-    Polyhedron base_polytope = reachability.query(
+    // Queried by reference and only copied when rotation actually needs to
+    // mutate it (rotation_enabled is false for every NAS/Tree call site
+    // today) — a Polyhedron copy rebuilds a CGAL halfedge data structure,
+    // not worth paying on every expansion for the common no-rotation case.
+    const Polyhedron& queried_polytope = reachability.query(
         effector_name(child_stance_foot), effector_name(parent->stance_foot), direction);
 
+    Polyhedron rotated_polytope;
+    const Polyhedron* base_polytope = &queried_polytope;
     if (params.rotation_enabled) {
-        base_polytope = rotate_polyhedron_z(base_polytope, parent->foot_yaw);
+        rotated_polytope = rotate_polyhedron_z(queried_polytope, parent->foot_yaw);
+        base_polytope = &rotated_polytope;
     }
 
-    Polyhedron P_union = minkowski_sum(parent->patch_vertices, base_polytope);
+    Polyhedron P_union = minkowski_sum(parent->patch_vertices, *base_polytope);
 
     for (const auto& surface : surfaces) {
         std::vector<Point_3> plane_intersect_3d = compute_polytope_plane_intersection(surface.plane, P_union);
