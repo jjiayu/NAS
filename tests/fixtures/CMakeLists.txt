@@ -18,11 +18,18 @@ find_package(Eigen3 REQUIRED)
 find_package(CGAL REQUIRED)
 find_package(Boost REQUIRED)
 
+# Deliberately does NOT add_subdirectory(planners/astar_search) itself:
+# astar_search's own CMakeLists.txt needs this fixtures module for its test
+# executables, so doing it here would create a circular add_subdirectory
+# graph. Every consumer must add_subdirectory(astar_search) *before*
+# add_subdirectory(fixtures) — see any consumer's CMakeLists.txt for the
+# pattern.
 if(NOT TARGET nas_planners_astar_search)
-  add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../../planners/astar_search ${CMAKE_CURRENT_BINARY_DIR}/_astar_search)
+  message(FATAL_ERROR "nas_test_fixtures needs nas_planners_astar_search already added — "
+                       "add_subdirectory(.../planners/astar_search) before add_subdirectory(.../tests/fixtures)")
 endif()
 
-add_library(nas_test_fixtures src/scenarios.cpp)
+add_library(nas_test_fixtures src/scenarios.cpp src/golden_compare.cpp)
 target_include_directories(nas_test_fixtures PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
 )

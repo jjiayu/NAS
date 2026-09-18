@@ -32,9 +32,16 @@ target_link_libraries(nas_planners_astar_search PUBLIC
     Boost::boost
 )
 
+# fixtures added after this target exists (see fixtures/CMakeLists.txt —
+# it needs nas_planners_astar_search already defined, to avoid a circular
+# add_subdirectory graph).
+if(NOT TARGET nas_test_fixtures)
+  add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../../tests/fixtures ${CMAKE_CURRENT_BINARY_DIR}/_fixtures)
+endif()
+
 enable_testing()
 add_executable(nas_planners_astar_search_golden_test tests/test_astar_search_golden.cpp)
-target_link_libraries(nas_planners_astar_search_golden_test PRIVATE nas_planners_astar_search)
+target_link_libraries(nas_planners_astar_search_golden_test PRIVATE nas_planners_astar_search nas_test_fixtures)
 target_compile_definitions(nas_planners_astar_search_golden_test PRIVATE
     TALOS_REACHABILITY_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../../talosReachability/data/reachability_constraints"
     GOLDEN_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../../tests/golden"
@@ -42,7 +49,7 @@ target_compile_definitions(nas_planners_astar_search_golden_test PRIVATE
 add_test(NAME nas_planners_astar_search_golden_test COMMAND nas_planners_astar_search_golden_test)
 
 add_executable(nas_planners_astar_search_golden_test_threepaths tests/test_astar_search_golden_threepaths.cpp)
-target_link_libraries(nas_planners_astar_search_golden_test_threepaths PRIVATE nas_planners_astar_search)
+target_link_libraries(nas_planners_astar_search_golden_test_threepaths PRIVATE nas_planners_astar_search nas_test_fixtures)
 target_compile_definitions(nas_planners_astar_search_golden_test_threepaths PRIVATE
     TALOS_REACHABILITY_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../../talosReachability/data/reachability_constraints"
     GOLDEN_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../../tests/golden"
