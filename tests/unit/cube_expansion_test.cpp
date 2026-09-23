@@ -148,6 +148,45 @@ int run_cube_expansion() {
         }
     }
 
+    // --- §3.3: stepping onto the cube, and §3.4's v1 simplification (single-use) ---
+    {
+        ReachabilityModel foot_reach = ReachabilityModel::load({
+            {dir + "/RF_constraints_in_LF_quasi_flat_REDUCED.obj", "RF", "LF", ReachabilityDirection::Forward},
+            {dir + "/LF_constraints_in_RF_quasi_flat_REDUCED.obj", "LF", "RF", ReachabilityDirection::Forward},
+        });
+
+        // Negative control: not PlacedActive => no candidate children.
+        {
+            Node* inactive = pool.create();
+            *inactive = *children.front();
+            inactive->cube_state = CubeState::PlacedInactive;
+            inactive->cube = std::nullopt;
+            auto none = expand_onto_cube(inactive, foot_reach, cube_cfg.height, cube_cfg.half_extent, params, pool);
+            check(none.empty(), "expand_onto_cube: no children when cube_state != PlacedActive");
+        }
+
+        Node* placed = children.front();
+        auto onto = expand_onto_cube(placed, foot_reach, cube_cfg.height, cube_cfg.half_extent, params, pool);
+        check(!onto.empty(), "expand_onto_cube: stepping onto a nearby cube on a flat scene is reachable");
+
+        for (Node* child : onto) {
+            check(child->cube_state == CubeState::PlacedInactive, "on-cube step: v1 always deactivates the cube afterward");
+            check(!child->cube.has_value(), "on-cube step: cube is dropped (nullopt) once used");
+            check(child->surface_id == kOnCubeSurfaceId, "on-cube step: surface_id is the on-cube sentinel, not a real surface");
+            check(child->surface_id != -1, "on-cube step: sentinel is distinct from the root/no-surface value -1");
+            check(child->stance_foot != placed->stance_foot, "on-cube step: the other foot is the one landing on the cube");
+            check(child->depth == placed->depth + 1, "on-cube step: child is one depth level below the parent");
+
+            // Landed exactly on top of the cube: z = placement surface z (0, Flat) + cube
+            // height (0.15m) -- the whole geometric point of §3.3.
+            bool landed_at_cube_height = true;
+            for (const auto& p : child->patch_vertices) {
+                if (std::abs(CGAL::to_double(p.z()) - cube_cfg.height) > 1e-6) landed_at_cube_height = false;
+            }
+            check(landed_at_cube_height, "on-cube step: every landing point is exactly at the cube's own height (0.15m above Flat)");
+        }
+    }
+
     if (g_failures > 0) {
         std::cerr << g_failures << " test(s) FAILED\n";
         return 1;

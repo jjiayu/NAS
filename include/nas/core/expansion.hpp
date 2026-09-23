@@ -78,4 +78,29 @@ std::vector<Node*> expand_cube_placement(Node* parent,
                                           const ExpansionParams& params,
                                           NodePool& pool);
 
+// Sentinel surface_id for a node standing on top of an active cube (spec §3.3) rather
+// than any real, registered Surface -- distinct from -1 ("no surface", the start/root
+// node only) so cycle_path_detection never conflates "stood at the start" with "stood on
+// a cube" (both would otherwise collide on the same sentinel and could misfire the
+// existing "no revisiting a left surface" rule).
+constexpr int kOnCubeSurfaceId = -2;
+
+// On-cube step (spec §3.3), candidate only when parent->cube_state == PlacedActive: same
+// reachability query/rotation as an ordinary step (expand_node), but landing on the
+// cube's own top plane (parent->cube's placement surface, offset by cube_height along its
+// normal) instead of any registered Surface, with the extra coupling cut x' - c in
+// carre_cube (cube_half_extent square, centered on c) that keeps the landing point tied
+// to where the cube this specific joint-state vertex is coupled to actually is -- not
+// just "some point above the cube's placement area from ANY of its candidate positions".
+// Per docs/cube-implementation-plan.md's v1 scope (single cube, no reuse): the resulting
+// child always drops to CubeState::PlacedInactive (cube reset to nullopt) immediately --
+// spec §3.3's "second step on the same cube" (keeping it PlacedActive so the OTHER foot
+// can also land on it) is out of scope for v1.
+std::vector<Node*> expand_onto_cube(Node* parent,
+                                     const ReachabilityModel& reachability,
+                                     double cube_height,
+                                     double cube_half_extent,
+                                     const ExpansionParams& params,
+                                     NodePool& pool);
+
 } // namespace nas
