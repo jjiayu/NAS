@@ -118,6 +118,13 @@ nav .none .n { color: var(--bad); }
 .plot svg { display: block; width: 100%; height: auto; max-height: 68vh; }
 .plot .cap { font-size: 12px; color: var(--muted); padding: 2px 6px 0; }
 svg text { font-family: var(--mono); fill: var(--muted); }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
+.card { font: inherit; text-align: left; color: inherit; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 8px; cursor: pointer; display: grid; gap: 4px; }
+.card:hover { border-color: var(--ink); }
+.card:focus-visible { outline: 2px solid var(--left); outline-offset: 2px; }
+.card svg { width: 100%; height: 120px; display: block; }
+.ch { display: flex; justify-content: space-between; gap: 8px; font-size: 12.5px; }
+.ch .n { font-family: var(--mono); color: var(--muted); white-space: nowrap; }
 .tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
 table { border-collapse: collapse; width: 100%; font-size: 13px; }
 th, td { padding: 7px 12px; text-align: right; white-space: nowrap; border-bottom: 1px solid var(--line); font-variant-numeric: tabular-nums; }
@@ -145,6 +152,8 @@ h3 { font-size: 15px; margin: 8px 0 -8px; font-weight: 600; }
     <nav id="nav" aria-label="Scénarios"></nav>
     <section class="stage" id="stage"></section>
   </div>
+  <h3>Vue d'ensemble (variante choisie)</h3>
+  <div class="grid" id="overview"></div>
   <h3>Comparaison avec l'ancien code</h3>
   <div class="tablewrap"><table id="cmp"></table></div>
   <p class="note">Ancien : configuration de l'ancien code, mesurée avec le même outil sur la même machine (recherche seule, moyenne de 10 exécutions alternées). « Pas » = distance horizontale parcourue par les pieds d'après le QP. Les lacets d'un plan peuvent différer de l'ancien sans que les surfaces, les pieds ou la longueur changent : à coût égal, l'ordre de sortie des candidats est un simple départage.</p>
@@ -162,9 +171,9 @@ const view = i => Object.assign({}, DATA[i], DATA[i].variants[state.v]);
 const rotation = s => { let t = 0; for (let i = 1; i < s.path.length; i++) { let d = Math.abs(s.path[i].yaw - s.path[i - 1].yaw) % (2 * Math.PI); if (d > Math.PI) d = 2 * Math.PI - d; t += d; } return t * 180 / Math.PI; };
 const walked = feet => { let d = 0; for (let i = 1; i < feet.length; i++) d += Math.hypot(feet[i][0] - feet[i-1][0], feet[i][1] - feet[i-1][1]); return d; };
 const newFeet = s => s.feet.map(f => f.position);
-const state = { v: VARIANTS[0], i: 0, old: true, patches: true, nums: true };
-try { const s = JSON.parse(localStorage.getItem('plans-state') || '{}'); if (Number.isInteger(s.i) && s.i < DATA.length) state.i = s.i; if (VARIANTS.includes(s.v)) state.v = s.v; for (const k of ['old','patches','nums']) if (typeof s[k] === 'boolean') state[k] = s[k]; } catch (e) {}
-const save = () => { try { localStorage.setItem('plans-state', JSON.stringify(state)); } catch (e) {} };
+const state = { v: VARIANTS[VARIANTS.length > 1 ? 1 : 0], i: 0, old: true, patches: true, nums: true };
+try { const s = JSON.parse(localStorage.getItem('plans-state-2') || '{}'); if (Number.isInteger(s.i) && s.i < DATA.length) state.i = s.i; if (VARIANTS.includes(s.v)) state.v = s.v; for (const k of ['old','patches','nums']) if (typeof s[k] === 'boolean') state[k] = s[k]; } catch (e) {}
+const save = () => { try { localStorage.setItem('plans-state-2', JSON.stringify(state)); } catch (e) {} };
 
 function niceStep(span) { const raw = span / 6, p = Math.pow(10, Math.floor(Math.log10(raw))); const m = raw / p; return (m < 1.5 ? 1 : m < 3.5 ? 2 : m < 7.5 ? 5 : 10) * p; }
 
@@ -178,7 +187,7 @@ function foot(x, y, yaw, cls, label, fs, opts = {}) {
   return g;
 }
 
-function topView(s) {
+function topView(s, mini = false) {
   const pts = s.surfaces.flat();
   let xs = pts.map(p => p[0]), ys = pts.map(p => p[1]);
   const all = [...s.feet.map(f => f.position), s.start, s.goal, ...s.old.feet];
@@ -187,27 +196,29 @@ function topView(s) {
   const W = x1 - x0, H = y1 - y0, fs = Math.max(W, H) * 0.02;
   const svg = el('svg', { viewBox: `${x0} ${-y1} ${W} ${H}`, role: 'img', 'aria-label': `Vue de dessus, ${s.name}` });
   const step = niceStep(Math.max(W, H));
+  const zmean = v => v.reduce((a, p) => a + p[2], 0) / v.length;
+  if (!mini) {
   for (let x = Math.ceil((x0 + fs * 3) / step) * step; x <= x1 - fs * 3; x += step) { svg.append(el('line', { x1: x, y1: -y1, x2: x, y2: -y0, stroke: 'var(--grid)', 'stroke-width': 1, 'vector-effect': 'non-scaling-stroke' })); const t = el('text', { x: x + fs * 0.2, y: -y0 - fs * 0.35, 'font-size': fs * 0.72 }); t.textContent = fmt(x, step < 1 ? 1 : 0) + ' m'; svg.append(t); }
   for (let y = Math.ceil((y0 + fs * 2) / step) * step; y <= y1 - fs; y += step) { svg.append(el('line', { x1: x0, y1: -y, x2: x1, y2: -y, stroke: 'var(--grid)', 'stroke-width': 1, 'vector-effect': 'non-scaling-stroke' })); const t = el('text', { x: x0 + fs * 0.3, y: -y - fs * 0.25, 'font-size': fs * 0.72 }); t.textContent = fmt(y, step < 1 ? 1 : 0) + ' m'; svg.append(t); }
-  const zmean = v => v.reduce((a, p) => a + p[2], 0) / v.length;
+  }
   const zs = s.surfaces.map(zmean), zmin = Math.min(...zs), zmax = Math.max(...zs);
   s.surfaces.forEach((v, k) => {
     const t = zmax > zmin ? (zmean(v) - zmin) / (zmax - zmin) : 0.5;
     svg.append(el('polygon', { points: v.map(p => `${p[0]},${-p[1]}`).join(' '), fill: 'var(--surf)', 'fill-opacity': 0.3 + 0.55 * t, stroke: 'var(--surf-edge)', 'stroke-width': 1, 'vector-effect': 'non-scaling-stroke' }, [el('title', {}, [`surface ${k}, hauteur ${fmt(Math.min(...v.map(p => p[2])), 2)} à ${fmt(Math.max(...v.map(p => p[2])), 2)} m`])]));
-    if (s.surfaces.length > 8) return; // many narrow surfaces (stairs): labels would pile up, the hover title has them
+    if (mini || s.surfaces.length > 8) return; // many narrow surfaces (stairs): labels would pile up, the hover title has them
     const cx = v.reduce((a, p) => a + p[0], 0) / v.length, cy = v.reduce((a, p) => a + p[1], 0) / v.length;
     const tx = el('text', { x: cx, y: -cy, 'text-anchor': 'middle', 'font-size': fs * 0.95, style: 'opacity:.85' }); { const lo = Math.min(...v.map(p => p[2])), hi = Math.max(...v.map(p => p[2])); tx.textContent = `#${k}` + (zmax > zmin || hi - lo > 0.01 ? (hi - lo > 0.01 ? `  z=${fmt(lo, 2)}→${fmt(hi, 2)}` : `  z=${fmt(lo, 2)}`) : ''); } svg.append(tx);
   });
-  if (state.patches) s.path.forEach((n, k) => { if (k === 0 || !n.patch.length) return; svg.append(el('polygon', { points: n.patch.map(p => `${p[0]},${-p[1]}`).join(' '), fill: `var(--patch-${n.stance ? 'r' : 'l'})`, 'fill-opacity': 0.09, stroke: `var(--patch-${n.stance ? 'r' : 'l'})`, 'stroke-opacity': 0.35, 'stroke-width': 1, 'vector-effect': 'non-scaling-stroke' })); });
-  if (state.old && s.old.feet.length) {
+  if (state.patches && !mini) s.path.forEach((n, k) => { if (k === 0 || !n.patch.length) return; svg.append(el('polygon', { points: n.patch.map(p => `${p[0]},${-p[1]}`).join(' '), fill: `var(--patch-${n.stance ? 'r' : 'l'})`, 'fill-opacity': 0.09, stroke: `var(--patch-${n.stance ? 'r' : 'l'})`, 'stroke-opacity': 0.35, 'stroke-width': 1, 'vector-effect': 'non-scaling-stroke' })); });
+  if (!mini && state.old && s.old.feet.length) {
     svg.append(el('polyline', { points: s.old.feet.map(p => `${p[0]},${-p[1]}`).join(' '), fill: 'none', stroke: 'var(--old)', 'stroke-width': 1.4, 'stroke-dasharray': '5 4', 'vector-effect': 'non-scaling-stroke' }));
     s.old.feet.forEach((p, i) => svg.append(foot(p[0], p[1], s.old.nodes[i] ? s.old.nodes[i].yaw : 0, 'old', undefined, fs, { hollow: true })));
-  } else if (state.old && s.old.nodes.length > 1) {
+  } else if (!mini && state.old && s.old.nodes.length > 1) {
     s.old.nodes.slice(1).forEach(n => { const c = n.c, d = fs * 0.5; svg.append(el('polygon', { points: `${c[0]},${-c[1]-d} ${c[0]+d},${-c[1]} ${c[0]},${-c[1]+d} ${c[0]-d},${-c[1]}`, fill: 'none', stroke: 'var(--old)', 'stroke-width': 1.4, 'vector-effect': 'non-scaling-stroke' })); });
   }
   if (s.feet.length) {
     svg.append(el('polyline', { points: s.feet.map(f => `${f.position[0]},${-f.position[1]}`).join(' '), fill: 'none', stroke: 'var(--muted)', 'stroke-width': 1, 'vector-effect': 'non-scaling-stroke', 'stroke-opacity': 0.8 }));
-    s.feet.forEach((f, i) => svg.append(foot(f.position[0], f.position[1], f.foot_yaw, f.stance_foot ? 'right' : 'left', String(i), fs)));
+    s.feet.forEach((f, i) => svg.append(foot(f.position[0], f.position[1], f.foot_yaw, f.stance_foot ? 'right' : 'left', mini ? undefined : String(i), fs)));
   } else if (s.found) {
     s.path.slice(1).forEach(n => { const c = n.patch.reduce((a, p) => [a[0] + p[0] / n.patch.length, a[1] + p[1] / n.patch.length], [0, 0]); svg.append(foot(c[0], c[1], n.yaw, n.stance ? 'right' : 'left', undefined, fs)); });
   }
@@ -279,6 +290,18 @@ function renderPlots() {
   if (sv) { side.hidden = false; side.replaceChildren(sv.svg, el('div', { class: 'cap' }, [sv.cap])); } else side.hidden = true;
 }
 
+function renderOverview() {
+  const box = document.getElementById('overview'); box.replaceChildren();
+  DATA.forEach((_, i) => {
+    const s = view(i);
+    const card = el('button', { type: 'button', class: 'card', 'aria-label': `${s.name}, ouvrir` });
+    card.onclick = () => { state.i = i; save(); render(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+    const head = el('div', { class: 'ch' }, [el('span', {}, [s.name]), el('span', { class: 'n' }, [s.found ? `${s.path.length - 1} pas · ${fmt(rotation(s), 0)}°` : 'sans chemin'])]);
+    card.append(head, s.found || s.surfaces.length ? topView(s, true) : el('div'));
+    box.append(card);
+  });
+}
+
 function renderTable() {
   const t = document.getElementById('cmp'); t.replaceChildren();
   const head = ['Scénario', 'Pas', 'Pas ancien', 'Expansions', 'Ancien', 'Recherche ms', 'Ancien ms', 'Rapport', 'Parcouru m', 'Ancien m', 'QP'];
@@ -295,7 +318,7 @@ function renderTable() {
   tb.append(sum); t.append(tb);
 }
 
-function render() { renderNav(); renderStage(); renderTable(); }
+function render() { renderNav(); renderStage(); renderOverview(); renderTable(); }
 render();
 </script>
 """
