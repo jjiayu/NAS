@@ -2,6 +2,8 @@
 #include "nas/core/geometry.hpp"
 
 #include <CGAL/convex_hull_2.h>
+#include <algorithm>
+#include <cmath>
 #include <stdexcept>
 
 namespace nas {
@@ -113,11 +115,44 @@ std::vector<Node*> expand_node(Node* parent,
             // A patch that degenerates to a segment/point has no polygon to keep.
             if (final_hull_2d.size() < 3) continue;
             std::vector<Point_2> hull_pts(final_hull_2d.vertices_begin(), final_hull_2d.vertices_end());
+            if (params.convex_patch_simplify_tol > 0.0) {
+                bool removed = true;
+                while (removed && hull_pts.size() > 3) {
+                    removed = false;
+                    for (size_t i = 0; i < hull_pts.size(); ++i) {
+                        const Point_2& a = hull_pts[(i + hull_pts.size() - 1) % hull_pts.size()];
+                        const Point_2& b = hull_pts[i];
+                        const Point_2& c = hull_pts[(i + 1) % hull_pts.size()];
+                        double ex = CGAL::to_double(c.x() - a.x()), ey = CGAL::to_double(c.y() - a.y());
+                        double len = std::hypot(ex, ey);
+                        double dist = len > 0 ? std::abs(ex * CGAL::to_double(b.y() - a.y()) - ey * CGAL::to_double(b.x() - a.x())) / len
+                                              : std::hypot(CGAL::to_double(b.x() - a.x()), CGAL::to_double(b.y() - a.y()));
+                        if (dist < params.convex_patch_simplify_tol) {
+                            hull_pts.erase(hull_pts.begin() + static_cast<std::ptrdiff_t>(i));
+                            removed = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            if (params.canonical_prism_start && !hull_pts.empty()) {
+                // Same vertex order in every run: the hull starts at a tie-broken
+                // vertex that flips with 1e-16 noise, and this order feeds the
+                // EPA heuristic and the next Minkowski sum.
+                auto key = [](const Point_2& p) {
+                    return std::make_pair(std::llround(CGAL::to_double(p.x()) * 1e9), std::llround(CGAL::to_double(p.y()) * 1e9));
+                };
+                size_t start = 0;
+                for (size_t i = 1; i < hull_pts.size(); ++i)
+                    if (key(hull_pts[i]) < key(hull_pts[start])) start = i;
+                std::rotate(hull_pts.begin(), hull_pts.begin() + static_cast<std::ptrdiff_t>(start), hull_pts.end());
+            }
+            final_hull_2d = Polygon_2(hull_pts.begin(), hull_pts.end());
             patch_3d = transform_2d_points_to_world(hull_pts, surface.transform_to_3d);
         } else {
             patch_3d = transform_2d_points_to_world(polygon_intersect_2d, surface.transform_to_3d);
         }
-        Polyhedron patch_polyhedron = convex_hull_3_from_coplanar_points(patch_3d, surface.norm);
+        Polyhedron patch_polyhedron = convex_hull_3_from_coplanar_points(patch_3d, surface.norm, params.canonical_prism_start);
 
         if (params.cycle_detection_enabled &&
             cycle_path_detection(parent, child_stance_foot, surface.surface_id)) {

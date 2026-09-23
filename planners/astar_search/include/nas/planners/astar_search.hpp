@@ -24,11 +24,20 @@
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
+#include <functional>
 #include <vector>
 
 namespace nas {
 
 enum class DistanceMetric { Euclidean, Gjk, Epa };
+
+// What the search did with a freshly expanded child (see AstarSearchConfig::on_child).
+enum class ChildAction {
+    SkippedClosed,     // an equal node was already expanded
+    Pushed,            // no equal node in the open set: added
+    ImprovedExisting,  // equal node in the open set, this path is shorter: replaced its scores/parent
+    MergedWorse,       // equal node in the open set, not better: dropped
+};
 
 struct AstarSearchConfig {
     Point_3 start_position;
@@ -49,6 +58,19 @@ struct AstarSearchConfig {
     double node_similarity_threshold = 0.02;
 
     ExpansionParams expansion_params;
+
+    // Order the open set deterministically among (numerically) equal f-scores:
+    // f rounded to 1 nm, then creation order. Off = the old behaviour (equal f
+    // in arbitrary, heap-state-dependent order). See docs/paper-deltas.md.
+    bool deterministic_ties = false;
+    bool ties_lifo = false; // with deterministic_ties: most recently created first (default: oldest first)
+
+    // Test/diagnostic seams, unset in production. on_expand: right after a node
+    // is popped (1-based expansion index). on_child: after each child's dedup
+    // decision, with the expansion index of its parent. Used by
+    // tests/golden_all/trace_divergence.cpp to find where two runs first differ.
+    std::function<void(int expansion_index, const Node& node)> on_expand;
+    std::function<void(int parent_expansion_index, const Node& child, ChildAction action)> on_child;
 };
 
 class AstarSearch {

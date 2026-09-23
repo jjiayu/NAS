@@ -83,6 +83,12 @@ SurfaceConstraint generate_surface_constraint(const Polyhedron& surface_3d);
 Polyhedron rotate_polyhedron_z(const Polyhedron& polytope, double yaw_angle);
 
 // Build a polyhedron from coplanar points (convex_hull_3 fails on degenerate input)
-Polyhedron convex_hull_3_from_coplanar_points(const std::vector<Point_3>& points, const Vector_3& normal);
+// canonical_start: rotate the hull's vertex list to start at the vertex that is
+// minimal after rounding its 2D coordinates to 1e-9. The exact convex hull
+// starts at the lexicographically smallest vertex, which for a polygon with an
+// axis-aligned edge (very common: rectangles, stair treads) is an x-tie decided
+// by 1e-16 noise; the prism is fanned from that vertex, so the sum of its edges
+// (Node::perimeter) would otherwise change from run to run.
+Polyhedron convex_hull_3_from_coplanar_points(const std::vector<Point_3>& points, const Vector_3& normal, bool canonical_start = false);
 
 } // namespace nas

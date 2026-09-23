@@ -50,3 +50,10 @@ target_link_libraries(nas_bench_plane_cut PRIVATE nas_config CGAL::CGAL)
 target_compile_definitions(nas_bench_plane_cut PRIVATE
     TALOS_REACHABILITY_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../../talosReachability/data/reachability_constraints"
 )
+
+# Diagnostic: where do two heap states first make the search diverge?
+add_executable(nas_trace_divergence trace_divergence.cpp)
+target_link_libraries(nas_trace_divergence PRIVATE nas_config CGAL::CGAL)
+target_compile_definitions(nas_trace_divergence PRIVATE
+    TALOS_REACHABILITY_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../../talosReachability/data/reachability_constraints"
+)

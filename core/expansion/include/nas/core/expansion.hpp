@@ -65,6 +65,15 @@ struct ExpansionParams {
     // these vertices, unless canonical_* is also set. Off by default: the old
     // code keeps the raw points, and bit-exact replay needs that.
     bool convex_patch = false;
+    // With convex_patch: drop hull vertices lying within this distance (metres)
+    // of the line through their neighbours, repeatedly. The exact convex hull
+    // keeps a vertex that is collinear only up to 1e-16 noise, and the number of
+    // such vertices changes with heap state; each one adds a long triangulation
+    // diagonal (top and bottom face) to the prism-edge "perimeter". 0 = off.
+    double convex_patch_simplify_tol = 0.0;
+    // Build the node's prism (perimeter) from a canonical vertex start, see
+    // convex_hull_3_from_coplanar_points.
+    bool canonical_prism_start = false;
     bool canonical_centroid = false;
     bool canonical_perimeter = false;
     // Variant: keep the old definition (sum of every prism edge, diagonals

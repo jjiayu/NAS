@@ -114,13 +114,22 @@ void compare_clip(const fixtures::Scenario& scenario, const ReachabilityModel& r
 // A/B of the node-key variants (ExpansionParams::convex_patch / canonical_*),
 // interleaved, on the default (robust) clip.
 void compare_keys(const fixtures::Scenario& scenario, const ReachabilityModel& reachability, int num_runs) {
-    struct Variant { const char* name; bool convex, centroid; std::vector<double> ms; int exp = 0; };
-    std::vector<Variant> variants = {{"old keys", false, false, {}}, {"convex patch", true, false, {}}, {"convex patch + area centroid", true, true, {}}};
+    struct Variant { const char* name; bool convex, centroid, det; std::vector<double> ms; int exp = 0; };
+    std::vector<Variant> variants = {{"old keys", false, false, false, {}},
+                                     {"convex patch + area centroid", true, true, false, {}},
+                                     {"... + simplify/canonical start (hts c)", true, true, false, {}},
+                                     {"... + deterministic ties (htscd)", true, true, true, {}}};
     for (int run = 0; run < num_runs; ++run) {
-        for (auto& v : variants) {
+        for (size_t k = 0; k < variants.size(); ++k) {
+            Variant& v = variants[k];
             AstarSearchConfig cfg = scenario.astar_config;
             cfg.expansion_params.convex_patch = v.convex;
             cfg.expansion_params.canonical_centroid = v.centroid;
+            if (k >= 2) {
+                cfg.expansion_params.convex_patch_simplify_tol = 1e-9;
+                cfg.expansion_params.canonical_prism_start = true;
+            }
+            cfg.deterministic_ties = v.det;
             AstarSearch search(scenario.surfaces, reachability, cfg);
             auto t0 = std::chrono::high_resolution_clock::now();
             search.search();

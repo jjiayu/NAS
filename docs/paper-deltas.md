@@ -129,6 +129,27 @@ Conclusions :
 - **Reste non déterministe** : Stairs (5 résultats), LongStairsExp (4) et surtout ThreePathsScene (9, de 358 à 417 expansions) : une autre source existe ; candidates non testées : le périmètre du prisme (diagonales), le bruit de l'heuristique EPA sur des ensembles de points différents, les ex æquo de score entre lacets voisins.
 - Perf (`nas_compare_perf`, 20 runs entrelacés, deux passages) : neutre. NarrowPassage 147,3 ms (ancien) / 147,8 (convexe) / 149,0 (convexe + centroïde) ; ThreePathsNAS 64,3 / 63,9 / 62,6 ms, soit 0,97-1,01x, dans le bruit (écart-types 1-9 ms) ; par expansion 0,69-0,71 ms de part et d'autre.
 
+### Bilan : périmètre, clés de dédoublonnage et déterminisme de la recherche (2026-09-19)
+
+**Ce qu'est le « périmètre » de l'ancien code.** `Node::perimeter` = somme des longueurs de *toutes les arêtes* d'un prisme 3D d'épaisseur 2e-6 construit sur le patch (`convex_hull_3_from_coplanar_points`), donc contour × 2 + arêtes verticales + **diagonales de la triangulation en éventail des deux faces**. Ce prisme (`Node::patch_polyhedron_3d`) n'est lu nulle part ailleurs : le test « le but est dans le patch » utilise le polygone 2D. Il n'existe que pour fabriquer cette clé, et la clé dépend de la triangulation, c.-à-d. du sommet de départ de l'enveloppe et du nombre de sommets quasi colinéaires.
+
+**Causes du non-déterminisme de la recherche, dans l'ordre où elles ont été trouvées et mesurées** (trace de la première divergence entre deux états de tas, `nas_trace_divergence`, hook `AstarSearchConfig::on_expand/on_child`) :
+1. Le clip 2D perdait un point d'intersection (défaut hérité, corrigé : `ClipMode::Robust`, voir plus haut).
+2. `Node::centroid` = moyenne des points bruts du clip : dépend du nombre de points colinéaires (cellules de dédoublonnage de 2 cm, donc fusions différentes ; cause du 91/92/93 de ThreePathsNAS). Remède : centroïde de l'aire du polygone convexe.
+3. `Node::perimeter` : chaque sommet quasi colinéaire (1e-16) gardé par l'enveloppe exacte ajoute une diagonale de plusieurs dizaines de cm, en haut et en bas. Remède : éliminer les sommets à moins de 1 nm de la droite de leurs voisins (`convex_patch_simplify_tol`).
+4. Sur un polygone à bord aligné aux axes (rectangles, marches), le sommet de départ de l'enveloppe (le plus à gauche) est un ex æquo départagé par 1e-16 de bruit ; le prisme est triangulé en éventail depuis lui, donc le périmètre change, et l'ordre des sommets alimente l'heuristique EPA. Remède : sommet de départ canonique, arrondi à 1 nm (`canonical_prism_start`).
+5. Ex æquo numériques dans la file ouverte : beaucoup de nœuds ont un f égal en arithmétique exacte (distance nulle au patch but) et ne diffèrent que par le dernier bit, qui change avec le tas. Remède : comparer f arrondi au nanomètre puis départager par ordre de création (`deterministic_ties`).
+
+Chaque cause est **de la tolérance numérique** (bruit de 1e-16 amplifié par une décision discrète : cellule, diagonale, ordre de sortie), pas une erreur de géométrie.
+
+**Résultat, 9 états de tas x 11 scènes** (résultats distincts) : clés anciennes : jusqu'à 9 (ThreePathsScene), 3 (ThreePathsNAS) ; `convex_patch` + centroïde de surface + simplification + départ canonique (`htsc`) : 1 sur 7 scènes, ThreePathsNAS 91 stable, restent Stairs (2), LongStairs (2), LongStairsExp (4), ThreePathsScene (5) ; + départage déterministe (`htscd`) : **1 résultat sur les 11 scènes**. Avec le périmètre géométrique (`p`) : NarrowPassage passe à 99-135 expansions et ne suit plus la référence : l'échelle de l'ancien périmètre (≈ 2x le contour + diagonales) fixe sa granularité de quantification.
+
+**L'ordre des ex æquo change les résultats, quel qu'il soit** (les références golden sont *un* tirage arbitraire de l'ancien code) : premier créé d'abord (`htscd`) : NarrowPassage 103 expansions / 34 nœuds (référence 90 / 30), ThreePathsNAS 115 / 20 ; dernier créé d'abord (`htscdl`) : NarrowPassage 90 / 30 (identique à la référence), ThreePathsNAS 88 / 18 nœuds (plus court que la référence de 20), mais LongStairs 67 expansions / 12 nœuds (référence 10). Aucun ordre ne reproduit toutes les références : il faudra en choisir un et régénérer les références avec la nouvelle version.
+
+**Perf** (`nas_compare_perf`, 20 runs entrelacés, deux passages ; temps par expansion) : `convex_patch` + centroïde de surface : neutre (1,63 contre 1,62 ms, NarrowPassage). Avec simplification + départ canonique : **0,98 contre 1,62 ms par expansion (0,60x sur NarrowPassage, 0,92x sur ThreePathsNAS)** : moins de sommets par patch, donc somme de Minkowski, enveloppe 3D et EPA moins chers. Le départage déterministe ne coûte rien par expansion (0,67-1,00 ms) ; le temps total varie avec le nombre d'expansions qu'il induit (NarrowPassage 103, ThreePathsNAS 115).
+
+**Ce qui n'a pas de sens dans le design hérité, à supprimer dans la nouvelle version** (non fait, nettoyage différé) : le prisme 3D par patch (calculé à chaque expansion, copié 7 fois par nœud, un par lacet, pour une clé de dédoublonnage) ; le centroïde par moyenne de points bruts ; le périmètre-somme-d'arêtes. À leur place : patch = polygone convexe 2D nettoyé, centroïde d'aire, périmètre du contour (ou pas de périmètre dans la clé, à voir), départage déterministe.
+
 ## À vérifier
 
 - Incohérence `foot_width` dans `constants.hpp` : valeur active `0.22`, commentaire à côté dit `0.12` — laquelle est correcte ?

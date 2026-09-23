@@ -3,13 +3,27 @@
 
 #include <algorithm>
 
+#include <cmath>
+
 namespace nas {
 
 namespace {
 
-// Stateless: no config needed, matches the old CompareNodes exactly.
+// Default: matches the old CompareNodes exactly (f only; equal f = arbitrary
+// order). deterministic_ties: f is compared after rounding to 1 nm, and nodes
+// that tie are ordered by creation order (node_id, lower first). Scores that
+// are equal in exact arithmetic (many nodes: distance 0 to the goal patch) differ
+// by last-bit noise that changes with heap state, and that noise alone decided
+// which node was expanded first.
 struct CompareNodes {
-    bool operator()(const Node* a, const Node* b) const { return a->f_score > b->f_score; }
+    bool deterministic_ties = false;
+    bool ties_lifo = false; // among ties, most recently created first
+    bool operator()(const Node* a, const Node* b) const {
+        if (!deterministic_ties) return a->f_score > b->f_score;
+        long long qa = std::llround(a->f_score * 1e9), qb = std::llround(b->f_score * 1e9);
+        if (qa != qb) return qa > qb;
+        return ties_lifo ? a->node_id < b->node_id : a->node_id > b->node_id;
+    }
 };
 
 // Stateful port of the old NodeHash/NodeEqual — they used to read
@@ -125,7 +139,7 @@ void AstarSearch::search() {
                           config_.expansion_params.yaw_angle_increment);
 
     using OpenSet = boost::heap::fibonacci_heap<Node*, boost::heap::compare<CompareNodes>>;
-    OpenSet open_set;
+    OpenSet open_set(CompareNodes{config_.deterministic_ties, config_.ties_lifo});
     std::unordered_map<Node*, OpenSet::handle_type, NodeHash, NodeEqual> node_handles(16, node_hash, node_equal);
     std::unordered_set<Node*, NodeHash, NodeEqual> closed_set(16, node_hash, node_equal);
 
@@ -136,6 +150,7 @@ void AstarSearch::search() {
         open_set.pop();
         ++expansion_count_;
         node_handles.erase(current_node);
+        if (config_.on_expand) config_.on_expand(expansion_count_, *current_node);
 
         if (current_node->stance_foot == config_.goal_stance_foot &&
             current_node->check_if_node_contains_point(config_.goal_location)) {
@@ -155,6 +170,7 @@ void AstarSearch::search() {
 
         for (Node* child : children) {
             if (closed_set.find(child) != closed_set.end()) {
+                if (config_.on_child) config_.on_child(expansion_count_, *child, ChildAction::SkippedClosed);
                 continue;
             }
 
@@ -169,6 +185,7 @@ void AstarSearch::search() {
                 child->f_score = tentative_f_score;
                 child->parent = current_node;
                 node_handles[child] = open_set.push(child);
+                if (config_.on_child) config_.on_child(expansion_count_, *child, ChildAction::Pushed);
             } else if (tentative_g_score < handle_it->first->g_score) {
                 Node* existing_node = handle_it->first;
                 existing_node->g_score = tentative_g_score;
@@ -176,11 +193,14 @@ void AstarSearch::search() {
                 existing_node->f_score = tentative_f_score;
                 existing_node->parent = current_node;
                 open_set.increase(handle_it->second);
+                if (config_.on_child) config_.on_child(expansion_count_, *child, ChildAction::ImprovedExisting);
                 // `child` itself is simply left unreferenced in the pool —
                 // unlike the old code's `delete child`, NodePool has no
                 // per-element free. Not a leak (freed with the pool), just
                 // a few extra unused Nodes for the search's lifetime; see
                 // docs/paper-deltas.md.
+            } else if (config_.on_child) {
+                config_.on_child(expansion_count_, *child, ChildAction::MergedWorse);
             }
         }
     }
