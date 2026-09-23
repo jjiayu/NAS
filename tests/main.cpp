@@ -29,6 +29,7 @@ int run_footstep_qp_backend();
 int run_config_planner();
 int run_config_scenario();
 int run_config_stl();
+int run_config_cube();
 
 int run_astar_search_golden();
 int run_astar_search_golden_threepaths();
@@ -62,6 +63,7 @@ const Suite kSuites[] = {
     {"config_planner", "unit", run_config_planner},
     {"config_scenario", "unit", run_config_scenario},
     {"config_stl", "unit", run_config_stl},
+    {"config_cube", "unit", run_config_cube},
 
     {"astar_search_golden", "golden", run_astar_search_golden},
     {"astar_search_golden_threepaths", "golden", run_astar_search_golden_threepaths},

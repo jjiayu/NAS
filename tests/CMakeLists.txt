@@ -15,6 +15,7 @@ add_executable(nas_tests
     unit/config_planner_test.cpp
     unit/config_scenario_test.cpp
     unit/config_stl_test.cpp
+    unit/cube_model_test.cpp
     golden/astar_search_golden_test.cpp
     golden/astar_search_golden_threepaths_test.cpp
     golden/grid_astar_search_test.cpp
