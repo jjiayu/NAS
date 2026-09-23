@@ -42,12 +42,18 @@ struct FootstepQPConfig {
     // in the reachability constraints).
     bool rotation_enabled = false;
     double hessian_regularization = 1e-8;
+    // A solution is only reported as a success when every constraint holds within this
+    // tolerance (metres). The active-set solver can return "optimal" with a residual of
+    // ~5e-5 on the ill-conditioned problems the regularization creates; such a result is
+    // re-solved with a 100x stronger regularization (up to 4 attempts), then declared a failure.
+    double feasibility_tolerance = 1e-6;
 };
 
 struct FootstepPlan {
     bool success = false;
     std::vector<Point_3> footsteps; // one per path_nodes entry, world frame
     double alpha = 0.0;
+    double max_violation = 0.0;     // largest constraint residual of the returned solution (<= feasibility_tolerance when success)
 };
 
 // `path_nodes` is a full CASSR result path (path_nodes[0] is the start

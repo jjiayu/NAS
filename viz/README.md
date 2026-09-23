@@ -15,3 +15,5 @@ for sc in NarrowPassage Stairs TwoFlatSurfaces LongStairs LongLongStairs Flat Lo
 done
 python3 viz/plans_report.py /tmp/plans tests/golden /tmp/plans.html
 ```
+
+- `check_plan_feasibility.py <talos_reachability_dir> <plan.json>...`: checks plan dumps against the QP's constraints with no QP involved (reachability against the true polytope, patch plane and polygon, start, goal). Needs numpy and scipy.

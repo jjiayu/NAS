@@ -1,7 +1,9 @@
 #include "nas/footstep_qp/footstep_qp.hpp"
 #include "nas/core/expansion.hpp"
 
+#include <algorithm>
 #include <cmath>
+#include <limits>
 
 namespace nas {
 
@@ -54,7 +56,7 @@ FootstepPlan solve_footstep_qp(const std::vector<Node*>& path_nodes,
             qp.H(idx(j, c), idx(i, c)) += -2.0;
         }
     }
-    qp.H += config.hessian_regularization * Eigen::MatrixXd::Identity(dim, dim);
+    const Eigen::MatrixXd H_base = qp.H;
     qp.g(alpha_idx) = -config.alpha_weight;
 
     std::vector<Eigen::RowVectorXd> eq_rows;
@@ -147,11 +149,32 @@ FootstepPlan solve_footstep_qp(const std::vector<Node*>& path_nodes,
         qp.b_ineq(static_cast<int>(r)) = ineq_rhs[r];
     }
 
-    QPSolution solution = backend.solve(qp);
+    // Solve, then check the residuals: "optimal" from the solver is not enough (see
+    // FootstepQPConfig::feasibility_tolerance).
+    auto max_residual = [&](const Eigen::VectorXd& x) {
+        double v = 0.0;
+        if (qp.A_ineq.rows() > 0) v = std::max(v, (qp.A_ineq * x - qp.b_ineq).maxCoeff());
+        if (qp.A_eq.rows() > 0) v = std::max(v, (qp.A_eq * x - qp.b_eq).cwiseAbs().maxCoeff());
+        return v;
+    };
+    QPSolution solution;
+    double violation = std::numeric_limits<double>::infinity();
+    double regularization = config.hessian_regularization;
+    for (int attempt = 0; attempt < 4; ++attempt) {
+        qp.H = H_base + regularization * Eigen::MatrixXd::Identity(dim, dim);
+        solution = backend.solve(qp);
+        if (solution.success) {
+            violation = max_residual(solution.x);
+            if (violation <= config.feasibility_tolerance) break;
+        }
+        regularization *= 100.0;
+    }
+    const bool feasible = solution.success && violation <= config.feasibility_tolerance;
 
     FootstepPlan plan;
-    plan.success = solution.success;
-    if (solution.success) {
+    plan.success = feasible;
+    plan.max_violation = std::isfinite(violation) ? violation : 0.0;
+    if (feasible) {
         plan.alpha = solution.x(alpha_idx);
         plan.footsteps.reserve(n);
         for (int i = 0; i < n; ++i) {

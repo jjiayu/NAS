@@ -90,6 +90,7 @@ int main(int argc, char** argv) {
     out["scenario"] = scenario_name;
     out["path_found"] = !path.empty();
     out["qp_success"] = plan.success;
+    out["qp_max_violation"] = plan.max_violation;
     out["start"] = point_json(planner_config.astar.start_position);
     out["goal"] = point_json(planner_config.astar.goal_location);
     out["expansions"] = search.expansion_count();

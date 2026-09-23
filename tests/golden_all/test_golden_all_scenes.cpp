@@ -13,12 +13,16 @@
 //     footstep count, and the distance walked is within 6% of the old plan's
 //     (yaw ties move footsteps by up to ~35cm, so positions are not compared);
 //     where the old QP failed the new result is only reported;
+//   - feasibility: whatever the QP returns is re-checked against the constraints with an
+//     independent implementation (true reachability polytope = hull of the mesh vertices,
+//     patch plane and polygon, start, goal): worst violation <= 1e-6 m;
 //   - determinism: each search is run twice, the second time after a fragmentation
 //     of the heap; the expansion count and the path must be identical (the old
 //     code was not: NAS_SCRAMBLE showed up to 9 different results per scene).
 // Scenes where the old search found no path are reported, not asserted.
 
 #include "nas/config/scenario.hpp"
+#include "nas/core/expansion.hpp"
 #include "nas/core/reachability.hpp"
 #include "nas/fixtures/golden_compare.hpp"
 #include "nas/footstep_qp/footstep_qp.hpp"
@@ -26,6 +30,8 @@
 #include "nas/planners/astar_search.hpp"
 
 #include <nlohmann/json.hpp>
+
+#include <CGAL/convex_hull_3.h>
 
 #include <algorithm>
 #include <cstdlib>
@@ -98,6 +104,7 @@ struct Outcome {
     bool new_found = false;
     bool path_ok = true;        // meaningful when old_found
     bool deterministic = true;
+    bool feasible = true;       // independent check of the QP result (see max_violation)
     bool qp_ok = true;
     int yaw_differs = 0;
     std::string qp_status;      // human-readable
@@ -127,6 +134,61 @@ double walked_distance(const std::vector<Point_3>& steps) {
     for (size_t i = 1; i < steps.size(); ++i)
         d += std::hypot(CGAL::to_double(steps[i].x() - steps[i - 1].x()), CGAL::to_double(steps[i].y() - steps[i - 1].y()));
     return d;
+}
+
+// Independent feasibility check of a QP result: reachability against the TRUE polytope
+// (planes of the facets of the convex hull of the reachability mesh's vertices, recomputed
+// here, not through core/geometry), footstep on its patch plane and inside its polygon,
+// start and goal. Returns the largest violation in metres.
+double max_violation(const std::vector<Node*>& path, const std::vector<Point_3>& feet, const ReachabilityModel& reach,
+                     const Point_3& start, const Point_3& goal) {
+    auto hull_planes = [&](StanceFoot moving) {
+        const Polyhedron& mesh = reach.query(effector_name(moving), effector_name(other_foot(moving)), ReachabilityDirection::Forward);
+        std::vector<Point_3> v;
+        for (auto it = mesh.vertices_begin(); it != mesh.vertices_end(); ++it) v.push_back(it->point());
+        Polyhedron hull;
+        CGAL::convex_hull_3(v.begin(), v.end(), hull);
+        std::vector<Plane_3> planes; // CGAL hull facets are counter-clockwise seen from outside: normal points outward
+        for (auto f = hull.facets_begin(); f != hull.facets_end(); ++f) {
+            auto h = f->halfedge();
+            planes.emplace_back(h->vertex()->point(), h->next()->vertex()->point(), h->next()->next()->vertex()->point());
+        }
+        return planes;
+    };
+    const std::vector<Plane_3> planes[2] = {hull_planes(StanceFoot::Left), hull_planes(StanceFoot::Right)};
+    double worst = 0.0;
+    auto d3 = [](const Point_3& a, const Point_3& b) {
+        return std::max({std::abs(CGAL::to_double(a.x() - b.x())), std::abs(CGAL::to_double(a.y() - b.y())), std::abs(CGAL::to_double(a.z() - b.z()))});
+    };
+    worst = std::max({worst, d3(feet.front(), start), d3(feet.back(), goal)});
+    const size_t n = path.size();
+    for (size_t i = 1; i < n; ++i) {
+        double yaw = path[i - 1]->foot_yaw, c = std::cos(yaw), s = std::sin(yaw);
+        double dx = CGAL::to_double(feet[i].x() - feet[i - 1].x()), dy = CGAL::to_double(feet[i].y() - feet[i - 1].y()), dz = CGAL::to_double(feet[i].z() - feet[i - 1].z());
+        Point_3 local(c * dx + s * dy, -s * dx + c * dy, dz); // R(yaw)^T * relative position
+        for (const Plane_3& pl : planes[static_cast<int>(path[i]->stance_foot)]) {
+            double norm = std::sqrt(CGAL::to_double(pl.a() * pl.a() + pl.b() * pl.b() + pl.c() * pl.c()));
+            worst = std::max(worst, (CGAL::to_double(pl.a()) * CGAL::to_double(local.x()) + CGAL::to_double(pl.b()) * CGAL::to_double(local.y()) +
+                                     CGAL::to_double(pl.c()) * CGAL::to_double(local.z()) + CGAL::to_double(pl.d())) / norm);
+        }
+    }
+    for (size_t i = 1; i + 1 < n; ++i) {
+        const auto& v = path[i]->patch_vertices;
+        Plane_3 pp(v[0], v[1], v[2]);
+        double pn = std::sqrt(CGAL::to_double(pp.a() * pp.a() + pp.b() * pp.b() + pp.c() * pp.c()));
+        worst = std::max(worst, std::abs(CGAL::to_double(pp.a() * feet[i].x() + pp.b() * feet[i].y() + pp.c() * feet[i].z() + pp.d())) / pn);
+        double cx = 0, cy = 0;
+        for (const auto& q : v) { cx += CGAL::to_double(q.x()) / v.size(); cy += CGAL::to_double(q.y()) / v.size(); }
+        for (size_t k = 0; k < v.size(); ++k) {
+            const Point_3 &a = v[k], &b = v[(k + 1) % v.size()];
+            double ex = CGAL::to_double(b.x() - a.x()), ey = CGAL::to_double(b.y() - a.y()), len = std::hypot(ex, ey);
+            if (len < 1e-12) continue;
+            double nx = -ey / len, ny = ex / len;
+            if (nx * (cx - CGAL::to_double(a.x())) + ny * (cy - CGAL::to_double(a.y())) > 0) { nx = -nx; ny = -ny; } // outward
+            worst = std::max(worst, nx * (CGAL::to_double(feet[i].x() - a.x())) + ny * (CGAL::to_double(feet[i].y() - a.y())));
+        }
+    }
+    return worst;
 }
 
 } // namespace
@@ -187,6 +249,12 @@ int main() {
         QuadprogBackend backend;
         FootstepPlan plan = solve_footstep_qp(path, cfg.start_position, cfg.goal_location, reachability, qp_config, backend);
 
+        if (plan.success) {
+            double viol = max_violation(path, plan.footsteps, reachability, cfg.start_position, cfg.goal_location);
+            bool feasible = viol <= 1e-6;
+            std::cout << (feasible ? "ok" : "FAIL") << ": independent feasibility check of the QP result: worst constraint violation " << viol << " m\n";
+            out.feasible = feasible;
+        }
         const auto& gfp = golden["footstep_plan"];
         bool old_qp_ok = gfp.value("success", false);
         if (old_qp_ok) {
@@ -209,7 +277,7 @@ int main() {
     std::cout << "\n================ SUMMARY ================\n";
     bool all_ok = true;
     for (const Outcome& o : outcomes) {
-        bool ok = o.deterministic && (!o.old_found || (o.path_ok && o.qp_ok));
+        bool ok = o.deterministic && o.feasible && (!o.old_found || (o.path_ok && o.qp_ok));
         all_ok = all_ok && ok;
         std::cout << (ok ? "PASS  " : "FAIL  ") << o.name << ": " << o.expansions << " expansions, ";
         if (!o.old_found) {

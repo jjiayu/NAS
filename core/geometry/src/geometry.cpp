@@ -197,8 +197,22 @@ double calculate_epa_distance_point_to_patch(const std::vector<Point_3>& patch_p
     }
 }
 
-HalfSpacePolytopeConstraint convert_polytope_to_half_space_constraint(const Polyhedron& polytope) {
+HalfSpacePolytopeConstraint convert_polytope_to_half_space_constraint(const Polyhedron& mesh) {
     HalfSpacePolytopeConstraint constraint;
+
+    // The polytope IS the convex hull of the mesh's vertices (that is what the search's
+    // Minkowski sum uses). The reachability .obj files also contain quadrilateral faces
+    // that are not planar (22 of them, up to 29 cm from the plane of their first three
+    // vertices): taking each face's plane from its first three vertices, as the old code
+    // did, gives a region that differs from the polytope - footsteps satisfying it left
+    // the true polytope by up to 7 mm. Facets of the hull are exact triangles.
+    std::vector<Point_3> mesh_vertices;
+    for (auto v = mesh.vertices_begin(); v != mesh.vertices_end(); ++v) mesh_vertices.push_back(v->point());
+    if (mesh_vertices.empty()) {
+        throw std::runtime_error("Error: Empty polytope");
+    }
+    Polyhedron polytope;
+    CGAL::convex_hull_3(mesh_vertices.begin(), mesh_vertices.end(), polytope);
 
     Point_3 centroid = std::accumulate(
         polytope.vertices_begin(), polytope.vertices_end(), Point_3(0, 0, 0),

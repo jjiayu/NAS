@@ -103,6 +103,7 @@ target_link_libraries(footstep_planner_lib PRIVATE
 add_executable(nas_plan src/nas_plan.cpp)
 add_executable(test_bench_operations test_bench_operations.cpp)
 add_executable(test_print_paths test_print_paths.cpp)
+add_executable(old_qp_check tests/old_qp_check.cpp)
 
 # Link libraries for first executable
 target_link_libraries(nas_plan PRIVATE
@@ -121,7 +122,7 @@ target_link_libraries(nas_plan PRIVATE
 
 # Enable VTK module autoinit for all executables
 vtk_module_autoinit(
-  TARGETS nas_plan test_bench_operations
+  TARGETS nas_plan test_bench_operations old_qp_check
   MODULES ${VTK_LIBRARIES}
 )
 
@@ -142,4 +143,18 @@ target_link_libraries(test_print_paths PRIVATE
     geometry_lib
     CGAL::CGAL
     Boost::boost
+)
+
+# Feasibility check of the rewritten CASSR's plans with the old footstep QP (tests/old_qp_check.cpp).
+target_link_libraries(old_qp_check PRIVATE
+    footstep_planner_lib
+    tree_lib
+    utils_lib
+    node_lib
+    surface_lib
+    geometry_lib
+    visualizer_lib
+    ${VTK_LIBRARIES}
+    CGAL::CGAL
+    casadi::casadi
 )
