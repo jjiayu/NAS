@@ -6,6 +6,11 @@
 // its footsteps to <out.json>, so they can be compared with the new QP's.
 //
 // Usage: old_qp_check <plan.json> <out.json>
+// With OLD_QP_HULL=1 in the environment the old planner's reachability constraints are
+// rebuilt from the CONVEX HULL of each polytope's vertices (exact triangular facets)
+// instead of the plane of each face's first three vertices (its own construction, wrong
+// on the reachability meshes' non-planar quadrilaterals). Only the harness is changed:
+// the old planner's code is untouched, its public constraint members are overwritten.
 #include "footstep_planner.hpp"
 #include "constants.hpp"
 #include "geometry.hpp"
@@ -13,7 +18,10 @@
 
 #include <nlohmann/json.hpp>
 
+#include <CGAL/convex_hull_3.h>
+
 #include <fstream>
+#include <cstdlib>
 #include <iostream>
 #include <vector>
 
@@ -48,6 +56,23 @@ int main(int argc, char** argv) {
         path.push_back(n);
     }
     FootstepPlanner planner;
+    if (std::getenv("OLD_QP_HULL")) {
+        auto rebuild = [](const Polyhedron& mesh, HalfSpacePolytopeConstraint& hs, casadi::SX& A, casadi::SX& b) {
+            std::vector<Point_3> v;
+            for (auto it = mesh.vertices_begin(); it != mesh.vertices_end(); ++it) v.push_back(it->point());
+            Polyhedron hull;
+            CGAL::convex_hull_3(v.begin(), v.end(), hull);
+            hs = convert_polytope_to_half_space_constraint(hull);
+            A = casadi::SX::zeros(hs.A.rows(), hs.A.cols());
+            b = casadi::SX::zeros(hs.b.size());
+            for (int i = 0; i < hs.A.rows(); ++i) {
+                for (int j = 0; j < hs.A.cols(); ++j) A(i, j) = hs.A(i, j);
+                b(i) = hs.b(i);
+            }
+        };
+        rebuild(planner.rf_in_lf_polytope, planner.rf_in_lf_constraint, planner.A_rf_in_lf_casadi, planner.b_rf_in_lf_casadi);
+        rebuild(planner.lf_in_rf_polytope, planner.lf_in_rf_constraint, planner.A_lf_in_rf_casadi, planner.b_lf_in_rf_casadi);
+    }
     bool ok = planner.plan(current_stance_foot_flag, pt(plan["start"]), stance_foot_at_goal, pt(plan["goal"]), path);
     json out;
     out["old_qp_success"] = ok;
