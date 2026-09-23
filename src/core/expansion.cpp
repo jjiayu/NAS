@@ -571,7 +571,6 @@ std::vector<Node*> expand_onto_cube(Node* parent,
         patch_3d.push_back(parent->cube->transform_to_3d(Point_3(tp.point.x(), tp.point.y(), cube_height)));
     }
     Polygon_2 patch_polygon(patch_2d.begin(), patch_2d.end());
-    Point_3 centroid = area_centroid(patch_2d, parent->cube->transform_to_3d, patch_3d);
 
     // The child's own surface frame: the cube's top plane, not its base -- same rotation
     // as parent->cube->transform_to_3d (up_normal() only reads the linear part, so this
@@ -580,6 +579,15 @@ std::vector<Node*> expand_onto_cube(Node* parent,
     Transformation lift_to_top(CGAL::TRANSLATION, cube_height * cube_normal);
     Transformation top_transform_to_3d = lift_to_top * parent->cube->transform_to_3d;
     Transformation top_transform_to_surface = top_transform_to_3d.inverse();
+
+    // area_centroid's non-degenerate branch assumes to_3d's local z=0 is the patch's own
+    // height (true for every other caller, which pass a surface's own transform): must use
+    // the TOP-calibrated transform here, not parent->cube->transform_to_3d (calibrated to
+    // the base, z=0 there is cube_height below where this patch actually is) -- passing the
+    // base transform silently put centroid.z at the cube's base height instead of its top,
+    // found while building a plan visualization, not by any test (patch_vertices/patch_3d
+    // above were already correct; only this convenience field was wrong).
+    Point_3 centroid = area_centroid(patch_2d, top_transform_to_3d, patch_3d);
 
     std::vector<double> yaw_angles;
     if (params.rotation_enabled) {
