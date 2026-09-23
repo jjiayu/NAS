@@ -97,7 +97,8 @@ double is_leftside_of_edge(const Point_2& point, const Point_2& edge_start, cons
 // Sutherland-Hodgman clip. See the header comment: a CGAL-native
 // implementation was tried and reverted here because it crashed on the
 // real NarrowPassage scenario's near-degenerate shrunk "Passage" polygon.
-std::vector<Point_2> compute_2d_polygon_intersection(const std::vector<Point_2>& subject_polygon, const std::vector<Point_2>& clip_polygon) {
+std::vector<Point_2> compute_2d_polygon_intersection(const std::vector<Point_2>& subject_polygon, const std::vector<Point_2>& clip_polygon,
+                                                     ClipMode mode) {
     // Both polygons come from a convex hull upstream (expand_node,
     // Surface's own constructor) and are never empty in practice — an
     // empty polygon here means a caller broke that invariant, not a
@@ -120,35 +121,44 @@ std::vector<Point_2> compute_2d_polygon_intersection(const std::vector<Point_2>&
         std::vector<Point_2> input_list = output_list;
         output_list.clear();
 
+        Line_2 line(edge_start, edge_end);
+
         for (size_t i = 0; i < input_list.size(); i++) {
             Point_2 current_point = input_list[i];
             Point_2 prev_point = input_list[(i + input_list.size() - 1) % input_list.size()];
 
-            Line_2 line(edge_start, edge_end);
-            Segment_2 edge(prev_point, current_point);
+            double current_side = is_leftside_of_edge(current_point, edge_start, edge_end);
+            double prev_side = is_leftside_of_edge(prev_point, edge_start, edge_end);
+            bool current_inside = current_side >= 0;
+            bool prev_inside = prev_side >= 0;
 
-            bool current_inside = is_leftside_of_edge(current_point, edge_start, edge_end) >= 0;
-            bool prev_inside = is_leftside_of_edge(prev_point, edge_start, edge_end) >= 0;
-
-            if (current_inside) {
-                if (!prev_inside) {
-                    auto result = CGAL::intersection(edge, line);
-                    if (result) {
-                        Point_2 intersection_point;
-                        if (CGAL::assign(intersection_point, *result)) {
-                            output_list.push_back(intersection_point);
-                        }
-                    }
-                }
-                output_list.push_back(current_point);
-            } else if (prev_inside) {
-                auto result = CGAL::intersection(edge, line);
-                if (result) {
+            // Called only when the segment prev->current straddles the clip
+            // line according to the inside test above.
+            auto push_crossing = [&]() {
+                if (mode == ClipMode::Robust) {
+                    // Crossing derived from the very signed values that
+                    // decided the straddle: it always exists (the two sides
+                    // have opposite signs, so the denominator is non-zero).
+                    double t = prev_side / (prev_side - current_side);
+                    output_list.emplace_back(prev_point.x() + t * (current_point.x() - prev_point.x()),
+                                             prev_point.y() + t * (current_point.y() - prev_point.y()));
+                } else {
+                    // Legacy (old code): a second, exact predicate. On a
+                    // near-parallel edge it can disagree with the double test
+                    // above; the point is then silently dropped.
+                    auto result = CGAL::intersection(Segment_2(prev_point, current_point), line);
                     Point_2 intersection_point;
-                    if (CGAL::assign(intersection_point, *result)) {
+                    if (result && CGAL::assign(intersection_point, *result)) {
                         output_list.push_back(intersection_point);
                     }
                 }
+            };
+
+            if (current_inside) {
+                if (!prev_inside) push_crossing();
+                output_list.push_back(current_point);
+            } else if (prev_inside) {
+                push_crossing();
             }
         }
     }

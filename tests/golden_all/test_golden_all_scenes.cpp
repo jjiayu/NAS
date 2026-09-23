@@ -39,6 +39,7 @@
 #include <nlohmann/json.hpp>
 
 #include <algorithm>
+#include <cstdlib>
 #include <cmath>
 #include <fstream>
 #include <iostream>
@@ -125,6 +126,16 @@ struct Outcome {
 } // namespace
 
 int main() {
+    // NAS_SCRAMBLE=<seed>: fragment the heap in a seed-dependent way so that
+    // allocation-order-dependent behaviour (CGAL::convex_hull_3's triangulation)
+    // changes between runs; used to check the search is independent of it.
+    if (const char* seed = std::getenv("NAS_SCRAMBLE")) {
+        std::srand(std::stoul(seed));
+        std::vector<void*> blocks;
+        for (int i = 0; i < 4000; ++i) blocks.push_back(std::malloc(16 + std::rand() % 1500));
+        for (size_t i = blocks.size(); i > 1; --i) std::swap(blocks[i - 1], blocks[std::rand() % i]);
+        for (size_t i = 0; i < blocks.size(); i += 2) std::free(blocks[i]);
+    }
     ReachabilityModel reachability = make_forward_reachability();
     std::vector<Outcome> outcomes;
 
@@ -146,6 +157,11 @@ int main() {
         search.search();
         const auto& path = search.result_path();
         out.new_found = !path.empty();
+        {   // path signature, to compare runs (see NAS_SCRAMBLE above)
+            std::string sig;
+            for (const auto* n : path) sig += std::to_string(n->surface_id) + ":" + std::to_string(static_cast<int>(n->stance_foot)) + ":" + std::to_string(n->foot_yaw) + " ";
+            std::cout << "SIG " << setup.name << " expansions=" << search.expansion_count() << " " << sig << "\n";
+        }
 
         if (!out.old_found) {
             out.qp_status = "n/a (old search found no path)";

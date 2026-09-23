@@ -89,6 +89,19 @@ Deux mesures par méthode : (1) la **coupe** seule (enveloppe des points de coup
 
 Conséquences : changer de méthode de coupe n'apporte rien de mesurable en exactitude (SLICER 6x plus lent, HALF ~1,3x, pas mieux) ; le correctif est dans le clip 2D (calcul du point de croisement depuis les valeurs signées, validé ci-dessus dans le banc, pas encore dans `core/geometry`). Il s'écarterait de l'ancien code (qui a le défaut) et casserait le replay bit-exact de `--replay-old-hull` tant qu'on n'a pas une option pour garder l'ancien comportement. Non fait, décision à prendre. Limite : mesuré sur les dumps (parents des 150 premières expansions BFS), avec une seule triangulation de `P_union` par parent et par exécution.
 
+### Clip 2D corrigé dans `core/geometry` (`ClipMode::Robust`) : ce qui est vérifié et ce qui ne l'est pas
+
+Fait le 2026-09-19. `compute_2d_polygon_intersection` calcule maintenant le point de croisement depuis les valeurs signées qui ont décidé du croisement (`ClipMode::Robust`, défaut) ; l'ancien comportement reste disponible (`ClipMode::Legacy`, `ExpansionParams::legacy_clip`) pour rejouer l'ancien code.
+
+Vérifications (toutes sur les 11 scènes, 150 expansions réelles chacune) :
+1. **Le port reste fidèle** : `nas_expansion_differential <dumps> --replay-old-hull` (enveloppe exacte de l'ancien run + clip Legacy) reste bit-identique à l'ancien code partout (écart 0.0).
+2. **Le clip corrigé est juste** : `nas_expansion_differential <dumps> --robust` (enveloppe de l'ancien run + clip corrigé) compare, pour chaque surface de chaque expansion, avec un oracle indépendant en arithmétique exacte (`tests/golden_all/exact_clip.hpp`) : 0 écart de patch, 0 écart de présence, écart max 1.8e-15 m.
+3. **Les écarts avec l'ancien sont exactement les points qu'il perdait** : 28 patchs sur ~19 950 diffèrent de l'ancien ; dans les 28 cas l'ancien patch est contenu dans le nouveau (0 cas contraire), écart max 0,90 m ; aucune surface n'apparaît ou ne disparaît (0 « seulement nouveau », 0 « seulement ancien »).
+4. **Régression dédiée** : `core/geometry` test « near-parallel edge » : entrée réelle capturée ; le clip corrigé garde le coin, l'ancien le perd.
+5. **Bout en bout** : `nas_golden_all_scenes` passe toujours (7 scènes sur 10 avec chemin identique au golden, comme avant) ; ctest 13/13.
+
+**Non résolu — la recherche complète n'est pas déterministe.** `NAS_SCRAMBLE=<graine> nas_golden_all_scenes` (même binaire, tas fragmenté différemment) change encore le résultat de plusieurs scènes : chemins différents (surtout les lacets) sur Stairs, LongStairs, LongStairsExp, ThreePathsScene, et `ThreePathsNAS` fait **92 ou 91 expansions selon la graine** (91 avec les graines 1 et 3). L'écart 92/91 avec l'ancien code n'est donc pas un défaut de portage : c'est du non-déterminisme lié au tas, présent dans les deux. Cause probable, non démontrée : `centroid` (moyenne des points bruts du clip, dont le nombre de points colinéaires dépend de la triangulation de l'enveloppe) et `perimeter` (somme des arêtes du prisme, diagonales de triangulation comprises) servent de clés de dédoublonnage (`NodeHash`/`NodeEqual`, quantifiées à 0,02) et de coût. Les rendre canoniques (depuis l'enveloppe convexe du patch, indépendante de la triangulation) est un écart supplémentaire vis-à-vis de l'ancien code, non fait : décision à prendre.
+
 ## À vérifier
 
 - Incohérence `foot_width` dans `constants.hpp` : valeur active `0.22`, commentaire à côté dit `0.12` — laquelle est correcte ?

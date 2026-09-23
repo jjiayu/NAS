@@ -16,6 +16,7 @@
 // Prints a per-scene table with max deviations, and exits non-zero on any
 // mismatch beyond TOL. Usage: test_expansion_differential <dump_dir>
 
+#include "exact_clip.hpp"
 #include "nas/config/scenario.hpp"
 #include "nas/core/expansion.hpp"
 #include "nas/core/geometry.hpp"
@@ -200,7 +201,17 @@ struct Stats {
     }
 };
 
-Stats compare_scene(const std::string& scene, const json& dump, const ReachabilityModel& reachability, bool replay) {
+// How compare_scene runs expand_node:
+//   Port    - own hull, the old (Legacy) clip: is the port faithful? (bounded rate on unstable scenes)
+//   Replay  - the old run's exact hull + Legacy clip: everything bit-identical to the old output
+//   Robust  - the old run's exact hull + the corrected clip, checked against an
+//             independent EXACT-arithmetic oracle on every surface (must agree
+//             everywhere), and against the old output (may differ ONLY where the
+//             old clip dropped a point, i.e. the new patch contains the old one)
+enum class Mode { Port, Replay, Robust };
+
+Stats compare_scene(const std::string& scene, const json& dump, const ReachabilityModel& reachability, Mode mode) {
+    const bool replay = mode != Mode::Port;
     Stats st;
     config::Scenario scenario = config::load_scenario(scene);
     ExpansionParams params;
@@ -208,6 +219,7 @@ Stats compare_scene(const std::string& scene, const json& dump, const Reachabili
     params.yaw_discretization_num = 3;
     params.yaw_angle_increment = 10.0 / 180.0 * M_PI;
     params.cycle_detection_enabled = true;
+    params.legacy_clip = mode != Mode::Robust;
 
     auto note = [&](const std::string& s) {
         if (st.examples.size() < 6) st.examples.push_back(s);
@@ -380,14 +392,116 @@ Stats compare_scene(const std::string& scene, const json& dump, const Reachabili
     return st;
 }
 
+
+struct RobustStats {
+    int expansions = 0, surfaces = 0, oracle_mismatch = 0, presence_mismatch = 0;
+    int old_children_surfaces = 0, differs_from_old = 0, old_not_subset = 0, new_only = 0, old_only = 0;
+    double max_oracle_dev = 0, max_old_dev = 0;
+    std::vector<std::string> examples;
+};
+
+// Corrected clip, old run's exact hull: (1) every surface's children must match an
+// independent exact-arithmetic recomputation of the same cut; (2) versus the old
+// output, a difference is acceptable only when the old patch is CONTAINED in
+// the new one (the old clip only ever loses points, it never invents any).
+RobustStats robust_scene(const std::string& scene, const json& dump, const ReachabilityModel& reachability) {
+    RobustStats st;
+    config::Scenario scenario = config::load_scenario(scene);
+    ExpansionParams params;
+    params.rotation_enabled = true;
+    params.yaw_discretization_num = 3;
+    params.yaw_angle_increment = 10.0 / 180.0 * M_PI;
+    params.cycle_detection_enabled = true;
+    params.legacy_clip = false;
+
+    for (size_t ei = 0; ei < dump["expansions"].size(); ++ei) {
+        const json& e = dump["expansions"][ei];
+        const json& pj = e["parent"];
+        NodePool pool;
+        Node* parent = pool.create();
+        parent->depth = pj["depth"];
+        parent->stance_foot = pj["stance_foot"].get<int>() == 0 ? StanceFoot::Left : StanceFoot::Right;
+        parent->foot_yaw = pj["foot_yaw"];
+        parent->surface_id = pj["surface_id"];
+        parent->perimeter = pj["perimeter"];
+        parent->centroid = to_pt(pj["centroid"]);
+        for (const auto& v : pj["patch_vertices"]) parent->patch_vertices.push_back(to_pt(v));
+        for (size_t k = 0; k < 2 && k < pj["pred_surface_ids"].size(); ++k)
+            parent->pred_surface_ids[k] = pj["pred_surface_ids"][k].get<std::vector<std::vector<int>>>();
+
+        EdgeList edges = old_edges(e["p_union_mesh"]);
+        params.union_edges_override = [edges](const Node&) { return edges; };
+        NodePool kpool;
+        std::vector<Node*> kids = expand_node(parent, scenario.surfaces, reachability, ReachabilityDirection::Forward, params, kpool);
+        ++st.expansions;
+
+        std::map<int, std::vector<const Node*>> new_by_surface;
+        for (const Node* n : kids) new_by_surface[n->surface_id].push_back(n);
+        std::map<int, std::vector<Point_3>> old_by_surface; // first child's raw patch per surface
+        for (const auto& c : e["children"]) {
+            int sid = c["surface_id"].get<int>();
+            if (!old_by_surface.count(sid)) {
+                std::vector<Point_3> v;
+                for (const auto& q : c["patch_vertices"]) v.push_back(to_pt(q));
+                old_by_surface[sid] = v;
+            }
+        }
+        StanceFoot child_stance = other_foot(parent->stance_foot);
+        for (const Surface& surf : scenario.surfaces) {
+            ++st.surfaces;
+            std::vector<Point_3> cut = compute_edges_plane_intersection(surf.plane, edges);
+            std::vector<Point_3> oracle = oracle::patch_from_cut_exact_clip(cut, surf);
+            bool blocked = cycle_path_detection(parent, child_stance, surf.surface_id);
+            bool expect_children = !oracle.empty() && !blocked;
+            auto it = new_by_surface.find(surf.surface_id);
+            bool have = it != new_by_surface.end();
+            if (have != expect_children) {
+                ++st.presence_mismatch;
+                if (st.examples.size() < 5) st.examples.push_back("expansion " + std::to_string(ei) + " surface " + std::to_string(surf.surface_id) + ": children present " + std::to_string(have) + ", oracle expects " + std::to_string(expect_children));
+                continue;
+            }
+            if (have) {
+                double d = polygon_deviation(it->second.front()->patch_vertices, oracle);
+                st.max_oracle_dev = std::max(st.max_oracle_dev, d);
+                if (d > POLY_TOL) {
+                    ++st.oracle_mismatch;
+                    if (st.examples.size() < 5) st.examples.push_back("expansion " + std::to_string(ei) + " surface " + std::to_string(surf.surface_id) + ": patch differs from exact oracle by " + std::to_string(d));
+                }
+            }
+            // versus the old output
+            auto oit = old_by_surface.find(surf.surface_id);
+            bool old_has = oit != old_by_surface.end();
+            if (old_has) ++st.old_children_surfaces;
+            if (have && !old_has) { ++st.new_only; ++st.differs_from_old; continue; } // old lost the whole patch
+            if (!have && old_has) { ++st.old_only; ++st.differs_from_old; ++st.old_not_subset; continue; }
+            if (have && old_has) {
+                const auto& np = it->second.front()->patch_vertices;
+                double d = polygon_deviation(np, oit->second);
+                st.max_old_dev = std::max(st.max_old_dev, d);
+                if (d > POLY_TOL) {
+                    ++st.differs_from_old;
+                    // old must lie inside new: area(new) >= area(old) and every old hull vertex inside/on new
+                    auto hn = hull_xy(np), ho = hull_xy(oit->second);
+                    bool subset = polygon_area(hn) >= polygon_area(ho) - 1e-9;
+                    for (const auto& p : ho)
+                        if (CGAL::bounded_side_2(hn.begin(), hn.end(), p) == CGAL::ON_UNBOUNDED_SIDE && boundary_distance(p, hn) > 1e-9) subset = false;
+                    if (!subset) ++st.old_not_subset;
+                }
+            }
+        }
+    }
+    return st;
+}
+
 } // namespace
 
 int main(int argc, char** argv) {
     // --replay-old-hull: feed expand_node the old run's exact P_union hull
     // (same triangulation) and demand EVERYTHING exact, on every scene.
     bool replay = argc == 3 && std::string(argv[2]) == "--replay-old-hull";
-    if (argc != 2 && !replay) {
-        std::cerr << "Usage: " << argv[0] << " <dump_dir containing <scene>.json from old_expansion_dump> [--replay-old-hull]\n";
+    bool robust = argc == 3 && std::string(argv[2]) == "--robust";
+    if (argc != 2 && !replay && !robust) {
+        std::cerr << "Usage: " << argv[0] << " <dump_dir containing <scene>.json from old_expansion_dump> [--replay-old-hull | --robust]\n";
         return 1;
     }
     ReachabilityModel reachability = make_forward_reachability();
@@ -403,7 +517,18 @@ int main(int argc, char** argv) {
         }
         json dump;
         f >> dump;
-        Stats st = compare_scene(scene, dump, reachability, replay);
+        if (robust) {
+            RobustStats rs = robust_scene(scene, dump, reachability);
+            ++compared_scenes;
+            bool ok = rs.oracle_mismatch == 0 && rs.presence_mismatch == 0 && rs.old_not_subset == 0;
+            all_ok = all_ok && ok;
+            std::printf("%-20s %4d expansions %6d surface cuts | vs EXACT oracle: patch mismatches %d, presence mismatches %d (max dev %.1e) | vs old: %d differ (%d only new, %d only old), old NOT contained in new: %d (max dev %.2f m)  %s\n",
+                        scene.c_str(), rs.expansions, rs.surfaces, rs.oracle_mismatch, rs.presence_mismatch, rs.max_oracle_dev, rs.differs_from_old,
+                        rs.new_only, rs.old_only, rs.old_not_subset, rs.max_old_dev, ok ? "OK" : "MISMATCH");
+            for (const auto& ex : rs.examples) std::cout << "      e.g. " << ex << "\n";
+            continue;
+        }
+        Stats st = compare_scene(scene, dump, reachability, replay ? Mode::Replay : Mode::Port);
         ++compared_scenes;
         bool unstable = is_unstable_in_old(scene);
         bool polygon_ok = unstable ? st.polygon_mismatch <= UNSTABLE_SCENE_MAX_POLYGON_RATE * std::max(1, st.children)
@@ -435,6 +560,10 @@ int main(int argc, char** argv) {
     if (compared_scenes == 0) {
         std::cerr << "no dumps found\n";
         return 1;
+    }
+    if (robust) {
+        std::cout << (all_ok ? "CORRECTED CLIP: EVERY PATCH EQUALS THE EXACT-ARITHMETIC ORACLE; DIFFERENCES FROM THE OLD OUTPUT ARE ONLY POINTS THE OLD CLIP LOST\n" : "DIFFERENCES FOUND\n");
+        return all_ok ? 0 : 1;
     }
     if (replay) {
         std::cout << (all_ok ? "REPLAY OF THE OLD P_UNION HULL: EVERYTHING BIT-IDENTICAL (structure, polygon, perimeter, centroid, raw vertex list) ON EVERY EXPANSION\n" : "DIFFERENCES FOUND\n");

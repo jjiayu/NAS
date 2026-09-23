@@ -49,7 +49,17 @@ std::vector<Point_3> compute_polytope_plane_intersection(const Plane_3& plane, c
 // code) on the real NarrowPassage scenario, whose "Passage" surface
 // shrinks to a ~2cm-wide near-degenerate rectangle after the foot-size
 // margin — see docs/paper-deltas.md "Tentatives abandonnées".
-std::vector<Point_2> compute_2d_polygon_intersection(const std::vector<Point_2>& subject_polygon, const std::vector<Point_2>& clip_polygon);
+//
+// ClipMode::Robust (default) computes each crossing point from the signed
+// values that classified the endpoints. ClipMode::Legacy reproduces the old
+// code, which asked CGAL::intersection (exact predicates) for the point and
+// silently dropped it when that disagreed with the double inside-test on a
+// near-parallel edge (measured: 23 wrong patches in 19952 cuts, up to 1 m;
+// docs/paper-deltas.md). Legacy exists only so the old code's output can be
+// replayed bit for bit in tests.
+enum class ClipMode { Robust, Legacy };
+std::vector<Point_2> compute_2d_polygon_intersection(const std::vector<Point_2>& subject_polygon, const std::vector<Point_2>& clip_polygon,
+                                                     ClipMode mode = ClipMode::Robust);
 
 double is_leftside_of_edge(const Point_2& point, const Point_2& edge_start, const Point_2& edge_end);
 

@@ -16,6 +16,7 @@
 // Usage: nas_bench_plane_cut <dump_dir> [repeat]
 
 #include "nas/config/scenario.hpp"
+#include "exact_clip.hpp"
 #include "nas/core/geometry.hpp"
 #include "nas/core/node.hpp"
 #include "nas/core/reachability.hpp"
@@ -39,6 +40,7 @@
 using namespace nas;
 using json = nlohmann::json;
 using EK = CGAL::Exact_predicates_exact_constructions_kernel;
+using nas::oracle::patch_from_cut_exact_clip;
 using Clock = std::chrono::steady_clock;
 
 namespace {
@@ -60,7 +62,7 @@ std::vector<Point_3> patch_from_cut(const std::vector<Point_3>& cut, const Surfa
     Polygon_2 hull;
     CGAL::convex_hull_2(p2.begin(), p2.end(), std::back_inserter(hull));
     std::vector<Point_2> hp(hull.vertices_begin(), hull.vertices_end());
-    auto inter = compute_2d_polygon_intersection(hp, s.vertices_2d);
+    auto inter = compute_2d_polygon_intersection(hp, s.vertices_2d, ClipMode::Legacy); // the old clip, the thing being measured
     if (inter.size() <= 2) return {};
     return transform_2d_points_to_world(inter, s.transform_to_3d);
 }
@@ -87,43 +89,6 @@ std::vector<Point_3> cut_exact(const Surface& s, const std::vector<std::pair<EK:
     return out;
 }
 
-// Same Sutherland-Hodgman as compute_2d_polygon_intersection, in exact
-// arithmetic (inside test >= 0 and segment/line intersection both exact).
-std::vector<Point_3> patch_from_cut_exact_clip(const std::vector<Point_3>& cut, const Surface& s) {
-    if (cut.size() <= 2) return {};
-    static CGAL::Cartesian_converter<Kernel, EK> conv;
-    auto p2 = transform_3d_points_to_surface_plane(cut, s.transform_to_surface);
-    Polygon_2 hull;
-    CGAL::convex_hull_2(p2.begin(), p2.end(), std::back_inserter(hull));
-    std::vector<EK::Point_2> out;
-    for (auto v = hull.vertices_begin(); v != hull.vertices_end(); ++v) out.push_back(conv(*v));
-    std::vector<EK::Point_2> clip;
-    for (const auto& v : s.vertices_2d) clip.push_back(conv(v));
-    for (size_t k = 0; k < clip.size() && !out.empty(); ++k) {
-        const auto& a = clip[k];
-        const auto& b = clip[(k + 1) % clip.size()];
-        std::vector<EK::Point_2> in = out;
-        out.clear();
-        EK::Line_2 line(a, b);
-        for (size_t i = 0; i < in.size(); ++i) {
-            const auto& cur = in[i];
-            const auto& prev = in[(i + in.size() - 1) % in.size()];
-            bool cin = CGAL::orientation(a, b, cur) != CGAL::RIGHT_TURN;
-            bool pin = CGAL::orientation(a, b, prev) != CGAL::RIGHT_TURN;
-            auto cross = [&] {
-                auto r = CGAL::intersection(EK::Segment_2(prev, cur), line);
-                if (r) if (const EK::Point_2* q = std::get_if<EK::Point_2>(&*r)) out.push_back(*q);
-            };
-            if (cin) { if (!pin) cross(); out.push_back(cur); }
-            else if (pin) cross();
-        }
-    }
-    if (out.size() <= 2) return {};
-    std::vector<Point_2> back;
-    for (const auto& q : out) back.emplace_back(CGAL::to_double(q.x()), CGAL::to_double(q.y()));
-    return transform_2d_points_to_world(back, s.transform_to_3d);
-}
-
 // Instrumented copy of compute_2d_polygon_intersection (same logic) that
 // reports what happens at each clip edge, to find the failing mechanism.
 struct ClipTrace { long crossings = 0, crossing_no_point = 0, crossing_segment = 0, crossing_empty = 0; };
@@ -142,7 +107,8 @@ std::vector<Point_2> traced_clip(const std::vector<Point_2>& subject, const std:
                 ++tr.crossings;
                 auto r = CGAL::intersection(Segment_2(prev, cur), line);
                 Point_2 q;
-                if (!r) { ++tr.crossing_empty; ++tr.crossing_no_point; if (verbose) std::printf("   clip edge %zu: prev(%.17g,%.17g,%s) cur(%.17g,%.17g,%s): intersection EMPTY -> point lost\n", k, CGAL::to_double(prev.x()), CGAL::to_double(prev.y()), pin ? "in" : "out", CGAL::to_double(cur.x()), CGAL::to_double(cur.y()), cin ? "in" : "out"); }
+                if (!r) { ++tr.crossing_empty; ++tr.crossing_no_point; if (verbose) { std::printf("   FULL INPUT to clip edge %zu (%zu pts), clip edge (%.17g,%.17g)->(%.17g,%.17g):", k, in.size(), CGAL::to_double(a.x()), CGAL::to_double(a.y()), CGAL::to_double(b.x()), CGAL::to_double(b.y())); for (auto& q : in) std::printf(" {%.17g,%.17g}", CGAL::to_double(q.x()), CGAL::to_double(q.y())); std::printf("\n"); }
+                if (verbose) std::printf("   clip edge %zu: prev(%.17g,%.17g,%s) cur(%.17g,%.17g,%s): intersection EMPTY -> point lost\n", k, CGAL::to_double(prev.x()), CGAL::to_double(prev.y()), pin ? "in" : "out", CGAL::to_double(cur.x()), CGAL::to_double(cur.y()), cin ? "in" : "out"); }
                 else if (CGAL::assign(q, *r)) out.push_back(q);
                 else { ++tr.crossing_segment; ++tr.crossing_no_point; if (verbose) std::printf("   clip edge %zu: intersection is a SEGMENT -> point lost\n", k); }
             };
@@ -152,6 +118,7 @@ std::vector<Point_2> traced_clip(const std::vector<Point_2>& subject, const std:
     }
     return out;
 }
+
 
 // Candidate fix: same Sutherland-Hodgman, but the crossing point is computed
 // from the very signed values that decided "inside/outside", so a crossing

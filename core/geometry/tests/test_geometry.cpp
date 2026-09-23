@@ -62,6 +62,32 @@ void test_polygon_intersection_partial_overlap() {
     check(close(polygon_area(result), 0.5, 1e-6), "polygon intersection (partial overlap): area is 0.5");
 }
 
+// Regression: real input captured from a Stairs expansion (tests/golden_all
+// bench_plane_cut, docs/paper-deltas.md). Stage 3 of the clip (top edge y=0.89)
+// receives a polygon whose right side is nearly vertical (x = 0.93999999999999995
+// / 0.94000000000000006). The legacy clip classified that side as straddling
+// the clip line with the double inside-test, then CGAL::intersection returned
+// no point, so the polygon lost its (0.94, 0.89) corner. The whole clip (four
+// clip edges) is replayed from the polygon before the losing stage.
+void test_polygon_intersection_near_parallel_edge_keeps_corner() {
+    std::vector<Point_2> subject = {Point_2(0.85611770206451332, 0.39216497516763221), Point_2(0.93999999999999995, 0.20693187045223915),
+                                    Point_2(0.94000000000000006, 0.90361011824360649), Point_2(0.90157329663780783, 0.88778308027245822),
+                                    Point_2(0.88989161133267791, 0.88042914145023532), Point_2(0.85611770206451332, 0.75011959392804961)};
+    // The surface's own clip square, starting at the failing (top) edge so the
+    // subject above is exactly the input of the stage that lost the point.
+    std::vector<Point_2> clip = {Point_2(0.94000000000000006, 0.89000000000000001), Point_2(-0.94000000000000006, 0.89000000000000001),
+                                 Point_2(-0.94000000000000006, -0.89000000000000001), Point_2(0.94000000000000006, -0.89000000000000001)};
+    auto robust = compute_2d_polygon_intersection(subject, clip);
+    auto legacy = compute_2d_polygon_intersection(subject, clip, ClipMode::Legacy);
+    auto has_corner = [](const std::vector<Point_2>& poly) {
+        for (const auto& p : poly)
+            if (std::abs(CGAL::to_double(p.x()) - 0.94) < 1e-9 && std::abs(CGAL::to_double(p.y()) - 0.89) < 1e-9) return true;
+        return false;
+    };
+    check(has_corner(robust), "polygon intersection (near-parallel edge): robust clip keeps the (0.94, 0.89) corner");
+    check(!has_corner(legacy), "polygon intersection (near-parallel edge): legacy clip loses it (documents the old defect)");
+}
+
 void test_polygon_intersection_no_overlap() {
     auto subject = square(0.0, 0.0, 1.0);
     auto clip = square(10.0, 10.0, 1.0);
@@ -117,6 +143,7 @@ void test_minkowski_sum_translates_and_preserves_volume() {
 int main() {
     test_get_centroid();
     test_polygon_intersection_partial_overlap();
+    test_polygon_intersection_near_parallel_edge_keeps_corner();
     test_polygon_intersection_no_overlap();
     test_polygon_intersection_fully_contained();
     test_polygon_intersection_identical();

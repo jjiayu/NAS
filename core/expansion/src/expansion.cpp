@@ -54,7 +54,8 @@ std::vector<Node*> expand_node(Node* parent,
         CGAL::convex_hull_2(plane_intersect_2d.begin(), plane_intersect_2d.end(), std::back_inserter(plane_hull_2d));
         std::vector<Point_2> plane_hull_pts(plane_hull_2d.vertices_begin(), plane_hull_2d.vertices_end());
 
-        std::vector<Point_2> polygon_intersect_2d = compute_2d_polygon_intersection(plane_hull_pts, surface.vertices_2d);
+        std::vector<Point_2> polygon_intersect_2d = compute_2d_polygon_intersection(
+            plane_hull_pts, surface.vertices_2d, params.legacy_clip ? ClipMode::Legacy : ClipMode::Robust);
         if (polygon_intersect_2d.size() <= 2) {
             continue;
         }

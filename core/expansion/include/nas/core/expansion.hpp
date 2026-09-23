@@ -42,6 +42,10 @@ struct ExpansionParams {
     int yaw_discretization_num = 3;
     double yaw_angle_increment = 10.0 / 180.0 * M_PI;
     bool cycle_detection_enabled = true;
+    // Reproduce the old code's 2D clip (which can drop an intersection point,
+    // see ClipMode in geometry.hpp). Off by default; on only for replaying the
+    // old code's output bit for bit.
+    bool legacy_clip = false;
     // Test seam only (tests/golden_all replays the old code's exact P_union
     // through it): when set, replaces the edge list of
     // minkowski_sum(parent patch, reachability polytope). CGAL::convex_hull_3's
