@@ -18,11 +18,13 @@
 //    enables it today (NAS's call site leaves it false, matching NAS's
 //    current no-rotation behavior exactly).
 
+#include "nas/core/geometry.hpp"
 #include "nas/core/node.hpp"
 #include "nas/core/reachability.hpp"
 #include "nas/core/surface.hpp"
 
 #include <cmath>
+#include <functional>
 #include <string>
 #include <vector>
 
@@ -40,6 +42,12 @@ struct ExpansionParams {
     int yaw_discretization_num = 3;
     double yaw_angle_increment = 10.0 / 180.0 * M_PI;
     bool cycle_detection_enabled = true;
+    // Test seam only (tests/golden_all replays the old code's exact P_union
+    // through it): when set, replaces the edge list of
+    // minkowski_sum(parent patch, reachability polytope). CGAL::convex_hull_3's
+    // triangulation depends on heap order, so this is the only way to feed two
+    // runs the same hull.
+    std::function<EdgeList(const Node& parent)> union_edges_override;
 };
 
 // Expands `parent` into its children. `direction` selects which

@@ -61,11 +61,17 @@ Polyhedron minkowski_sum(const std::vector<Point_3>& patch_vertices,
     return P_union;
 }
 
-std::vector<Point_3> compute_polytope_plane_intersection(const Plane_3& plane, const Polyhedron& polytope) {
-    std::vector<Point_3> intersection_points;
+EdgeList polytope_edges(const Polyhedron& polytope) {
+    EdgeList edges;
     for (auto edge = polytope.edges_begin(); edge != polytope.edges_end(); ++edge) {
-        Point_3 p1 = edge->vertex()->point();
-        Point_3 p2 = edge->opposite()->vertex()->point();
+        edges.emplace_back(edge->vertex()->point(), edge->opposite()->vertex()->point());
+    }
+    return edges;
+}
+
+std::vector<Point_3> compute_edges_plane_intersection(const Plane_3& plane, const EdgeList& edges) {
+    std::vector<Point_3> intersection_points;
+    for (const auto& [p1, p2] : edges) {
         Kernel::Segment_3 segment(p1, p2);
 
         auto intersection = CGAL::intersection(plane, segment);
@@ -77,6 +83,10 @@ std::vector<Point_3> compute_polytope_plane_intersection(const Plane_3& plane, c
         }
     }
     return intersection_points;
+}
+
+std::vector<Point_3> compute_polytope_plane_intersection(const Plane_3& plane, const Polyhedron& polytope) {
+    return compute_edges_plane_intersection(plane, polytope_edges(polytope));
 }
 
 double is_leftside_of_edge(const Point_2& point, const Point_2& edge_start, const Point_2& edge_end) {

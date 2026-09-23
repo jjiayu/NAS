@@ -33,6 +33,14 @@ Point_3 get_centroid(const std::vector<Point_3>& points);
 
 Polyhedron minkowski_sum(const std::vector<Point_3>& patch_vertices, const Polyhedron& polytope);
 
+// Ordered edge list of a polyhedron (edges_begin order, each as
+// (vertex(), opposite()->vertex())). The plane/polytope intersection below is
+// a pure function of this sequence, so it is exposed to let tests replay the
+// exact hull triangulation an older run produced.
+using EdgeList = std::vector<std::pair<Point_3, Point_3>>;
+EdgeList polytope_edges(const Polyhedron& polytope);
+std::vector<Point_3> compute_edges_plane_intersection(const Plane_3& plane, const EdgeList& edges);
+
 std::vector<Point_3> compute_polytope_plane_intersection(const Plane_3& plane, const Polyhedron& polytope);
 
 // 2D polygon intersection (Sutherland-Hodgman clip). A CGAL-native

@@ -36,10 +36,13 @@ std::vector<Node*> expand_node(Node* parent,
         base_polytope = &rotated_polytope;
     }
 
-    Polyhedron P_union = minkowski_sum(parent->patch_vertices, *base_polytope);
+    // One edge list per expansion, shared by all surfaces.
+    const EdgeList union_edges = params.union_edges_override
+        ? params.union_edges_override(*parent)
+        : polytope_edges(minkowski_sum(parent->patch_vertices, *base_polytope));
 
     for (const auto& surface : surfaces) {
-        std::vector<Point_3> plane_intersect_3d = compute_polytope_plane_intersection(surface.plane, P_union);
+        std::vector<Point_3> plane_intersect_3d = compute_edges_plane_intersection(surface.plane, union_edges);
         if (plane_intersect_3d.size() <= 2) {
             continue;
         }

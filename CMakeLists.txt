@@ -278,3 +278,6 @@ target_link_libraries(old_expansion_dump PRIVATE
     footstep_planner_lib
     casadi::casadi
 )
+# Records the exact P_union hull get_children uses (see tests/old_expansion_dump.cpp).
+target_link_options(old_expansion_dump PRIVATE
+    "LINKER:--wrap=_ZN3nas13minkowski_sumERKSt6vectorIN4CGAL7Point_3INS1_5EpickEEESaIS4_EERKNS1_12Polyhedron_3IS3_NS1_18Polyhedron_items_3ENS1_18HalfedgeDS_defaultESaIiEEE")

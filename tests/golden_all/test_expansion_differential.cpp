@@ -160,6 +160,17 @@ double polygon_deviation(const std::vector<Point_3>& a, const std::vector<Point_
     return dev;
 }
 
+// The old code's exact P_union as an ordered edge list (dumped by
+// old_expansion_dump from the very hull get_children used). Rebuilding a
+// Polyhedron from its facets does NOT reproduce the old edge iteration order
+// (measured: 130-149 of 150 expansions differ), so the edge list itself is
+// replayed; the plane/polytope intersection depends on nothing else.
+EdgeList old_edges(const json& mesh) {
+    EdgeList out;
+    for (const auto& e : mesh["edges"]) out.emplace_back(to_pt(mesh["vertices"][e[0].get<int>()]), to_pt(mesh["vertices"][e[1].get<int>()]));
+    return out;
+}
+
 struct Stats {
     int polygon_mismatch = 0;
     std::string poly_detail;
@@ -188,7 +199,7 @@ struct Stats {
     }
 };
 
-Stats compare_scene(const std::string& scene, const json& dump, const ReachabilityModel& reachability) {
+Stats compare_scene(const std::string& scene, const json& dump, const ReachabilityModel& reachability, bool replay) {
     Stats st;
     config::Scenario scenario = config::load_scenario(scene);
     ExpansionParams params;
@@ -250,6 +261,7 @@ Stats compare_scene(const std::string& scene, const json& dump, const Reachabili
             st.max_punion_dev = std::max(st.max_punion_dev, d2);
             if (d1 > TOL) ++st.rot_mismatch;
             if (d2 > TOL) ++st.punion_mismatch;
+            const EdgeList stage_edges = polytope_edges(P);
             for (size_t si = 0; si < scenario.surfaces.size(); ++si) {
                 const auto& pl = scenario.surfaces[si].plane;
                 const json& oc4 = sg["plane_coeffs"][si];
@@ -262,10 +274,14 @@ Stats compare_scene(const std::string& scene, const json& dump, const Reachabili
                         ") old (" + std::to_string(oc4[0].get<double>()) + "," + std::to_string(oc4[1].get<double>()) + "," +
                         std::to_string(oc4[2].get<double>()) + "," + std::to_string(oc4[3].get<double>()) + ")";
                 }
-                double d3 = set_deviation(compute_polytope_plane_intersection(scenario.surfaces[si].plane, P), to_pts(sg["plane_intersections"][si]));
+                // The dump's plane_intersections stage was computed on a second,
+                // separately recomputed hull (CGAL's triangulation is heap-order
+                // dependent), so it says nothing about the replayed hull: skip it.
+                if (replay) continue;
+                double d3 = set_deviation(compute_edges_plane_intersection(scenario.surfaces[si].plane, stage_edges), to_pts(sg["plane_intersections"][si]));
                 st.max_plane_dev = std::max(st.max_plane_dev, d3);
                 if (d3 > TOL && st.plane_detail.empty()) {
-                    auto newp = compute_polytope_plane_intersection(scenario.surfaces[si].plane, P);
+                    auto newp = compute_edges_plane_intersection(scenario.surfaces[si].plane, stage_edges);
                     auto oldp = to_pts(sg["plane_intersections"][si]);
                     std::string t = "expansion " + std::to_string(ei) + " surface " + std::to_string(si) + ": new " + std::to_string(newp.size()) + " pts, old " + std::to_string(oldp.size()) + " pts\n";
                     auto show = [&](const char* label, const std::vector<Point_3>& a, const std::vector<Point_3>& b) {
@@ -284,6 +300,10 @@ Stats compare_scene(const std::string& scene, const json& dump, const Reachabili
             }
         }
 
+        if (replay) {
+            EdgeList replayed = old_edges(e["p_union_mesh"]);
+            params.union_edges_override = [replayed](const Node&) { return replayed; };
+        }
         std::vector<Node*> kids = expand_node(parent, scenario.surfaces, reachability, ReachabilityDirection::Forward, params, pool);
         const json& oc = e["children"];
         ++st.expansions;
@@ -362,8 +382,11 @@ Stats compare_scene(const std::string& scene, const json& dump, const Reachabili
 } // namespace
 
 int main(int argc, char** argv) {
-    if (argc != 2) {
-        std::cerr << "Usage: " << argv[0] << " <dump_dir containing <scene>.json from old_expansion_dump>\n";
+    // --replay-old-hull: feed expand_node the old run's exact P_union hull
+    // (same triangulation) and demand EVERYTHING exact, on every scene.
+    bool replay = argc == 3 && std::string(argv[2]) == "--replay-old-hull";
+    if (argc != 2 && !replay) {
+        std::cerr << "Usage: " << argv[0] << " <dump_dir containing <scene>.json from old_expansion_dump> [--replay-old-hull]\n";
         return 1;
     }
     ReachabilityModel reachability = make_forward_reachability();
@@ -379,19 +402,26 @@ int main(int argc, char** argv) {
         }
         json dump;
         f >> dump;
-        Stats st = compare_scene(scene, dump, reachability);
+        Stats st = compare_scene(scene, dump, reachability, replay);
         ++compared_scenes;
         bool unstable = is_unstable_in_old(scene);
         bool polygon_ok = unstable ? st.polygon_mismatch <= UNSTABLE_SCENE_MAX_POLYGON_RATE * std::max(1, st.children)
                                    : st.polygon_mismatch == 0;
         bool scene_ok = st.structure_ok() && polygon_ok;
+        if (replay) {
+            // same triangulation in => everything must be bit-for-bit: polygon,
+            // perimeter, centroid, and the raw vertex list (no extras either).
+            scene_ok = st.structure_ok() && st.polygon_mismatch == 0 && st.perimeter_mismatch == 0 && st.centroid_mismatch == 0 &&
+                       st.vertex_set_mismatch == 0 && st.old_extra_vertices == 0;
+            std::printf("      replay (old hull edge list): old-only vertices %d\n", st.old_extra_vertices);
+        }
         all_ok = all_ok && scene_ok;
         char line[400];
         std::snprintf(line, sizeof(line), "%-20s %10d %8d | %5d %4d %6d %5d %3d %4d %7d (%.1e) | %5d %8d %7d (%.1e)  %s",
                       scene.c_str(), st.expansions, st.children, st.count_mismatch, st.surface_mismatch, st.stance_mismatch,
                       st.depth_mismatch, st.yaw_mismatch, st.history_mismatch, st.polygon_mismatch, st.max_polygon_dev,
                       st.perimeter_mismatch, st.centroid_mismatch, st.vertex_set_mismatch, st.max_centroid_dev,
-                      scene_ok ? (unstable ? "OK (old code unstable here, bounded)" : "OK (exact)") : "MISMATCH");
+                      scene_ok ? (replay ? "OK (exact, old hull replayed)" : unstable ? "OK (old code unstable here, bounded)" : "OK (exact)") : "MISMATCH");
         std::cout << line << "\n";
         std::printf("      stages over first %d expansions: rotated polytope mismatches %d (max dev %.2e) | P_union mismatches %d (max dev %.2e) | plane-intersection mismatches %d (max dev %.2e)\n",
                     st.stage_expansions, st.rot_mismatch, st.max_rot_dev, st.punion_mismatch, st.max_punion_dev, st.plane_mismatch, st.max_plane_dev);
@@ -404,6 +434,10 @@ int main(int argc, char** argv) {
     if (compared_scenes == 0) {
         std::cerr << "no dumps found\n";
         return 1;
+    }
+    if (replay) {
+        std::cout << (all_ok ? "REPLAY OF THE OLD P_UNION HULL: EVERYTHING BIT-IDENTICAL (structure, polygon, perimeter, centroid, raw vertex list) ON EVERY EXPANSION\n" : "DIFFERENCES FOUND\n");
+        return all_ok ? 0 : 1;
     }
     std::cout << (all_ok ? "STRUCTURE IDENTICAL ON EVERY EXPANSION; PATCH GEOMETRY EXACT WHERE THE OLD CODE IS STABLE, BOUNDED WHERE IT IS NOT\n" : "DIFFERENCES FOUND\n");
     return all_ok ? 0 : 1;

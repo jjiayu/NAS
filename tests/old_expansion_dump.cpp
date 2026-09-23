@@ -60,6 +60,50 @@ json node_json(const Node* n) {
     return j;
 }
 
+// Full combinatorial dump of a polyhedron: vertices in vertices_begin order,
+// facets in facets_begin order (each as vertex indices starting at
+// facet->halfedge(), so orientation and start are kept), and the edge list in
+// edges_begin order (vertex(), opposite()->vertex()). That is everything
+// compute_polytope_plane_intersection's result depends on: replaying it lets
+// the rewrite be fed the OLD hull's exact triangulation.
+json mesh_json(const Polyhedron& P) {
+    std::map<Polyhedron::Vertex_const_handle, int> idx;
+    json verts = json::array();
+    for (auto v = P.vertices_begin(); v != P.vertices_end(); ++v) {
+        idx[v] = static_cast<int>(verts.size());
+        verts.push_back(pt(v->point()));
+    }
+    json facets = json::array();
+    for (auto f = P.facets_begin(); f != P.facets_end(); ++f) {
+        json fj = json::array();
+        auto h = f->facet_begin();
+        do { fj.push_back(idx[h->vertex()]); } while (++h != f->facet_begin());
+        facets.push_back(fj);
+    }
+    json edges = json::array();
+    for (auto e = P.edges_begin(); e != P.edges_end(); ++e)
+        edges.push_back(json::array({idx[e->vertex()], idx[e->opposite()->vertex()]}));
+    return {{"vertices", verts}, {"facets", facets}, {"edges", edges}};
+}
+
+json g_last_union_mesh;
+
+} // namespace
+
+// Link-time interposition (-Wl,--wrap=<mangled minkowski_sum>, root
+// CMakeLists.txt): the OLD code is not modified, but every call it makes to
+// nas::minkowski_sum lands here, so its exact P_union can be recorded.
+#define NAS_MS_SYM "_ZN3nas13minkowski_sumERKSt6vectorIN4CGAL7Point_3INS1_5EpickEEESaIS4_EERKNS1_12Polyhedron_3IS3_NS1_18Polyhedron_items_3ENS1_18HalfedgeDS_defaultESaIiEEE"
+Polyhedron real_minkowski_sum(const std::vector<Point_3>&, const Polyhedron&) asm("__real_" NAS_MS_SYM);
+Polyhedron wrapped_minkowski_sum(const std::vector<Point_3>& v, const Polyhedron& p) asm("__wrap_" NAS_MS_SYM);
+Polyhedron wrapped_minkowski_sum(const std::vector<Point_3>& v, const Polyhedron& p) {
+    Polyhedron r = real_minkowski_sum(v, p);
+    g_last_union_mesh = mesh_json(r);
+    return r;
+}
+
+namespace {
+
 const std::map<std::string, const std::vector<std::vector<Point_3>>*>& scenes() {
     static const std::map<std::string, const std::vector<std::vector<Point_3>>*> m = {
         {"Stairs", &Stairs}, {"TwoFlatSurfaces", &TwoFlatSurfaces}, {"Flat", &Flat},
@@ -137,6 +181,7 @@ int main(int argc, char** argv) {
         Node* parent = queue.front();
         queue.pop_front();
         std::vector<Node*> children = search.get_children(parent);
+        json used_mesh = g_last_union_mesh; // before the stage code below calls minkowski_sum again
         json e;
         e["parent"] = node_json(parent);
         if (expanded < 15) {
@@ -162,6 +207,10 @@ int main(int argc, char** argv) {
             }
             e["stages"] = {{"rotated_polytope", rot}, {"p_union", pu}, {"plane_intersections", planes}, {"plane_coeffs", plane_coeffs}};
         }
+        // The hull get_children ITSELF used (captured by the link-time wrap
+        // below), not a second hull computation: CGAL::convex_hull_3's
+        // triangulation is heap-order dependent, so a recomputed hull may differ.
+        e["p_union_mesh"] = used_mesh;
         json cj = json::array();
         for (Node* c : children) {
             cj.push_back(node_json(c));
