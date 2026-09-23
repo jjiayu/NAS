@@ -107,6 +107,47 @@ int run_cube_expansion() {
               "cube's placement_yaw is frozen to the foot_yaw at placement time");
     }
 
+    // --- §3.2: a normal step (expand_node) transports an active cube unchanged ---
+    // Reuse one of the placement children above as the new parent, then take one more,
+    // ordinary (non-cube) step from it via the *same* expand_node used everywhere else
+    // in the codebase (Etape 4: expand_node itself carries the cube when cube_state ==
+    // PlacedActive, every other caller -- cube_state == None -- hits the exact same code
+    // path it always has).
+    {
+        ReachabilityModel foot_reach = ReachabilityModel::load({
+            {dir + "/RF_constraints_in_LF_quasi_flat_REDUCED.obj", "RF", "LF", ReachabilityDirection::Forward},
+            {dir + "/LF_constraints_in_RF_quasi_flat_REDUCED.obj", "LF", "RF", ReachabilityDirection::Forward},
+        });
+
+        Node* placed = children.front();
+        check(placed->cube_state == CubeState::PlacedActive, "transport test: starting parent really is PlacedActive");
+
+        auto stepped = expand_node(placed, sc.surfaces, foot_reach, ReachabilityDirection::Forward, params, pool);
+        check(!stepped.empty(), "expand_node: a normal step is still possible from a cube-carrying node");
+
+        for (Node* child : stepped) {
+            check(child->cube_state == CubeState::PlacedActive, "transport: child keeps cube_state PlacedActive");
+            check(child->cube.has_value(), "transport: child still carries a CubePlacement");
+            if (!child->cube.has_value()) continue;
+            check(child->stance_foot != placed->stance_foot, "transport: the OTHER foot moved this time (normal step, not placement)");
+            check(child->patch_vertices.size() == child->cube->vertices_3d.size(),
+                  "transport: x and c stay index-aligned after a normal step too");
+
+            // c was never modified by this step (spec §3.2), only carried/interpolated
+            // among placed->cube's own vertices -- so it must stay within THEIR bounding
+            // box (a convex hull's interpolations/subsets never leave the hull of their
+            // inputs), i.e. still within K_cube's box relative to the ORIGINAL (0,0,0)
+            // placement foot position, same bounds as the placement invariant above.
+            bool still_within_original_cube_bounds = true;
+            for (const auto& c : child->cube->vertices_3d) {
+                double x = CGAL::to_double(c.x()), y = CGAL::to_double(c.y()), z = CGAL::to_double(c.z());
+                if (x < -0.15 - 1e-6 || x > 0.15 + 1e-6 || y < 0.15 - 1e-6 || y > 0.40 + 1e-6 || z < -0.05 - 1e-6 || z > 0.10 + 1e-6)
+                    still_within_original_cube_bounds = false;
+            }
+            check(still_within_original_cube_bounds, "transport: c stays within the original K_cube placement bounds (never modified, only carried)");
+        }
+    }
+
     if (g_failures > 0) {
         std::cerr << g_failures << " test(s) FAILED\n";
         return 1;

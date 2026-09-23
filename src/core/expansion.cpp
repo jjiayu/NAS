@@ -174,6 +174,100 @@ std::vector<Node*> expand_node(Node* parent,
         base_polytope = &rotated_polytope;
     }
 
+    // Carrying an active cube (spec §3.2): transport it through this step unchanged,
+    // using the tagged primitives so it stays coupled to whichever parent patch vertex
+    // produced each child vertex (docs/cube-implementation-plan.md Etape 4) -- a
+    // completely separate loop from the untouched one below, on purpose: every existing
+    // caller (NAS/Tree, and CASSR's existing non-cube usage) has cube_state == None and
+    // must hit the exact same code path as before this extension existed, unchanged.
+    if (parent->cube_state == CubeState::PlacedActive) {
+        TaggedPolyhedron swept = minkowski_sum_tagged(parent->patch_vertices, parent->cube->vertices_3d, *base_polytope);
+
+        for (const auto& surface : surfaces) {
+            std::vector<TaggedPoint3> plane_intersect_3d = compute_polytope_plane_intersection_tagged(surface.plane, swept);
+            if (plane_intersect_3d.size() <= 2) continue;
+
+            std::vector<Point_3> points_3d;
+            points_3d.reserve(plane_intersect_3d.size());
+            for (const auto& tp : plane_intersect_3d) points_3d.push_back(tp.point);
+            std::vector<Point_2> points_2d = transform_3d_points_to_surface_plane(points_3d, surface.transform_to_surface);
+
+            std::vector<TaggedPoint2WithOrigin> tagged_2d;
+            tagged_2d.reserve(points_2d.size());
+            for (size_t i = 0; i < points_2d.size(); ++i) tagged_2d.push_back({points_2d[i], plane_intersect_3d[i].payload});
+
+            std::vector<TaggedPoint2WithOrigin> plane_hull_2d = convex_hull_2_with_origin(tagged_2d);
+            std::vector<TaggedPoint2WithOrigin> polygon_intersect_2d =
+                compute_2d_polygon_intersection_with_origin(plane_hull_2d, surface.vertices_2d);
+            if (polygon_intersect_2d.size() <= 2) continue;
+
+            std::vector<TaggedPoint2WithOrigin> hull_2d = convex_hull_2_with_origin(polygon_intersect_2d);
+            clean_tagged_polygon_with_origin(hull_2d);
+            if (hull_2d.size() < 3) continue; // degenerated to a segment/point: no patch
+
+            if (params.cycle_detection_enabled && cycle_path_detection(parent, child_stance_foot, surface.surface_id)) continue;
+
+            std::vector<Point_2> patch_2d;
+            std::vector<Point_3> cube_2d_payload; // still full 3D world points -- see TaggedPoint2WithOrigin
+            patch_2d.reserve(hull_2d.size());
+            cube_2d_payload.reserve(hull_2d.size());
+            for (const auto& tp : hull_2d) {
+                patch_2d.push_back(tp.point);
+                cube_2d_payload.push_back(tp.payload);
+            }
+            std::vector<Point_3> patch_3d = transform_2d_points_to_world(patch_2d, surface.transform_to_3d);
+            Polygon_2 patch_polygon(patch_2d.begin(), patch_2d.end());
+            Point_3 centroid = area_centroid(patch_2d, surface.transform_to_3d, patch_3d);
+
+            std::vector<double> yaw_angles;
+            if (params.rotation_enabled) {
+                for (int i = -params.yaw_discretization_num; i <= params.yaw_discretization_num; ++i)
+                    yaw_angles.push_back(parent->foot_yaw + i * params.yaw_angle_increment);
+            } else {
+                yaw_angles.push_back(0.0);
+            }
+
+            for (double yaw : yaw_angles) {
+                Node* child = pool.create();
+                child->parent_ptrs.push_back(parent);
+                child->patch_vertices = patch_3d;
+                child->stance_foot = child_stance_foot;
+                child->surface_id = surface.surface_id;
+                child->depth = parent->depth + 1;
+                child->patch_polygon_2d = patch_polygon;
+                child->transformation_to_2d = surface.transform_to_surface;
+                child->transformation_to_3d = surface.transform_to_3d;
+                child->centroid = centroid;
+
+                if (params.rotation_enabled) {
+                    double normalized_yaw = yaw;
+                    while (normalized_yaw > M_PI) normalized_yaw -= 2.0 * M_PI;
+                    while (normalized_yaw < -M_PI) normalized_yaw += 2.0 * M_PI;
+                    child->foot_yaw = normalized_yaw;
+                } else {
+                    child->foot_yaw = 0.0;
+                }
+
+                child->pred_surface_ids = parent->pred_surface_ids;
+                child->pred_surface_ids[static_cast<size_t>(parent->stance_foot)].push_back({parent->surface_id});
+
+                // Cube transported unchanged (§3.2: "c est simplement transporté sans
+                // etre modifie") -- same surface/frame/yaw it already had, only the
+                // vertex list changes (index-aligned with the new patch_vertices above,
+                // restricted/interpolated exactly like x itself was, via the tagged
+                // primitives -- not a verbatim copy of the parent's cube patch).
+                child->cube_state = CubeState::PlacedActive;
+                CubePlacement placement = *parent->cube;
+                placement.vertices_3d = cube_2d_payload;
+                child->cube = std::move(placement);
+
+                children.push_back(child);
+            }
+        }
+
+        return children;
+    }
+
     Polyhedron P_union = minkowski_sum(parent->patch_vertices, *base_polytope);
 
     for (const auto& surface : surfaces) {
