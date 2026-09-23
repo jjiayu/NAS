@@ -239,6 +239,16 @@ void AstarSearch::search() {
                 if (dyaw > M_PI) dyaw = 2.0 * M_PI - dyaw;
                 edge_cost += config_.yaw_change_weight * dyaw;
             }
+            if (config_.heading_weight > 0.0 && config_.expansion_params.rotation_enabled) {
+                // the rough direction of travel: from the parent's centroid to the goal
+                const Point_3 goal = goal_point();
+                double gx = CGAL::to_double(goal.x() - current_node->centroid.x()), gy = CGAL::to_double(goal.y() - current_node->centroid.y());
+                if (std::hypot(gx, gy) > 1e-6) {
+                    double d = std::fmod(std::abs(child->foot_yaw - std::atan2(gy, gx)), 2.0 * M_PI);
+                    if (d > M_PI) d = 2.0 * M_PI - d;
+                    edge_cost += config_.heading_weight * d;
+                }
+            }
             double tentative_g_score = current_node->g_score + edge_cost;
             double tentative_h_score = heuristic(child);
             double tentative_f_score = tentative_g_score + tentative_h_score;

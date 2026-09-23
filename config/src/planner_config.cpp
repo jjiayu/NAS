@@ -57,6 +57,7 @@ AstarSearchConfig parse_astar_config(const json& j, std::optional<Vector_3>& goa
     if (j.contains("start_foot_yaw")) config.start_foot_yaw = j.at("start_foot_yaw").get<double>();
     if (j.contains("goal_stance_foot")) config.goal_stance_foot = stance_foot_from_string(j.at("goal_stance_foot").get<std::string>());
     if (j.contains("distance_metric")) config.distance_metric = distance_metric_from_string(j.at("distance_metric").get<std::string>());
+    if (j.contains("heading_weight")) config.heading_weight = j.at("heading_weight").get<double>();
     if (j.contains("yaw_change_weight")) config.yaw_change_weight = j.at("yaw_change_weight").get<double>();
     if (j.contains("heuristic_weight")) config.heuristic_weight = j.at("heuristic_weight").get<double>();
     if (j.contains("node_similarity_threshold")) config.node_similarity_threshold = j.at("node_similarity_threshold").get<double>();

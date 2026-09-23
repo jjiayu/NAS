@@ -87,8 +87,8 @@ target_link_libraries(nas_merge_consistency PRIVATE nas_config nas_planners_asta
 target_compile_definitions(nas_merge_consistency PRIVATE TALOS_REACHABILITY_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../../talosReachability/data/reachability_constraints")
 add_test(NAME nas_merge_consistency COMMAND nas_merge_consistency)
 
-# The optional yaw-change cost (test_yaw_cost.cpp).
-add_executable(nas_yaw_cost test_yaw_cost.cpp)
-target_link_libraries(nas_yaw_cost PRIVATE nas_config nas_footstep_qp nas_footstep_qp_backend nas_planners_astar_search CGAL::CGAL)
-target_compile_definitions(nas_yaw_cost PRIVATE TALOS_REACHABILITY_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../../talosReachability/data/reachability_constraints")
-add_test(NAME nas_yaw_cost COMMAND nas_yaw_cost)
+# The optional edge costs on rotation (test_edge_costs.cpp).
+add_executable(nas_edge_costs test_edge_costs.cpp)
+target_link_libraries(nas_edge_costs PRIVATE nas_config nas_footstep_qp nas_footstep_qp_backend nas_planners_astar_search CGAL::CGAL)
+target_compile_definitions(nas_edge_costs PRIVATE TALOS_REACHABILITY_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../../talosReachability/data/reachability_constraints")
+add_test(NAME nas_edge_costs COMMAND nas_edge_costs)

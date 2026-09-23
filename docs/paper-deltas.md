@@ -375,6 +375,30 @@ Demande de l'auteur : un coût qui favorise un déplacement sans tourner, en opt
 
 Lecture : la rotation totale tombe de 80-750° à 0-150° dès w = 0,1, et à 0° sur 9 scènes ; mais **le chemin gagne 2 à 4 nœuds sur 8 scènes** (LongStairs 10 → 14, LongLongStairs 20 → 26, Stairs_Up_Down 12 → 16, Ramp 14 → 18, SteepRamp 12 → 14, Flat 6 → 8, ThreePathsScene 14 → 16, ThreePathsNAS 20 → 22), alors qu'un coût de 0,05 par pas ne devrait pas valoir un pas de plus : l'A\* est pondéré (heuristique x10, non admissible, glouton) et le coût de lacet ne fait que départager des chemins presque égaux ; le chemin sans rotation trouvé en premier est plus long. Sur ThreePathsNAS, w = 1 fait passer les expansions de 115 à 1928. Le coût est donc un compromis à choisir, pas un gain gratuit. Non mesuré : l'effet sur le QP (distances parcourues).
 
+### Coût optionnel sur le cap : aligner le pied avec la direction du déplacement (2026-09-20)
+
+Demande de l'auteur, à comparer avec le coût sur le changement de lacet : un coût aligné avec la direction vague du déplacement. `AstarSearchConfig::heading_weight` (JSON `astar.heading_weight`, **0 par défaut**, sans effet sur la recherche par défaut) : coût d'arête `+ w · |lacet de l'enfant − direction du centroïde du parent au but|`, ramené à [0, π], dans le plan horizontal ; le but est la position, ou le centroïde de la surface but. Il pénalise un mauvais cap à chaque pas, alors que `yaw_change_weight` pénalise de tourner d'un pas au suivant quelle que soit la direction. Les deux se cumulent. Test `nas_edge_costs` (remplace `nas_yaw_cost`) : poids 0 = recherche par défaut exacte, chemin et QP partout où le défaut en trouve un, déterminisme.
+
+15 scénarios, expansions / nœuds du chemin / rotation totale (°) / erreur de cap moyenne (°, moyenne des |lacet − direction du but|) :
+
+| scène | défaut | changement de lacet 0,1 | cap 0,1 | cap 1,0 |
+|---|---|---|---|---|
+| NarrowPassage | 98 / 30 / 750 / 100 | 82 / 26 / 140 / 47 | 158 / 38 / 440 / 34 | 623 / 30 / 170 / 34 |
+| Stairs | 34 / 6 / 80 / 60 | 12 / 6 / 0 / 27 | 11 / 6 / 130 / 32 | 44 / 6 / 100 / 19 |
+| LongStairs | 28 / 10 / 230 / 49 | 20 / 14 / 0 / 22 | 87 / 14 / 120 / 7 | 29 / 14 / 120 / 7 |
+| LongLongStairs | 75 / 20 / 530 / 61 | 32 / 26 / 0 / 13 | 60 / 26 / 230 / 4 | 58 / 26 / 230 / 4 |
+| Flat | 11 / 6 / 140 / 55 | 52 / 8 / 0 / 5 | 6 / 6 / 60 / 2 | 6 / 6 / 60 / 2 |
+| LongStairsComplete | 26 / 10 / 260 / 34 | 20 / 14 / 0 / 12 | 19 / 14 / 90 / 8 | 34 / 14 / 90 / 8 |
+| LongStairsExp | 189 / 6 / 150 / 49 | 196 / 6 / 20 / 52 | 114 / 6 / 120 / 21 | 62 / 6 / 120 / 21 |
+| ThreePathsScene | 323 / 14 / 320 / 89 | 389 / 16 / 150 / 33 | 415 / 16 / 310 / 28 | 706 / 14 / 250 / 28 |
+| Stairs_Up_Down | 33 / 12 / 310 / 65 | 60 / 16 / 0 / 12 | 56 / 16 / 90 / 9 | 91 / 14 / 40 / 4 |
+| ThreePathsNAS | 115 / 20 / 490 / 39 | 347 / 22 / 150 / 29 | 83 / 20 / 260 / 7 | 1944 / 20 / 260 / 7 |
+| Ramp | 47 / 14 / 370 / 66 | 24 / 18 / 0 / 4 | 23 / 18 / 90 / 3 | 31 / 18 / 50 / 3 |
+| SteepRamp | 65 / 12 / 310 / 85 | 14 / 14 / 0 / 4 | 14 / 14 / 50 / 2 | 14 / 14 / 50 / 2 |
+| SlopedGround, SideSlope | 11 / 6 / 140 / 56 | 14 / 8 / 0 / 5 | 14 / 8 / 40 / 3 | 14-21 / 8 / 40 / 3 |
+
+Lecture : le cap aligne les pieds sur la direction (erreur de cap de 34-100° à 2-34° dès 0,1, à 2-7° sur 10 scènes) en gardant souvent le nombre de pas là où le coût sur le changement de lacet en ajoute (Flat 6 contre 8, ThreePathsNAS 20 contre 22 avec 83 expansions contre 347, Stairs 6) ; il laisse en revanche de la rotation (50-260°) puisque le but peut demander un cap non nul. **NarrowPassage** est le contre-exemple : il demande de se tourner de côté pour passer, et le cap vers le but combat cette rotation (38 nœuds contre 30, 158 expansions). Poids 1,0 : mêmes chemins sur 9 scènes mais 1944 expansions sur ThreePathsNAS et 623 sur NarrowPassage. Les 14 plans avec chemin sont faisables (vérificateur indépendant) avec chaque coût ; la page des plans (`viz/plans_report.py`, une variante par répertoire de sorties) permet de basculer entre défaut, changement de lacet et cap.
+
 ## À vérifier
 
 - Incohérence `foot_width` dans `constants.hpp` : valeur active `0.22`, commentaire à côté dit `0.12` — laquelle est correcte ?

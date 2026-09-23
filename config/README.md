@@ -25,6 +25,7 @@ This is distinct from [`tests/fixtures`](../tests/fixtures), which stays the tes
     "goal_stance_foot": "Left",
     "distance_metric": "Epa",                // "Euclidean" | "Epa" (default "Epa")
     "yaw_change_weight": 0.0,                // optional edge cost 1 + w*|yaw change|; 0 = the paper's cost (default)
+    "heading_weight": 0.0,                   // optional edge cost + w*|foot yaw - direction to the goal|; 0 = off (default)
     "heuristic_weight": 10.0,
     "node_similarity_threshold": 0.02,
     "expansion": {

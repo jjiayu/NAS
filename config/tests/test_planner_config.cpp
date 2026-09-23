@@ -116,6 +116,8 @@ void test_yaw_change_weight() {
     // optional edge cost on rotating: 0 (the paper's cost) unless the config sets it
     assert(near(load_planner_config(data_path("minimal_planner_config.json")).astar.yaw_change_weight, 0.0));
     assert(near(load_planner_config(data_path("yaw_cost_planner_config.json")).astar.yaw_change_weight, 0.1));
+    assert(near(load_planner_config(data_path("minimal_planner_config.json")).astar.heading_weight, 0.0));
+    assert(near(load_planner_config(data_path("yaw_cost_planner_config.json")).astar.heading_weight, 0.2));
     std::cout << "test_yaw_change_weight passed\n";
 }
 

@@ -57,6 +57,12 @@ struct AstarSearchConfig {
     // the paper mentions a small cost penalising foot rotation for its videos. Only with rotation enabled.
     double yaw_change_weight = 0.0;
 
+    // Optional edge cost on the heading: + heading_weight * |yaw of the child - direction from the parent's patch centroid
+    // to the goal| (wrapped to [0, pi], in the horizontal plane; the goal is the goal position or the goal surface's
+    // centroid). It favours feet aligned with the rough direction of travel, unlike yaw_change_weight, which penalises
+    // rotating from one step to the next whatever the direction. 0 (default) = off. Only with rotation enabled.
+    double heading_weight = 0.0;
+
     // Safety limit: the search gives up (empty path) after this many expansions. 0 = no limit.
     // Unweighted heuristics (Euclidean) can expand a very large number of nodes on a continuous
     // state space, and nodes are never freed during a search.
