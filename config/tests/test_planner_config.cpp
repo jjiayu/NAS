@@ -118,6 +118,13 @@ void test_yaw_change_weight() {
     assert(near(load_planner_config(data_path("yaw_cost_planner_config.json")).astar.yaw_change_weight, 0.1));
     assert(near(load_planner_config(data_path("minimal_planner_config.json")).astar.heading_weight, 0.0));
     assert(near(load_planner_config(data_path("yaw_cost_planner_config.json")).astar.heading_weight, 0.2));
+    // step cost weight: 1 (the paper's edge cost) by default, 0 ignores it, a negative weight is refused
+    assert(near(load_planner_config(data_path("minimal_planner_config.json")).astar.step_weight, 1.0));
+    assert(near(load_planner_config(data_path("yaw_cost_planner_config.json")).astar.step_weight, 0.5));
+    assert(near(load_planner_config(data_path("yaw_cost_planner_config.json")).astar.heuristic_weight, 0.0));
+    bool threw = false;
+    try { load_planner_config(data_path("negative_weight_planner_config.json")); } catch (const std::runtime_error&) { threw = true; }
+    assert(threw);
     std::cout << "test_yaw_change_weight passed\n";
 }
 

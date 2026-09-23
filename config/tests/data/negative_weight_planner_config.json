@@ -1,0 +1,7 @@
+{
+  "astar": {
+    "start_position": [0, 0, 0],
+    "goal_location": [4, 0, 0],
+    "step_weight": -1
+  }
+}

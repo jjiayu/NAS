@@ -402,3 +402,7 @@ Lecture : le cap aligne les pieds sur la direction (erreur de cap de 34-100° à
 ## À vérifier
 
 - Incohérence `foot_width` dans `constants.hpp` : valeur active `0.22`, commentaire à côté dit `0.12` — laquelle est correcte ?
+
+### Poids de tous les coûts dans la config
+
+Demande de l'auteur : chaque coût a un poids éditable dans `astar` de la config JSON, et 0 l'ignore. `step_weight` (coût constant d'un pas, le « 1 » du papier ; **1 par défaut**), `yaw_change_weight` (0), `heading_weight` (0), `heuristic_weight` (10 ; 0 donne une recherche sans heuristique). Un poids négatif est refusé au chargement (`load_planner_config`). Avec les défauts la recherche est inchangée (golden 20/20). Poids du QP : `alpha_weight` (déjà dans `qp`).

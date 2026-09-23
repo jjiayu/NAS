@@ -60,6 +60,14 @@ AstarSearchConfig parse_astar_config(const json& j, std::optional<Vector_3>& goa
     if (j.contains("heading_weight")) config.heading_weight = j.at("heading_weight").get<double>();
     if (j.contains("yaw_change_weight")) config.yaw_change_weight = j.at("yaw_change_weight").get<double>();
     if (j.contains("heuristic_weight")) config.heuristic_weight = j.at("heuristic_weight").get<double>();
+    if (j.contains("step_weight")) config.step_weight = j.at("step_weight").get<double>();
+    // a weight of 0 ignores the cost; a negative one would break the search
+    for (const auto& [key, w] : {std::pair<const char*, double>{"step_weight", config.step_weight},
+                                 {"yaw_change_weight", config.yaw_change_weight},
+                                 {"heading_weight", config.heading_weight},
+                                 {"heuristic_weight", config.heuristic_weight}}) {
+        if (w < 0.0) throw std::runtime_error(std::string("load_planner_config: \"astar.") + key + "\" must be >= 0 (0 ignores the cost)");
+    }
     if (j.contains("node_similarity_threshold")) config.node_similarity_threshold = j.at("node_similarity_threshold").get<double>();
 
     if (j.contains("expansion")) {

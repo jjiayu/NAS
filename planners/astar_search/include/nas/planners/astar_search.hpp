@@ -51,6 +51,10 @@ struct AstarSearchConfig {
 
     DistanceMetric distance_metric = DistanceMetric::Epa;
 
+    // Weight of the constant cost of a step (the paper's edge cost 1). 0 ignores it: only the optional costs
+    // below (and the heuristic) then drive the search.
+    double step_weight = 1.0;
+
     // Optional edge cost on rotating: the cost of an edge is 1 + yaw_change_weight * |yaw of the child - yaw of the
     // parent| (wrapped to [0, pi]). 0 (default) = the paper's cost, always 1 ("we do not impose a penalty on the
     // rotation", V-B.5). 0.1 is the weight of the old code's unused penalty (its grid baseline, commented out) and
