@@ -115,6 +115,13 @@ void test_narrow_passage_is_not_crossable_at_five_cm_cells() {
 
     GridAstarSearchConfig config = make_default_config(Point_3(0.0, 0.0, 0.0), scenario.surfaces.back().centroid);
     config.cell_size = 0.05;
+    // Rotation stays off here on purpose: it doesn't change which cells
+    // are traversable, it only multiplies the work by 7 candidate yaws per
+    // cell. Checked 2026-09-18 with the old constants.hpp configuration
+    // (5cm cells, rotation on): both the old astar_grid_plan binary and
+    // this port run past 2 minutes on this scene without finding a path
+    // (exhausting the reachable set with rotation on is just slow), while
+    // with rotation off the same exhaustive search finishes in <1s.
 
     GridAstarSearch search(scenario.surfaces, reachability, config);
     search.search();
