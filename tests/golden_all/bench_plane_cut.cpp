@@ -124,6 +124,68 @@ std::vector<Point_3> patch_from_cut_exact_clip(const std::vector<Point_3>& cut, 
     return transform_2d_points_to_world(back, s.transform_to_3d);
 }
 
+// Instrumented copy of compute_2d_polygon_intersection (same logic) that
+// reports what happens at each clip edge, to find the failing mechanism.
+struct ClipTrace { long crossings = 0, crossing_no_point = 0, crossing_segment = 0, crossing_empty = 0; };
+std::vector<Point_2> traced_clip(const std::vector<Point_2>& subject, const std::vector<Point_2>& clip, ClipTrace& tr, bool verbose) {
+    std::vector<Point_2> out = subject;
+    for (size_t k = 0; k < clip.size(); ++k) {
+        if (out.empty()) return {};
+        const Point_2 a = clip[k], b = clip[(k + 1) % clip.size()];
+        std::vector<Point_2> in = out;
+        out.clear();
+        Line_2 line(a, b);
+        for (size_t i = 0; i < in.size(); ++i) {
+            Point_2 cur = in[i], prev = in[(i + in.size() - 1) % in.size()];
+            bool cin = is_leftside_of_edge(cur, a, b) >= 0, pin = is_leftside_of_edge(prev, a, b) >= 0;
+            auto cross = [&] {
+                ++tr.crossings;
+                auto r = CGAL::intersection(Segment_2(prev, cur), line);
+                Point_2 q;
+                if (!r) { ++tr.crossing_empty; ++tr.crossing_no_point; if (verbose) std::printf("   clip edge %zu: prev(%.17g,%.17g,%s) cur(%.17g,%.17g,%s): intersection EMPTY -> point lost\n", k, CGAL::to_double(prev.x()), CGAL::to_double(prev.y()), pin ? "in" : "out", CGAL::to_double(cur.x()), CGAL::to_double(cur.y()), cin ? "in" : "out"); }
+                else if (CGAL::assign(q, *r)) out.push_back(q);
+                else { ++tr.crossing_segment; ++tr.crossing_no_point; if (verbose) std::printf("   clip edge %zu: intersection is a SEGMENT -> point lost\n", k); }
+            };
+            if (cin) { if (!pin) cross(); out.push_back(cur); }
+            else if (pin) cross();
+        }
+    }
+    return out;
+}
+
+// Candidate fix: same Sutherland-Hodgman, but the crossing point is computed
+// from the very signed values that decided "inside/outside", so a crossing
+// classified by the double test always yields a point (no second, exact
+// predicate that can disagree).
+std::vector<Point_3> patch_from_cut_fixed_clip(const std::vector<Point_3>& cut, const Surface& s) {
+    if (cut.size() <= 2) return {};
+    auto p2 = transform_3d_points_to_surface_plane(cut, s.transform_to_surface);
+    Polygon_2 hull;
+    CGAL::convex_hull_2(p2.begin(), p2.end(), std::back_inserter(hull));
+    std::vector<Point_2> out(hull.vertices_begin(), hull.vertices_end());
+    const auto& clip = s.vertices_2d;
+    for (size_t k = 0; k < clip.size() && !out.empty(); ++k) {
+        const Point_2 a = clip[k], b = clip[(k + 1) % clip.size()];
+        std::vector<Point_2> in = out;
+        out.clear();
+        for (size_t i = 0; i < in.size(); ++i) {
+            const Point_2& cur = in[i];
+            const Point_2& prev = in[(i + in.size() - 1) % in.size()];
+            double fc = is_leftside_of_edge(cur, a, b), fp = is_leftside_of_edge(prev, a, b);
+            bool cin = fc >= 0, pin = fp >= 0;
+            auto cross = [&] {
+                double t = fp / (fp - fc);
+                out.emplace_back(CGAL::to_double(prev.x()) + t * CGAL::to_double(cur.x() - prev.x()),
+                                 CGAL::to_double(prev.y()) + t * CGAL::to_double(cur.y() - prev.y()));
+            };
+            if (cin) { if (!pin) cross(); out.push_back(cur); }
+            else if (pin) cross();
+        }
+    }
+    if (out.size() <= 2) return {};
+    return transform_2d_points_to_world(out, s.transform_to_3d);
+}
+
 struct FacetPlanes { std::vector<std::array<double, 4>> p; }; // unit normal (a,b,c), d: inside <=> a x+b y+c z+d <= eps
 
 FacetPlanes facet_planes(const Polyhedron& P) {
@@ -234,6 +296,8 @@ struct Acc {
 //           (its inside test has no tolerance, so a patch edge lying on a
 //           surface edge can flip on rounding alone).
 constexpr int NM = 4;
+long g_fixed_wrong = 0, g_fixed_presence = 0; double g_fixed_max = 0;
+long g_differs_without_lost_point = 0, g_differs_with_lost_point = 0, g_ok_with_lost_point = 0;
 const char* kNames[NM] = {"EDGE", "SLICER", "EXACT", "HALF"};
 
 } // namespace
@@ -282,9 +346,59 @@ int main(int argc, char** argv) {
                 std::vector<Point_3> c[NM] = {cut_edge(s, edges), cut_slicer(s, slicer), cut_exact(s, xedges), cut_halfspace(s, fplanes)};
                 std::vector<Point_3> pt[NM];
                 for (int m = 0; m < NM; ++m) pt[m] = patch_from_cut(c[m], s);
+                {
+                    static ClipTrace all, bad; static long nb = 0, nbad = 0;
+                    if (c[0].size() > 2) {
+                        auto p2 = transform_3d_points_to_surface_plane(c[0], s.transform_to_surface);
+                        Polygon_2 hull; CGAL::convex_hull_2(p2.begin(), p2.end(), std::back_inserter(hull));
+                        std::vector<Point_2> hp(hull.vertices_begin(), hull.vertices_end());
+                        ClipTrace t;
+                        bool differs = dev(pt[0], patch_from_cut_exact_clip(c[0], s)) > 1e-7;
+                        traced_clip(hp, s.vertices_2d, t, differs && nbad < 3);
+                        ++nb; if (differs) ++nbad;
+                        all.crossing_no_point += t.crossing_no_point;
+                        if (differs) bad.crossing_no_point += t.crossing_no_point;
+                        if (differs && t.crossing_no_point == 0) g_differs_without_lost_point++;
+                        if (differs && t.crossing_no_point > 0) g_differs_with_lost_point++;
+                        if (!differs && t.crossing_no_point > 0) g_ok_with_lost_point++;
+                    }
+                }
+                {
+                    double d = dev(patch_from_cut_fixed_clip(c[0], s), patch_from_cut_exact_clip(c[0], s));
+                    if (d >= 1e299) { ++g_fixed_presence; ++g_fixed_wrong; } else if (d > 1e-7) { ++g_fixed_wrong; g_fixed_max = std::max(g_fixed_max, d); }
+                }
                 std::vector<Point_3> px[NM];
                 for (int m = 0; m < NM; ++m) px[m] = patch_from_cut_exact_clip(c[m], s);
                 for (int m = 0; m < NM; ++m) if (m != 2) patchx[m].add(dev(px[m], px[2]));
+                if (std::getenv("BENCH_DEBUG") && dev(pt[0], px[0]) > 1e-7) {
+                    static int shown = 0;
+                    if (shown++ < 3) {
+                        std::printf("\nDEBUG %s surface %d: double-clip patch vs exact-clip patch differ by %.3g\n", scene.c_str(), s.surface_id, dev(pt[0], px[0]));
+                        auto p2 = transform_3d_points_to_surface_plane(c[0], s.transform_to_surface);
+                        Polygon_2 hull; CGAL::convex_hull_2(p2.begin(), p2.end(), std::back_inserter(hull));
+                        std::vector<Point_2> hp(hull.vertices_begin(), hull.vertices_end());
+                        std::printf(" subject hull (%zu pts):", hp.size());
+                        for (auto& q : hp) std::printf(" (%.17g,%.17g)", CGAL::to_double(q.x()), CGAL::to_double(q.y()));
+                        std::printf("\n clip polygon (%zu pts):", s.vertices_2d.size());
+                        for (auto& q : s.vertices_2d) std::printf(" (%.17g,%.17g)", CGAL::to_double(q.x()), CGAL::to_double(q.y()));
+                        // signed distance of every subject vertex to every clip edge (metres), smallest |d| first
+                        std::printf("\n subject vertices closest to a clip edge line (signed, + = inside):\n");
+                        for (size_t k = 0; k < s.vertices_2d.size(); ++k) {
+                            const auto& a = s.vertices_2d[k]; const auto& b = s.vertices_2d[(k + 1) % s.vertices_2d.size()];
+                            double ex = CGAL::to_double(b.x() - a.x()), ey = CGAL::to_double(b.y() - a.y()), L = std::hypot(ex, ey);
+                            for (auto& q : hp) {
+                                double d = (ex * CGAL::to_double(q.y() - a.y()) - ey * CGAL::to_double(q.x() - a.x())) / L;
+                                if (std::abs(d) < 1e-9) std::printf("   clip edge %zu, vertex (%.17g,%.17g): signed dist %.3e\n", k, CGAL::to_double(q.x()), CGAL::to_double(q.y()), d);
+                            }
+                        }
+                        auto show = [&](const char* l, const std::vector<Point_3>& v) {
+                            std::printf(" %s (%zu pts):", l, v.size());
+                            for (auto& q : v) std::printf(" (%.6f,%.6f)", CGAL::to_double(q.x()), CGAL::to_double(q.y()));
+                            std::printf("\n");
+                        };
+                        show("double clip", pt[0]); show("exact clip ", px[0]);
+                    }
+                }
                 for (int m = 0; m < NM; ++m) if (m != 2) { cut[m].add(cutdev(c[m], c[2])); patch[m].add(dev(pt[m], pt[2])); }
                 ++n;
                 auto time_it = [&](auto&& fn) {
@@ -305,6 +419,8 @@ int main(int argc, char** argv) {
         tn += n;
     }
     std::printf("TOTAL %ld cuts\n", tn);
+    std::printf("  candidate fixed clip (crossing point from the same signed values) vs exact clip, EDGE cuts: wrong on %ld (%ld presence), max %.2e m\n", g_fixed_wrong, g_fixed_presence, g_fixed_max);
+    std::printf("  clip trace (EDGE cuts): wrong patch AND a lost intersection point: %ld | wrong patch WITHOUT lost point: %ld | correct patch but a lost point: %ld\n", g_differs_with_lost_point, g_differs_without_lost_point, g_ok_with_lost_point);
     for (int m = 0; m < NM; ++m) {
         if (m == 2) { std::printf("  %-7s reference, %.1f us/cut\n", kNames[m], ttime[m] / tn * 1e6); continue; }
         std::printf("  %-7s cut wrong on %ld (max %.2e m, %ld empty/non-empty), final patch wrong on %ld (%ld empty/non-empty) with the current double clip, %ld (%ld empty/non-empty, max %.1e m) with an exact clip, %.1f us/cut\n", kNames[m],

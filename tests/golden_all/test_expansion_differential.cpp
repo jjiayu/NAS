@@ -51,10 +51,10 @@ constexpr double POLY_TOL = 1e-7; // polygon geometry: same shape up to floating
 // different patch polygons on 0.3%-1.8% of children (up to 0.9m), while the
 // other scenes come out identical. P_union's vertex order/triangulation from
 // CGAL::convex_hull_3 changes with heap order; the plane/polytope cut itself
-// is unaffected (same polygon, see bench_plane_cut.cpp) but the double-precision
-// 2D Sutherland-Hodgman clip flips on 1e-16 differences when a patch edge lies
-// on a surface edge (measured: the same clip in exact arithmetic gives 0
-// differences, docs/paper-deltas.md). Exact old==new is undefined there; a bounded rate is asserted.
+// is unaffected (same polygon, see bench_plane_cut.cpp) but the 2D
+// Sutherland-Hodgman clip silently drops an intersection point when its double
+// inside-test and CGAL's exact segment/line intersection disagree on a
+// near-parallel edge (measured, docs/paper-deltas.md). Exact old==new is undefined there; a bounded rate is asserted.
 bool is_unstable_in_old(const std::string& scene) {
     static const std::vector<std::string> names = {"Stairs", "LongStairs", "LongLongStairs", "LongStairsComplete",
                                                    "LongStairsExp", "ThreePathsScene", "Stairs_Up_Down"};
