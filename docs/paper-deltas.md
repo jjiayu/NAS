@@ -292,6 +292,18 @@ L'échec de l'ancien QP (« conic process failed » de qpOASES) venait donc des 
 
 **Ce qui est garanti et ce qui ne l'est pas.** Garanti : un plan renvoyé avec `success` respecte les contraintes à 1e-6 m près (vérifié après résolution). Non garanti : que le QP d'un chemin trouvé par la recherche ait une solution ; le pipeline renvoie alors un échec plutôt qu'un plan violant les contraintes. Sur les 10 scènes avec chemin, tous les QP ont une solution. L'ancien code, lui, semble passer au chemin suivant quand le QP échoue (« skipping to next iteration »), non reproduit ici.
 
+### Relecture du papier CASSR (arXiv:2603.02989) : convention du lacet et écarts (2026-09-19)
+
+Lecture directe du PDF, sections IV à VII et tableau I.
+
+**Confirmé.** (a) Polytope dans le repère du pied (IV-B, Fig. 2 : le pied droit est « à droite du pied gauche par construction ») ; (b) Eq. 4 : le polytope du pas i est tourné par la rotation `A_{i-1}` du pas **précédent** et placé à `x_{i-1}` : c'est la formule du QP et des contrôles de faisabilité ; (c) VII-A : lacets par incréments de 10° de −30° à +30° ; (d) Eq. 3 et 6 : objectif `Σ (x_i − x_{i−2})²`, marge `min c(X) − 10α`, `B_i x_i + 1_i α ≤ b_i`, `α ≥ 0`, lignes de `B_i` normalisées ; (e) coût d'arête toujours 1, sans pénalité de rotation ; (f) heuristique EPA pondérée (non admissible), l'euclidien étant celle de l'A\* discrétisé ; (g) tableau I avec rotation : NarrowPassage 88 nœuds / 29 pas, minima locaux (ThreePathsNAS) 92 nœuds / 19 pas, contre 29 et 19 pas chez nous.
+
+**Écart 1 (hérité de l'ancien code) : quel lacet tourne le polytope pour le patch de l'enfant.** Algorithme 2 (`expandNode`) : pour chaque θ, `currentYaw = yaw + θ`, polytope tourné par `currentYaw`, région de l'enfant calculée avec, et l'enfant reçoit `currentYaw` : un patch différent par θ. Notre code (l'ancien) tourne le polytope par le lacet du **parent** seulement ; θ ne sert qu'au pas suivant, donc les 7 enfants d'une surface ont le même patch. Physiquement, notre choix est celui de l'Eq. 4 (repère du pied d'appui) et il rend la recherche et le QP cohérents ; l'Algorithme 2 à la lettre s'en écarte, sans qu'on puisse dire si c'est une simplification du pseudo-code. Mêmes nombres de pas sur les deux scénarios comparables.
+
+**Écart 2 : critère de fusion (V-B.3).** Le papier : même pied, même surface, et distance euclidienne entre les **centres** et le **périmètre** des patchs sous 2 cm ; le lacet n'y figure pas. Nous : même surface, pied et bin de lacet (comme l'ancien code), patchs à moins de 2 cm (distance entre patchs). Le test « centroïde + périmètre géométrique avec tolérance » (plus proche de la lettre du papier) donnait un chemin plus long sur NarrowPassage (42 nœuds contre 30) ; voir « Critère de similarité entre nœuds ».
+
+**Non défini par le papier** : le signe du lacet (« angle en radians »). Il repose sur la cohérence interne recherche/QP ; le témoin négatif de `nas_golden_all_scenes` montre que le signe compte (violations de 0,4 à 1 m s'il est inversé).
+
 ## À vérifier
 
 - Incohérence `foot_width` dans `constants.hpp` : valeur active `0.22`, commentaire à côté dit `0.12` — laquelle est correcte ?
