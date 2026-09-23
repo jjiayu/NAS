@@ -102,13 +102,13 @@ void test_unreachable_goal_yields_no_path() {
     std::cout << "test_unreachable_goal_yields_no_path passed\n";
 }
 
-// Documents a known limit of the discretized baseline rather than a bug:
-// NarrowPassage's middle surface is 0.24m wide, shrunk by the foot width
-// (0.22m) to ~2cm — narrower than a single 5cm cell, so no cell center
-// lands inside it and the grid has no way across. The continuous
-// AstarSearch (which reasons about polygons, not cells) does cross it
-// (29 steps, see its golden test); that gap is precisely what this
-// baseline exists to illustrate.
+// Pins the CURRENT behaviour, which matches the old astar_grid_plan
+// binary (no path on NarrowPassage at 5cm cells) - NOT the CASSR paper's
+// discretised A*, which does cross this scene (Table I: with rotation,
+// 1851 nodes, 41 steps). Likely cause (unverified): a global grid anchored
+// on the scene bounding box puts no cell center inside the ~2cm foot-shrunk
+// passage, whereas the paper discretises the reachable set around the
+// current foothold. See this module's README, "Open question vs. the paper".
 void test_narrow_passage_is_not_crossable_at_five_cm_cells() {
     config::Scenario scenario = config::load_scenario("NarrowPassage");
     ReachabilityModel reachability = make_forward_reachability();

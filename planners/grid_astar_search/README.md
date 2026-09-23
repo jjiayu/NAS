@@ -9,11 +9,13 @@ Discretized grid baseline (see PLAN.md phase 13: low priority, direct port of th
 
 Reuses the rewrite's shared pieces instead of the old code's hand-rolled equivalents: `ReachabilityModel` (Forward direction) instead of loading two polytope files in the constructor, `NodePool` instead of manual `new`/`delete`.
 
-## Known limit (by design, not a bug)
+## Open question vs. the paper (2026-09-19)
 
-A grid can't represent anything narrower than a cell. `NarrowPassage`'s middle surface is 0.24m wide, shrunk by the foot width to ~2cm — no 5cm cell center lands inside it, so the grid search has no way across and exhausts its reachable set with no path (see `test_narrow_passage_is_not_crossable_at_five_cm_cells`). The continuous `AstarSearch` crosses it in 29 steps. That contrast is what this baseline is for.
+On `NarrowPassage` at 5cm cells this port finds no path, and neither does the old `build/astar_grid_plan` binary (checked: no path within 2 minutes, same configuration). **The CASSR paper's discretised A\* does cross that scenario** (Table I, narrow passage, with rotation: 1456 ms, 1851 nodes, 41 steps, at "a granularity of 0.05m as in [7]"; without rotation it fails, like CASSR). So this baseline, as ported from the old repo, does **not** reproduce the paper's baseline on that scene.
 
-**Checked against the old code (2026-09-18):** the old `build/astar_grid_plan` binary (same scene, 5cm cells, rotation on) found no path within 2 minutes; this port with the same configuration doesn't finish in 2 minutes either. Rotation doesn't change which cells are traversable, only multiplies the work by 7 yaws per cell, so the test runs rotation-off, where the same exhaustive search finishes in <1s. No golden exists for the grid planner, so agreement on scenes where it *does* find a path hasn't been compared against the old code.
+Working hypothesis (not verified): the repo builds one *global* grid anchored on the scene's bounding box, so whether a cell center lands inside the ~2cm foot-shrunk passage depends on arbitrary grid phase (here the centers fall at y = -0.015 and +0.035, missing the strip [-0.01, 0.01]). The paper says it discretises the reachable set K_e, which suggests candidate footsteps on a lattice anchored at the *current* foothold (start at y = 0 puts lattice points inside the strip). If so, the paper's variant is not sensitive to this and the repo's is.
+
+The port stays faithful to the old code (both agree with each other), so the tests pin *current behaviour*, not the paper's. Resolving this means anchoring the lattice at the start foothold and re-running `NarrowPassage` with rotation on (heavier: the old code needed >2 min just to fail).
 
 ## Memory note
 
