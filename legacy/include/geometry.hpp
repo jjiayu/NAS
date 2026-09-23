@@ -69,4 +69,7 @@ SurfaceConstraint generate_surface_constraint(const Polyhedron& surface_3d);
 // Rotate polyhedron around Z-axis by given angle in radians
 Polyhedron rotate_polyhedron_z(const Polyhedron& polytope, double yaw_angle);
 
+// Build a polyhedron from coplanar points (convex_hull_3 fails on degenerate input)
+Polyhedron convex_hull_3_from_coplanar_points(const std::vector<Point_3>& points, const Vector_3& normal);
+
 } // namespace nas
