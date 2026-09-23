@@ -1,0 +1,22 @@
+[build-system]
+requires = ["scikit-build-core>=0.10", "nanobind>=2.0"]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "nas"
+version = "1.0.0"
+description = "NAS/CASSR footstep planning — Python bindings"
+requires-python = ">=3.8"
+
+[tool.scikit-build]
+# Only the Python extension module is built/installed by pip — the CLI, tools and test suite are
+# for a C++ dev build (cmake -S . -B build), not part of the wheel. bindings/CMakeLists.txt
+# install()s nas_bindings into the wheel root; that's what scikit-build-core packages.
+cmake.args = [
+    "-DNAS_BUILD_APPS=OFF",
+    "-DNAS_BUILD_TOOLS=OFF",
+    "-DNAS_BUILD_TESTS=OFF",
+    "-DNAS_BUILD_BINDINGS=ON",
+]
+wheel.packages = []
+build-dir = "build/{wheel_tag}"

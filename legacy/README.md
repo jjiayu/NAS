@@ -16,6 +16,17 @@ Own standalone CMake project, own dependencies (VTK, freetype, yaml-cpp, CasADi 
 needed by the maintained `nas` library at the repo root):
 
 ```bash
+# Ubuntu
+sudo apt install -y build-essential cmake pkg-config \
+  libeigen3-dev libcgal-dev libboost-all-dev \
+  libvtk9-dev libyaml-cpp-dev libfreetype6-dev nlohmann-json3-dev
+# macOS (Homebrew)
+brew install cgal boost eigen vtk yaml-cpp nlohmann-json freetype
+# both: CasADi and coal are easiest via conda
+conda install -c conda-forge casadi coal
+```
+
+```bash
 cmake -S legacy -B legacy/build -DCMAKE_BUILD_TYPE=Release
 cmake --build legacy/build -j1   # -j1: see the repo owner's build-parallelism note, low-RAM machine
 ```

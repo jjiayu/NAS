@@ -1,4 +1,4 @@
-# tests/tools_for_old_tag
+# tools/tools_for_old_tag
 
 Tools that only build in a checkout of an older commit, not at HEAD.
 

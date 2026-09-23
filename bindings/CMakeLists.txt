@@ -16,6 +16,7 @@ find_package(nanobind CONFIG REQUIRED)
 
 nanobind_add_module(nas_bindings src/module.cpp)
 target_link_libraries(nas_bindings PRIVATE nas)
+install(TARGETS nas_bindings LIBRARY DESTINATION .)
 
 if(NAS_BUILD_TESTS)
   add_test(NAME nas_bindings_tests

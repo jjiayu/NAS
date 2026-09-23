@@ -1,116 +1,95 @@
 # NAS / CASSR
 
-Implementation of:
-- **NAS**: [Navigating with A-Star through reachability](https://arxiv.org/abs/2407.12962)
-- **CASSR**: [Continuous A-Star Search through Reachability for real-time footstep planning](https://arxiv.org/abs/2603.02989)
+Footstep planning library implementing:
+- **CASSR**: [Continuous A-Star Search through Reachability for real-time footstep planning](https://arxiv.org/abs/2603.02989) — the maintained planner, `nas::AstarSearch` (continuous patches) and `nas::GridAstarSearch` (discretized grid baseline used for comparison in the paper).
+- **NAS**: [Navigating with A-Star through reachability](https://arxiv.org/abs/2407.12962) — the original implementation this was rewritten from; kept as reference/baseline in [`legacy/`](legacy/) (own build, own instructions there), not part of the maintained package.
+
+See [`docs/architecture.md`](docs/architecture.md) for the module layout, and [`docs/paper-deltas.md`](docs/paper-deltas.md)/[`docs/paper-corrections-draft.md`](docs/paper-corrections-draft.md) for where the implementation departs from the papers.
 
 ## Prerequisites
 
-- C++20 compiler (GCC 10+ or Clang 13+)
-- CMake 3.15+
-
-### System packages (Ubuntu 24.04)
+- C++20 compiler (GCC 10+ or Clang 13+), CMake 3.15+
+- Eigen3, CGAL, Boost, nlohmann-json — via system packages or conda
+- coal, eiquadprog — via conda-forge only (not packaged for apt/Homebrew)
 
 ```bash
-sudo apt install -y \
-  build-essential cmake pkg-config \
-  libeigen3-dev libcgal-dev libboost-all-dev \
-  libvtk9-dev libyaml-cpp-dev libfreetype6-dev \
-  nlohmann-json3-dev
+# Ubuntu
+sudo apt install -y build-essential cmake libeigen3-dev libcgal-dev libboost-all-dev nlohmann-json3-dev
+# macOS (Homebrew)
+brew install cgal boost eigen nlohmann-json
+# both: coal and eiquadprog are conda-forge only
+conda install -c conda-forge coal eiquadprog
 ```
 
-### Conda packages
+If using conda, activate the environment before building — the build picks up `$CONDA_PREFIX` automatically to find `coal`/`eiquadprog`.
 
-CasADi and coal are easiest to install via conda:
-
-```bash
-conda install -c conda-forge casadi coal
-```
-
-### macOS (Homebrew)
+## Build (C++)
 
 ```bash
-brew install cgal boost eigen vtk yaml-cpp nlohmann-json freetype
-# CasADi and coal via conda as above
-```
-
-## Build
-
-```bash
-cd NAS
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
-cmake --build build -j$(nproc)
+cmake --build build -j4   # cap parallelism on a RAM-constrained machine, e.g. -j1
+ctest --test-dir build    # nas_tests_fast (<1s) + nas_tests_golden (~2-3 min)
 ```
 
-If using conda, make sure `CONDA_PREFIX` is set (it is automatically when the environment is activated). The build system picks it up to find CasADi and coal.
+Produces the `nas` library (`libnas.a`), the `astar_plan` CLI, and the diagnostic/benchmark tools
+under `tools/`. Build options (all CMake `-D...=ON/OFF`):
 
-## Executables
-
-| Binary | Description |
-|---|---|
-| `astar_plan` | A\* search + QP footstep optimization (main planner) |
-| `astar_grid_plan` | Grid-discretized A\* search |
-| `nas_plan` | Tree-based exhaustive search + footstep planning |
-| `test_grid_visualization` | Grid environment visualization |
-| `test_auto_plot` | Auto-plot test |
-
-Run from the build directory:
-
-```bash
-cd build
-./astar_plan
-./astar_grid_plan
-./nas_plan
-```
-
-None of the executables take command-line arguments. All configuration is compile-time.
-
-## Selecting a scenario
-
-Edit `include/constants.hpp` and change the `surf_list` assignment to one of the predefined environments:
-
-```cpp
-// Available environments (defined in include/environments.hpp):
-const std::vector<std::vector<Point_3>> surf_list = NarrowPassage;
-// const std::vector<std::vector<Point_3>> surf_list = Flat;
-// const std::vector<std::vector<Point_3>> surf_list = Stairs;
-// const std::vector<std::vector<Point_3>> surf_list = LongStairs;
-// const std::vector<std::vector<Point_3>> surf_list = LongLongStairs;
-// const std::vector<std::vector<Point_3>> surf_list = LongStairsComplete;
-// const std::vector<std::vector<Point_3>> surf_list = ThreePathsScene;
-// const std::vector<std::vector<Point_3>> surf_list = ThreePathsNAS;
-// const std::vector<std::vector<Point_3>> surf_list = Stairs_Up_Down;
-// const std::vector<std::vector<Point_3>> surf_list = TwoFlatSurfaces;
-```
-
-You must also set the initial foot position to match the scenario:
-
-```cpp
-const Point_3 current_foot_pos(0.0, 0.0, 0.0); // for NarrowPassage, LongStairs, etc.
-// const Point_3 current_foot_pos(0.1, 0.0, 0.0); // for Stairs
-// const Point_3 current_foot_pos(2.2, 0.7, 0.0); // for TwoFlatSurfaces
-```
-
-Then rebuild and run:
-
-```bash
-cmake --build build -j$(nproc) && ./build/astar_plan
-```
-
-## Key parameters (constants.hpp)
-
-| Parameter | Default | Description |
+| Option | Default | Builds |
 |---|---|---|
-| `a_star_distance_metric` | `"epa"` | Distance metric: `"euclidean"`, `"gjk"`, `"epa"` |
-| `a_star_grid_resolution` | `0.05` | Grid cell size in meters (for `astar_grid_plan`) |
-| `total_num_steps` | `40` | Maximum number of planning steps |
-| `foot_yaw_rotation_flag` | `true` | Enable foot yaw discretization |
-| `foot_yaw_angle_increment` | `10°` | Yaw angle step |
-| `current_stance_foot_flag` | `RIGHT_FOOT` | Initial stance foot |
-| `com_z_height` | `0.75` | CoM height for footstep planning |
-| `merge_node_flag` | `true` | Merge similar nodes in the search |
-| `node_search_method` | `"bruteforce"` | Node search: `"bruteforce"`, `"kdtree"`, `"knn"` |
+| `NAS_BUILD_APPS` | `ON` | `apps/astar_plan` (the CLI) |
+| `NAS_BUILD_TOOLS` | `ON` | `tools/` (benchmarks, JSON dump/preview) |
+| `NAS_BUILD_TESTS` | `ON` | `tests/` (`nas_tests`, registered with ctest) |
+| `NAS_BUILD_BINDINGS` | `OFF` | `bindings/` (`nas_bindings`, needs Python + nanobind) |
 
-## Data files
+### Using `nas` from another CMake project
 
-Reachability constraint polytopes (`.obj` meshes) are in `data/constraints_files/`. The paths are set as absolute paths in `constants.hpp` — update them if your checkout directory differs.
+```bash
+cmake --install build --prefix /desired/install/path
+```
+
+then, in the consumer's `CMakeLists.txt`:
+
+```cmake
+find_package(nas REQUIRED)
+target_link_libraries(your_target PRIVATE nas::nas)
+```
+
+## Build (Python bindings)
+
+```bash
+pip install --no-build-isolation -e .
+python3 -c "import nas_bindings; print(nas_bindings.available_scenarios())"
+```
+
+`--no-build-isolation` is the tested path: it lets CMake see the active conda environment's
+`coal`/`eiquadprog` directly, which a pip-managed isolated build environment would not have (those
+two are conda-forge only, not on PyPI). `scikit-build-core` and `nanobind` (the Python build-time
+requirements, from `pyproject.toml`) must already be installed in that environment:
+`pip install scikit-build-core nanobind`.
+
+```python
+import nas_bindings
+
+nas_bindings.available_scenarios()  # -> list[str], 15 built-in scenes
+result = nas_bindings.plan(scenario_name, planner_config_path, talos_reachability_data_dir)
+result.success        # bool
+result.positions       # one (x, y, z) per footstep
+```
+
+See [`bindings/README.md`](bindings/README.md) for the full API.
+
+## The `astar_plan` CLI
+
+```bash
+./build/apps/astar_plan/astar_plan <scenario_name> <planner_config.json> <talos_reachability_data_dir> <output.json>
+```
+
+`<scenario_name>` is one of the 15 built-in scenes (`Flat`, `NarrowPassage`, `Stairs`, ... — see
+`docs/architecture.md` or `nas_bindings.available_scenarios()`); example configs are under
+`apps/astar_plan/examples/`. `<talos_reachability_data_dir>` is normally
+`talosReachability/data/reachability_constraints`. Writes a JSON result (path, footsteps, search/QP
+timing) to `<output.json>` — see [`apps/astar_plan/README.md`](apps/astar_plan/README.md).
+
+## Data
+
+Talos reachability polytopes (`.obj` files) are a separate sibling package, [`talosReachability/`](talosReachability/) — its own `CMakeLists.txt`, its own `find_package`/Python import, see its README.
