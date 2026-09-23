@@ -22,6 +22,7 @@
 //      wrong here; an explicit manifest pushes that judgment call to
 //      whoever configures it, not to a heuristic.
 
+#include "nas/core/geometry.hpp"
 #include "nas/core/types.hpp"
 
 #include <map>
@@ -68,11 +69,25 @@ public:
                              const std::string& support_effector,
                              ReachabilityDirection direction) const;
 
+    // The H-rep (convert_polytope_to_half_space_constraint) of a queried polytope, computed once
+    // and cached (lazily, on first request) instead of rebuilt from a fresh CGAL::convex_hull_3 on
+    // every call — the footstep QP was doing exactly that once per path step, so ~9 identical
+    // rebuilds of the same 2 polytopes per solve on a 10-step path (see docs/paper-deltas.md, the
+    // ProxQP backend comparison entry). The rotation applied per use (yaw, or yaw+tilt) still
+    // happens on the caller's side, on this cached, unrotated H-rep — a rotation is cheap (a
+    // matrix multiply per row) next to rebuilding the hull, and the row count/geometry here is
+    // untouched: same convert_polytope_to_half_space_constraint, same rows, just computed once.
+    // Throws std::out_of_range under the same condition as query().
+    const HalfSpacePolytopeConstraint& half_space_constraint(const std::string& moving_effector,
+                                                               const std::string& support_effector,
+                                                               ReachabilityDirection direction) const;
+
     size_t size() const { return polytopes_.size(); }
 
 private:
     using Key = std::tuple<std::string, std::string, ReachabilityDirection>;
     std::map<Key, Polyhedron> polytopes_;
+    mutable std::map<Key, HalfSpacePolytopeConstraint> hrep_cache_;
 };
 
 } // namespace nas

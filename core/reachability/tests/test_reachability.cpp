@@ -65,6 +65,24 @@ int main() {
     }
     check(threw, "query() throws std::out_of_range for a key that was never loaded");
 
+    // half_space_constraint: cached, but must match a fresh convert_polytope_to_half_space_constraint
+    // call bit-for-bit (same rows, same values) — caching must never change the result.
+    HalfSpacePolytopeConstraint fresh = convert_polytope_to_half_space_constraint(rf_in_lf);
+    const HalfSpacePolytopeConstraint& cached1 = model.half_space_constraint("RF", "LF", ReachabilityDirection::Forward);
+    check(cached1.A.rows() == fresh.A.rows() && cached1.A.isApprox(fresh.A, 0.0) && cached1.b.isApprox(fresh.b, 0.0),
+          "half_space_constraint() matches a fresh convert_polytope_to_half_space_constraint() bit-for-bit");
+
+    const HalfSpacePolytopeConstraint& cached2 = model.half_space_constraint("RF", "LF", ReachabilityDirection::Forward);
+    check(&cached1 == &cached2, "half_space_constraint() returns the same cached object on a second call, not a rebuild");
+
+    threw = false;
+    try {
+        model.half_space_constraint("RF", "LF", ReachabilityDirection::Antecedent);
+    } catch (const std::out_of_range&) {
+        threw = true;
+    }
+    check(threw, "half_space_constraint() throws std::out_of_range for a key that was never loaded, same as query()");
+
     if (g_failures > 0) {
         std::cerr << g_failures << " test(s) FAILED\n";
         return 1;

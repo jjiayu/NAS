@@ -43,4 +43,15 @@ const Polyhedron& ReachabilityModel::query(const std::string& moving_effector,
     return it->second;
 }
 
+const HalfSpacePolytopeConstraint& ReachabilityModel::half_space_constraint(
+    const std::string& moving_effector, const std::string& support_effector, ReachabilityDirection direction) const {
+    Key key{moving_effector, support_effector, direction};
+    auto cached = hrep_cache_.find(key);
+    if (cached != hrep_cache_.end()) return cached->second;
+    // query() throws out_of_range with the right message if the key is missing — reuse it
+    // instead of duplicating the check here.
+    const Polyhedron& poly = query(moving_effector, support_effector, direction);
+    return hrep_cache_.emplace(key, convert_polytope_to_half_space_constraint(poly)).first->second;
+}
+
 } // namespace nas

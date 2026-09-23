@@ -86,9 +86,10 @@ FootstepPlan solve_footstep_qp(const std::vector<Node*>& path_nodes,
     for (int i = 1; i < n; ++i) {
         StanceFoot moving = path_nodes[i]->stance_foot;
         StanceFoot support = path_nodes[i - 1]->stance_foot;
-        const Polyhedron& poly = reachability.query(effector_name(moving), effector_name(support),
-                                                      ReachabilityDirection::Forward);
-        HalfSpacePolytopeConstraint hrep = convert_polytope_to_half_space_constraint(poly);
+        // Cached (built once per (moving, support) pair, not rebuilt from convex_hull_3 on every
+        // step) — see ReachabilityModel::half_space_constraint.
+        const HalfSpacePolytopeConstraint& hrep =
+            reachability.half_space_constraint(effector_name(moving), effector_name(support), ReachabilityDirection::Forward);
         Eigen::Matrix3d R_yaw = support_frame_rotation(*path_nodes[i - 1], config.rotation_enabled);
 
         for (int r = 0; r < hrep.A.rows(); ++r) {
