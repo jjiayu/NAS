@@ -25,14 +25,19 @@ StanceFoot stance_foot_from_string(const std::string& s) {
     throw std::runtime_error("load_planner_config: unknown stance foot '" + s + "' (expected 'Left'/'Right')");
 }
 
-AstarSearchConfig parse_astar_config(const json& j) {
+AstarSearchConfig parse_astar_config(const json& j, std::optional<Vector_3>& goal_offset) {
     AstarSearchConfig config; // starts from the struct's own defaults
 
-    if (!j.contains("start_position") || !j.contains("goal_location")) {
-        throw std::runtime_error("load_planner_config: \"astar.start_position\" and \"astar.goal_location\" are required");
+    if (!j.contains("start_position") || (!j.contains("goal_location") && !j.contains("goal_offset"))) {
+        throw std::runtime_error("load_planner_config: \"astar.start_position\" and one of \"astar.goal_location\" / \"astar.goal_offset\" are required");
     }
     config.start_position = point_from_json(j.at("start_position"));
-    config.goal_location = point_from_json(j.at("goal_location"));
+    if (j.contains("goal_location")) {
+        config.goal_location = point_from_json(j.at("goal_location"));
+    } else {
+        Point_3 o = point_from_json(j.at("goal_offset"));
+        goal_offset = o - CGAL::ORIGIN;
+    }
 
     if (j.contains("start_stance_foot")) config.start_stance_foot = stance_foot_from_string(j.at("start_stance_foot").get<std::string>());
     if (j.contains("start_foot_yaw")) config.start_foot_yaw = j.at("start_foot_yaw").get<double>();
@@ -85,7 +90,7 @@ PlannerConfig load_planner_config(const std::string& json_path) {
     }
 
     PlannerConfig config;
-    config.astar = parse_astar_config(j.at("astar"));
+    config.astar = parse_astar_config(j.at("astar"), config.goal_offset);
     if (j.contains("qp")) {
         config.qp = parse_qp_config(j.at("qp"));
     }

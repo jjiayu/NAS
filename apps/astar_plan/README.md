@@ -13,7 +13,8 @@ Where [`tests/viz_dump/dump_plan.cpp`](../../tests/viz_dump/dump_plan.cpp) is a 
 - `scenario_name`: one of `config::available_scenarios()` — see [`config/README.md`](../../config/README.md) for the list.
 - `planner_config.json`: see [`config/README.md`](../../config/README.md) for the schema.
 - `talos_reachability_data_dir`: e.g. `talosReachability/data/reachability_constraints`.
-- `output.json`: surfaces/path/footsteps dump, same shape as `dump_plan.cpp`'s output.
+- `output.json`: surfaces/path/footsteps dump, same shape as `dump_plan.cpp`'s output, plus `path_found`, `start`, `goal`, `expansions`, `search_ms`, `qp_ms`. It is written even when no path is found (`path_found: false`, exit code 1).
+- `examples/`: one config per scenario (`<Scenario>.json`, goal given by `goal_offset`), the two originals with an absolute goal, and `viz/` renders any of these dumps (see `viz/README.md`).
 
 ## Dependencies
 

@@ -15,6 +15,7 @@
 #include "nas/footstep_qp/footstep_qp.hpp"
 #include "nas/planners/astar_search.hpp"
 
+#include <optional>
 #include <string>
 
 namespace nas::config {
@@ -22,10 +23,15 @@ namespace nas::config {
 struct PlannerConfig {
     AstarSearchConfig astar;
     FootstepQPConfig qp;
+    // "astar.goal_offset": the goal is the centroid of the scenario's LAST
+    // surface plus this vector (how the old constants.hpp defined it), as an
+    // alternative to an absolute "astar.goal_location". Resolved by the caller,
+    // who knows the scenario: astar.goal_location is left at its default here.
+    std::optional<Vector_3> goal_offset;
 };
 
 // Throws std::runtime_error if the file can't be read or parsed, or if
-// "astar.start_position"/"astar.goal_location" are missing. See
+// "astar.start_position" or both "astar.goal_location" and "astar.goal_offset" are missing. See
 // config/README.md for the full JSON schema.
 PlannerConfig load_planner_config(const std::string& json_path);
 

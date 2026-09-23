@@ -56,6 +56,17 @@ void test_minimal_config_keeps_struct_defaults() {
     std::cout << "test_minimal_config_keeps_struct_defaults passed\n";
 }
 
+void test_goal_offset_is_kept_for_the_caller_to_resolve() {
+    // "goal_offset" = last surface's centroid + offset (old constants.hpp semantics);
+    // only the scenario knows that centroid, so the loader just hands the offset back.
+    PlannerConfig config = load_planner_config(data_path("goal_offset_planner_config.json"));
+    assert(config.goal_offset.has_value());
+    assert(near(CGAL::to_double(config.goal_offset->y()), 1.0));
+    PlannerConfig absolute = load_planner_config(data_path("minimal_planner_config.json"));
+    assert(!absolute.goal_offset.has_value());
+    std::cout << "test_goal_offset_is_kept_for_the_caller_to_resolve passed\n";
+}
+
 void test_missing_astar_section_throws() {
     bool threw = false;
     try {
@@ -94,6 +105,7 @@ void test_nonexistent_file_throws() {
 int main() {
     test_full_config_overrides_every_field();
     test_minimal_config_keeps_struct_defaults();
+    test_goal_offset_is_kept_for_the_caller_to_resolve();
     test_missing_astar_section_throws();
     test_missing_start_position_throws();
     test_nonexistent_file_throws();

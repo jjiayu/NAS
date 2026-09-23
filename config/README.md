@@ -13,7 +13,7 @@ Runtime configuration types (see PLAN.md phase 9): `RobotModel` (foot/CoM dimens
 
 This is distinct from [`tests/fixtures`](../tests/fixtures), which stays the test harness (2 scenarios, bundled with an `AstarSearchConfig`) — `config/` is the production-facing registry covering every scene the old code knew, with no search config attached. The two modules don't share their `NarrowPassage`/`ThreePathsNAS` vertex data (deliberately not deduplicated yet, see PLAN.md).
 
-`load_planner_config` parses a JSON file into `AstarSearchConfig`/`ExpansionParams`/`FootstepQPConfig` — it does not duplicate those structs' fields, it only overrides what's present in the JSON, everything else keeps that struct's own default. `astar.start_position`/`astar.goal_location` are the only required fields (no sensible scenario-independent default). Schema:
+`load_planner_config` parses a JSON file into `AstarSearchConfig`/`ExpansionParams`/`FootstepQPConfig` — it does not duplicate those structs' fields, it only overrides what's present in the JSON, everything else keeps that struct's own default. `astar.start_position` and a goal are the only required fields (no sensible scenario-independent default); the goal is either `astar.goal_location` (absolute) or `astar.goal_offset` (the last surface of the scenario's centroid plus this vector, as the old `constants.hpp` defined it - resolved by the caller, e.g. `apps/astar_plan`). Schema:
 
 ```jsonc
 {

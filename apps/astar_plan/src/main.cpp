@@ -14,6 +14,7 @@
 #include "nas/footstep_qp/quadprog_backend.hpp"
 #include "nas/planners/astar_search.hpp"
 
+#include <chrono>
 #include <nlohmann/json.hpp>
 
 #include <fstream>
@@ -62,23 +63,38 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    ReachabilityModel reachability = load_forward_reachability(talos_data_dir);
-
-    AstarSearch search(scenario.surfaces, reachability, planner_config.astar);
-    search.search();
-    const auto& path = search.result_path();
-    if (path.empty()) {
-        std::cerr << "No path found.\n";
-        return 1;
+    if (planner_config.goal_offset) {
+        planner_config.astar.goal_location = scenario.surfaces.back().centroid + *planner_config.goal_offset;
     }
 
+    ReachabilityModel reachability = load_forward_reachability(talos_data_dir);
+
+    using Clock = std::chrono::steady_clock;
+    AstarSearch search(scenario.surfaces, reachability, planner_config.astar);
+    auto t0 = Clock::now();
+    search.search();
+    double search_ms = std::chrono::duration<double, std::milli>(Clock::now() - t0).count();
+    const auto& path = search.result_path();
+
     QuadprogBackend backend;
-    FootstepPlan plan = solve_footstep_qp(path, planner_config.astar.start_position, planner_config.astar.goal_location,
-                                           reachability, planner_config.qp, backend);
+    FootstepPlan plan;
+    double qp_ms = 0.0;
+    if (!path.empty()) {
+        auto q0 = Clock::now();
+        plan = solve_footstep_qp(path, planner_config.astar.start_position, planner_config.astar.goal_location,
+                                 reachability, planner_config.qp, backend);
+        qp_ms = std::chrono::duration<double, std::milli>(Clock::now() - q0).count();
+    }
 
     json out;
     out["scenario"] = scenario_name;
+    out["path_found"] = !path.empty();
     out["qp_success"] = plan.success;
+    out["start"] = point_json(planner_config.astar.start_position);
+    out["goal"] = point_json(planner_config.astar.goal_location);
+    out["expansions"] = search.expansion_count();
+    out["search_ms"] = search_ms;
+    out["qp_ms"] = qp_ms;
 
     json surfaces_json = json::array();
     for (const auto& s : scenario.surfaces) {
@@ -118,6 +134,7 @@ int main(int argc, char** argv) {
     std::ofstream file(out_path);
     file << out.dump(2);
     std::cout << "Wrote " << out_path << " (scenario=" << scenario_name << ", path size " << path.size()
-              << ", qp_success=" << plan.success << ")\n";
-    return 0;
+              << ", qp_success=" << plan.success << ", " << search.expansion_count() << " expansions, " << search_ms << " ms)\n";
+    if (path.empty()) std::cerr << "No path found.\n";
+    return path.empty() ? 1 : 0;
 }
