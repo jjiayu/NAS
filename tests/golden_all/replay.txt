@@ -1,0 +1,84 @@
+scene                 expansions children | ASSERTED: count surf stance depth yaw hist POLYGON (max dev) | reported only: perim centroid vertset (max centroid dev)
+      replay (old hull edge list): old-only vertices 0
+NarrowPassage               150     1050 |     0    0      0     0   0    0       0 (0.0e+00) |     0        0       0 (0.0e+00)  OK (exact, old hull replayed)
+      stages over first 15 expansions: rotated polytope mismatches 0 (max dev 0.00e+00) | P_union mismatches 0 (max dev 0.00e+00) | plane-intersection mismatches 27 (max dev 6.40e-02)
+      vertex ORDER differs: rotated polytope 0, P_union 14 (of 15 expansions) expansion 1: P_union vertex count new 161 old 161; rotated polytope order equal: yes; parent patch size 19
+      first plane-intersection mismatch: expansion 3 surface 0: new 58 pts, old 58 pts
+        only in NEW: (0.259120,-0.641839,0.000000)
+        only in OLD: (0.259620,-0.641746,-0.000000)
+      surface plane coefficients: max dev 0.00e+00 
+      replay (old hull edge list): old-only vertices 0
+Stairs                      150     2702 |     0    0      0     0   0    0       0 (0.0e+00) |     0        0       0 (0.0e+00)  OK (exact, old hull replayed)
+      stages over first 15 expansions: rotated polytope mismatches 0 (max dev 0.00e+00) | P_union mismatches 0 (max dev 0.00e+00) | plane-intersection mismatches 11 (max dev 1.28e-01)
+      vertex ORDER differs: rotated polytope 0, P_union 15 (of 15 expansions) expansion 0: P_union vertex count new 30 old 30; rotated polytope order equal: yes; parent patch size 1
+      first plane-intersection mismatch: expansion 4 surface 4: new 38 pts, old 38 pts
+        only in NEW: (0.291067,0.635972,0.400000)
+        only in OLD: (0.401437,0.625343,0.400000)
+      surface plane coefficients: max dev 0.00e+00 
+      replay (old hull edge list): old-only vertices 0
+TwoFlatSurfaces               1        0 |     0    0      0     0   0    0       0 (0.0e+00) |     0        0       0 (0.0e+00)  OK (exact, old hull replayed)
+      stages over first 1 expansions: rotated polytope mismatches 0 (max dev 0.00e+00) | P_union mismatches 0 (max dev 0.00e+00) | plane-intersection mismatches 0 (max dev 4.44e-16)
+      vertex ORDER differs: rotated polytope 0, P_union 1 (of 1 expansions) expansion 0: P_union vertex count new 30 old 30; rotated polytope order equal: yes; parent patch size 1
+      surface plane coefficients: max dev 0.00e+00 
+      replay (old hull edge list): old-only vertices 0
+LongStairs                  150     2338 |     0    0      0     0   0    0       0 (0.0e+00) |     0        0       0 (0.0e+00)  OK (exact, old hull replayed)
+      stages over first 15 expansions: rotated polytope mismatches 0 (max dev 0.00e+00) | P_union mismatches 0 (max dev 0.00e+00) | plane-intersection mismatches 3 (max dev 6.30e-02)
+      vertex ORDER differs: rotated polytope 0, P_union 15 (of 15 expansions) expansion 0: P_union vertex count new 30 old 30; rotated polytope order equal: yes; parent patch size 1
+      first plane-intersection mismatch: expansion 2 surface 3: new 39 pts, old 39 pts
+        only in NEW: (-0.185023,-0.692213,0.200000)
+        only in OLD: (-0.384982,-0.692551,0.200000)
+      surface plane coefficients: max dev 0.00e+00 
+      replay (old hull edge list): old-only vertices 0
+LongLongStairs              150     2303 |     0    0      0     0   0    0       0 (0.0e+00) |     0        0       0 (0.0e+00)  OK (exact, old hull replayed)
+      stages over first 15 expansions: rotated polytope mismatches 0 (max dev 0.00e+00) | P_union mismatches 0 (max dev 0.00e+00) | plane-intersection mismatches 0 (max dev 2.22e-16)
+      vertex ORDER differs: rotated polytope 0, P_union 15 (of 15 expansions) expansion 0: P_union vertex count new 30 old 30; rotated polytope order equal: yes; parent patch size 1
+      surface plane coefficients: max dev 0.00e+00 
+      replay (old hull edge list): old-only vertices 0
+Flat                        150     1050 |     0    0      0     0   0    0       0 (0.0e+00) |     0        0       0 (0.0e+00)  OK (exact, old hull replayed)
+      stages over first 15 expansions: rotated polytope mismatches 0 (max dev 0.00e+00) | P_union mismatches 0 (max dev 0.00e+00) | plane-intersection mismatches 9 (max dev 4.50e-02)
+      vertex ORDER differs: rotated polytope 0, P_union 14 (of 15 expansions) expansion 1: P_union vertex count new 161 old 161; rotated polytope order equal: yes; parent patch size 19
+      first plane-intersection mismatch: expansion 1 surface 0: new 58 pts, old 58 pts
+        only in NEW: (-0.114682,0.783906,0.000000)
+        only in NEW: (0.229839,-0.557258,0.000000)
+        only in NEW: (0.231768,-0.556723,0.000000)
+        only in NEW: (0.097085,-0.574138,0.000000)
+        only in OLD: (0.087414,-0.574991,0.000000)
+        only in OLD: (-0.369645,0.808459,-0.000000)
+        only in OLD: (0.231708,-0.556749,0.000000)
+        only in OLD: (0.229941,-0.557239,0.000000)
+      surface plane coefficients: max dev 0.00e+00 
+      replay (old hull edge list): old-only vertices 0
+LongStairsComplete          150     2723 |     0    0      0     0   0    0       0 (0.0e+00) |     0        0       0 (0.0e+00)  OK (exact, old hull replayed)
+      stages over first 15 expansions: rotated polytope mismatches 0 (max dev 0.00e+00) | P_union mismatches 0 (max dev 0.00e+00) | plane-intersection mismatches 0 (max dev 2.22e-16)
+      vertex ORDER differs: rotated polytope 0, P_union 15 (of 15 expansions) expansion 0: P_union vertex count new 30 old 30; rotated polytope order equal: yes; parent patch size 1
+      surface plane coefficients: max dev 0.00e+00 
+      replay (old hull edge list): old-only vertices 0
+LongStairsExp               150     1806 |     0    0      0     0   0    0       0 (0.0e+00) |     0        0       0 (0.0e+00)  OK (exact, old hull replayed)
+      stages over first 15 expansions: rotated polytope mismatches 0 (max dev 0.00e+00) | P_union mismatches 0 (max dev 0.00e+00) | plane-intersection mismatches 0 (max dev 2.22e-16)
+      vertex ORDER differs: rotated polytope 0, P_union 15 (of 15 expansions) expansion 0: P_union vertex count new 30 old 30; rotated polytope order equal: yes; parent patch size 1
+      surface plane coefficients: max dev 0.00e+00 
+      replay (old hull edge list): old-only vertices 0
+ThreePathsScene             150     3080 |     0    0      0     0   0    0       0 (0.0e+00) |     0        0       0 (0.0e+00)  OK (exact, old hull replayed)
+      stages over first 15 expansions: rotated polytope mismatches 0 (max dev 0.00e+00) | P_union mismatches 0 (max dev 0.00e+00) | plane-intersection mismatches 23 (max dev 2.38e-02)
+      vertex ORDER differs: rotated polytope 0, P_union 15 (of 15 expansions) expansion 0: P_union vertex count new 30 old 30; rotated polytope order equal: yes; parent patch size 1
+      first plane-intersection mismatch: expansion 1 surface 0: new 28 pts, old 28 pts
+        only in NEW: (-0.232712,-0.344005,0.000000)
+        only in OLD: (-0.265054,-0.344005,-0.000000)
+      surface plane coefficients: max dev 0.00e+00 
+      replay (old hull edge list): old-only vertices 0
+Stairs_Up_Down              150     1848 |     0    0      0     0   0    0       0 (0.0e+00) |     0        0       0 (0.0e+00)  OK (exact, old hull replayed)
+      stages over first 15 expansions: rotated polytope mismatches 0 (max dev 0.00e+00) | P_union mismatches 0 (max dev 0.00e+00) | plane-intersection mismatches 56 (max dev 1.29e-01)
+      vertex ORDER differs: rotated polytope 0, P_union 14 (of 15 expansions) expansion 0: P_union vertex count new 30 old 30; rotated polytope order equal: yes; parent patch size 1
+      first plane-intersection mismatch: expansion 4 surface 0: new 58 pts, old 58 pts
+        only in NEW: (0.644493,0.531382,-0.000000)
+        only in OLD: (0.635094,0.571459,0.000000)
+      surface plane coefficients: max dev 0.00e+00 
+      replay (old hull edge list): old-only vertices 0
+ThreePathsNAS               150     1239 |     0    0      0     0   0    0       0 (0.0e+00) |     0        0       0 (0.0e+00)  OK (exact, old hull replayed)
+      stages over first 15 expansions: rotated polytope mismatches 0 (max dev 0.00e+00) | P_union mismatches 0 (max dev 0.00e+00) | plane-intersection mismatches 26 (max dev 6.56e-02)
+      vertex ORDER differs: rotated polytope 0, P_union 14 (of 15 expansions) expansion 1: P_union vertex count new 70 old 70; rotated polytope order equal: yes; parent patch size 6
+      first plane-intersection mismatch: expansion 9 surface 0: new 41 pts, old 41 pts
+        only in NEW: (0.485117,1.384585,-0.000000)
+        only in OLD: (0.360571,1.452999,0.000000)
+      surface plane coefficients: max dev 0.00e+00 
+STRUCTURE IDENTICAL ON EVERY EXPANSION; PATCH GEOMETRY EXACT WHERE THE OLD CODE IS STABLE, BOUNDED WHERE IT IS NOT

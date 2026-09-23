@@ -1,0 +1,18 @@
+wrong vs EXACT, as: cut differs / patch differs (max cut dev in m)
+scene                 cuts | EDGE                   SLICER                 HALF                   | us per cut: edge slicer exact half(+facet build)
+NarrowPassage          450 | 0 / 0 (0.0e+00)        0 / 0 (0.0e+00)        0 / 0 (0.0e+00)        | 48 509 897 106
+Stairs                 750 | 0 / 2 (0.0e+00)        0 / 1 (0.0e+00)        0 / 12 (0.0e+00)       | 13 106 71 21
+TwoFlatSurfaces          2 | 0 / 0 (0.0e+00)        0 / 0 (0.0e+00)        0 / 0 (0.0e+00)        | 3 22 111 7
+LongStairs            3300 | 0 / 9 (0.0e+00)        0 / 5 (0.0e+00)        0 / 8 (0.0e+00)        | 7 38 22 7
+LongLongStairs        6450 | 0 / 5 (0.0e+00)        0 / 5 (0.0e+00)        0 / 5 (0.0e+00)        | 7 27 16 4
+Flat                   150 | 0 / 0 (0.0e+00)        0 / 0 (0.0e+00)        0 / 0 (0.0e+00)        | 35 352 658 127
+LongStairsComplete    1950 | 0 / 4 (0.0e+00)        0 / 2 (0.0e+00)        0 / 8 (0.0e+00)        | 8 46 29 8
+LongStairsExp          450 | 0 / 4 (0.0e+00)        0 / 1 (0.0e+00)        0 / 4 (0.0e+00)        | 10 69 77 16
+ThreePathsScene       3450 | 0 / 2 (0.0e+00)        0 / 1 (0.0e+00)        0 / 2 (0.0e+00)        | 6 30 152 9
+Stairs_Up_Down        1050 | 0 / 1 (0.0e+00)        0 / 1 (0.0e+00)        0 / 3 (0.0e+00)        | 18 157 123 28
+ThreePathsNAS         1950 | 0 / 0 (0.0e+00)        0 / 0 (0.0e+00)        0 / 0 (0.0e+00)        | 12 80 234 15
+TOTAL 19952 cuts
+  EDGE    cut wrong on 0 (max 0.00e+00 m, 0 empty/non-empty), final patch wrong on 27 (0 empty/non-empty) with the current double clip, 0 (0 empty/non-empty, max 0.0e+00 m) with an exact clip, 9.3 us/cut
+  SLICER  cut wrong on 0 (max 0.00e+00 m, 0 empty/non-empty), final patch wrong on 16 (0 empty/non-empty) with the current double clip, 0 (0 empty/non-empty, max 0.0e+00 m) with an exact clip, 60.4 us/cut
+  EXACT   reference, 96.7 us/cut
+  HALF    cut wrong on 0 (max 0.00e+00 m, 0 empty/non-empty), final patch wrong on 42 (1 empty/non-empty) with the current double clip, 0 (0 empty/non-empty, max 0.0e+00 m) with an exact clip, 12.4 us/cut
