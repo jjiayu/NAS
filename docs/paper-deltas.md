@@ -150,6 +150,25 @@ Chaque cause est **de la tolérance numérique** (bruit de 1e-16 amplifié par u
 
 **Ce qui n'a pas de sens dans le design hérité, à supprimer dans la nouvelle version** (non fait, nettoyage différé) : le prisme 3D par patch (calculé à chaque expansion, copié 7 fois par nœud, un par lacet, pour une clé de dédoublonnage) ; le centroïde par moyenne de points bruts ; le périmètre-somme-d'arêtes. À leur place : patch = polygone convexe 2D nettoyé, centroïde d'aire, périmètre du contour (ou pas de périmètre dans la clé, à voir), départage déterministe.
 
+### Audit de similarité : la clé de dédoublonnage mesure-t-elle vraiment « 2 cm » ?
+
+Outil : `nas_trace_divergence --audit <scène> <variante>` (`tests/golden_all/trace_divergence.cpp`). Sur tous les patchs qu'une recherche génère, compare « même clé » (cellule de centroïde + périmètre quantifié, même surface, pied et lacet) à la vraie distance entre patchs (max des distances sommet-contour dans les deux sens, en mètres). Mesuré le 2026-09-19 :
+
+| scène / variante | expansions | enfants générés (poussés / fusionnés) | paires à clé identique : distance max | paires à clés différentes mais patchs < 5 mm / < 2 cm |
+|---|---|---|---|---|
+| NarrowPassage, clés anciennes | 90 | 637 (546 / 91) | 4 mm | 15 / 105 |
+| NarrowPassage, périmètre géométrique | 99 | 707 (591 / 116) | 9 mm | 6 / 68 |
+| NarrowPassage, départage déterministe | 103 | 686 (589 / 97) | 4 mm | 0 / 57 |
+| ThreePathsNAS, clés anciennes | 91 | 861 (719 / 142) | 0 | 2 / 15 |
+| ThreePathsNAS, périmètre géométrique | 80 | 784 (637 / 147) | **6,7 cm** (16 paires > 2 cm, 6 > 5 cm) | 0 / 13 |
+| ThreePathsNAS, départage déterministe | 115 | 1036 (860 / 176) | 0 | 0 / 13 |
+
+Lecture :
+- La clé ancienne ne fusionne jamais des patchs éloignés (au plus 4 mm) mais **rate des quasi-doublons** : 105 paires de patchs à moins de 2 cm (dont 15 à moins de 5 mm) ne sont pas fusionnées sur NarrowPassage (550 patchs). Cause : des cellules de 2 cm tronquées, sur plusieurs coordonnées à la fois (x, y, z, périmètre), donc une frontière franchie suffit à séparer deux patchs quasi identiques. Ce n'est pas un critère de distance de 2 cm, contrairement à ce que dit le papier.
+- Le périmètre géométrique **fusionne à tort** (jusqu'à 6,7 cm d'écart) : à ne pas adopter.
+- Le nombre d'expansions n'est pas proportionnel au nombre de fusions (NarrowPassage : 116 fusions pour 99 expansions contre 91 pour 90) : c'est une A* pondérée (h x 10), ses expansions dépendent de l'ordre d'exploration. Le départage déterministe ne change presque pas la déduplication (97 fusions contre 91) : sa différence d'expansions (103 contre 90) vient de l'ordre entre nœuds de même f, pas de la clé.
+- Piste, non implémentée : critère géométrique direct (même surface / pied / lacet et distance entre patchs < 2 cm), avec un index spatial pour la recherche ; sans frontière de cellule ni périmètre.
+
 ## À vérifier
 
 - Incohérence `foot_width` dans `constants.hpp` : valeur active `0.22`, commentaire à côté dit `0.12` — laquelle est correcte ?

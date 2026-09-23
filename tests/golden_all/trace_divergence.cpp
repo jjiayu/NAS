@@ -8,6 +8,7 @@
 //   TIE    - the two runs pop different nodes whose f-scores are equal to 1e-9
 //            (order decided by noise/tie-breaking);
 //   GEOMETRY - the nodes' centroid/perimeter really differ (> 1e-9).
+// Also: nas_trace_divergence --audit <scene> <variant>  (similarity audit of the dedup key)
 // Usage: nas_trace_divergence <scene> <seed> [variant]   variant: old|hc (default hc)
 #include "nas/config/scenario.hpp"
 #include "nas/core/reachability.hpp"
@@ -57,7 +58,7 @@ bool same_identity(const Event& a, const Event& b) {
            a.yawq == b.yawq && a.kx == b.kx && a.ky == b.ky && a.kz == b.kz && a.kp == b.kp;
 }
 
-std::vector<Event> run(const std::string& scene, const std::string& variant, int& expansions) {
+std::vector<Event> run(const std::string& scene, std::string variant, int& expansions) {
     config::Scenario sc = config::load_scenario(scene);
     std::string dir = TALOS_REACHABILITY_DATA_DIR;
     ReachabilityModel reach = ReachabilityModel::load({
@@ -81,6 +82,9 @@ std::vector<Event> run(const std::string& scene, const std::string& variant, int
     c.expansion_params.yaw_angle_increment = 10.0 / 180.0 * M_PI;
     c.expansion_params.cycle_detection_enabled = true;
     // variant letters: h convex patch, t simplify tol 1e-9, s canonical prism start, d deterministic ties, c area centroid ("old" = none)
+    // "none" (or any word without these letters) = the old keys and ordering
+    if (variant == "none" || variant == "old") variant = "";
+    c.expansion_params.canonical_perimeter = variant.find('p') != std::string::npos;
     c.expansion_params.convex_patch = variant.find('h') != std::string::npos;
     c.expansion_params.convex_patch_simplify_tol = variant.find('t') != std::string::npos ? 1e-9 : 0.0;
     c.deterministic_ties = variant.find('d') != std::string::npos;
@@ -118,7 +122,72 @@ double boundary_dist(double v) {
 
 } // namespace
 
+// --- similarity audit ------------------------------------------------------
+// Is the dedup key a good similarity criterion? Over every patch a search
+// generates (all children, merged or not), compares "same dedup cell" with the
+// true geometric distance between the two patches (two-way max vertex-to-
+// boundary distance of their polygons, in metres; scenes are horizontal).
+double point_to_boundary(double px, double py, const std::vector<std::array<double, 3>>& poly) {
+    double best = 1e300;
+    for (size_t i = 0; i < poly.size(); ++i) {
+        const auto &a = poly[i], &b = poly[(i + 1) % poly.size()];
+        double ex = b[0] - a[0], ey = b[1] - a[1], L2 = ex * ex + ey * ey;
+        double t = L2 > 0 ? std::max(0.0, std::min(1.0, ((px - a[0]) * ex + (py - a[1]) * ey) / L2)) : 0.0;
+        best = std::min(best, std::hypot(px - (a[0] + t * ex), py - (a[1] + t * ey)));
+    }
+    return best;
+}
+double patch_distance(const Event& a, const Event& b) {
+    double d = 0;
+    for (const auto& v : a.verts) d = std::max(d, point_to_boundary(v[0], v[1], b.verts));
+    for (const auto& v : b.verts) d = std::max(d, point_to_boundary(v[0], v[1], a.verts));
+    return d;
+}
+
+int audit(const std::string& scene, const std::string& variant) {
+    int expansions = 0;
+    std::vector<Event> ev = run(scene, variant, expansions);
+    long children = 0, pushed = 0, merged = 0, closed = 0;
+    std::vector<const Event*> uniq; // one per (surface, stance, yawq, polygon)
+    for (const auto& e : ev) {
+        if (e.kind != 'C') continue;
+        ++children;
+        if (e.action == 1) ++pushed; else if (e.action == 0) ++closed; else ++merged;
+        bool dup = false;
+        for (const Event* u : uniq) {
+            if (u->surface != e.surface || u->stance != e.stance || u->yawq != e.yawq || u->verts.size() != e.verts.size()) continue;
+            double d = 0;
+            for (size_t i = 0; i < e.verts.size(); ++i) d = std::max(d, std::hypot(u->verts[i][0] - e.verts[i][0], u->verts[i][1] - e.verts[i][1]));
+            if (d < 1e-9) { dup = true; break; }
+        }
+        if (!dup) uniq.push_back(&e);
+    }
+    long same_key = 0, same_key_far2 = 0, same_key_far5 = 0, diff_key_close = 0, diff_key_close2 = 0, diff_key_near_pairs = 0;
+    double same_key_max = 0;
+    for (size_t i = 0; i < uniq.size(); ++i)
+        for (size_t j = i + 1; j < uniq.size(); ++j) {
+            const Event &a = *uniq[i], &b = *uniq[j];
+            if (a.surface != b.surface || a.stance != b.stance || a.yawq != b.yawq) continue;
+            bool key = a.kx == b.kx && a.ky == b.ky && a.kz == b.kz && a.kp == b.kp;
+            double d = patch_distance(a, b);
+            if (key) {
+                ++same_key; same_key_max = std::max(same_key_max, d);
+                if (d > 0.02) ++same_key_far2;
+                if (d > 0.05) ++same_key_far5;
+            } else {
+                if (d < 0.005) ++diff_key_close;
+                if (d < 0.02) ++diff_key_close2;
+            }
+        }
+    std::printf("%-16s %-6s: %d expansions; %ld children generated: %ld pushed, %ld merged into an open node, %ld skipped (already expanded)\n", scene.c_str(), variant.c_str(),
+                expansions, children, pushed, merged, closed);
+    std::printf("    %zu distinct patches | pairs with the SAME key: %ld (max patch distance %.3f m; > 2 cm: %ld, > 5 cm: %ld) | pairs with DIFFERENT keys but patches < 5 mm apart: %ld, < 2 cm apart: %ld\n",
+                uniq.size(), same_key, same_key_max, same_key_far2, same_key_far5, diff_key_close, diff_key_close2);
+    return 0;
+}
+
 int main(int argc, char** argv) {
+    if (argc >= 4 && std::string(argv[1]) == "--audit") return audit(argv[2], argv[3]);
     if (argc < 3) { std::fprintf(stderr, "usage: %s <scene> <seed> [variant letters h,t,c or old]\n", argv[0]); return 1; }
     std::string scene = argv[1];
     unsigned seed = static_cast<unsigned>(std::stoul(argv[2]));
