@@ -6,7 +6,8 @@
 // its footsteps to <out.json>, so they can be compared with the new QP's.
 //
 // Usage: old_qp_check <plan.json> <out.json>
-// With OLD_QP_HULL=1 in the environment the old planner's reachability constraints are
+// With OLD_QP_NODUP=1 each patch is given to the old planner as a single-face polyhedron
+// (no duplicated edges, see Build_polygon). With OLD_QP_HULL=1 in the environment the old planner's reachability constraints are
 // rebuilt from the CONVEX HULL of each polytope's vertices (exact triangular facets)
 // instead of the plane of each face's first three vertices (its own construction, wrong
 // on the reachability meshes' non-planar quadrilaterals). Only the harness is changed:
@@ -18,6 +19,7 @@
 
 #include <nlohmann/json.hpp>
 
+#include <CGAL/Polyhedron_incremental_builder_3.h>
 #include <CGAL/convex_hull_3.h>
 
 #include <fstream>
@@ -27,6 +29,24 @@
 
 using namespace nas;
 using json = nlohmann::json;
+
+// A polyhedron with ONE polygon face: its vertices are exactly the polygon's, so the old
+// generate_surface_constraint (which walks polyhedron vertices) yields each edge once, not
+// twice as with the thin prism (top and bottom faces).
+template <class HDS>
+struct Build_polygon : CGAL::Modifier_base<HDS> {
+    std::vector<Point_3> v;
+    explicit Build_polygon(std::vector<Point_3> pts) : v(std::move(pts)) {}
+    void operator()(HDS& hds) {
+        CGAL::Polyhedron_incremental_builder_3<HDS> B(hds, true);
+        B.begin_surface(v.size(), 1, 0);
+        for (const auto& p : v) B.add_vertex(p);
+        B.begin_facet();
+        for (size_t i = 0; i < v.size(); ++i) B.add_vertex_to_facet(static_cast<int>(i));
+        B.end_facet();
+        B.end_surface();
+    }
+};
 
 static Point_3 pt(const json& j) { return Point_3(j[0].get<double>(), j[1].get<double>(), j[2].get<double>()); }
 
@@ -52,7 +72,14 @@ int main(int argc, char** argv) {
         for (const auto& v : nj["patch_vertices"]) n->patch_vertices.push_back(pt(v));
         // the old code's patch polyhedron: a thin prism on the (horizontal) patch;
         // the root node is a point and keeps an empty one (never read by the QP).
-        if (n->patch_vertices.size() >= 3) n->patch_polyhedron_3d = convex_hull_3_from_coplanar_points(n->patch_vertices, Vector_3(0, 0, 1));
+        if (n->patch_vertices.size() >= 3) {
+            if (std::getenv("OLD_QP_NODUP")) {
+                Build_polygon<Polyhedron::HalfedgeDS> builder(n->patch_vertices);
+                n->patch_polyhedron_3d.delegate(builder);
+            } else {
+                n->patch_polyhedron_3d = convex_hull_3_from_coplanar_points(n->patch_vertices, Vector_3(0, 0, 1));
+            }
+        }
         path.push_back(n);
     }
     FootstepPlanner planner;

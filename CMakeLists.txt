@@ -105,6 +105,17 @@ add_executable(test_bench_operations test_bench_operations.cpp)
 add_executable(test_print_paths test_print_paths.cpp)
 add_executable(old_qp_check tests/old_qp_check.cpp)
 
+# Old QP started cold vs warm (tests/old_qp_warmstart.cpp): a patched COPY of src/footstep_planner.cpp is
+# generated at configure time (a global warm-start vector and one line setting arg["x0"]), the original is untouched.
+file(READ ${CMAKE_SOURCE_DIR}/src/footstep_planner.cpp OLD_FP_SRC)
+string(REPLACE "namespace nas {" "std::vector<double> g_qp_warm_start;\nnamespace nas {" OLD_FP_SRC "${OLD_FP_SRC}")
+string(REPLACE "arg[\"lbx\"] = lbx;" "arg[\"lbx\"] = lbx; if (!g_qp_warm_start.empty()) { arg[\"x0\"] = casadi::DM(g_qp_warm_start); }" OLD_FP_SRC "${OLD_FP_SRC}")
+# OLD_QP_REG=<value> in the environment adds <value> * |x|^2 to the objective (a Hessian regularization); unset = the old QP as is.
+string(REPLACE "qp[\"f\"] = objective;" "{ const char* reg_env = std::getenv(\"OLD_QP_REG\"); if (reg_env) objective += std::atof(reg_env) * casadi::SX::dot(all_vars, all_vars); } qp[\"f\"] = objective;" OLD_FP_SRC "${OLD_FP_SRC}")
+file(WRITE ${CMAKE_BINARY_DIR}/old_qp_warmstart_planner.cpp "${OLD_FP_SRC}")
+add_executable(old_qp_warmstart tests/old_qp_warmstart.cpp ${CMAKE_BINARY_DIR}/old_qp_warmstart_planner.cpp)
+target_include_directories(old_qp_warmstart PRIVATE include)
+
 # Link libraries for first executable
 target_link_libraries(nas_plan PRIVATE
     footstep_planner_lib
@@ -122,7 +133,7 @@ target_link_libraries(nas_plan PRIVATE
 
 # Enable VTK module autoinit for all executables
 vtk_module_autoinit(
-  TARGETS nas_plan test_bench_operations old_qp_check
+  TARGETS nas_plan test_bench_operations old_qp_check old_qp_warmstart
   MODULES ${VTK_LIBRARIES}
 )
 
@@ -148,6 +159,18 @@ target_link_libraries(test_print_paths PRIVATE
 # Feasibility check of the rewritten CASSR's plans with the old footstep QP (tests/old_qp_check.cpp).
 target_link_libraries(old_qp_check PRIVATE
     footstep_planner_lib
+    tree_lib
+    utils_lib
+    node_lib
+    surface_lib
+    geometry_lib
+    visualizer_lib
+    ${VTK_LIBRARIES}
+    CGAL::CGAL
+    casadi::casadi
+)
+
+target_link_libraries(old_qp_warmstart PRIVATE
     tree_lib
     utils_lib
     node_lib
