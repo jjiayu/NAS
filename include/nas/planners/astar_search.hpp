@@ -16,6 +16,7 @@
 #include "nas/core/surface.hpp"
 
 #include <functional>
+#include <optional>
 #include <vector>
 
 namespace nas {
@@ -66,6 +67,26 @@ struct AstarSearchConfig {
     // centroid). It favours feet aligned with the rough direction of travel, unlike yaw_change_weight, which penalises
     // rotating from one step to the next whatever the direction. 0 (default) = off. Only with rotation enabled.
     double heading_weight = 0.0;
+
+    // Optional constraint + optional edge cost on the FINAL foot yaw (as opposed to yaw_change_weight/heading_weight,
+    // which shape the whole path). Unset (default) = no constraint at all, nothing below is evaluated: the goal
+    // stance foot's yaw at termination can be anything, exactly like before this option existed.
+    //
+    // Set goal_yaw_target: the search now only terminates on a node whose foot_yaw is within goal_yaw_tolerance
+    // (wrapped, radians) of the target — same position/surface + stance-foot condition as before, plus this one.
+    // A too-tight, unreachable combination (e.g. a target the yaw discretization can never actually land in) fails
+    // like today's "no path" (see max_expansions), not a crash or a hang.
+    //
+    // goal_yaw_weight (0 by default, like the other optional costs) additionally biases the search toward that
+    // target throughout the path — same mechanism as heading_weight (edge cost, wrapped angular distance) but
+    // against the fixed target instead of the dynamic direction-to-goal, and with a dead zone of goal_yaw_tolerance
+    // (no cost once already within the accepted range). At 0, only the hard constraint above applies (no bias, the
+    // search may need more expansions to happen upon a node that satisfies it). Requires expansion_params.rotation_enabled
+    // — AstarSearch's constructor throws if goal_yaw_target is set without it (foot_yaw is always 0 otherwise, so any
+    // target other than 0 would be silently unreachable).
+    std::optional<double> goal_yaw_target;
+    double goal_yaw_tolerance = 0.0;
+    double goal_yaw_weight = 0.0;
 
     // Safety limit: the search gives up (empty path) after this many expansions. 0 = no limit.
     // Unweighted heuristics (Euclidean) can expand a very large number of nodes on a continuous

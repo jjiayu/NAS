@@ -17,6 +17,14 @@ namespace nas {
 
 namespace {
 
+// Wrapped absolute angular difference, in [0, pi]. Used by every optional cost/constraint on yaw
+// (yaw_change_weight, heading_weight, goal_yaw_*) — was duplicated inline in each until goal_yaw_*
+// made it three copies.
+double angdiff(double a, double b) {
+    double d = std::fmod(std::abs(a - b), 2.0 * M_PI);
+    return d > M_PI ? 2.0 * M_PI - d : d;
+}
+
 // Open-set order: f rounded to 1 nm, then creation order (node_id, older first).
 // Many nodes have an f that is equal in exact arithmetic (distance 0 to the
 // goal patch) and differ only by last-bit noise that changes with heap state;
@@ -126,6 +134,11 @@ AstarSearch::AstarSearch(std::vector<Surface> surfaces, ReachabilityModel reacha
     if (config_.goal_surface_id >= static_cast<int>(surfaces_.size())) {
         throw std::invalid_argument("AstarSearch: goal_surface_id " + std::to_string(config_.goal_surface_id) + " is not a surface of the scenario");
     }
+    if (config_.goal_yaw_target && !config_.expansion_params.rotation_enabled) {
+        throw std::invalid_argument("AstarSearch: goal_yaw_target is set but expansion_params.rotation_enabled is "
+                                     "false — every node's foot_yaw stays at 0 then, so any target other than 0 "
+                                     "would be silently unreachable");
+    }
     start_node_ = pool_.create();
     start_node_->patch_vertices = {config_.start_position};
     start_node_->stance_foot = config_.start_stance_foot;
@@ -212,7 +225,9 @@ void AstarSearch::search() {
 
         const bool at_goal = config_.goal_surface_id >= 0 ? current_node->surface_id == config_.goal_surface_id
                                                            : current_node->check_if_node_contains_point(config_.goal_location);
-        if (current_node->stance_foot == config_.goal_stance_foot && at_goal) {
+        const bool at_goal_yaw = !config_.goal_yaw_target ||
+                                  angdiff(current_node->foot_yaw, *config_.goal_yaw_target) <= config_.goal_yaw_tolerance;
+        if (current_node->stance_foot == config_.goal_stance_foot && at_goal && at_goal_yaw) {
             Node* current = current_node;
             while (current != nullptr) {
                 result_path_.push_back(current);
@@ -235,19 +250,19 @@ void AstarSearch::search() {
 
             double edge_cost = config_.step_weight;
             if (config_.yaw_change_weight > 0.0 && config_.expansion_params.rotation_enabled) {
-                double dyaw = std::fmod(std::abs(child->foot_yaw - current_node->foot_yaw), 2.0 * M_PI);
-                if (dyaw > M_PI) dyaw = 2.0 * M_PI - dyaw;
-                edge_cost += config_.yaw_change_weight * dyaw;
+                edge_cost += config_.yaw_change_weight * angdiff(child->foot_yaw, current_node->foot_yaw);
             }
             if (config_.heading_weight > 0.0 && config_.expansion_params.rotation_enabled) {
                 // the rough direction of travel: from the parent's centroid to the goal
                 const Point_3 goal = goal_point();
                 double gx = CGAL::to_double(goal.x() - current_node->centroid.x()), gy = CGAL::to_double(goal.y() - current_node->centroid.y());
                 if (std::hypot(gx, gy) > 1e-6) {
-                    double d = std::fmod(std::abs(child->foot_yaw - std::atan2(gy, gx)), 2.0 * M_PI);
-                    if (d > M_PI) d = 2.0 * M_PI - d;
-                    edge_cost += config_.heading_weight * d;
+                    edge_cost += config_.heading_weight * angdiff(child->foot_yaw, std::atan2(gy, gx));
                 }
+            }
+            if (config_.goal_yaw_target && config_.goal_yaw_weight > 0.0) {
+                double d = angdiff(child->foot_yaw, *config_.goal_yaw_target);
+                edge_cost += config_.goal_yaw_weight * std::max(0.0, d - config_.goal_yaw_tolerance);
             }
             double tentative_g_score = current_node->g_score + edge_cost;
             double tentative_h_score = heuristic(child);

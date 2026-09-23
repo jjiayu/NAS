@@ -68,6 +68,21 @@ AstarSearchConfig parse_astar_config(const json& j, std::optional<Vector_3>& goa
                                  {"heuristic_weight", config.heuristic_weight}}) {
         if (w < 0.0) throw std::runtime_error(std::string("load_planner_config: \"astar.") + key + "\" must be >= 0 (0 ignores the cost)");
     }
+
+    // Final-yaw constraint/cost: unset (default) = no constraint at all. Degrees in JSON, like
+    // yaw_angle_increment_deg above.
+    bool has_goal_yaw_tolerance = j.contains("goal_yaw_tolerance_deg");
+    bool has_goal_yaw_weight = j.contains("goal_yaw_weight");
+    if (j.contains("goal_yaw_target_deg")) {
+        config.goal_yaw_target = j.at("goal_yaw_target_deg").get<double>() / 180.0 * M_PI;
+    } else if (has_goal_yaw_tolerance || has_goal_yaw_weight) {
+        throw std::runtime_error("load_planner_config: \"astar.goal_yaw_tolerance_deg\"/\"astar.goal_yaw_weight\" "
+                                  "given without \"astar.goal_yaw_target_deg\" — they would be silently ignored");
+    }
+    if (has_goal_yaw_tolerance) config.goal_yaw_tolerance = j.at("goal_yaw_tolerance_deg").get<double>() / 180.0 * M_PI;
+    if (has_goal_yaw_weight) config.goal_yaw_weight = j.at("goal_yaw_weight").get<double>();
+    if (config.goal_yaw_tolerance < 0.0) throw std::runtime_error("load_planner_config: \"astar.goal_yaw_tolerance_deg\" must be >= 0");
+    if (config.goal_yaw_weight < 0.0) throw std::runtime_error("load_planner_config: \"astar.goal_yaw_weight\" must be >= 0 (0 ignores the cost)");
     if (j.contains("node_similarity_threshold")) config.node_similarity_threshold = j.at("node_similarity_threshold").get<double>();
 
     if (j.contains("expansion")) {
