@@ -16,6 +16,7 @@ endif()
 
 find_package(Eigen3 REQUIRED)
 find_package(eiquadprog REQUIRED)
+find_package(proxsuite REQUIRED)
 find_package(CGAL REQUIRED)
 find_package(Boost REQUIRED)
 
@@ -39,6 +40,17 @@ target_link_libraries(nas_footstep_qp_backend PUBLIC
     eiquadprog::eiquadprog
 )
 
+# Alternative backend, compared against the default (see PLAN.md TODO:
+# purge whichever is not kept once the choice is made).
+add_library(nas_footstep_qp_backend_proxqp src/proxqp_backend.cpp)
+target_include_directories(nas_footstep_qp_backend_proxqp PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+)
+target_link_libraries(nas_footstep_qp_backend_proxqp PUBLIC
+    Eigen3::Eigen
+    proxsuite::proxsuite
+)
+
 add_library(nas_footstep_qp src/footstep_qp.cpp)
 target_include_directories(nas_footstep_qp PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -53,6 +65,10 @@ enable_testing()
 add_executable(nas_footstep_qp_backend_tests tests/test_quadprog_backend.cpp)
 target_link_libraries(nas_footstep_qp_backend_tests PRIVATE nas_footstep_qp_backend)
 add_test(NAME nas_footstep_qp_backend_tests COMMAND nas_footstep_qp_backend_tests)
+
+add_executable(nas_footstep_qp_backend_proxqp_tests tests/test_proxqp_backend.cpp)
+target_link_libraries(nas_footstep_qp_backend_proxqp_tests PRIVATE nas_footstep_qp_backend_proxqp)
+add_test(NAME nas_footstep_qp_backend_proxqp_tests COMMAND nas_footstep_qp_backend_proxqp_tests)
 
 add_executable(nas_footstep_qp_golden_test tests/test_footstep_qp_golden.cpp)
 target_link_libraries(nas_footstep_qp_golden_test PRIVATE nas_footstep_qp nas_planners_astar_search nas_test_fixtures)

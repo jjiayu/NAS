@@ -188,6 +188,7 @@ FootstepPlan solve_footstep_qp(const std::vector<Node*>& path_nodes,
     plan.success = feasible;
     plan.max_violation = std::isfinite(violation) ? violation : 0.0;
     if (feasible) {
+        plan.objective = 0.5 * solution.x.dot(H_base * solution.x) + qp.g.dot(solution.x);
         plan.alpha = solution.x(alpha_idx);
         plan.footsteps.reserve(n);
         for (int i = 0; i < n; ++i) {

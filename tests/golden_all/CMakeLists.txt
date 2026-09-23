@@ -92,3 +92,10 @@ add_executable(nas_edge_costs test_edge_costs.cpp)
 target_link_libraries(nas_edge_costs PRIVATE nas_config nas_footstep_qp nas_footstep_qp_backend nas_planners_astar_search CGAL::CGAL)
 target_compile_definitions(nas_edge_costs PRIVATE TALOS_REACHABILITY_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../../talosReachability/data/reachability_constraints")
 add_test(NAME nas_edge_costs COMMAND nas_edge_costs)
+
+# quadprog vs proxqp on all 15 scenes: optimum, feasibility, timing (compare_qp_backends.cpp).
+# nas_footstep_qp_backend_proxqp already exists via nas_config -> footstep_qp/CMakeLists.txt.
+add_executable(nas_compare_qp_backends compare_qp_backends.cpp)
+target_link_libraries(nas_compare_qp_backends PRIVATE nas_config nas_footstep_qp nas_footstep_qp_backend nas_footstep_qp_backend_proxqp nas_planners_astar_search CGAL::CGAL)
+target_compile_definitions(nas_compare_qp_backends PRIVATE TALOS_REACHABILITY_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../../talosReachability/data/reachability_constraints")
+add_test(NAME nas_compare_qp_backends COMMAND nas_compare_qp_backends)

@@ -55,6 +55,7 @@ struct FootstepPlan {
     std::vector<Point_3> footsteps; // one per path_nodes entry, world frame
     double alpha = 0.0;
     double max_violation = 0.0;     // largest constraint residual of the returned solution (<= feasibility_tolerance when success)
+    double objective = 0.0;         // 0.5*x'*H*x + g'*x at the solution, H unregularized (paper Eq. 6) — lets backends be compared on the value they actually optimize, not just feasibility
 };
 
 // `path_nodes` is a full CASSR result path (path_nodes[0] is the start
