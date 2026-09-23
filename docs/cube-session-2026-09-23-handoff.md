@@ -1,5 +1,15 @@
 # Rapport de session — extension "cube" (2026-09-23, à reprendre)
 
+**Visualisation animée publiée** (demande explicite de l'utilisateur, faite
+juste avant la coupure) : https://claude.ai/artifact/1QQdV9T3igvn9PeowLvihW
+— "Passerelle cube", anime exactement le plan à 87 expansions décrit
+plus bas (vue de profil X-Z + vue de dessus X-Y, pas qui apparaissent un
+par un, cube qui apparaît à la pose, lecture auto + molette). Données
+codées en dur dans la page (le JSON de la section "Prochaine étape" plus
+bas, régénéré après le fix du bug de centroid) — pas de connexion au
+dépôt, donc si le plan change il faut regénérer le JSON et republier sur
+cette même URL.
+
 Session interrompue par la limite hebdomadaire. Ce document résume l'état
 exact pour reprendre sans perdre de contexte. Voir aussi
 `docs/cube-extension-spec.md` (la spec d'origine) et
