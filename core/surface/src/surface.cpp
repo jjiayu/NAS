@@ -17,6 +17,22 @@ Surface::Surface(const std::vector<Point_3>& points, int surface_idx, double foo
     norm = plane.orthogonal_vector();
     norm = norm / std::sqrt(norm.squared_length());
 
+    // linear_least_squares_fitting_3 can return either of the two valid
+    // unit normals for the same physical plane (an implementation detail
+    // of the fit, not something geometrically meaningful) — pin it down
+    // deterministically so establish_surface_coordinate_system's local
+    // frame (and therefore vertices_2d/polygon_2d's winding, which
+    // compute_2d_polygon_intersection's Sutherland-Hodgman clip depends
+    // on) doesn't depend on which one the fit happens to produce.
+    // Convention: the normal's largest-magnitude component is positive.
+    double nx = CGAL::to_double(norm.x());
+    double ny = CGAL::to_double(norm.y());
+    double nz = CGAL::to_double(norm.z());
+    double dominant = (std::abs(nx) >= std::abs(ny) && std::abs(nx) >= std::abs(nz)) ? nx
+                     : (std::abs(ny) >= std::abs(nz))                                ? ny
+                                                                                      : nz;
+    if (dominant < 0.0) norm = -norm;
+
     centroid = get_centroid(points);
 
     establish_surface_coordinate_system(points);
