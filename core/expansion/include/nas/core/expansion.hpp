@@ -46,6 +46,31 @@ struct ExpansionParams {
     // see ClipMode in geometry.hpp). Off by default; on only for replaying the
     // old code's output bit for bit.
     bool legacy_clip = false;
+    // Node dedup keys (Node::centroid, Node::perimeter). Off (default) = the old
+    // code's values: centroid = average of the raw clip vertices (collinear and
+    // duplicate points included), perimeter = sum of every edge of the thin
+    // prism polyhedron (triangulation diagonals included). Both change with the
+    // convex hull's triangulation, i.e. with heap state. On = the area centroid
+    // / the geometric perimeter of the patch's convex polygon, which do not
+    // depend on how many collinear points the clip produced. Independent
+    // switches (ablation). See docs/paper-deltas.md "Clés de dédoublonnage
+    // canoniques": neither is on by default because they change which nodes
+    // the search merges.
+    // The patch IS the convex polygon: patch_vertices, the 3D polyhedron and the
+    // keys are all built from the convex hull's vertices, not from the raw clip
+    // output (collinear / duplicate points). A patch is convex by construction,
+    // so the extra points carry no information; this also makes everything
+    // derived from it independent of how many of them the clip produced. The
+    // keys keep the old definitions (vertex average, prism edge sum) applied to
+    // these vertices, unless canonical_* is also set. Off by default: the old
+    // code keeps the raw points, and bit-exact replay needs that.
+    bool convex_patch = false;
+    bool canonical_centroid = false;
+    bool canonical_perimeter = false;
+    // Variant: keep the old definition (sum of every prism edge, diagonals
+    // included) but build the prism from the convex polygon's own vertices, so
+    // collinear clip points no longer change it.
+    bool hull_prism_perimeter = false;
     // Test seam only (tests/golden_all replays the old code's exact P_union
     // through it): when set, replaces the edge list of
     // minkowski_sum(parent patch, reachability polytope). CGAL::convex_hull_3's

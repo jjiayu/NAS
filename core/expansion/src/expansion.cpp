@@ -10,6 +10,43 @@ std::string effector_name(StanceFoot foot) {
     return foot == StanceFoot::Left ? "LF" : "RF";
 }
 
+namespace {
+
+struct NodeKeys {
+    double perimeter = 0.0;
+    Point_3 centroid{0.0, 0.0, 0.0};
+};
+
+// Area centroid and edge-length perimeter of the patch's convex polygon (in the
+// surface's orthonormal 2D frame, so lengths are true lengths). Adding a
+// collinear point to the polygon changes neither. Falls back to the vertex
+// average when the polygon has (near) zero area.
+NodeKeys canonical_keys(const Polygon_2& hull, const Transformation& to_3d, const std::vector<Point_3>& raw_patch_3d) {
+    NodeKeys keys;
+    const size_t n = hull.size();
+    double area2 = 0.0, cx = 0.0, cy = 0.0, perimeter = 0.0;
+    for (size_t i = 0; i < n; ++i) {
+        const Point_2& p = hull.vertex(i);
+        const Point_2& q = hull.vertex((i + 1) % n);
+        double px = CGAL::to_double(p.x()), py = CGAL::to_double(p.y());
+        double qx = CGAL::to_double(q.x()), qy = CGAL::to_double(q.y());
+        double cross = px * qy - qx * py;
+        area2 += cross;
+        cx += (px + qx) * cross;
+        cy += (py + qy) * cross;
+        perimeter += std::hypot(qx - px, qy - py);
+    }
+    keys.perimeter = perimeter;
+    if (std::abs(area2) > 1e-12) {
+        keys.centroid = to_3d(Point_3(cx / (3.0 * area2), cy / (3.0 * area2), 0.0));
+    } else {
+        keys.centroid = get_centroid(raw_patch_3d);
+    }
+    return keys;
+}
+
+} // namespace
+
 std::vector<Node*> expand_node(Node* parent,
                                 const std::vector<Surface>& surfaces,
                                 const ReachabilityModel& reachability,
@@ -71,13 +108,35 @@ std::vector<Node*> expand_node(Node* parent,
         Polygon_2 final_hull_2d;
         CGAL::convex_hull_2(polygon_intersect_2d.begin(), polygon_intersect_2d.end(), std::back_inserter(final_hull_2d));
 
-        std::vector<Point_3> patch_3d = transform_2d_points_to_world(polygon_intersect_2d, surface.transform_to_3d);
+        std::vector<Point_3> patch_3d;
+        if (params.convex_patch) {
+            // A patch that degenerates to a segment/point has no polygon to keep.
+            if (final_hull_2d.size() < 3) continue;
+            std::vector<Point_2> hull_pts(final_hull_2d.vertices_begin(), final_hull_2d.vertices_end());
+            patch_3d = transform_2d_points_to_world(hull_pts, surface.transform_to_3d);
+        } else {
+            patch_3d = transform_2d_points_to_world(polygon_intersect_2d, surface.transform_to_3d);
+        }
         Polyhedron patch_polyhedron = convex_hull_3_from_coplanar_points(patch_3d, surface.norm);
 
         if (params.cycle_detection_enabled &&
             cycle_path_detection(parent, child_stance_foot, surface.surface_id)) {
             continue;
         }
+
+        // Same for every yaw variant of this surface's patch.
+        NodeKeys keys;
+        if (params.canonical_centroid || params.canonical_perimeter) {
+            keys = canonical_keys(final_hull_2d, surface.transform_to_3d, patch_3d);
+        }
+        if (params.hull_prism_perimeter) {
+            std::vector<Point_2> hull_pts(final_hull_2d.vertices_begin(), final_hull_2d.vertices_end());
+            keys.perimeter = compute_polygon_perimeter(
+                convex_hull_3_from_coplanar_points(transform_2d_points_to_world(hull_pts, surface.transform_to_3d), surface.norm));
+        } else if (!params.canonical_perimeter) {
+            keys.perimeter = compute_polygon_perimeter(patch_polyhedron);
+        }
+        if (!params.canonical_centroid) keys.centroid = get_centroid(patch_3d);
 
         std::vector<double> yaw_angles;
         if (params.rotation_enabled) {
@@ -99,8 +158,8 @@ std::vector<Node*> expand_node(Node* parent,
             child->patch_polyhedron_3d = patch_polyhedron;
             child->transformation_to_2d = surface.transform_to_surface;
             child->transformation_to_3d = surface.transform_to_3d;
-            child->perimeter = compute_polygon_perimeter(patch_polyhedron);
-            child->centroid = get_centroid(patch_3d);
+            child->perimeter = keys.perimeter;
+            child->centroid = keys.centroid;
 
             if (params.rotation_enabled) {
                 double normalized_yaw = yaw;

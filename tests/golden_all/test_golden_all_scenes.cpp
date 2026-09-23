@@ -108,6 +108,14 @@ AstarSearchConfig old_constants_config(const SceneSetup& setup, const Point_3& g
     c.expansion_params.yaw_discretization_num = 3;
     c.expansion_params.yaw_angle_increment = 10.0 / 180.0 * M_PI;
     c.expansion_params.cycle_detection_enabled = true;
+    // NAS_CANONICAL=c|p|q|h|hc: canonical centroid / perimeter dedup keys (see ExpansionParams).
+    if (const char* k = std::getenv("NAS_CANONICAL")) {
+        std::string keys = k;
+        c.expansion_params.canonical_centroid = keys.find('c') != std::string::npos;
+        c.expansion_params.canonical_perimeter = keys.find('p') != std::string::npos;
+        c.expansion_params.hull_prism_perimeter = keys.find('q') != std::string::npos;
+        c.expansion_params.convex_patch = keys.find('h') != std::string::npos;
+    }
     return c;
 }
 

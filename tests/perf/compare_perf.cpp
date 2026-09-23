@@ -111,6 +111,32 @@ void compare_clip(const fixtures::Scenario& scenario, const ReachabilityModel& r
               << r.mean_ms / l.mean_ms << "x\n";
 }
 
+// A/B of the node-key variants (ExpansionParams::convex_patch / canonical_*),
+// interleaved, on the default (robust) clip.
+void compare_keys(const fixtures::Scenario& scenario, const ReachabilityModel& reachability, int num_runs) {
+    struct Variant { const char* name; bool convex, centroid; std::vector<double> ms; int exp = 0; };
+    std::vector<Variant> variants = {{"old keys", false, false, {}}, {"convex patch", true, false, {}}, {"convex patch + area centroid", true, true, {}}};
+    for (int run = 0; run < num_runs; ++run) {
+        for (auto& v : variants) {
+            AstarSearchConfig cfg = scenario.astar_config;
+            cfg.expansion_params.convex_patch = v.convex;
+            cfg.expansion_params.canonical_centroid = v.centroid;
+            AstarSearch search(scenario.surfaces, reachability, cfg);
+            auto t0 = std::chrono::high_resolution_clock::now();
+            search.search();
+            auto t1 = std::chrono::high_resolution_clock::now();
+            v.ms.push_back(std::chrono::duration<double, std::milli>(t1 - t0).count());
+            v.exp = search.expansion_count();
+        }
+    }
+    double base = compute_stats(variants[0].ms).mean_ms;
+    for (auto& v : variants) {
+        Stats st = compute_stats(v.ms);
+        std::cout << "  keys A/B " << scenario.name << " [" << v.name << "]: " << st.mean_ms << " +/- " << st.stddev_ms << " ms (" << v.exp
+                  << " expansions, " << st.mean_ms / base << "x)  " << st.mean_ms / v.exp << " ms/expansion\n";
+    }
+}
+
 } // namespace
 
 int main(int argc, char** argv) {
@@ -129,6 +155,10 @@ int main(int argc, char** argv) {
     std::cout << "\n--- 2D clip: legacy vs corrected (interleaved, n=" << num_runs << ") ---\n";
     compare_clip(fixtures::make_narrow_passage(), reachability, num_runs);
     compare_clip(fixtures::make_three_paths_nas(), reachability, num_runs);
+
+    std::cout << "\n--- node keys: old vs convex patch (interleaved, n=" << num_runs << ") ---\n";
+    compare_keys(fixtures::make_narrow_passage(), reachability, num_runs);
+    compare_keys(fixtures::make_three_paths_nas(), reachability, num_runs);
 
     std::cout << "\nNote: NarrowPassage's golden QP was infeasible in the old code too "
                  "(see tests/golden/NarrowPassage_astar.json) — its QP timing isn't compared.\n";

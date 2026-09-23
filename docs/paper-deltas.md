@@ -102,6 +102,33 @@ Vérifications (toutes sur les 11 scènes, 150 expansions réelles chacune) :
 
 **Non résolu — la recherche complète n'est pas déterministe.** `NAS_SCRAMBLE=<graine> nas_golden_all_scenes` (même binaire, tas fragmenté différemment) change encore le résultat de plusieurs scènes : chemins différents (surtout les lacets) sur Stairs, LongStairs, LongStairsExp, ThreePathsScene, et `ThreePathsNAS` fait **92 ou 91 expansions selon la graine** (91 avec les graines 1 et 3). L'écart 92/91 avec l'ancien code n'est donc pas un défaut de portage : c'est du non-déterminisme lié au tas, présent dans les deux. Cause probable, non démontrée : `centroid` (moyenne des points bruts du clip, dont le nombre de points colinéaires dépend de la triangulation de l'enveloppe) et `perimeter` (somme des arêtes du prisme, diagonales de triangulation comprises) servent de clés de dédoublonnage (`NodeHash`/`NodeEqual`, quantifiées à 0,02) et de coût. Les rendre canoniques (depuis l'enveloppe convexe du patch, indépendante de la triangulation) est un écart supplémentaire vis-à-vis de l'ancien code, non fait : décision à prendre.
 
+### Clés de dédoublonnage canoniques et patch convexe : effet sur le déterminisme de la recherche (91 / 92 / 93 expansions)
+
+Mesuré le 2026-09-19. Contexte : la recherche complète dépend de l'état du tas (`NAS_SCRAMBLE=<graine>` dans `nas_golden_all_scenes`, qui change l'ordre d'allocation et donc la triangulation de `CGAL::convex_hull_3`), notamment `ThreePathsNAS` (91, 92 ou 93 expansions). Hypothèse testée : `Node::centroid` (moyenne des points bruts du clip, colinéaires et doublons compris) et `Node::perimeter` (somme des arêtes du prisme, diagonales comprises) varient avec la triangulation, et comme ils forment la clé de dédoublonnage (`NodeHash`/`NodeEqual` : `int(valeur / 0,02)`, donc des cellules de 2 cm), deux nœuds quasi identiques sont fusionnés ou non selon le tas, ce qui change le nombre de nœuds étendus.
+
+Options ajoutées à `ExpansionParams` (toutes **désactivées par défaut**, donc l'ancien comportement et le replay bit-exact sont inchangés) : `canonical_centroid` (centre de gravité de l'aire du polygone convexe), `canonical_perimeter` (périmètre géométrique), `hull_prism_perimeter` (ancienne définition du périmètre sur les sommets de l'enveloppe), `convex_patch` (le patch EST l'enveloppe convexe : sommets, polyèdre et clés viennent de ses sommets ; décidé avec l'utilisateur : un patch est convexe par construction, les points colinéaires n'apportent rien).
+
+Protocole : 9 états de tas (aucun + graines 1 à 8), 11 scènes, résultat complet = nombre d'expansions + chemin (surface, pied, lacet par nœud). Nombre de résultats distincts / nombres d'expansions observés :
+
+| scène | clés anciennes | centroïde de surface | patch convexe | patch convexe + centroïde de surface |
+|---|---|---|---|---|
+| NarrowPassage | 1 / 90 | 1 / 90 | 1 / 90 | 1 / 90 |
+| Stairs | 7 / 38 | 5 / 38 | 6 / 38 | 5 / 38 |
+| LongStairs | 2 / 24,28 | 1 / 28 | 1 / 28 | 1 / 28 |
+| LongStairsExp | 4 / 249 | 2 / 249 | 4 / 249 | 4 / 249 |
+| ThreePathsScene | 9 / 344..423 | 9 / 363..452 | 9 / 367..419 | 9 / 358..417 |
+| Stairs_Up_Down | 1 / 32 | 1 / 32 | 1 / 33 | 1 / 32 |
+| **ThreePathsNAS** | **3 / 91,92,93** | **1 / 91** | 2 / 91,93 | **1 / 91** |
+(les 4 autres scènes : 1 résultat dans tous les cas.) Les chemins golden des scènes stables restent identiques avec chaque variante (0 échec de `nas_golden_all_scenes`).
+
+Ablation du périmètre (mêmes 9 états) : le périmètre géométrique canonique **change la recherche** (NarrowPassage 106 expansions, chemin différent du golden ; ThreePathsNAS 85..92) : la valeur de l'ancien périmètre (≈ 2x le contour + diagonales) fixe l'échelle effective de la quantification à 2 cm, la remplacer change ce qui est fusionné. Le périmètre du prisme reconstruit sur l'enveloppe (`hull_prism_perimeter`) garde l'échelle (NarrowPassage 90) mais ne stabilise pas ThreePathsNAS seul (3 / 91,92,93).
+
+Conclusions :
+- **Cause du 91/92/93 sur ThreePathsNAS : le centroïde.** Expérience d'intervention : avec un centroïde qui ne dépend pas des points colinéaires (centre de gravité de l'aire), le résultat est unique (91 expansions, chemin identique au golden) sur les 9 états de tas ; avec le centroïde ancien, 91, 92 ou 93. Le nombre 92 de mes mesures précédentes et le 91 de l'ancien code sont deux tirages du même phénomène. Non tracé au niveau de la paire de nœuds précise.
+- **Recommandation** : patch convexe + centroïde de surface (`convex_patch` + `canonical_centroid`). Aucune régression sur les chemins golden, NarrowPassage inchangé (90), ThreePathsNAS déterministe à 91, un patch plus simple (que des sommets utiles). Non activé par défaut : à décider.
+- **Reste non déterministe** : Stairs (5 résultats), LongStairsExp (4) et surtout ThreePathsScene (9, de 358 à 417 expansions) : une autre source existe ; candidates non testées : le périmètre du prisme (diagonales), le bruit de l'heuristique EPA sur des ensembles de points différents, les ex æquo de score entre lacets voisins.
+- Perf (`nas_compare_perf`, 20 runs entrelacés, deux passages) : neutre. NarrowPassage 147,3 ms (ancien) / 147,8 (convexe) / 149,0 (convexe + centroïde) ; ThreePathsNAS 64,3 / 63,9 / 62,6 ms, soit 0,97-1,01x, dans le bruit (écart-types 1-9 ms) ; par expansion 0,69-0,71 ms de part et d'autre.
+
 ## À vérifier
 
 - Incohérence `foot_width` dans `constants.hpp` : valeur active `0.22`, commentaire à côté dit `0.12` — laquelle est correcte ?
