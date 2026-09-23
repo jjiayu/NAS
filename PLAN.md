@@ -152,3 +152,4 @@ Critère de sortie **unique** : séquence de nœuds golden (égalité stricte : 
 
 - Intégration Go2/go2Motion, comparaison CASSR vs SL1M/MIP sur Go2 réel.
 - Extension Python : construire un planner à partir d'un package qui extrait ses propres fichiers (au-delà de la couche 0).
+- Module de test à part formulant le problème en Graph of Convex Sets (GCS) pour la planification, à comparer à CASSR/NAS (2026-09-18, demande utilisateur) — pas détaillé plus, exploratoire.
