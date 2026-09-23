@@ -237,28 +237,32 @@ const RawScenario kSteepRamp = make_ramp(20.0, 2.0);
 const RawScenario kSlopedGround = make_sloped_plane(10.0, false);
 const RawScenario kSideSlope = make_sloped_plane(10.0, true);
 
-// Start corridor -> room with a box alcove on the left (+y) -> a short
-// flight of stairs -> a goal landing. Drawn from a hand sketch: start
-// (bottom, long corridor), a room with a rectangular alcove sticking out to
-// the left where a box sits (spray-painted outline in the sketch), then 3
-// stair treads climbing to a goal platform. Meant to be planned in 2 legs
-// (start -> box, then box -> goal) rather than as one path across the whole
-// scene, see apps/astar_plan/examples/BoxRoomStairs_leg1/2.json.
+// Start corridor -> one enlarged room (box sits near its far +y edge, well
+// past where the robot actually stands to grasp it - not on top of any
+// planned footstep) -> a short flight of stairs -> a goal landing. Revised
+// from the first version (2026-09-23): that one had a separate small 0.5 x
+// 0.6 alcove whose centroid ended up ~0.1m from the goal footstep - the box
+// and the standing foot nearly coincided. Single bigger room instead (1.1 x
+// 1.9), box pushed to its far edge, goal stance placed ~0.45m short of it
+// along y. Also gives the goal-yaw-target leg (see BoxRoomStairs_leg1.json)
+// enough room to actually turn back out afterward at a tight tolerance
+// around 90deg (facing the box squarely) - the old cramped alcove couldn't
+// (0 expansions, no path at 90deg; backed off to 45deg/15deg tolerance,
+// itself a symptom of too little room, not addressed at the geometry level
+// until now). See apps/astar_plan/examples/BoxRoomStairs_leg1/2.json.
 const RawScenario kBoxRoomStairs = {
     // Start corridor
     {Point_3(0.0, -0.5, 0.0), Point_3(1.3, -0.5, 0.0), Point_3(1.3, 0.5, 0.0), Point_3(0.0, 0.5, 0.0)},
-    // Room (main)
-    {Point_3(1.3, -0.6, 0.0), Point_3(2.2, -0.6, 0.0), Point_3(2.2, 0.6, 0.0), Point_3(1.3, 0.6, 0.0)},
-    // Room alcove (box sits here, to the left)
-    {Point_3(1.3, 0.6, 0.0), Point_3(1.8, 0.6, 0.0), Point_3(1.8, 1.2, 0.0), Point_3(1.3, 1.2, 0.0)},
+    // Room (enlarged; box sits near y=1.3, goal stance around y=0.65)
+    {Point_3(1.3, -0.6, 0.0), Point_3(2.4, -0.6, 0.0), Point_3(2.4, 1.3, 0.0), Point_3(1.3, 1.3, 0.0)},
     // Stair tread 1
-    {Point_3(2.2, -0.35, 0.1), Point_3(2.5, -0.35, 0.1), Point_3(2.5, 0.35, 0.1), Point_3(2.2, 0.35, 0.1)},
+    {Point_3(2.4, -0.35, 0.1), Point_3(2.7, -0.35, 0.1), Point_3(2.7, 0.35, 0.1), Point_3(2.4, 0.35, 0.1)},
     // Stair tread 2
-    {Point_3(2.5, -0.35, 0.2), Point_3(2.8, -0.35, 0.2), Point_3(2.8, 0.35, 0.2), Point_3(2.5, 0.35, 0.2)},
+    {Point_3(2.7, -0.35, 0.2), Point_3(3.0, -0.35, 0.2), Point_3(3.0, 0.35, 0.2), Point_3(2.7, 0.35, 0.2)},
     // Stair tread 3
-    {Point_3(2.8, -0.35, 0.3), Point_3(3.1, -0.35, 0.3), Point_3(3.1, 0.35, 0.3), Point_3(2.8, 0.35, 0.3)},
+    {Point_3(3.0, -0.35, 0.3), Point_3(3.3, -0.35, 0.3), Point_3(3.3, 0.35, 0.3), Point_3(3.0, 0.35, 0.3)},
     // Goal landing
-    {Point_3(3.1, -0.6, 0.3), Point_3(4.0, -0.6, 0.3), Point_3(4.0, 0.6, 0.3), Point_3(3.1, 0.6, 0.3)},
+    {Point_3(3.3, -0.6, 0.3), Point_3(4.2, -0.6, 0.3), Point_3(4.2, 0.6, 0.3), Point_3(3.3, 0.6, 0.3)},
 };
 
 const std::unordered_map<std::string, const RawScenario*>& registry() {
