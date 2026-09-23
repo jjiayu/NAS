@@ -2,8 +2,9 @@
 apps/astar_plan (one per scenario) and, for comparison, the plans the old code stored
 in tests/golden/<scene>_astar.json.
 
-Usage:  python3 viz/plans_report.py <dumps_dir> <golden_dir> <out.html>
-  <dumps_dir> holds <Scenario>.json as written by astar_plan (see apps/astar_plan/README.md).
+Usage:  python3 viz/plans_report.py <golden_dir> <out.html> <label> <dumps_dir> [<label> <dumps_dir> ...]
+  each <dumps_dir> holds <Scenario>.json as written by astar_plan (see apps/astar_plan/README.md), one directory per
+  variant (e.g. the default cost and a rotation cost); the first one is the reference. The page has a selector.
 The page needs no server and no network except two Google Fonts; it works offline with fallbacks.
 """
 import json
@@ -23,30 +24,42 @@ OLD_PERF = {
 }
 
 
-def main(dumps, golden, out):
+def load_variant(dumps, sc):
+    with open(os.path.join(dumps, sc + ".json")) as f:
+        new = json.load(f)
+    return {
+        "found": new["path_found"], "qp": new["qp_success"],
+        "start": new["start"], "goal": new["goal"],
+        "expansions": new["expansions"], "search_ms": new["search_ms"], "qp_ms": new["qp_ms"],
+        "surfaces": new["surfaces"],
+        "path": [{"patch": n["patch_vertices"], "stance": n["stance_foot"], "yaw": n["foot_yaw"], "surf": n["surface_id"]}
+                 for n in new["path"]],
+        "feet": new["footsteps"],
+    }
+
+
+def main(golden, out, variants):
+    """variants: list of (label, dumps_dir); the first is the reference (default cost)."""
     data = []
     for sc in SCENES:
-        with open(os.path.join(dumps, sc + ".json")) as f:
-            new = json.load(f)
+        vs = {}
+        for label, dumps in variants:
+            v = load_variant(dumps, sc)
+            vs[label] = {k: v[k] for k in v if k != "surfaces"}
+        first = load_variant(variants[0][1], sc)
         gpath = os.path.join(golden, sc + "_astar.json")
         old = json.load(open(gpath)) if os.path.exists(gpath) else {"success": False, "nodes": []}
         fp = old.get("footstep_plan", {})
         old_nodes = [{"c": n["centroid"], "yaw": n["foot_yaw"], "stance": n["stance_foot"], "surf": n["surface_id"]}
                      for n in old.get("nodes", [])]
         data.append({
-            "name": sc,
-            "found": new["path_found"], "qp": new["qp_success"],
-            "start": new["start"], "goal": new["goal"],
-            "expansions": new["expansions"], "search_ms": new["search_ms"], "qp_ms": new["qp_ms"],
-            "surfaces": new["surfaces"],
-            "path": [{"patch": n["patch_vertices"], "stance": n["stance_foot"], "yaw": n["foot_yaw"], "surf": n["surface_id"]}
-                     for n in new["path"]],
-            "feet": new["footsteps"],
+            "name": sc, "surfaces": first["surfaces"], "variants": vs,
             "old": {"found": old.get("success", False), "qp": fp.get("success", False), "nodes": old_nodes,
                     "feet": fp.get("footsteps", []) if fp.get("success", False) else [],
                     "ms": OLD_PERF.get(sc, (0, 0))[0], "exp": OLD_PERF.get(sc, (0, 0))[1], "new_scene": sc not in OLD_PERF},
         })
     html = TEMPLATE.replace("/*DATA*/[]", json.dumps(data, separators=(",", ":")))
+    html = html.replace("/*VARIANTS*/[]", json.dumps([lab for lab, _ in variants]))
     with open(out, "w") as f:
         f.write(html)
     print("wrote", out, len(html) // 1024, "KB")
@@ -139,14 +152,18 @@ h3 { font-size: 15px; margin: 8px 0 -8px; font-weight: 600; }
 
 <script>
 const DATA = /*DATA*/[];
+const VARIANTS = /*VARIANTS*/[];
 const FOOT_L = 0.22, FOOT_W = 0.12;   // indicative outline; the planner only uses the foot size to shrink surfaces
 const el = (t, a = {}, k = []) => { const e = document.createElementNS(t === 'svg' || svgTags.has(t) ? 'http://www.w3.org/2000/svg' : 'http://www.w3.org/1999/xhtml', t); for (const [n, v] of Object.entries(a)) e.setAttribute(n, v); for (const c of k) e.append(c); return e; };
 const svgTags = new Set(['g','path','rect','circle','line','text','polygon','polyline','title','defs','marker']);
 const fmt = (v, d = 1) => v.toFixed(d).replace('.', ',');
+// the scene as seen in the selected variant (cost setting)
+const view = i => Object.assign({}, DATA[i], DATA[i].variants[state.v]);
+const rotation = s => { let t = 0; for (let i = 1; i < s.path.length; i++) { let d = Math.abs(s.path[i].yaw - s.path[i - 1].yaw) % (2 * Math.PI); if (d > Math.PI) d = 2 * Math.PI - d; t += d; } return t * 180 / Math.PI; };
 const walked = feet => { let d = 0; for (let i = 1; i < feet.length; i++) d += Math.hypot(feet[i][0] - feet[i-1][0], feet[i][1] - feet[i-1][1]); return d; };
 const newFeet = s => s.feet.map(f => f.position);
-const state = { i: 0, old: true, patches: true, nums: true };
-try { const s = JSON.parse(localStorage.getItem('plans-state') || '{}'); if (Number.isInteger(s.i) && s.i < DATA.length) state.i = s.i; for (const k of ['old','patches','nums']) if (typeof s[k] === 'boolean') state[k] = s[k]; } catch (e) {}
+const state = { v: VARIANTS[0], i: 0, old: true, patches: true, nums: true };
+try { const s = JSON.parse(localStorage.getItem('plans-state') || '{}'); if (Number.isInteger(s.i) && s.i < DATA.length) state.i = s.i; if (VARIANTS.includes(s.v)) state.v = s.v; for (const k of ['old','patches','nums']) if (typeof s[k] === 'boolean') state[k] = s[k]; } catch (e) {}
 const save = () => { try { localStorage.setItem('plans-state', JSON.stringify(state)); } catch (e) {} };
 
 function niceStep(span) { const raw = span / 6, p = Math.pow(10, Math.floor(Math.log10(raw))); const m = raw / p; return (m < 1.5 ? 1 : m < 3.5 ? 2 : m < 7.5 ? 5 : 10) * p; }
@@ -177,6 +194,7 @@ function topView(s) {
   s.surfaces.forEach((v, k) => {
     const t = zmax > zmin ? (zmean(v) - zmin) / (zmax - zmin) : 0.5;
     svg.append(el('polygon', { points: v.map(p => `${p[0]},${-p[1]}`).join(' '), fill: 'var(--surf)', 'fill-opacity': 0.3 + 0.55 * t, stroke: 'var(--surf-edge)', 'stroke-width': 1, 'vector-effect': 'non-scaling-stroke' }, [el('title', {}, [`surface ${k}, hauteur ${fmt(Math.min(...v.map(p => p[2])), 2)} à ${fmt(Math.max(...v.map(p => p[2])), 2)} m`])]));
+    if (s.surfaces.length > 8) return; // many narrow surfaces (stairs): labels would pile up, the hover title has them
     const cx = v.reduce((a, p) => a + p[0], 0) / v.length, cy = v.reduce((a, p) => a + p[1], 0) / v.length;
     const tx = el('text', { x: cx, y: -cy, 'text-anchor': 'middle', 'font-size': fs * 0.95, style: 'opacity:.85' }); { const lo = Math.min(...v.map(p => p[2])), hi = Math.max(...v.map(p => p[2])); tx.textContent = `#${k}` + (zmax > zmin || hi - lo > 0.01 ? (hi - lo > 0.01 ? `  z=${fmt(lo, 2)}→${fmt(hi, 2)}` : `  z=${fmt(lo, 2)}`) : ''); } svg.append(tx);
   });
@@ -225,11 +243,11 @@ function sideView(s) {
 
 function renderNav() {
   const nav = document.getElementById('nav'); nav.replaceChildren();
-  DATA.forEach((s, i) => { const b = el('button', { type: 'button', 'aria-current': String(i === state.i), class: s.found ? '' : 'none' }, [el('span', {}, [s.name]), el('span', { class: 'n' }, [s.found ? `${s.path.length - 1} pas` : 'sans chemin'])]); b.onclick = () => { state.i = i; save(); render(); }; nav.append(b); });
+  DATA.forEach((_, i) => { const s = view(i); const b = el('button', { type: 'button', 'aria-current': String(i === state.i), class: s.found ? '' : 'none' }, [el('span', {}, [s.name]), el('span', { class: 'n' }, [s.found ? `${s.path.length - 1} pas` : 'sans chemin'])]); b.onclick = () => { state.i = i; save(); render(); }; nav.append(b); });
 }
 
 function renderStage() {
-  const s = DATA[state.i], st = document.getElementById('stage'); st.replaceChildren();
+  const s = view(state.i), st = document.getElementById('stage'); st.replaceChildren();
   const h = el('h2', {}, [s.name, el('span', { class: 'pill ' + (s.found ? 'ok' : 'bad') }, [s.found ? 'chemin trouvé' : 'aucun chemin']), el('span', { class: 'pill ' + (s.qp ? 'ok' : 'bad') }, [s.qp ? 'QP résolu' : (s.found ? 'QP en échec' : 'QP non lancé')])]);
   st.append(h);
   const wn = walked(newFeet(s)), wo = walked(s.old.feet);
@@ -239,12 +257,14 @@ function renderStage() {
   stat('Expansions', String(s.expansions), s.old.new_scene ? '' : `ancien ${s.old.exp}`);
   stat('Recherche', fmt(s.search_ms) + ' ms', s.old.new_scene ? '' : `ancien ${fmt(s.old.ms)} ms`);
   stat('QP', s.found ? fmt(s.qp_ms, 2) + ' ms' : '–', s.old.qp ? 'ancien QP résolu' : (s.old.found ? 'ancien QP en échec' : ''));
+  stat('Rotation totale', s.found ? fmt(rotation(s), 0) + '°' : '–', '');
   stat('Distance parcourue', wn ? fmt(wn, 2) + ' m' : '–', wo ? `ancien ${fmt(wo, 2)} m` : '');
   st.append(dl);
   const tb = el('div', { class: 'toolbar' });
   const tg = el('div', { class: 'toggles' });
   [['old', 'Plan ancien'], ['patches', 'Zones d\'appui'], ['nums', 'Numéros']].forEach(([k, l]) => { const id = 'tg-' + k; const inp = el('input', { type: 'checkbox', id }); inp.checked = state[k]; inp.onchange = () => { state[k] = inp.checked; save(); renderPlots(); }; tg.append(el('label', { for: id }, [inp, l])); });
   tb.append(tg);
+  if (VARIANTS.length > 1) { const sel = el('div', { class: 'toggles', role: 'radiogroup', 'aria-label': 'Coût' }); VARIANTS.forEach((v, k) => { const id = 'var-' + k; const inp = el('input', { type: 'radio', name: 'variant', id }); inp.checked = v === state.v; inp.onchange = () => { state.v = v; save(); render(); }; sel.append(el('label', { for: id }, [inp, v])); }); tb.append(sel); }
   const key = (c, t) => el('span', { class: 'key' }, [el('i', { style: `background:var(--${c})` }), t]);
   tb.append(key('left', 'pied gauche'), key('right', 'pied droit'), key('old', 'ancien (pointillés)'));
   st.append(tb);
@@ -253,7 +273,7 @@ function renderStage() {
 }
 
 function renderPlots() {
-  const s = DATA[state.i];
+  const s = view(state.i);
   const top = document.getElementById('plot-top'); top.replaceChildren(topView(s), el('div', { class: 'cap' }, ['Vue de dessus, mètres. Les surfaces sont rétrécies de la marge du pied (là où le centre du pied peut se poser) ; teinte plus foncée = plus haut. Pied dessiné 22 × 12 cm, indicatif ; le trait clair marque l\'avant du pied. Cercle vert = but.']));
   const sv = sideView(s), side = document.getElementById('plot-side');
   if (sv) { side.hidden = false; side.replaceChildren(sv.svg, el('div', { class: 'cap' }, [sv.cap])); } else side.hidden = true;
@@ -264,7 +284,8 @@ function renderTable() {
   const head = ['Scénario', 'Pas', 'Pas ancien', 'Expansions', 'Ancien', 'Recherche ms', 'Ancien ms', 'Rapport', 'Parcouru m', 'Ancien m', 'QP'];
   t.append(el('thead', {}, [el('tr', {}, head.map(h => el('th', {}, [h])))]));
   const tb = el('tbody'); let tn = 0, to = 0;
-  DATA.forEach((s, i) => {
+  DATA.forEach((_, i) => {
+    const s = view(i);
     const wn = walked(newFeet(s)), wo = walked(s.old.feet), r = s.search_ms / s.old.ms; const nw = s.old.new_scene; if (s.found && !nw) { tn += s.search_ms; to += s.old.ms; }
     const cells = [s.name, s.found ? s.path.length - 1 : '–', s.old.found ? s.old.nodes.length - 1 : '–', s.expansions, nw ? '–' : s.old.exp, fmt(s.search_ms), nw ? '–' : fmt(s.old.ms), (s.found && !nw ? fmt(r, 2) + '×' : '–'), wn ? fmt(wn, 2) : '–', wo ? fmt(wo, 2) : '–', s.found ? (s.qp ? (s.old.qp ? 'ok' : 'ok (ancien : échec)') : 'échec') : '–'];
     const tr = el('tr', { class: i === state.i ? 'sel' : '' }, cells.map((c, j) => { const td = el('td', j === 7 && s.found && !nw ? { class: r > 1.15 ? 'warn' : 'good' } : {}); td.textContent = String(c); return td; }));
@@ -280,6 +301,6 @@ render();
 """
 
 if __name__ == "__main__":
-    if len(sys.argv) != 4:
+    if len(sys.argv) < 5 or len(sys.argv) % 2 != 1:
         sys.exit(__doc__)
-    main(*sys.argv[1:])
+    main(sys.argv[1], sys.argv[2], list(zip(sys.argv[3::2], sys.argv[4::2])))
