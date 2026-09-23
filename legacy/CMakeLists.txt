@@ -6,7 +6,7 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 project(
-  nas
+  nas_legacy
   VERSION 1.0
   LANGUAGES C CXX
 )
@@ -101,8 +101,18 @@ target_link_libraries(footstep_planner_lib PRIVATE
 
 # Add executables
 add_executable(nas_plan src/nas_plan.cpp)
-add_executable(test_bench_operations test_bench_operations.cpp)
-add_executable(test_print_paths test_print_paths.cpp)
+
+# test_bench_operations.cpp / test_print_paths.cpp are the repo owner's own scratch tools, never
+# committed and never moved by tooling — they logically belong next to this legacy tree (which is
+# what they exercise) but are only picked up here if/when the owner relocates them here themselves.
+# Guarded so this file configures cleanly whether or not that has happened yet.
+if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/test_bench_operations.cpp)
+  add_executable(test_bench_operations test_bench_operations.cpp)
+endif()
+if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/test_print_paths.cpp)
+  add_executable(test_print_paths test_print_paths.cpp)
+endif()
+
 add_executable(old_qp_check tests/old_qp_check.cpp)
 
 # Old QP started cold vs warm (tests/old_qp_warmstart.cpp): a patched COPY of src/footstep_planner.cpp is
@@ -132,29 +142,37 @@ target_link_libraries(nas_plan PRIVATE
 )
 
 # Enable VTK module autoinit for all executables
+set(VTK_AUTOINIT_TARGETS nas_plan old_qp_check old_qp_warmstart)
+if(TARGET test_bench_operations)
+  list(APPEND VTK_AUTOINIT_TARGETS test_bench_operations)
+endif()
 vtk_module_autoinit(
-  TARGETS nas_plan test_bench_operations old_qp_check old_qp_warmstart
+  TARGETS ${VTK_AUTOINIT_TARGETS}
   MODULES ${VTK_LIBRARIES}
 )
 
 # Link libraries for bench operations
-target_link_libraries(test_bench_operations PRIVATE
-    utils_lib
-    node_lib
-    surface_lib
-    geometry_lib
-    CGAL::CGAL
-    Boost::boost
-)
+if(TARGET test_bench_operations)
+  target_link_libraries(test_bench_operations PRIVATE
+      utils_lib
+      node_lib
+      surface_lib
+      geometry_lib
+      CGAL::CGAL
+      Boost::boost
+  )
+endif()
 
-target_link_libraries(test_print_paths PRIVATE
-    utils_lib
-    node_lib
-    surface_lib
-    geometry_lib
-    CGAL::CGAL
-    Boost::boost
-)
+if(TARGET test_print_paths)
+  target_link_libraries(test_print_paths PRIVATE
+      utils_lib
+      node_lib
+      surface_lib
+      geometry_lib
+      CGAL::CGAL
+      Boost::boost
+  )
+endif()
 
 # Feasibility check of the rewritten CASSR's plans with the old footstep QP (tests/old_qp_check.cpp).
 target_link_libraries(old_qp_check PRIVATE
