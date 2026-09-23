@@ -7,7 +7,7 @@ But de ce fichier : reprendre exactement où on s'est arrêté si la session s'i
 ## Où on en est là, maintenant
 
 **Étape courante : CASSR complet et validé. Refactor 8d terminé (8d-1 à 8d-6).**
-**Prochaine action : phase 9 (`config/` — RobotModel/Scenario/PlannerConfig runtime, migration d'`environments.hpp`, + import de scène STL). Phase 6 (NAS) repoussée en dernier, voir décision ci-dessous.
+**Prochaine action : 9c (`PlannerConfig`, chargement JSON pour `AstarSearchConfig`/`ExpansionParams`/`FootstepQPConfig`) ou 9d (import STL). Phase 6 (NAS) repoussée en dernier, voir décision ci-dessous.
 
 **Décision (2026-09-18, suite)** : NAS (phase 6) mis de côté explicitement pour l'instant par l'utilisateur — on ne teste pas NAS à ce stade, indépendamment du blocage antecedent ci-dessous. Conséquence : le **Nettoyage final est différé** aussi (suppose l'ancien code entièrement remplacé, NAS inclus). On continue sur 8d puis 9/10/11/12/13 (pas NAS-dépendants), NAS repoussé en tout dernier.
 
@@ -49,7 +49,12 @@ Rien n'a encore été créé dans le repo pour le cœur de la réécriture (pas 
   - [x] 8d-5. Cohérence de nommage/style — **fait (2026-09-18)**, rien à corriger : conventions déjà cohérentes de bout en bout (PascalCase types/enums, snake_case fonctions/variables, suffixe `_` membres privés, fermeture de namespace uniforme, ordre d'include uniforme, nommage CMake `nas_<couche>_<module>[_tests]`). Écart réel trouvé en marge (documentation, pas nommage) : **aucun des 8 modules n'a de README.md**, malgré l'engagement "documentation continue" du plan — pas rattrapé ici (hors scope de 8d-5), à faire comme tâche à part.
   - [x] 8d-6. `ctest` complet après chaque sous-étape — **fait**, 9/9 tests passent après chaque sous-étape (8d-1, 8d-2, 8d-4) et au checkpoint final de clôture de 8d.
 - [x] 8e. Rattrapage README par module — **fait (2026-09-18)**, un `README.md` par module (`core/geometry`, `core/surface`, `core/node`, `core/reachability`, `core/expansion`, `planners/astar_search`, `footstep_qp`, `tests/fixtures`) : rôle/périmètre, API publique, dépendances, comment tester isolément.
-- [ ] 9. `config/`
+- [ ] 9. `config/` — **9a/9b/9e faits (2026-09-18)**, reste 9c (`PlannerConfig`, chargement JSON) et 9d (import STL)
+  - [x] 9a. `RobotModel` (`foot_length`/`foot_width`/`com_z_height`, défauts = ancien `constants.hpp`)
+  - [x] 9b. `Scenario` + registre — 11 scènes d'`environments.hpp` migrées verbatim dans `config::load_scenario(name, robot_model)`
+  - [ ] 9c. `PlannerConfig` — bundle chargé depuis JSON pour `AstarSearchConfig`/`ExpansionParams`/`FootstepQPConfig`
+  - [ ] 9d. Import de scène depuis STL
+  - [x] 9e. Tests — 6 tests (`config/tests/test_scenario_library.cpp`), dont comparaison de centroïde vs vertices bruts sur `NarrowPassage`/`ThreePathsNAS`
 - [ ] 10. `apps/`
 - [ ] 11. `viz/` découplée
 - [ ] 12. `bindings/` Python
@@ -77,6 +82,7 @@ _(aucune pour l'instant — tout ce qui a été tranché est dans PLAN.md)_
 
 ## Journal
 
+- **2026-09-18** (suite) : phase 9a/9b/9e faites — module `config/` créé : `RobotModel` (foot_length/foot_width/com_z_height, défauts Talos de l'ancien `constants.hpp`) et `Scenario`/`load_scenario(name, robot_model)`, avec les 11 scènes brutes d'`environments.hpp` (`Stairs`, `TwoFlatSurfaces`, `Flat`, `LongStairs`, `LongLongStairs`, `LongStairsComplete`, `LongStairsExp`, `ThreePathsScene`, `Stairs_Up_Down`, `ThreePathsNAS`, `NarrowPassage`) migrées verbatim dans `config/src/scenario_library.cpp`. Distinct de `tests/fixtures` (qui reste le harnais de test, 2 scénarios + `AstarSearchConfig`) : `config/` est la version production, sans config de recherche attachée, couvrant tout ce que l'ancien code savait charger. 6 tests écrits, dont une vérification par centroïde (calculé avant rétrécissement par la taille du pied, donc directement comparable aux vertices bruts de l'ancien fichier) sur `NarrowPassage`/`ThreePathsNAS` — pas juste "ça compile". `ctest` (config + surface + geometry) : 3/3 au vert. Reste en phase 9 : 9c (`PlannerConfig` chargé depuis JSON) et 9d (import de scène STL).
 - **2026-09-18** (suite) : rattrapage README ajouté au plan comme étape 8e (avant la phase 9, pour ne pas empiler encore plus de modules sans doc). Perf recomparée après le fix 8d-4 (`expand_node`) : `NarrowPassage` search 146.5±12.7ms (ratio 0.917x vs golden), `ThreePathsNAS` search 64.4±3.7ms (ratio 0.945x), QP `ThreePathsNAS` 0.911ms vs golden 41.5ms (~46x) — cohérent avec les mesures précédentes, pas de régression.
 - **2026-09-18** (suite) : phase 8d-5 faite, refactor 8d terminé — audit de nommage/style sur tous les modules neufs (types/enums PascalCase, fonctions/variables snake_case, membres privés suffixés `_`, fermeture de namespace/ordre d'include/nommage CMake uniformes) : rien à corriger, contrairement à 8d-1 rien n'a été copié verbatim de l'ancien code ici. Seul écart trouvé : aucun README par module (engagement "documentation continue" du plan pas tenu jusqu'ici) — noté dans PLAN.md, pas traité maintenant (hors scope nommage/style, tâche à part). `ctest` final de clôture du refactor 8d : 9/9 tests toujours au vert. Décision utilisateur en parallèle : phase 6 (NAS) mise de côté explicitement, pas juste bloquée par le fichier antecedent manquant — donc nettoyage final différé aussi. Passage à la phase 9 (`config/`).
 - **2026-09-18** (suite) : phase 8d-4 faite — audit const-correctness/passage par valeur sur `core/*`, `planners/astar_search`, `footstep_qp`. Un seul vrai défaut trouvé : `expand_node` (`core/expansion/src/expansion.cpp`) copiait le `Polyhedron` de `reachability.query()` par valeur systématiquement, même sans rotation (coûteux : reconstruction d'une structure halfedge CGAL à chaque expansion de nœud). Corrigé par référence + pointeur bascule uniquement en cas de rotation. Le reste du code passe déjà tout en `const&` correctement ; vérifié que le pass-by-value+`std::move` du constructeur `AstarSearch` est l'idiome sink standard, pas un défaut (contrairement à ce que notait PLAN.md avant vérification). `ctest` (9 tests) OK. Committé (`1fae586`). Passage à 8d-5.
