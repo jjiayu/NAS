@@ -1,5 +1,9 @@
 #pragma once
 
+#include <CGAL/Simple_cartesian.h>
+#include <CGAL/Polyhedron_3.h>
+#include <CGAL/Plane_3.h>
+#include <CGAL/Polygon_2.h>
 #include <vtkSmartPointer.h>
 #include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
@@ -15,6 +19,12 @@
 #include <vtkCamera.h>
 #include <vector>
 #include "types.hpp"
+
+typedef CGAL::Simple_cartesian<double> Kernel;
+typedef Kernel::Point_3 Point_3;
+typedef Kernel::Plane_3 Plane_3;
+typedef CGAL::Polyhedron_3<Kernel> Polyhedron;
+typedef CGAL::Polygon_2<Kernel> Polygon_2;
 
 namespace nas {
 

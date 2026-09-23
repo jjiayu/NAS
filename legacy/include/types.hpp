@@ -1,6 +1,6 @@
 #pragma once
 
-#include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
+#include <CGAL/Simple_cartesian.h>
 #include <CGAL/Polyhedron_3.h>
 #include <CGAL/Polygon_2.h>
 #include <CGAL/Line_2.h>
@@ -18,9 +18,8 @@ namespace nas {
 // Forward declaration
 class Node;
 
-// Basic kernel — EPICK gives exact predicates (robust convex hull, orientation tests)
-// while keeping double-precision constructions (fast arithmetic)
-typedef CGAL::Exact_predicates_inexact_constructions_kernel Kernel;
+// Basic kernel
+typedef CGAL::Simple_cartesian<double> Kernel;
 
 // 3D types
 typedef CGAL::Polyhedron_3<Kernel> Polyhedron;

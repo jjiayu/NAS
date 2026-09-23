@@ -4,7 +4,6 @@
 #include <limits>
 #include <cmath>
 #include <numeric>
-#include <CGAL/Polyhedron_incremental_builder_3.h>
 #include <coal/collision_object.h>
 #include <coal/shape/geometric_shapes.h>
 #include <coal/shape/convex.h>
@@ -588,103 +587,5 @@ Polyhedron rotate_polyhedron_z(const Polyhedron& polytope, double yaw_angle) {
     return rotated_polytope;
 }
 
-// Helper: build a prism Polyhedron from ordered 2D hull vertices reprojected to 3D
-template <class HDS>
-class Build_prism : public CGAL::Modifier_base<HDS> {
-    std::vector<Point_3> top_, bot_;
-public:
-    Build_prism(std::vector<Point_3> top, std::vector<Point_3> bot)
-        : top_(std::move(top)), bot_(std::move(bot)) {}
-    void operator()(HDS& hds) {
-        CGAL::Polyhedron_incremental_builder_3<HDS> B(hds, true);
-        const int n = static_cast<int>(top_.size());
-        // 2n vertices, n side quads (split into 2 tris each) + 2 cap fans = 2n + 2*(n-2) = 4n-4 tris
-        // Each tri = 1 facet. Total facets = 4n - 4. Total halfedges = 3*(4n-4) but shared → upper bound 12n.
-        B.begin_surface(2 * n, 2 * n + 2 * (n - 2), 0);
-        // Add vertices: 0..n-1 = top, n..2n-1 = bottom
-        for (int i = 0; i < n; ++i) B.add_vertex(top_[i]);
-        for (int i = 0; i < n; ++i) B.add_vertex(bot_[i]);
-        // Top cap fan (CCW when seen from outside, i.e. along +normal)
-        for (int i = 1; i < n - 1; ++i) {
-            B.begin_facet();
-            B.add_vertex_to_facet(0);
-            B.add_vertex_to_facet(i);
-            B.add_vertex_to_facet(i + 1);
-            B.end_facet();
-        }
-        // Bottom cap fan (reversed winding)
-        for (int i = 1; i < n - 1; ++i) {
-            B.begin_facet();
-            B.add_vertex_to_facet(n);
-            B.add_vertex_to_facet(n + i + 1);
-            B.add_vertex_to_facet(n + i);
-            B.end_facet();
-        }
-        // Side quads as 2 triangles each
-        // Top cap has halfedge i→j, so side face needs j→i
-        for (int i = 0; i < n; ++i) {
-            int j = (i + 1) % n;
-            // Triangle 1: (j, i, n+i)
-            B.begin_facet();
-            B.add_vertex_to_facet(j);
-            B.add_vertex_to_facet(i);
-            B.add_vertex_to_facet(n + i);
-            B.end_facet();
-            // Triangle 2: (j, n+i, n+j)
-            B.begin_facet();
-            B.add_vertex_to_facet(j);
-            B.add_vertex_to_facet(n + i);
-            B.add_vertex_to_facet(n + j);
-            B.end_facet();
-        }
-        B.end_surface();
-    }
-};
-
-Polyhedron convex_hull_3_from_coplanar_points(const std::vector<Point_3>& points, const Vector_3& normal) {
-    // CGAL::convex_hull_3 asserts on coplanar input (Simple_cartesian kernel).
-    // Strategy: project to 2D, compute convex hull there, reproject to 3D,
-    // then build a thin prism polyhedron directly (no convex_hull_3 call).
-
-    Vector_3 n = normal / std::sqrt(normal.squared_length());
-
-    // Build a local 2D frame on the plane
-    Vector_3 t = (std::abs(n.x()) < 0.9) ? Vector_3(1, 0, 0) : Vector_3(0, 1, 0);
-    Vector_3 u = CGAL::cross_product(n, t);
-    u = u / std::sqrt(u.squared_length());
-    Vector_3 v = CGAL::cross_product(n, u);
-
-    // Centroid as local origin
-    Point_3 origin = get_centroid(points);
-
-    // Project to 2D
-    std::vector<Point_2> pts2d;
-    pts2d.reserve(points.size());
-    for (const auto& p : points) {
-        Vector_3 d = p - origin;
-        pts2d.emplace_back(d * u, d * v);
-    }
-
-    // 2D convex hull (robust, gives ordered vertices)
-    std::vector<Point_2> hull2d;
-    CGAL::convex_hull_2(pts2d.begin(), pts2d.end(), std::back_inserter(hull2d));
-
-    // Reproject to 3D
-    const double eps = 1e-6;
-    std::vector<Point_3> top, bot;
-    top.reserve(hull2d.size());
-    bot.reserve(hull2d.size());
-    for (const auto& p2 : hull2d) {
-        Point_3 p3 = origin + p2.x() * u + p2.y() * v;
-        top.push_back(p3 + eps * n);
-        bot.push_back(p3 - eps * n);
-    }
-
-    // Build polyhedron directly — no convex_hull_3 needed
-    Polyhedron poly;
-    Build_prism<Polyhedron::HalfedgeDS> builder(std::move(top), std::move(bot));
-    poly.delegate(builder);
-    return poly;
-}
 
 } // namespace nas

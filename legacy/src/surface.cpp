@@ -52,27 +52,27 @@ Surface::Surface(const std::vector<Point_3>& points, int& surface_idx) {
     // Convert back to 3D
     vertices_3d = transform_2d_points_to_world(vertices_2d, transform_to_3d);
 
-    // Create 3D polyhedron (vertices are coplanar, use safe wrapper)
-    polyhedron_3d = convex_hull_3_from_coplanar_points(vertices_3d, norm);
+    // Create 3D polyhedron
+    CGAL::convex_hull_3(vertices_3d.begin(), vertices_3d.end(), polyhedron_3d);
 
     // Print Surface Information
-    // std::cout << "\n- Surface Information " << std::endl;
-    // std::cout << std::fixed << std::setprecision(2);
-    // std::cout << "  - Surface ID: " << surface_id << std::endl;
-    // std::cout << "  - Plane: " << plane << std::endl;
-    // std::cout << "  - Norm: " << norm << std::endl;
-    // std::cout << "  - Centroid: " << centroid << std::endl;
-    // std::cout << "  - Transform Matrix:" << std::endl;
-    // std::cout << "    [" << std::setw(10) << transform_to_3d.m(0,0) << " " << std::setw(10) << transform_to_3d.m(0,1) << " " << std::setw(10) << transform_to_3d.m(0,2) << " " << std::setw(10) << transform_to_3d.m(0,3) << "]" << std::endl;
-    // std::cout << "    [" << std::setw(10) << transform_to_3d.m(1,0) << " " << std::setw(10) << transform_to_3d.m(1,1) << " " << std::setw(10) << transform_to_3d.m(1,2) << " " << std::setw(10) << transform_to_3d.m(1,3) << "]" << std::endl;
-    // std::cout << "    [" << std::setw(10) << transform_to_3d.m(2,0) << " " << std::setw(10) << transform_to_3d.m(2,1) << " " << std::setw(10) << transform_to_3d.m(2,2) << " " << std::setw(10) << transform_to_3d.m(2,3) << "]" << std::endl;
-    // std::cout << "    [" << std::setw(10) << 0.0 << " " << std::setw(10) << 0.0 << " " << std::setw(10) << 0.0 << " " << std::setw(10) << 1.0 << "]" << std::endl;
-    // std::cout << "  - 3D Vertices:" << std::endl;
-    // for (const auto& vertex : vertices_3d) {
-    //     std::cout << "    (" << std::setw(8) << vertex.x() << ", " 
-    //                          << std::setw(8) << vertex.y() << ", " 
-    //                          << std::setw(8) << vertex.z() << ")" << std::endl;
-    // }
+    std::cout << "\n- Surface Information " << std::endl;
+    std::cout << std::fixed << std::setprecision(2);
+    std::cout << "  - Surface ID: " << surface_id << std::endl;
+    std::cout << "  - Plane: " << plane << std::endl;
+    std::cout << "  - Norm: " << norm << std::endl;
+    std::cout << "  - Centroid: " << centroid << std::endl;
+    std::cout << "  - Transform Matrix:" << std::endl;
+    std::cout << "    [" << std::setw(10) << transform_to_3d.m(0,0) << " " << std::setw(10) << transform_to_3d.m(0,1) << " " << std::setw(10) << transform_to_3d.m(0,2) << " " << std::setw(10) << transform_to_3d.m(0,3) << "]" << std::endl;
+    std::cout << "    [" << std::setw(10) << transform_to_3d.m(1,0) << " " << std::setw(10) << transform_to_3d.m(1,1) << " " << std::setw(10) << transform_to_3d.m(1,2) << " " << std::setw(10) << transform_to_3d.m(1,3) << "]" << std::endl;
+    std::cout << "    [" << std::setw(10) << transform_to_3d.m(2,0) << " " << std::setw(10) << transform_to_3d.m(2,1) << " " << std::setw(10) << transform_to_3d.m(2,2) << " " << std::setw(10) << transform_to_3d.m(2,3) << "]" << std::endl;
+    std::cout << "    [" << std::setw(10) << 0.0 << " " << std::setw(10) << 0.0 << " " << std::setw(10) << 0.0 << " " << std::setw(10) << 1.0 << "]" << std::endl;
+    std::cout << "  - 3D Vertices:" << std::endl;
+    for (const auto& vertex : vertices_3d) {
+        std::cout << "    (" << std::setw(8) << vertex.x() << ", " 
+                             << std::setw(8) << vertex.y() << ", " 
+                             << std::setw(8) << vertex.z() << ")" << std::endl;
+    }
 }
 
 void Surface::establish_surface_coordinate_system(const std::vector<Point_3>& points) {

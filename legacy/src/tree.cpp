@@ -181,7 +181,14 @@ std::vector<Node*> Tree::get_children(Node* parent) {
                 Polygon_2 polygon_2d_intersect_result;
                 CGAL::convex_hull_2(polygon_2d_intersect_pts.begin(), polygon_2d_intersect_pts.end(), std::back_inserter(polygon_2d_intersect_result));
                 std::vector<Point_3> polytope_surf_3d_intersect_pts = transform_2d_points_to_world(polygon_2d_intersect_pts, surface.transform_to_3d);
-                Polyhedron polytope_surf_3d_intersect_polygon = convex_hull_3_from_coplanar_points(polytope_surf_3d_intersect_pts, surface.norm);
+                Polyhedron polytope_surf_3d_intersect_polygon;        // Create intersection polygon (just for visualization)
+                // //print the coordiinate of the points
+                // std::cout << "Size of polytope_surf_3d_intersect_pts: " << polytope_surf_3d_intersect_pts.size() << std::endl;
+                // for (const auto& pt : polytope_surf_3d_intersect_pts) {
+                //     std::cout << "Point: " << pt << std::endl;
+                // }
+
+                CGAL::convex_hull_3(polytope_surf_3d_intersect_pts.begin(), polytope_surf_3d_intersect_pts.end(), polytope_surf_3d_intersect_polygon);
                 
                 // Visualization
                 // auto renderWindow = Visualizer::create_figure("3D Polytope-Surface Intersection Visualization"); 
