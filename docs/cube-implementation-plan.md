@@ -169,11 +169,21 @@ construites sur le même modèle que le bloc `hrep` existant (lignes ~90-101)
 et `generate_surface_constraint` (déjà lu, déjà réutilisable tel quel pour
 `c ∈ S̃_j`). **Ne pas étendre la marge `α` aux nouvelles contraintes sans
 décision explicite** — laisser α à 0 sur les lignes cube pour l'instant,
-trancher séparément (§6 des questions ouvertes). Nouveau scénario golden
-avec un passage prouvé infaisable sans cube (vérifié en confirmant d'abord
-"pas de chemin" avec le planner actuel) et faisable avec, jusqu'au QP
-résolu et faisable. Vérif finale : suite golden existante toujours 100%
-verte + ce nouveau scénario dedans.
+trancher séparément (§6 des questions ouvertes). Scénario golden : **`StairsGap`**
+(ajoutée sur cette branche, `config/scenario_library.cpp`), le `Stairs` existant
+avec la marche 1 retirée. Doit être chargée avec la reachability **`*_clamp_z25.obj`**
+(`talosReachability/data/reachability_constraints/`, ajoutée sur cette branche :
+X≤0.2, Y≤0.3, Z≤0.25 m — la reachability par défaut est trop généreuse pour ce
+scénario, voir mesure ci-dessous), pas les `.obj` par défaut. Mesuré avant
+d'écrire le code du cube (standalone `AstarSearch`, `max_expansions=3000`,
+sous `ulimit -v 3GB` + `timeout`) : `Stairs` intact reste faisable sous cette
+reachability (25 expansions, comme sous la reachability par défaut) ; `StairsGap`
+reste sans solution (3000/3000 expansions, ~90x le coût de `Stairs` intact) —
+sous la reachability par défaut (non clampée), `StairsGap` restait faisable
+même en retirant *deux* marches (0.4m), la rotation du pied compensant
+largement le trou : donc bien la reachability clampée+Z25 qui rend le
+scénario probant, pas une propriété de la géométrie seule. Vérif finale :
+suite golden existante toujours 100% verte + ce nouveau scénario dedans.
 
 **Étape 7 — Docs.** Entrée dans `docs/paper-deltas.md` (extension, pas
 correction du papier), pointant vers `cube-extension-spec.md` et ce plan,
@@ -197,10 +207,9 @@ Reprises du §8 de la spec, plus celles trouvées en lisant le code :
   connue" explicite dans le code v1, pas une omission silencieuse.
   L'obstruction et la reprise se recoupent : traiter les deux plus tard.
   ensemble si besoin.
-- **Un seul cube actif à la fois** : confirmé par le §6 de la spec
-  (complexité `2+2n`). `cube_state`/`cube` en scalaire sur `Node` (pas une
-  collection) verrouille cette limite au niveau du type — à confirmer que
-  c'est bien voulu pour le v1.
+- **Un seul cube actif à la fois** : **confirmé pour le v1** (échange du
+  2026-09-23). `cube_state`/`cube` en scalaire sur `Node` (pas une collection)
+  verrouille cette limite au niveau du type.
 - **Comment le robot a le cube "en main" au départ** : hors scope, le cube
   démarre `InHand` — à confirmer que le v1 ne modélise pas d'action de
   ramassage.

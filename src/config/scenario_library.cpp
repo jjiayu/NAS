@@ -30,6 +30,34 @@ const RawScenario kStairs = {
     {Point_3(1.2, -0.16, 0.4), Point_3(1.5, -0.16, 0.4), Point_3(1.5, 0.6, 0.4), Point_3(1.2, 0.6, 0.4)},
 };
 
+// Same as kStairs but with Step 1 removed: floor -> (gap) -> Step 2/3/4. Cube-
+// extension test scenario (see docs/cube-extension-spec.md /
+// docs/cube-implementation-plan.md): the gap is meant to be closed by placing
+// a cube in it, landing on top, then continuing up the remaining steps.
+//
+// Whether the gap is actually infeasible for a plain footstep depends on the
+// reachability data: the default quasi_flat_REDUCED polytopes are generous
+// enough (up to ~0.9m local Y, ~0.6m local Z once yaw is exploited) that even
+// two missing risers (0.4m) stay reachable directly -- measured empirically
+// with a standalone AstarSearch call before committing to this scenario, not
+// assumed. With the conservative *_clamp_z25.obj polytopes (X<=0.2, Y<=0.3,
+// Z<=0.25 -- talosReachability/data/reachability_constraints/), a single
+// missing step (0.2m rise, no intermediate surface) is infeasible (measured:
+// no path within 3000 expansions, ~90x what the intact Stairs scenario needs
+// under the same data). That is the reachability the cube golden test must
+// load explicitly (this scenario's own geometry doesn't encode a reachability
+// choice, same as every other scenario here).
+const RawScenario kStairsGap = {
+    // Floor
+    {Point_3(-1.8, -1., 0.0), Point_3(0.3, -1., 0.0), Point_3(0.3, 1., 0.0), Point_3(-1.8, 1., 0.0)},
+    // Step 2
+    {Point_3(0.6, -0.16, 0.2), Point_3(0.9, -0.16, 0.2), Point_3(0.9, 0.6, 0.2), Point_3(0.6, 0.6, 0.2)},
+    // Step 3
+    {Point_3(0.9, -0.16, 0.3), Point_3(1.2, -0.16, 0.3), Point_3(1.2, 0.6, 0.3), Point_3(0.9, 0.6, 0.3)},
+    // Step 4
+    {Point_3(1.2, -0.16, 0.4), Point_3(1.5, -0.16, 0.4), Point_3(1.5, 0.6, 0.4), Point_3(1.2, 0.6, 0.4)},
+};
+
 const RawScenario kTwoFlatSurfaces = {
     {Point_3(0.0, 0.0, 0.0), Point_3(5.45, 0.0, 0.0), Point_3(5.45, 1.0, 0.0), Point_3(0.0, 1.0, 0.0)},
     {Point_3(5.5, 0.0, 0.0), Point_3(7.0, 0.0, 0.0), Point_3(7.0, 1.0, 0.0), Point_3(5.5, 1.0, 0.0)},
@@ -268,6 +296,7 @@ const RawScenario kBoxRoomStairs = {
 const std::unordered_map<std::string, const RawScenario*>& registry() {
     static const std::unordered_map<std::string, const RawScenario*> kRegistry = {
         {"Stairs", &kStairs},
+        {"StairsGap", &kStairsGap},
         {"TwoFlatSurfaces", &kTwoFlatSurfaces},
         {"Flat", &kFlat},
         {"LongStairs", &kLongStairs},
