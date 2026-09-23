@@ -88,6 +88,27 @@ struct AstarSearchConfig {
     double goal_yaw_tolerance = 0.0;
     double goal_yaw_weight = 0.0;
 
+    // Cube-extension config (see docs/cube-extension-spec.md, docs/cube-implementation-plan.md).
+    // 0 (default) = extension entirely off: no cube actions are ever candidates, the search
+    // behaves exactly as before this extension existed. > 0 enables it: the search starts with
+    // the cube "in hand" (CubeState::InHand on the start node) and considers
+    // expand_cube_placement/expand_onto_cube as extra candidate actions alongside expand_node.
+    // Requires the reachability model passed to AstarSearch's constructor to also have a "Cube"
+    // entry for each stance foot (validated at construction, same style as goal_yaw_target's
+    // rotation_enabled check). v1 scope: at most one cube, used once (docs/cube-implementation-plan.md
+    // §4) -- expand_onto_cube always deactivates it immediately after a single on-cube step.
+    double cube_half_extent = 0.0;
+    double cube_height = 0.0;
+
+    // Edge costs for the two cube actions. Both default to step_weight's own default (1.0): a
+    // cube action costs as much as an ordinary step unless configured otherwise. Kept separate
+    // from step_weight itself (not reused directly) since the heuristic never rewards placing a
+    // cube (spec §5.4 -- it doesn't move the foot, so EPA-to-goal doesn't improve), so these are
+    // the only lever to make the search prefer/avoid using the cube when a plan is possible both
+    // ways.
+    double cube_place_cost = 1.0;
+    double cube_step_cost = 1.0;
+
     // Safety limit: the search gives up (empty path) after this many expansions. 0 = no limit.
     // Unweighted heuristics (Euclidean) can expand a very large number of nodes on a continuous
     // state space, and nodes are never freed during a search.

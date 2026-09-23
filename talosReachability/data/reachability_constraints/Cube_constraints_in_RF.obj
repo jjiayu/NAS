@@ -1,16 +1,33 @@
-# Hand-authored conservative box: K_cube placement reachability (moving=Cube).
-# Local frame = support foot frame, same convention as the LF/RF reachability data
-# (X lateral, Y forward, Z up), rotated into world by the same foot_frame_rotation.
-# c (cube base/contact point) reachable box: X in [-0.15,0.15], Y in [0.15,0.40], Z in [-0.05,0.10].
-# See docs/cube-implementation-plan.md Etape 1 -- placeholder, not derived from robot kinematics.
-v -0.150000 0.150000 -0.050000
-v -0.150000 0.150000 0.100000
-v -0.150000 0.400000 -0.050000
-v -0.150000 0.400000 0.100000
-v 0.150000 0.150000 -0.050000
-v 0.150000 0.150000 0.100000
-v 0.150000 0.400000 -0.050000
-v 0.150000 0.400000 0.100000
+# Hand-authored conservative box: K_cube placement reachability (moving=Cube, support=RF).
+# Local frame = support foot frame (X forward, Y lateral, Z up), rotated into world by the
+# same foot_frame_rotation as every other reachability polytope. Explicitly a placeholder
+# approximation, not derived from robot kinematics (docs/cube-implementation-plan.md).
+#
+# History, found by empirically validating against StairsGap rather than by construction:
+#  1. First version had forward on local Y, lateral on local X -- wrong for a yaw=0 foot in
+#     a corridor/staircase scenario (progress axis is world X): swapped, forward is X.
+#  2. Centered on the support foot (Y centered on 0) put the cube inside the real LF-in-RF/
+#     RF-in-LF reachability's own minimum ~0.19m lateral stance-width clearance: unreachable
+#     by EITHER foot afterward. Offset Y past that clearance, toward the side the OTHER foot
+#     (the one that will step onto it) naturally reaches: LF, y>0 for support=RF.
+#  3. A wide forward reach (X up to 0.4-0.45) overshot the real per-step reachability's own
+#     X range (roughly +/-0.33m): the stepping foot could never reach a cube placed further
+#     forward than a normal step could anyway. Narrowed to a modest forward range.
+#  4. On the real StairsGap scenario specifically, the floor surface's own (foot-eroded)
+#     boundary sits close to the start position (~0.19m away) -- a forward range starting
+#     too far out (e.g. [0.1,0.3]) put the WHOLE box past that edge, so no placement was
+#     ever valid there regardless of K_cube's own reach. Narrowed further, starting at 0.
+#
+# c (cube base/contact point) reachable box: X in [0.0,0.15] (forward), Y in [0.2,0.35]
+# (lateral, offset for stance clearance), Z in [-0.05,0.10] (vertical).
+v 0.000000 0.200000 -0.050000
+v 0.000000 0.200000 0.100000
+v 0.000000 0.350000 -0.050000
+v 0.000000 0.350000 0.100000
+v 0.150000 0.200000 -0.050000
+v 0.150000 0.200000 0.100000
+v 0.150000 0.350000 -0.050000
+v 0.150000 0.350000 0.100000
 f 1 3 4 2
 f 5 6 8 7
 f 1 2 6 5

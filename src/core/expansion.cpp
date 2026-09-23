@@ -4,6 +4,8 @@
 #include <CGAL/convex_hull_2.h>
 #include <algorithm>
 #include <cmath>
+#include <cstdio>
+#include <cstdlib>
 #include <stdexcept>
 
 namespace nas {
@@ -338,6 +340,15 @@ std::vector<Node*> expand_node(Node* parent,
 
             child->pred_surface_ids = parent->pred_surface_ids;
             child->pred_surface_ids[static_cast<size_t>(parent->stance_foot)].push_back({parent->surface_id});
+
+            // Preserve InHand across an ordinary step (the cube isn't placed by this
+            // action, so it doesn't get silently dropped while still being carried) --
+            // this loop is only ever reached with cube_state None, InHand or
+            // PlacedInactive (PlacedActive takes the tagged branch above), and for the
+            // pre-existing None case this is an exact no-op (child->cube_state already
+            // defaults to None), so every caller that predates the cube extension is
+            // completely unaffected.
+            child->cube_state = parent->cube_state;
 
             children.push_back(child);
         }

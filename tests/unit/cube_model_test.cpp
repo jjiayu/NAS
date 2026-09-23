@@ -42,15 +42,22 @@ int run_config_cube() {
     ReachabilityModel model = ReachabilityModel::load(entries);
     check(model.size() == 2, "loaded both Cube-in-LF and Cube-in-RF entries");
 
-    for (const char* support : {"LF", "RF"}) {
-        const Polyhedron& k_cube = model.query("Cube", support, ReachabilityDirection::Forward);
+    // LF and RF are mirrored in Y (not identical): the cube must be offset past the real
+    // reachability's own ~0.19m minimum lateral stance-width clearance, toward whichever
+    // side the OTHER foot (the one that will eventually step onto it) naturally reaches --
+    // +y when RF supports (LF steps), -y when LF supports (RF steps). Found empirically
+    // validating against StairsGap: a Y-centered box placed the cube inside that dead zone,
+    // unreachable by either foot (see docs/cube-implementation-plan.md).
+    struct Expected { const char* support; double y_min, y_max; };
+    for (const Expected& e : {Expected{"RF", 0.20, 0.35}, Expected{"LF", -0.35, -0.20}}) {
+        const Polyhedron& k_cube = model.query("Cube", e.support, ReachabilityDirection::Forward);
         long n_verts = std::distance(k_cube.vertices_begin(), k_cube.vertices_end());
-        check(n_verts == 8, std::string("Cube-in-") + support + " loads as the 8-vertex hand-authored box");
-        check(k_cube.is_closed(), std::string("Cube-in-") + support + " is a closed (valid) polyhedron");
+        check(n_verts == 8, std::string("Cube-in-") + e.support + " loads as the 8-vertex hand-authored box");
+        check(k_cube.is_closed(), std::string("Cube-in-") + e.support + " is a closed (valid) polyhedron");
 
-        // Sanity-check the conservative box bounds documented in the .obj file itself
-        // (X in [-0.15,0.15] lateral, Y in [0.15,0.40] forward, Z in [-0.05,0.10]):
-        // catches an accidental unit/scale mistake (e.g. cm instead of m) early.
+        // Sanity-check the conservative box bounds documented in the .obj file itself:
+        // catches an accidental unit/scale mistake (e.g. cm instead of m) early, and pins
+        // down the deliberate LF/RF Y-mirroring so it can't silently drift back to centered.
         double min_x = 1e9, max_x = -1e9, min_y = 1e9, max_y = -1e9, min_z = 1e9, max_z = -1e9;
         for (auto v = k_cube.vertices_begin(); v != k_cube.vertices_end(); ++v) {
             double x = CGAL::to_double(v->point().x());
@@ -60,12 +67,12 @@ int run_config_cube() {
             min_y = std::min(min_y, y); max_y = std::max(max_y, y);
             min_z = std::min(min_z, z); max_z = std::max(max_z, z);
         }
-        check(std::abs(min_x + 0.15) < 1e-9 && std::abs(max_x - 0.15) < 1e-9,
-              std::string("Cube-in-") + support + " X bounds match the documented [-0.15, 0.15]");
-        check(std::abs(min_y - 0.15) < 1e-9 && std::abs(max_y - 0.40) < 1e-9,
-              std::string("Cube-in-") + support + " Y bounds match the documented [0.15, 0.40]");
+        check(std::abs(min_x) < 1e-9 && std::abs(max_x - 0.15) < 1e-9,
+              std::string("Cube-in-") + e.support + " X (forward) bounds match the documented [0.0, 0.15]");
+        check(std::abs(min_y - e.y_min) < 1e-9 && std::abs(max_y - e.y_max) < 1e-9,
+              std::string("Cube-in-") + e.support + " Y (lateral) bounds match the documented, mirrored range");
         check(std::abs(min_z + 0.05) < 1e-9 && std::abs(max_z - 0.10) < 1e-9,
-              std::string("Cube-in-") + support + " Z bounds match the documented [-0.05, 0.10]");
+              std::string("Cube-in-") + e.support + " Z bounds match the documented [-0.05, 0.10]");
     }
 
     config::CubeConfig cube_cfg;

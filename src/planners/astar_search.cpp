@@ -152,12 +152,19 @@ AstarSearch::AstarSearch(std::vector<Surface> surfaces, ReachabilityModel reacha
                                      "false — every node's foot_yaw stays at 0 then, so any target other than 0 "
                                      "would be silently unreachable");
     }
+    if (config_.cube_half_extent > 0.0 &&
+        (!reachability_.has("Cube", "LF", ReachabilityDirection::Forward) || !reachability_.has("Cube", "RF", ReachabilityDirection::Forward))) {
+        throw std::invalid_argument("AstarSearch: cube_half_extent > 0 but the reachability model has no \"Cube\" "
+                                     "entry for LF and/or RF support — load Cube_constraints_in_{LF,RF}.obj alongside "
+                                     "the usual foot-in-foot entries to enable the cube extension");
+    }
     start_node_ = pool_.create();
     start_node_->patch_vertices = {config_.start_position};
     start_node_->stance_foot = config_.start_stance_foot;
     start_node_->centroid = config_.start_position;
     start_node_->foot_yaw = config_.expansion_params.rotation_enabled ? config_.start_foot_yaw : 0.0;
     start_node_->depth = 0;
+    start_node_->cube_state = config_.cube_half_extent > 0.0 ? CubeState::InHand : CubeState::None;
     // The start foot stands on some surface: give the start node that surface's frame (its normal
     // orients the reachability polytope of the first step). surface_id stays -1 (the start is not a
     // visited surface for the cycle detection). No surface within reach: flat.
@@ -252,16 +259,18 @@ void AstarSearch::search() {
 
         closed_index.insert(current_node);
 
-        std::vector<Node*> children = expand_node(current_node, surfaces_, reachability_,
-                                                   ReachabilityDirection::Forward, config_.expansion_params, pool_);
-
-        for (Node* child : children) {
+        // Shared by every action source below (expand_node, and -- when the cube
+        // extension is enabled -- expand_cube_placement/expand_onto_cube): same
+        // edge-cost formula (only the base action cost differs), same open/closed-set
+        // bookkeeping. Extracted so the cube actions don't duplicate this ~30-line block
+        // twice more (docs/cube-implementation-plan.md's search-integration step).
+        auto process_child = [&](Node* child, double base_cost) {
             if (closed_index.find(child) != nullptr) {
                 if (config_.on_child) config_.on_child(expansion_count_, *child, ChildAction::SkippedClosed);
-                continue;
+                return;
             }
 
-            double edge_cost = config_.step_weight;
+            double edge_cost = base_cost;
             if (config_.yaw_change_weight > 0.0 && config_.expansion_params.rotation_enabled) {
                 edge_cost += config_.yaw_change_weight * angdiff(child->foot_yaw, current_node->foot_yaw);
             }
@@ -305,6 +314,22 @@ void AstarSearch::search() {
                 // docs/paper-deltas.md.
             } else if (config_.on_child) {
                 config_.on_child(expansion_count_, *child, ChildAction::MergedWorse);
+            }
+        };
+
+        for (Node* child : expand_node(current_node, surfaces_, reachability_, ReachabilityDirection::Forward, config_.expansion_params, pool_)) {
+            process_child(child, config_.step_weight);
+        }
+
+        if (config_.cube_half_extent > 0.0) {
+            if (current_node->cube_state == CubeState::InHand) {
+                for (Node* child : expand_cube_placement(current_node, surfaces_, reachability_, config_.cube_half_extent, config_.expansion_params, pool_)) {
+                    process_child(child, config_.cube_place_cost);
+                }
+            } else if (current_node->cube_state == CubeState::PlacedActive) {
+                for (Node* child : expand_onto_cube(current_node, reachability_, config_.cube_height, config_.cube_half_extent, config_.expansion_params, pool_)) {
+                    process_child(child, config_.cube_step_cost);
+                }
             }
         }
     }

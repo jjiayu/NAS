@@ -86,10 +86,11 @@ int run_cube_expansion() {
 
         // The joint-state invariant this whole extension exists to preserve (spec §3.1,
         // docs/cube-implementation-plan.md §2): patch_vertices (x) and cube->vertices_3d
-        // (c) are index-aligned, and for every i, c_i - x_i lands inside K_cube (here,
-        // for a flat scene with foot_yaw=0, K_cube's own documented box bounds apply
-        // directly in world coordinates: X in [-0.15,0.15], Y in [0.15,0.40], Z in
-        // [-0.05,0.10] -- see talosReachability/.../Cube_constraints_in_RF.obj).
+        // (c) are index-aligned, and for every i, c_i - x_i lands inside K_cube (here, for
+        // a flat scene with foot_yaw=0 and stance_foot=Right, Cube_constraints_in_RF.obj's
+        // own documented box bounds apply directly in world coordinates: X in [0.0,0.15]
+        // forward, Y in [0.20,0.35] lateral (offset for stance clearance, see that file's
+        // header), Z in [-0.05,0.10]).
         check(child->patch_vertices.size() == child->cube->vertices_3d.size(),
               "patch_vertices (x) and cube->vertices_3d (c) are index-aligned (same size)");
 
@@ -98,7 +99,7 @@ int run_cube_expansion() {
             double dx = CGAL::to_double(child->cube->vertices_3d[i].x() - child->patch_vertices[i].x());
             double dy = CGAL::to_double(child->cube->vertices_3d[i].y() - child->patch_vertices[i].y());
             double dz = CGAL::to_double(child->cube->vertices_3d[i].z() - child->patch_vertices[i].z());
-            if (dx < -0.15 - 1e-6 || dx > 0.15 + 1e-6 || dy < 0.15 - 1e-6 || dy > 0.40 + 1e-6 || dz < -0.05 - 1e-6 || dz > 0.10 + 1e-6)
+            if (dx < -1e-6 || dx > 0.15 + 1e-6 || dy < 0.20 - 1e-6 || dy > 0.35 + 1e-6 || dz < -0.05 - 1e-6 || dz > 0.10 + 1e-6)
                 coupling_holds = false;
         }
         check(coupling_holds, "every c_i - x_i lands inside K_cube's documented box (the §3.1 coupling invariant)");
@@ -141,7 +142,7 @@ int run_cube_expansion() {
             bool still_within_original_cube_bounds = true;
             for (const auto& c : child->cube->vertices_3d) {
                 double x = CGAL::to_double(c.x()), y = CGAL::to_double(c.y()), z = CGAL::to_double(c.z());
-                if (x < -0.15 - 1e-6 || x > 0.15 + 1e-6 || y < 0.15 - 1e-6 || y > 0.40 + 1e-6 || z < -0.05 - 1e-6 || z > 0.10 + 1e-6)
+                if (x < -1e-6 || x > 0.15 + 1e-6 || y < 0.20 - 1e-6 || y > 0.35 + 1e-6 || z < -0.05 - 1e-6 || z > 0.10 + 1e-6)
                     still_within_original_cube_bounds = false;
             }
             check(still_within_original_cube_bounds, "transport: c stays within the original K_cube placement bounds (never modified, only carried)");
