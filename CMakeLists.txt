@@ -141,6 +141,7 @@ add_executable(test_auto_plot test_auto_plot.cpp)
 add_executable(test_bench_operations test_bench_operations.cpp)
 add_executable(test_print_paths test_print_paths.cpp)
 add_executable(golden_capture tests/golden_capture.cpp)
+add_executable(old_expansion_dump tests/old_expansion_dump.cpp)
 
 # Link libraries for first executable
 target_link_libraries(nas_plan PRIVATE
@@ -222,7 +223,7 @@ target_link_libraries(test_auto_plot PRIVATE
 
 # Enable VTK module autoinit for all executables
 vtk_module_autoinit(
-  TARGETS nas_plan astar_plan astar_grid_plan test_grid_visualization test_auto_plot test_bench_operations golden_capture
+  TARGETS nas_plan astar_plan astar_grid_plan test_grid_visualization test_auto_plot test_bench_operations golden_capture old_expansion_dump
   MODULES ${VTK_LIBRARIES}
 )
 
@@ -249,6 +250,22 @@ target_link_libraries(test_print_paths PRIVATE
 # astar_plan's dependency set since it drives the same AstarSearch/Tree/
 # FootstepPlanner classes, minus any actual VTK usage (headless capture).
 target_link_libraries(golden_capture PRIVATE
+    tree_lib
+    utils_lib
+    node_lib
+    surface_lib
+    geometry_lib
+    visualizer_lib
+    ${VTK_LIBRARIES}
+    CGAL::CGAL
+    astar_search_lib
+    footstep_planner_lib
+    casadi::casadi
+)
+
+# Differential-testing ground truth for the rewrite's core/expansion: calls the
+# old AstarSearch::get_children on real parent states and dumps exact results.
+target_link_libraries(old_expansion_dump PRIVATE
     tree_lib
     utils_lib
     node_lib

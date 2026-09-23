@@ -56,11 +56,18 @@ std::vector<Node*> expand_node(Node* parent,
             continue;
         }
 
+        // Only patch_polygon_2d is the convex hull of the clip output, as in
+        // the old get_children. patch_vertices, the polyhedron and the
+        // centroid (an average of these vertices) are built from the raw
+        // Sutherland-Hodgman points, near-collinear ones included: the old
+        // code keeps them, and the hull would drop some, shifting centroids
+        // by up to ~7cm and the polyhedron's edge-length sum (used as
+        // "perimeter", a node dedup key) - found by tests/golden_all's
+        // expansion differential test, see docs/paper-deltas.md.
         Polygon_2 final_hull_2d;
         CGAL::convex_hull_2(polygon_intersect_2d.begin(), polygon_intersect_2d.end(), std::back_inserter(final_hull_2d));
-        std::vector<Point_2> final_hull_pts(final_hull_2d.vertices_begin(), final_hull_2d.vertices_end());
 
-        std::vector<Point_3> patch_3d = transform_2d_points_to_world(final_hull_pts, surface.transform_to_3d);
+        std::vector<Point_3> patch_3d = transform_2d_points_to_world(polygon_intersect_2d, surface.transform_to_3d);
         Polyhedron patch_polyhedron = convex_hull_3_from_coplanar_points(patch_3d, surface.norm);
 
         if (params.cycle_detection_enabled &&

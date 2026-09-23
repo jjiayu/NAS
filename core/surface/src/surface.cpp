@@ -17,21 +17,13 @@ Surface::Surface(const std::vector<Point_3>& points, int surface_idx, double foo
     norm = plane.orthogonal_vector();
     norm = norm / std::sqrt(norm.squared_length());
 
-    // linear_least_squares_fitting_3 can return either of the two valid
-    // unit normals for the same physical plane (an implementation detail
-    // of the fit, not something geometrically meaningful) — pin it down
-    // deterministically so establish_surface_coordinate_system's local
-    // frame (and therefore vertices_2d/polygon_2d's winding, which
-    // compute_2d_polygon_intersection's Sutherland-Hodgman clip depends
-    // on) doesn't depend on which one the fit happens to produce.
-    // Convention: the normal's largest-magnitude component is positive.
-    double nx = CGAL::to_double(norm.x());
-    double ny = CGAL::to_double(norm.y());
-    double nz = CGAL::to_double(norm.z());
-    double dominant = (std::abs(nx) >= std::abs(ny) && std::abs(nx) >= std::abs(nz)) ? nx
-                     : (std::abs(ny) >= std::abs(nz))                                ? ny
-                                                                                      : nz;
-    if (dominant < 0.0) norm = -norm;
+    // norm keeps the raw sign the fit returned, exactly like the old code:
+    // it is passed to convex_hull_3_from_coplanar_points, whose prism
+    // triangulation - and therefore compute_polygon_perimeter, which sums
+    // *every polyhedron edge* including the triangulation diagonals - depends
+    // on it. Flipping it changed node perimeters (and the dedup keys built
+    // from them) versus the old code; found by tests/golden_all's
+    // expansion differential test, see docs/paper-deltas.md.
 
     centroid = get_centroid(points);
 
@@ -68,28 +60,36 @@ Surface::Surface(const std::vector<Point_3>& points, int surface_idx, double foo
 }
 
 void Surface::establish_surface_coordinate_system(const std::vector<Point_3>& points) {
-    // Project whichever world axis is *least* aligned with norm (smallest
-    // |component|), instead of always projecting world_x then world_y:
-    // projecting a fixed axis degenerates to the zero vector whenever norm
-    // happens to equal that axis exactly (x_axis or y_axis normalizes
-    // 0/0 -> NaN, silently poisoning the whole Surface). Every scenario
-    // in environments.hpp has a near-horizontal normal, which never hit
-    // this — found via 9d's STL import, where an arbitrary mesh's vertical
-    // faces (normal exactly (+-1,0,0) or (0,+-1,0)) do. See
-    // docs/paper-deltas.md. y_axis is then the exact cross product, not a
-    // second, separately-normalized Gram-Schmidt projection — orthonormal
-    // by construction, no separate degenerate case to worry about.
-    double abs_x = std::abs(CGAL::to_double(norm.x()));
-    double abs_y = std::abs(CGAL::to_double(norm.y()));
-    double abs_z = std::abs(CGAL::to_double(norm.z()));
-    Vector_3 reference = (abs_x <= abs_y && abs_x <= abs_z) ? Vector_3(1, 0, 0)
-                        : (abs_y <= abs_z)                   ? Vector_3(0, 1, 0)
-                                                              : Vector_3(0, 0, 1);
+    // In-plane axes are built from a sign-canonicalised copy of norm (largest
+    // |component| positive): the fit's sign is arbitrary, and a cross product
+    // is sign-sensitive, so building the frame from the raw sign would mirror
+    // the local 2D frame (reversing the polygon winding Sutherland-Hodgman
+    // relies on) on roughly half of all surfaces. norm itself stays raw (see
+    // the constructor). For the horizontal surfaces of environments.hpp this
+    // yields exactly the old code's x_axis=(1,0,0), y_axis=(0,1,0).
+    double nx = CGAL::to_double(norm.x());
+    double ny = CGAL::to_double(norm.y());
+    double nz = CGAL::to_double(norm.z());
+    double dominant = (std::abs(nx) >= std::abs(ny) && std::abs(nx) >= std::abs(nz)) ? nx
+                     : (std::abs(ny) >= std::abs(nz))                                ? ny
+                                                                                      : nz;
+    Vector_3 frame_norm = dominant < 0.0 ? -norm : norm;
 
-    Vector_3 x_axis = reference - (reference * norm) * norm;
+    // Project whichever world axis is *least* aligned with the normal
+    // (smallest |component|) instead of always projecting world_x then
+    // world_y, which degenerates to the zero vector (0/0 -> NaN) when the
+    // normal equals that axis exactly - never hit by environments.hpp's
+    // near-horizontal scenes, hit by an STL import's vertical faces
+    // (docs/paper-deltas.md). y_axis is the exact cross product: orthonormal
+    // by construction.
+    Vector_3 reference = (std::abs(nx) <= std::abs(ny) && std::abs(nx) <= std::abs(nz)) ? Vector_3(1, 0, 0)
+                        : (std::abs(ny) <= std::abs(nz))                                ? Vector_3(0, 1, 0)
+                                                                                         : Vector_3(0, 0, 1);
+
+    Vector_3 x_axis = reference - (reference * frame_norm) * frame_norm;
     x_axis = x_axis / std::sqrt(x_axis.squared_length());
 
-    Vector_3 y_axis = CGAL::cross_product(norm, x_axis);
+    Vector_3 y_axis = CGAL::cross_product(frame_norm, x_axis);
 
     transform_to_3d = Transformation(
         x_axis.x(), y_axis.x(), norm.x(), centroid.x(),
