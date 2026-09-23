@@ -88,6 +88,29 @@ void run_scenario(const fixtures::Scenario& scenario, const ReachabilityModel& r
     }
 }
 
+// A/B of the 2D clip: same search, legacy clip (old behaviour) vs corrected
+// clip, runs interleaved so machine drift hits both equally.
+void compare_clip(const fixtures::Scenario& scenario, const ReachabilityModel& reachability, int num_runs) {
+    std::vector<double> legacy_ms, robust_ms;
+    int legacy_exp = 0, robust_exp = 0;
+    for (int run = 0; run < num_runs; ++run) {
+        for (bool legacy : {true, false}) {
+            AstarSearchConfig cfg = scenario.astar_config;
+            cfg.expansion_params.legacy_clip = legacy;
+            AstarSearch search(scenario.surfaces, reachability, cfg);
+            auto t0 = std::chrono::high_resolution_clock::now();
+            search.search();
+            auto t1 = std::chrono::high_resolution_clock::now();
+            (legacy ? legacy_ms : robust_ms).push_back(std::chrono::duration<double, std::milli>(t1 - t0).count());
+            (legacy ? legacy_exp : robust_exp) = search.expansion_count();
+        }
+    }
+    Stats l = compute_stats(legacy_ms), r = compute_stats(robust_ms);
+    std::cout << "  clip A/B " << scenario.name << ": legacy " << l.mean_ms << " +/- " << l.stddev_ms << " ms (" << legacy_exp
+              << " expansions)  vs  robust " << r.mean_ms << " +/- " << r.stddev_ms << " ms (" << robust_exp << " expansions)  ratio "
+              << r.mean_ms / l.mean_ms << "x\n";
+}
+
 } // namespace
 
 int main(int argc, char** argv) {
@@ -102,6 +125,10 @@ int main(int argc, char** argv) {
                  /*golden_search_ms=*/159.896173, /*golden_expansions=*/90, /*golden_qp_ms=*/0.0, num_runs);
     run_scenario(fixtures::make_three_paths_nas(), reachability,
                  /*golden_search_ms=*/68.122904, /*golden_expansions=*/91, /*golden_qp_ms=*/41.510454, num_runs);
+
+    std::cout << "\n--- 2D clip: legacy vs corrected (interleaved, n=" << num_runs << ") ---\n";
+    compare_clip(fixtures::make_narrow_passage(), reachability, num_runs);
+    compare_clip(fixtures::make_three_paths_nas(), reachability, num_runs);
 
     std::cout << "\nNote: NarrowPassage's golden QP was infeasible in the old code too "
                  "(see tests/golden/NarrowPassage_astar.json) — its QP timing isn't compared.\n";
