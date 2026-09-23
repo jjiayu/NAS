@@ -17,7 +17,6 @@
 
 #include <functional>
 #include <optional>
-#include <set>
 #include <vector>
 
 namespace nas {
@@ -158,17 +157,6 @@ private:
     Node* start_node_ = nullptr;
     std::vector<Node*> result_path_;
     int expansion_count_ = 0;
-
-    // Cube-extension discovery filter (only populated when config_.cube_half_extent > 0):
-    // which surfaces a normal step (expand_node alone, no cube) can ever reach from the
-    // start, computed once at construction, and the reachability polytopes' own envelope
-    // radius. See the .cpp for how they gate which cube placements are even proposed to
-    // the search -- a placement that doesn't bring some other-than-already-reachable
-    // surface within that envelope of the cube's own top patch is never tried, since it
-    // provably cannot help (the whole point of the cube is reaching what a normal step
-    // alone can't).
-    std::set<int> reachable_without_cube_;
-    double cube_discovery_reach_ = 0.0;
 
     double heuristic(const Node* node) const;
     Point_3 goal_point() const; // the goal position, or the goal surface's centroid

@@ -139,84 +139,6 @@ private:
     std::unordered_map<Cell, std::vector<Node*>, CellHash> cells_;
 };
 
-// Cube-extension discovery filter (docs/cube-implementation-plan.md, "idée pour
-// l'heuristique" discussion, 2026-09-23): the search should only ever bother trying a
-// cube placement when it brings some surface that a normal step alone could never reach
-// within plausible reach of the cube's own top -- otherwise the placement provably cannot
-// help (a normal step could already get everywhere it gets), and proposing it anyway is
-// exactly what made the heuristic-blind search waste its budget on it (spec §5.4).
-
-// Which surfaces are reachable from `start` using expand_node alone (cube_state forced to
-// None), via a small BFS that keeps only one representative frontier node per newly
-// discovered surface (surface-level connectivity, not a real search: bounded by
-// #surfaces rounds, cheap even though it reuses the real expand_node).
-std::set<int> reachable_surfaces_without_cube(const Node& start, const std::vector<Surface>& surfaces,
-                                               const ReachabilityModel& reachability, const ExpansionParams& params) {
-    NodePool scratch_pool;
-    Node* seed = scratch_pool.create();
-    *seed = start;
-    seed->cube_state = CubeState::None;
-    seed->cube = std::nullopt;
-
-    std::set<int> visited;
-    if (seed->surface_id >= 0) visited.insert(seed->surface_id);
-    std::vector<Node*> frontier = {seed};
-    for (size_t round = 0; round < surfaces.size() + 1 && !frontier.empty(); ++round) {
-        std::vector<Node*> next_frontier;
-        for (Node* n : frontier) {
-            for (Node* child : expand_node(n, surfaces, reachability, ReachabilityDirection::Forward, params, scratch_pool)) {
-                if (visited.insert(child->surface_id).second) next_frontier.push_back(child);
-            }
-        }
-        frontier = next_frontier;
-    }
-    return visited;
-}
-
-// Max distance from the support foot's origin any reachability polytope vertex reaches --
-// the envelope a normal step could possibly cover, used as the "close enough to be worth
-// trying" radius below. Derived from the actual loaded data, not a guessed constant.
-double reachability_envelope_radius(const ReachabilityModel& reachability) {
-    double max_r = 0.0;
-    for (const auto& pair : {std::pair<const char*, const char*>{"LF", "RF"}, {"RF", "LF"}}) {
-        if (!reachability.has(pair.first, pair.second, ReachabilityDirection::Forward)) continue;
-        const Polyhedron& k = reachability.query(pair.first, pair.second, ReachabilityDirection::Forward);
-        for (auto v = k.vertices_begin(); v != k.vertices_end(); ++v) {
-            double r = std::sqrt(CGAL::to_double(v->point().x() * v->point().x() + v->point().y() * v->point().y() +
-                                                  v->point().z() * v->point().z()));
-            max_r = std::max(max_r, r);
-        }
-    }
-    return max_r;
-}
-
-// True if placing the cube this way brings a surface NOT in `reachable_without_cube`
-// within `reach_radius` of the cube's own top patch (offset from its placed base by
-// cube_height along the placement surface's normal).
-bool cube_placement_discovers_new_surface(const Node& placed_child, const std::vector<Surface>& surfaces,
-                                           const std::set<int>& reachable_without_cube, double cube_height, double reach_radius) {
-    Vector_3 n = placed_child.cube->transform_to_3d.transform(Vector_3(0, 0, 1));
-    double len = std::sqrt(CGAL::to_double(n.squared_length()));
-    if (len < 1e-9) return false;
-    n = n / len;
-
-    std::vector<Point_3> top_patch;
-    top_patch.reserve(placed_child.cube->vertices_3d.size());
-    for (const auto& p : placed_child.cube->vertices_3d) {
-        top_patch.emplace_back(CGAL::to_double(p.x()) + cube_height * CGAL::to_double(n.x()),
-                                CGAL::to_double(p.y()) + cube_height * CGAL::to_double(n.y()),
-                                CGAL::to_double(p.z()) + cube_height * CGAL::to_double(n.z()));
-    }
-    if (top_patch.size() < 3) return false;
-
-    for (const Surface& s : surfaces) {
-        if (reachable_without_cube.count(s.surface_id)) continue;
-        if (s.vertices_3d.size() < 3) continue;
-        if (calculate_epa_distance_patch_to_patch(top_patch, s.vertices_3d) < reach_radius) return true;
-    }
-    return false;
-}
-
 } // namespace
 
 AstarSearch::AstarSearch(std::vector<Surface> surfaces, ReachabilityModel reachability, AstarSearchConfig config)
@@ -270,10 +192,6 @@ AstarSearch::AstarSearch(std::vector<Surface> surfaces, ReachabilityModel reacha
             start_node_->transformation_to_3d = best->transform_to_3d;
             start_node_->transformation_to_2d = best->transform_to_surface;
         }
-    }
-    if (config_.cube_half_extent > 0.0) {
-        reachable_without_cube_ = reachable_surfaces_without_cube(*start_node_, surfaces_, reachability_, config_.expansion_params);
-        cube_discovery_reach_ = reachability_envelope_radius(reachability_);
     }
     start_node_->g_score = 0.0;
     // A single-point patch has no area for EPA (it needs >=3 points), so the
@@ -406,16 +324,7 @@ void AstarSearch::search() {
         if (config_.cube_half_extent > 0.0) {
             if (current_node->cube_state == CubeState::InHand) {
                 for (Node* child : expand_cube_placement(current_node, surfaces_, reachability_, config_.cube_half_extent, config_.expansion_params, pool_)) {
-                    // Only propose placements that provably bring something new within
-                    // reach (see cube_placement_discovers_new_surface above) -- a
-                    // placement that doesn't cannot possibly help, since a normal step
-                    // alone already reaches everything reachable_without_cube_ contains.
-                    // Filtered-out placements never go through process_child at all (not
-                    // even as MergedWorse -- that means "was a real open-set candidate,
-                    // lost to a better one", which this isn't: it was never a candidate).
-                    if (cube_placement_discovers_new_surface(*child, surfaces_, reachable_without_cube_, config_.cube_height, cube_discovery_reach_)) {
-                        process_child(child, config_.cube_place_cost);
-                    }
+                    process_child(child, config_.cube_place_cost);
                 }
             } else if (current_node->cube_state == CubeState::PlacedActive) {
                 for (Node* child : expand_onto_cube(current_node, reachability_, config_.cube_height, config_.cube_half_extent, config_.expansion_params, pool_)) {
