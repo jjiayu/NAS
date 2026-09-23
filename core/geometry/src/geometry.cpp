@@ -362,12 +362,15 @@ HalfSpacePolytopeConstraint convert_polytope_to_half_space_constraint(const Poly
 }
 
 SurfaceConstraint generate_surface_constraint(const Polyhedron& surface_3d) {
-    SurfaceConstraint constraint;
-
     std::vector<Point_3> vertices;
     for (auto v = surface_3d.vertices_begin(); v != surface_3d.vertices_end(); ++v) {
         vertices.push_back(v->point());
     }
+    return generate_surface_constraint(vertices);
+}
+
+SurfaceConstraint generate_surface_constraint(const std::vector<Point_3>& vertices) {
+    SurfaceConstraint constraint;
 
     if (vertices.size() < 3) {
         throw std::runtime_error("Error: Need at least 3 vertices to fit a plane");
@@ -516,7 +519,7 @@ public:
     }
 };
 
-Polyhedron convex_hull_3_from_coplanar_points(const std::vector<Point_3>& points, const Vector_3& normal, bool canonical_start) {
+Polyhedron convex_hull_3_from_coplanar_points(const std::vector<Point_3>& points, const Vector_3& normal) {
     Vector_3 n = normal / std::sqrt(normal.squared_length());
 
     Vector_3 t = (std::abs(n.x()) < 0.9) ? Vector_3(1, 0, 0) : Vector_3(0, 1, 0);
@@ -535,16 +538,6 @@ Polyhedron convex_hull_3_from_coplanar_points(const std::vector<Point_3>& points
 
     std::vector<Point_2> hull2d;
     CGAL::convex_hull_2(pts2d.begin(), pts2d.end(), std::back_inserter(hull2d));
-
-    if (canonical_start && !hull2d.empty()) {
-        auto key = [](const Point_2& p) {
-            return std::make_pair(std::llround(CGAL::to_double(p.x()) * 1e9), std::llround(CGAL::to_double(p.y()) * 1e9));
-        };
-        size_t start = 0;
-        for (size_t i = 1; i < hull2d.size(); ++i)
-            if (key(hull2d[i]) < key(hull2d[start])) start = i;
-        std::rotate(hull2d.begin(), hull2d.begin() + static_cast<std::ptrdiff_t>(start), hull2d.end());
-    }
 
     const double eps = 1e-6;
     std::vector<Point_3> top, bot;

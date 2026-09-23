@@ -77,18 +77,18 @@ double calculate_epa_distance_point_to_patch(const std::vector<Point_3>& patch_p
 HalfSpacePolytopeConstraint convert_polytope_to_half_space_constraint(const Polyhedron& polytope);
 
 // Convert surface constraint to H-representation
+// Plane equality (row 0) + one boundary inequality per polygon edge. The
+// vertices are the patch polygon's, in order (either winding: each edge normal
+// is oriented towards the vertex average). The Polyhedron overload takes the
+// vertices of the old thin-prism patch (top and bottom faces: every edge
+// appears twice), kept for the old code's node data.
 SurfaceConstraint generate_surface_constraint(const Polyhedron& surface_3d);
+SurfaceConstraint generate_surface_constraint(const std::vector<Point_3>& polygon_vertices);
 
 // Rotate polyhedron around Z-axis by given angle in radians
 Polyhedron rotate_polyhedron_z(const Polyhedron& polytope, double yaw_angle);
 
 // Build a polyhedron from coplanar points (convex_hull_3 fails on degenerate input)
-// canonical_start: rotate the hull's vertex list to start at the vertex that is
-// minimal after rounding its 2D coordinates to 1e-9. The exact convex hull
-// starts at the lexicographically smallest vertex, which for a polygon with an
-// axis-aligned edge (very common: rectangles, stair treads) is an x-tie decided
-// by 1e-16 noise; the prism is fanned from that vertex, so the sum of its edges
-// (Node::perimeter) would otherwise change from run to run.
-Polyhedron convex_hull_3_from_coplanar_points(const std::vector<Point_3>& points, const Vector_3& normal, bool canonical_start = false);
+Polyhedron convex_hull_3_from_coplanar_points(const std::vector<Point_3>& points, const Vector_3& normal);
 
 } // namespace nas

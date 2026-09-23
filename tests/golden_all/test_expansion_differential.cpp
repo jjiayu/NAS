@@ -220,6 +220,7 @@ Stats compare_scene(const std::string& scene, const json& dump, const Reachabili
     params.yaw_angle_increment = 10.0 / 180.0 * M_PI;
     params.cycle_detection_enabled = true;
     params.legacy_clip = mode != Mode::Robust;
+    params.legacy_node_keys = mode != Mode::Robust; // the old code's raw patch / prism perimeter / vertex-average centroid
 
     auto note = [&](const std::string& s) {
         if (st.examples.size() < 6) st.examples.push_back(s);

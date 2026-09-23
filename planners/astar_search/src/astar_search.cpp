@@ -4,124 +4,23 @@
 #include <algorithm>
 
 #include <cmath>
-#include <memory>
 
 namespace nas {
 
 namespace {
 
-// Default: matches the old CompareNodes exactly (f only; equal f = arbitrary
-// order). deterministic_ties: f is compared after rounding to 1 nm, and nodes
-// that tie are ordered by creation order (node_id, lower first). Scores that
-// are equal in exact arithmetic (many nodes: distance 0 to the goal patch) differ
-// by last-bit noise that changes with heap state, and that noise alone decided
-// which node was expanded first.
+// Open-set order: f rounded to 1 nm, then creation order (node_id, older first).
+// Many nodes have an f that is equal in exact arithmetic (distance 0 to the
+// goal patch) and differ only by last-bit noise that changes with heap state;
+// comparing raw f let that noise decide which was expanded first, so two runs
+// of the same search could expand a different number of nodes and return
+// different plans (docs/paper-deltas.md). The old code compared f only.
 struct CompareNodes {
-    bool deterministic_ties = false;
-    bool ties_lifo = false; // among ties, most recently created first
     bool operator()(const Node* a, const Node* b) const {
-        if (!deterministic_ties) return a->f_score > b->f_score;
         long long qa = std::llround(a->f_score * 1e9), qb = std::llround(b->f_score * 1e9);
         if (qa != qb) return qa > qb;
-        return ties_lifo ? a->node_id < b->node_id : a->node_id > b->node_id;
+        return a->node_id > b->node_id;
     }
-};
-
-// Stateful port of the old NodeHash/NodeEqual — they used to read
-// node_similarity_threshold/foot_yaw_rotation_flag/foot_yaw_angle_increment
-// as globals; here they carry the equivalent AstarSearchConfig values as
-// constructor state instead, and are passed as instances to the
-// unordered_map/unordered_set constructors below (both types support that
-// overload without requiring Hash/Equal to be default-constructible).
-class NodeHash {
-public:
-    NodeHash(double threshold, bool rotation_enabled, double yaw_increment)
-        : threshold_(threshold), rotation_enabled_(rotation_enabled), yaw_increment_(yaw_increment) {}
-
-    size_t operator()(const Node* node) const {
-        int x = static_cast<int>(CGAL::to_double(node->centroid.x()) / threshold_);
-        int y = static_cast<int>(CGAL::to_double(node->centroid.y()) / threshold_);
-        int z = static_cast<int>(CGAL::to_double(node->centroid.z()) / threshold_);
-        int quantized_perimeter = static_cast<int>(node->perimeter / threshold_);
-
-        size_t seed = 0;
-        boost::hash_combine(seed, x);
-        boost::hash_combine(seed, y);
-        boost::hash_combine(seed, z);
-        boost::hash_combine(seed, quantized_perimeter);
-        boost::hash_combine(seed, node->surface_id);
-        boost::hash_combine(seed, static_cast<int>(node->stance_foot));
-        if (rotation_enabled_) {
-            int quantized_yaw = static_cast<int>(node->foot_yaw / yaw_increment_);
-            boost::hash_combine(seed, quantized_yaw);
-        }
-        return seed;
-    }
-
-private:
-    double threshold_;
-    bool rotation_enabled_;
-    double yaw_increment_;
-};
-
-class NodeEqual {
-public:
-    NodeEqual(double threshold, bool rotation_enabled, double yaw_increment)
-        : threshold_(threshold), rotation_enabled_(rotation_enabled), yaw_increment_(yaw_increment) {}
-
-    bool operator()(const Node* a, const Node* b) const {
-        int xa = static_cast<int>(CGAL::to_double(a->centroid.x()) / threshold_);
-        int ya = static_cast<int>(CGAL::to_double(a->centroid.y()) / threshold_);
-        int za = static_cast<int>(CGAL::to_double(a->centroid.z()) / threshold_);
-        int xb = static_cast<int>(CGAL::to_double(b->centroid.x()) / threshold_);
-        int yb = static_cast<int>(CGAL::to_double(b->centroid.y()) / threshold_);
-        int zb = static_cast<int>(CGAL::to_double(b->centroid.z()) / threshold_);
-
-        int perim_a = static_cast<int>(a->perimeter / threshold_);
-        int perim_b = static_cast<int>(b->perimeter / threshold_);
-
-        bool basic_equal = (xa == xb && ya == yb && za == zb && perim_a == perim_b &&
-                             a->surface_id == b->surface_id && a->stance_foot == b->stance_foot);
-
-        if (rotation_enabled_ && basic_equal) {
-            int yaw_a = static_cast<int>(a->foot_yaw / yaw_increment_);
-            int yaw_b = static_cast<int>(b->foot_yaw / yaw_increment_);
-            return yaw_a == yaw_b;
-        }
-        return basic_equal;
-    }
-
-private:
-    double threshold_;
-    bool rotation_enabled_;
-    double yaw_increment_;
-};
-
-// Set of nodes with a "find an equivalent node" query, one implementation per
-// DedupMode. Used for both the open set (alongside the heap handles) and the
-// closed set.
-class NodeIndex {
-public:
-    virtual ~NodeIndex() = default;
-    virtual Node* find(const Node* n) const = 0;
-    virtual void insert(Node* n) = 0;
-    virtual void erase(const Node* n) = 0;
-};
-
-// The old unordered_set semantics, unchanged.
-class LegacyIndex : public NodeIndex {
-public:
-    LegacyIndex(double threshold, bool rotation_enabled, double yaw_increment)
-        : set_(16, NodeHash(threshold, rotation_enabled, yaw_increment), NodeEqual(threshold, rotation_enabled, yaw_increment)) {}
-    Node* find(const Node* n) const override {
-        auto it = set_.find(const_cast<Node*>(n));
-        return it == set_.end() ? nullptr : *it;
-    }
-    void insert(Node* n) override { set_.insert(n); }
-    void erase(const Node* n) override { set_.erase(const_cast<Node*>(n)); }
-
-private:
-    std::unordered_set<Node*, NodeHash, NodeEqual> set_;
 };
 
 double point_to_polygon_boundary(const Point_2& p, const Polygon_2& poly) {
@@ -147,16 +46,16 @@ double patch_distance(const Node& a, const Node& b) {
     return d;
 }
 
-// Tolerance-based similarity with a spatial index: nodes are bucketed by
+// Set of nodes with a "find a similar node" query. Nodes are bucketed by
 // (surface, stance, yaw bin, 10 cm centroid cell) and a query scans the 27
 // neighbouring cells, so similar nodes are found across cell boundaries and the
-// cost stays independent of the open-set size.
-class SpatialIndex : public NodeIndex {
+// cost is independent of the set size. Used for both the open and closed sets.
+class PatchIndex {
 public:
-    SpatialIndex(DedupMode mode, double tol, bool rotation_enabled, double yaw_increment)
-        : mode_(mode), tol_(tol), rotation_enabled_(rotation_enabled), yaw_increment_(yaw_increment) {}
+    PatchIndex(double tol, bool rotation_enabled, double yaw_increment)
+        : tol_(tol), rotation_enabled_(rotation_enabled), yaw_increment_(yaw_increment) {}
 
-    Node* find(const Node* n) const override {
+    Node* find(const Node* n) const {
         Cell c = cell_of(*n);
         for (int dx = -1; dx <= 1; ++dx)
             for (int dy = -1; dy <= 1; ++dy)
@@ -170,8 +69,8 @@ public:
                 }
         return nullptr;
     }
-    void insert(Node* n) override { cells_[cell_of(*n)].push_back(n); }
-    void erase(const Node* n) override {
+    void insert(Node* n) { cells_[cell_of(*n)].push_back(n); }
+    void erase(const Node* n) {
         auto it = cells_.find(cell_of(*n));
         if (it == cells_.end()) return;
         auto& v = it->second;
@@ -202,25 +101,14 @@ private:
     bool similar(const Node& a, const Node& b) const {
         if (a.surface_id != b.surface_id || a.stance_foot != b.stance_foot) return false;
         if (rotation_enabled_ && static_cast<int>(a.foot_yaw / yaw_increment_) != static_cast<int>(b.foot_yaw / yaw_increment_)) return false;
-        if (mode_ == DedupMode::CentroidPerimeterTolerance) {
-            return CGAL::to_double(CGAL::squared_distance(a.centroid, b.centroid)) < tol_ * tol_ && std::abs(a.perimeter - b.perimeter) < tol_;
-        }
         return patch_distance(a, b) < tol_;
     }
 
-    DedupMode mode_;
     double tol_;
     bool rotation_enabled_;
     double yaw_increment_;
     std::unordered_map<Cell, std::vector<Node*>, CellHash> cells_;
 };
-
-std::unique_ptr<NodeIndex> make_index(const AstarSearchConfig& c) {
-    const auto& ep = c.expansion_params;
-    if (c.dedup_mode == DedupMode::LegacyCells)
-        return std::make_unique<LegacyIndex>(c.node_similarity_threshold, ep.rotation_enabled, ep.yaw_angle_increment);
-    return std::make_unique<SpatialIndex>(c.dedup_mode, c.node_similarity_threshold, ep.rotation_enabled, ep.yaw_angle_increment);
-}
 
 } // namespace
 
@@ -260,22 +148,23 @@ double AstarSearch::heuristic(const Node* node) const {
 
 void AstarSearch::search() {
     using OpenSet = boost::heap::fibonacci_heap<Node*, boost::heap::compare<CompareNodes>>;
-    OpenSet open_set(CompareNodes{config_.deterministic_ties, config_.ties_lifo});
+    OpenSet open_set;
     // open_index answers "is an equivalent node already open?"; the heap handle
     // of an open node is looked up by the node itself.
-    std::unique_ptr<NodeIndex> open_index = make_index(config_);
-    std::unique_ptr<NodeIndex> closed_index = make_index(config_);
+    const auto& ep = config_.expansion_params;
+    PatchIndex open_index(config_.node_similarity_threshold, ep.rotation_enabled, ep.yaw_angle_increment);
+    PatchIndex closed_index(config_.node_similarity_threshold, ep.rotation_enabled, ep.yaw_angle_increment);
     std::unordered_map<Node*, OpenSet::handle_type> node_handles;
 
     node_handles[start_node_] = open_set.push(start_node_);
-    open_index->insert(start_node_);
+    open_index.insert(start_node_);
 
     while (!open_set.empty()) {
         Node* current_node = open_set.top();
         open_set.pop();
         ++expansion_count_;
         node_handles.erase(current_node);
-        open_index->erase(current_node);
+        open_index.erase(current_node);
         if (config_.on_expand) config_.on_expand(expansion_count_, *current_node);
 
         if (current_node->stance_foot == config_.goal_stance_foot &&
@@ -289,13 +178,13 @@ void AstarSearch::search() {
             return;
         }
 
-        closed_index->insert(current_node);
+        closed_index.insert(current_node);
 
         std::vector<Node*> children = expand_node(current_node, surfaces_, reachability_,
                                                    ReachabilityDirection::Forward, config_.expansion_params, pool_);
 
         for (Node* child : children) {
-            if (closed_index->find(child) != nullptr) {
+            if (closed_index.find(child) != nullptr) {
                 if (config_.on_child) config_.on_child(expansion_count_, *child, ChildAction::SkippedClosed);
                 continue;
             }
@@ -304,14 +193,14 @@ void AstarSearch::search() {
             double tentative_h_score = heuristic(child);
             double tentative_f_score = tentative_g_score + tentative_h_score;
 
-            Node* existing = open_index->find(child);
+            Node* existing = open_index.find(child);
             if (existing == nullptr) {
                 child->g_score = tentative_g_score;
                 child->h_score = tentative_h_score;
                 child->f_score = tentative_f_score;
                 child->parent = current_node;
                 node_handles[child] = open_set.push(child);
-                open_index->insert(child);
+                open_index.insert(child);
                 if (config_.on_child) config_.on_child(expansion_count_, *child, ChildAction::Pushed);
             } else if (tentative_g_score < existing->g_score) {
                 Node* existing_node = existing;

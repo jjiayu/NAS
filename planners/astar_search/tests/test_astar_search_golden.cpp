@@ -30,7 +30,7 @@ int main() {
     if (!ok) {
         return 1;
     }
-    std::cout << "AstarSearch matches the NarrowPassage golden reference exactly ("
+    std::cout << "AstarSearch matches the NarrowPassage golden reference (depth, stance, surfaces; yaw ties are free) ("
               << search.result_path().size() << " nodes)\n";
     return 0;
 }

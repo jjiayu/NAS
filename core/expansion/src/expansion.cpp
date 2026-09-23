@@ -47,6 +47,42 @@ NodeKeys canonical_keys(const Polygon_2& hull, const Transformation& to_3d, cons
     return keys;
 }
 
+// Removes vertices within 1 nm of the line through their neighbours, then
+// rotates the list to start at the vertex minimal after rounding to 1 nm.
+// The exact convex hull keeps a vertex that is collinear only up to 1e-16
+// noise and starts at a lexicographic-minimum vertex that is an x-tie decided
+// by that same noise for any axis-aligned edge; both change from run to run
+// with heap state (docs/paper-deltas.md, "Bilan : périmètre...").
+void simplify_and_canonicalize(std::vector<Point_2>& pts) {
+    constexpr double TOL = 1e-9;
+    bool removed = true;
+    while (removed && pts.size() > 3) {
+        removed = false;
+        for (size_t i = 0; i < pts.size(); ++i) {
+            const Point_2& a = pts[(i + pts.size() - 1) % pts.size()];
+            const Point_2& b = pts[i];
+            const Point_2& c = pts[(i + 1) % pts.size()];
+            double ex = CGAL::to_double(c.x() - a.x()), ey = CGAL::to_double(c.y() - a.y());
+            double len = std::hypot(ex, ey);
+            double dist = len > 0 ? std::abs(ex * CGAL::to_double(b.y() - a.y()) - ey * CGAL::to_double(b.x() - a.x())) / len
+                                  : std::hypot(CGAL::to_double(b.x() - a.x()), CGAL::to_double(b.y() - a.y()));
+            if (dist < TOL) {
+                pts.erase(pts.begin() + static_cast<std::ptrdiff_t>(i));
+                removed = true;
+                break;
+            }
+        }
+    }
+    if (pts.empty()) return;
+    auto key = [](const Point_2& p) {
+        return std::make_pair(std::llround(CGAL::to_double(p.x()) * 1e9), std::llround(CGAL::to_double(p.y()) * 1e9));
+    };
+    size_t start = 0;
+    for (size_t i = 1; i < pts.size(); ++i)
+        if (key(pts[i]) < key(pts[start])) start = i;
+    std::rotate(pts.begin(), pts.begin() + static_cast<std::ptrdiff_t>(start), pts.end());
+}
+
 } // namespace
 
 std::vector<Node*> expand_node(Node* parent,
@@ -99,79 +135,35 @@ std::vector<Node*> expand_node(Node* parent,
             continue;
         }
 
-        // Only patch_polygon_2d is the convex hull of the clip output, as in
-        // the old get_children. patch_vertices, the polyhedron and the
-        // centroid (an average of these vertices) are built from the raw
-        // Sutherland-Hodgman points, near-collinear ones included: the old
-        // code keeps them, and the hull would drop some, shifting centroids
-        // by up to ~7cm and the polyhedron's edge-length sum (used as
-        // "perimeter", a node dedup key) - found by tests/golden_all's
-        // expansion differential test, see docs/paper-deltas.md.
         Polygon_2 final_hull_2d;
         CGAL::convex_hull_2(polygon_intersect_2d.begin(), polygon_intersect_2d.end(), std::back_inserter(final_hull_2d));
 
         std::vector<Point_3> patch_3d;
-        if (params.convex_patch) {
-            // A patch that degenerates to a segment/point has no polygon to keep.
-            if (final_hull_2d.size() < 3) continue;
+        NodeKeys keys;
+        Polyhedron patch_polyhedron;
+        if (params.legacy_node_keys) {
+            // The old code's node data (see ExpansionParams): only patch_polygon_2d
+            // is the convex hull of the clip output; patch_vertices, the prism and
+            // the centroid come from the raw Sutherland-Hodgman points, near-
+            // collinear ones included (found by tests/golden_all's replay test).
+            patch_3d = transform_2d_points_to_world(polygon_intersect_2d, surface.transform_to_3d);
+            patch_polyhedron = convex_hull_3_from_coplanar_points(patch_3d, surface.norm);
+            keys.perimeter = compute_polygon_perimeter(patch_polyhedron);
+            keys.centroid = get_centroid(patch_3d);
+        } else {
+            // Production profile: the patch IS its (cleaned) convex polygon.
             std::vector<Point_2> hull_pts(final_hull_2d.vertices_begin(), final_hull_2d.vertices_end());
-            if (params.convex_patch_simplify_tol > 0.0) {
-                bool removed = true;
-                while (removed && hull_pts.size() > 3) {
-                    removed = false;
-                    for (size_t i = 0; i < hull_pts.size(); ++i) {
-                        const Point_2& a = hull_pts[(i + hull_pts.size() - 1) % hull_pts.size()];
-                        const Point_2& b = hull_pts[i];
-                        const Point_2& c = hull_pts[(i + 1) % hull_pts.size()];
-                        double ex = CGAL::to_double(c.x() - a.x()), ey = CGAL::to_double(c.y() - a.y());
-                        double len = std::hypot(ex, ey);
-                        double dist = len > 0 ? std::abs(ex * CGAL::to_double(b.y() - a.y()) - ey * CGAL::to_double(b.x() - a.x())) / len
-                                              : std::hypot(CGAL::to_double(b.x() - a.x()), CGAL::to_double(b.y() - a.y()));
-                        if (dist < params.convex_patch_simplify_tol) {
-                            hull_pts.erase(hull_pts.begin() + static_cast<std::ptrdiff_t>(i));
-                            removed = true;
-                            break;
-                        }
-                    }
-                }
-            }
-            if (params.canonical_prism_start && !hull_pts.empty()) {
-                // Same vertex order in every run: the hull starts at a tie-broken
-                // vertex that flips with 1e-16 noise, and this order feeds the
-                // EPA heuristic and the next Minkowski sum.
-                auto key = [](const Point_2& p) {
-                    return std::make_pair(std::llround(CGAL::to_double(p.x()) * 1e9), std::llround(CGAL::to_double(p.y()) * 1e9));
-                };
-                size_t start = 0;
-                for (size_t i = 1; i < hull_pts.size(); ++i)
-                    if (key(hull_pts[i]) < key(hull_pts[start])) start = i;
-                std::rotate(hull_pts.begin(), hull_pts.begin() + static_cast<std::ptrdiff_t>(start), hull_pts.end());
-            }
+            simplify_and_canonicalize(hull_pts);
+            if (hull_pts.size() < 3) continue; // degenerated to a segment/point: no patch
             final_hull_2d = Polygon_2(hull_pts.begin(), hull_pts.end());
             patch_3d = transform_2d_points_to_world(hull_pts, surface.transform_to_3d);
-        } else {
-            patch_3d = transform_2d_points_to_world(polygon_intersect_2d, surface.transform_to_3d);
+            keys = canonical_keys(final_hull_2d, surface.transform_to_3d, patch_3d);
         }
-        Polyhedron patch_polyhedron = convex_hull_3_from_coplanar_points(patch_3d, surface.norm, params.canonical_prism_start);
 
         if (params.cycle_detection_enabled &&
             cycle_path_detection(parent, child_stance_foot, surface.surface_id)) {
             continue;
         }
-
-        // Same for every yaw variant of this surface's patch.
-        NodeKeys keys;
-        if (params.canonical_centroid || params.canonical_perimeter) {
-            keys = canonical_keys(final_hull_2d, surface.transform_to_3d, patch_3d);
-        }
-        if (params.hull_prism_perimeter) {
-            std::vector<Point_2> hull_pts(final_hull_2d.vertices_begin(), final_hull_2d.vertices_end());
-            keys.perimeter = compute_polygon_perimeter(
-                convex_hull_3_from_coplanar_points(transform_2d_points_to_world(hull_pts, surface.transform_to_3d), surface.norm));
-        } else if (!params.canonical_perimeter) {
-            keys.perimeter = compute_polygon_perimeter(patch_polyhedron);
-        }
-        if (!params.canonical_centroid) keys.centroid = get_centroid(patch_3d);
 
         std::vector<double> yaw_angles;
         if (params.rotation_enabled) {
@@ -190,7 +182,7 @@ std::vector<Node*> expand_node(Node* parent,
             child->surface_id = surface.surface_id;
             child->depth = parent->depth + 1;
             child->patch_polygon_2d = final_hull_2d;
-            child->patch_polyhedron_3d = patch_polyhedron;
+            if (params.legacy_node_keys) child->patch_polyhedron_3d = patch_polyhedron;
             child->transformation_to_2d = surface.transform_to_surface;
             child->transformation_to_3d = surface.transform_to_3d;
             child->perimeter = keys.perimeter;

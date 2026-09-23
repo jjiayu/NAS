@@ -94,7 +94,7 @@ FootstepPlan solve_footstep_qp(const std::vector<Node*>& path_nodes,
     // Row 0 of generate_surface_constraint is the plane equality, the rest
     // are boundary inequalities with the alpha robustness margin.
     for (int i = 1; i <= n - 2; ++i) {
-        SurfaceConstraint sc = generate_surface_constraint(path_nodes[i]->patch_polyhedron_3d);
+        SurfaceConstraint sc = generate_surface_constraint(path_nodes[i]->patch_vertices);
 
         for (int r = 0; r < sc.A.rows(); ++r) {
             double row_norm = sc.A.row(r).norm();

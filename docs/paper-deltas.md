@@ -194,6 +194,39 @@ Perf (`nas_compare_perf`, 20 runs entrelacés, 2 passages, temps par expansion) 
 
 Limites : 10 scènes, temps mesurés sur 2 d'entre elles seulement ; la distance entre patchs n'a pas d'audit de fausses fusions comparable à celui des cellules (`--audit` ne connaît que les clés tronquées).
 
+### Profil retenu : le seul mode de CASSR (2026-09-19)
+
+**Décision** (utilisateur, après validation) : la recherche n'a plus qu'un comportement, les anciens interrupteurs d'expérimentation sont supprimés (`convex_patch`, `canonical_*`, `hull_prism_perimeter`, `deterministic_ties`, `DedupMode`...). Il reste dans `ExpansionParams` deux interrupteurs de test (`legacy_node_keys`, `legacy_clip`) et le `union_edges_override`, qui servent uniquement à rejouer l'ancien code bit à bit (`tests/golden_all`, tag git `legacy-replay-verified` = dernier commit où l'ensemble ancien-comportement complet de la recherche était encore disponible).
+
+Le profil :
+1. clip 2D corrigé (`ClipMode::Robust`) ;
+2. patch = polygone convexe, sommets à moins de 1 nm de la droite de leurs voisins supprimés, sommet de départ canonique (arrondi à 1 nm) ; centroïde = centre de gravité de l'aire, périmètre = longueur du contour ; plus de prisme 3D ;
+3. file ouverte : f arrondi à 1 nm, puis ordre de création (plus ancien d'abord) ;
+4. similarité entre nœuds : même surface / pied / lacet et patchs à moins de 2 cm (`node_similarity_threshold`) l'un de l'autre, via un index spatial (`PatchIndex`).
+
+**Correction d'une erreur de ma part.** J'avais écrit que `Node::patch_polyhedron_3d` « n'est lu nulle part ailleurs » et n'existe que pour le périmètre : c'était faux (mon `grep` excluait `footstep_qp/`). Le QP des pas l'utilise pour construire les contraintes de surface (`generate_surface_constraint`, à partir des sommets du prisme, chaque arête y figure deux fois). Il lit maintenant `patch_vertices` (le polygone) via une surcharge `generate_surface_constraint(const std::vector<Point_3>&)` : mêmes contraintes sans doublons. Les plans QP mesurés après ce changement sont identiques à ceux mesurés avec le prisme (distances parcourues identiques à 1e-6 m).
+
+**Validation sur les 11 scénarios** (ancien = configuration de l'ancien code, mesurée dans le même binaire avant la suppression des interrupteurs ; profil = comportement retenu ; 8 runs entrelacés) :
+
+| scène | ancien : ms (expansions / nœuds) | profil : ms (expansions / nœuds) | rapport | plan par rapport au plan stocké |
+|---|---|---|---|---|
+| NarrowPassage | 138,6 (90 / 30) | 102,9 (98 / 30) | 0,74 | mêmes surfaces et pieds, lacets différents sur 14 nœuds ; QP ancien en échec, nouveau résout |
+| Stairs | 16,4 (38 / 6) | 15,1 (34 / 6) | 0,92 | mêmes surfaces et pieds ; pas à 5 mm, 2,07 m contre 2,06 m |
+| TwoFlatSurfaces | 0,1 | 0,1 | 0,94 | pas de chemin dans les deux |
+| LongStairs | 14,0 (28 / 10) | 15,3 (28 / 10) | 1,10 | identique (écart 0,000 m) |
+| LongLongStairs | 46,3 (75 / 20) | 49,9 (75 / 20) | 1,08 | identique |
+| Flat | 30,7 (10 / 6) | 24,2 (11 / 6) | 0,79 | identique ; QP ancien en échec, nouveau résout |
+| LongStairsComplete | 10,7 (24 / 10) | 13,7 (26 / 10) | 1,29 | identique |
+| LongStairsExp | 93,4 (249 / 6) | 75,8 (189 / 6) | 0,81 | mêmes surfaces et pieds, lacets différents sur 3 nœuds ; QP nouveau résout |
+| ThreePathsScene | 193,3 (367 / 14) | 163,4 (323 / 14) | 0,85 | mêmes surfaces et pieds, lacets sur 10 nœuds ; pas à 7 cm, 6,97 m parcourus contre 7,14 m |
+| Stairs_Up_Down | 16,1 (32 / 12) | 16,7 (33 / 12) | 1,03 | identique ; QP nouveau résout |
+| ThreePathsNAS | 59,8 (91 / 20) | 80,8 (115 / 20) | 1,35 | mêmes surfaces et pieds, lacets sur 10 nœuds ; pas à 34 cm, 10,14 m parcourus contre 9,74 m |
+| **total** | **619,5 ms** | **558,0 ms** | **0,90** | |
+
+Aucune longueur de chemin ne diffère, aucune séquence de surfaces ni de pieds ne diffère, le QP réussit partout où l'ancien réussissait et résout 4 scènes que l'ancien ne résolvait pas. Les différences sont : (a) les lacets, qui ne coûtent rien dans la recherche (g compte les pas), donc un choix d'ex æquo ; l'ancien code lui-même varie sur 4 de ces scènes selon l'état du tas, mais reproduit toujours le même plan sur ThreePathsNAS (9,74 m, 5 états de tas) alors que le profil donne 10,14 m (+4 %) : cet écart vient de l'ordre des ex æquo (mesuré : avec cellules ou distance entre patchs il est le même, sans départage déterministe le plan ancien est retrouvé), pas du critère de similarité ; (b) le nombre d'expansions, qui dépend de cet ordre (A* pondérée). Perf : total 0,90x l'ancien ; la scène la plus lente relativement est ThreePathsNAS (+21 ms, 115 expansions au lieu de 91) ; le coût par expansion du critère géométrique est de +6 à +14 % par rapport aux cellules, compensé par des patchs plus simples (moins de sommets dans la somme de Minkowski et l'heuristique). La recherche est déterministe : 3 états de tas puis un contrôle de déterminisme intégré à `nas_golden_all_scenes` (chaque scène est recherchée deux fois, la seconde après fragmentation du tas) donnent des résultats identiques.
+
+Tests : `nas_golden_all_scenes` vérifie maintenant longueur, profondeur, pieds et surfaces contre l'ancien plan (lacets rapportés seulement), le QP (nombre de pas, distance parcourue à 6 %), et le déterminisme. `nas_expansion_differential` (replay bit-exact et oracle exact) passe toujours en activant `legacy_node_keys` / `legacy_clip`.
+
 ## À vérifier
 
 - Incohérence `foot_width` dans `constants.hpp` : valeur active `0.22`, commentaire à côté dit `0.12` — laquelle est correcte ?

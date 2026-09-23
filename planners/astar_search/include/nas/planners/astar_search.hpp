@@ -31,23 +31,6 @@ namespace nas {
 
 enum class DistanceMetric { Euclidean, Gjk, Epa };
 
-// How two nodes are judged "the same" (the search keeps only the better one).
-enum class DedupMode {
-    // The old code: same surface, stance and yaw bin, and int(centroid / t) and
-    // int(perimeter / t) equal on every coordinate (truncation to t-wide cells,
-    // t = node_similarity_threshold). Not a distance: two patches a few mm apart
-    // can fall on different sides of a cell boundary.
-    LegacyCells,
-    // Same surface/stance/yaw bin, |centroid difference| < t and |perimeter
-    // difference| < t. Meant to be used with canonical_centroid and
-    // canonical_perimeter (the old perimeter is not a geometric quantity).
-    CentroidPerimeterTolerance,
-    // Same surface/stance/yaw bin and the two patch polygons within t of each
-    // other (largest vertex-to-boundary distance, both ways). Needs no
-    // centroid/perimeter quantization.
-    PatchDistance,
-};
-
 // What the search did with a freshly expanded child (see AstarSearchConfig::on_child).
 enum class ChildAction {
     SkippedClosed,     // an equal node was already expanded
@@ -71,17 +54,16 @@ struct AstarSearchConfig {
     // guarantee; the paper confirms this but not the value itself).
     double heuristic_weight = 10.0;
 
-    // Node-similarity dedup threshold (paper: "set empirically to 2cm").
+    // Two nodes are "the same" (only the better one is kept) when they share
+    // surface, stance foot and yaw bin and their patches are within this
+    // distance of each other (paper: "set empirically to 2cm"): the largest
+    // vertex-to-boundary distance between the two polygons, both ways. The old
+    // code compared int(centroid / t) and int(perimeter / t) instead, which
+    // splits patches a few mm apart across a cell boundary and merges nothing
+    // else (docs/paper-deltas.md, "Audit de similarité").
     double node_similarity_threshold = 0.02;
-    DedupMode dedup_mode = DedupMode::LegacyCells;
 
     ExpansionParams expansion_params;
-
-    // Order the open set deterministically among (numerically) equal f-scores:
-    // f rounded to 1 nm, then creation order. Off = the old behaviour (equal f
-    // in arbitrary, heap-state-dependent order). See docs/paper-deltas.md.
-    bool deterministic_ties = false;
-    bool ties_lifo = false; // with deterministic_ties: most recently created first (default: oldest first)
 
     // Test/diagnostic seams, unset in production. on_expand: right after a node
     // is popped (1-based expansion index). on_child: after each child's dedup

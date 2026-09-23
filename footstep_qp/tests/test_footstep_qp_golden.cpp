@@ -5,10 +5,16 @@
 // (NarrowPassage's own golden QP is infeasible, not useful for this).
 // Scenario setup lives in tests/fixtures (phase 8d-2).
 //
-// Tolerance-based, not exact: a different solver (eiquadprog vs the old
-// qpOASES-via-CasADi) can land on a different point within a degenerate
-// feasible region — see PLAN.md phase 8 and docs/paper-deltas.md. In
-// practice the observed deviation is ~3.8e-08 m, far tighter than this.
+// Tolerance-based, not exact. Two reasons: a different solver (eiquadprog vs
+// the old qpOASES-via-CasADi) can land on a different point within a degenerate
+// feasible region — see PLAN.md phase 8 and docs/paper-deltas.md — and the
+// search now breaks yaw ties deterministically instead of in the old code's
+// arbitrary heap order, so the path can differ from the old one by yaw (same
+// surfaces, same number of steps) and footsteps then move by up to ~35cm.
+// When the path was identical (git tag legacy-replay-verified) the observed QP
+// deviation was ~3.8e-08 m, i.e. the solver itself is faithful. The check is
+// therefore: same footstep count, and the distance walked within 6% of the old
+// plan's; the max deviation is reported for information.
 
 #include "nas/fixtures/scenarios.hpp"
 #include "nas/footstep_qp/footstep_qp.hpp"
@@ -91,7 +97,17 @@ int main() {
         max_dev = std::max(max_dev, std::sqrt(dx * dx + dy * dy + dz * dz));
     }
     std::cout << "  max deviation from golden footsteps: " << max_dev << " m\n";
-    check(max_dev < 0.05, "footstep positions are within 5cm of golden (loose tolerance, different solver)");
+    auto walked = [](const std::vector<Point_3>& steps) {
+        double d = 0;
+        for (size_t i = 1; i < steps.size(); ++i)
+            d += std::hypot(CGAL::to_double(steps[i].x() - steps[i - 1].x()), CGAL::to_double(steps[i].y() - steps[i - 1].y()));
+        return d;
+    };
+    std::vector<Point_3> old_steps;
+    for (const auto& g : golden_footsteps) old_steps.emplace_back(g[0].get<double>(), g[1].get<double>(), g[2].get<double>());
+    double w_new = walked(plan.footsteps), w_old = walked(old_steps);
+    std::cout << "  distance walked: " << w_new << " m vs golden " << w_old << " m\n";
+    check(std::abs(w_new - w_old) <= 0.06 * w_old, "distance walked is within 6% of the golden plan's (yaw ties may move footsteps)");
 
     if (g_failures > 0) {
         std::cerr << g_failures << " test(s) FAILED\n";

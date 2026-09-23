@@ -42,49 +42,27 @@ struct ExpansionParams {
     int yaw_discretization_num = 3;
     double yaw_angle_increment = 10.0 / 180.0 * M_PI;
     bool cycle_detection_enabled = true;
-    // Reproduce the old code's 2D clip (which can drop an intersection point,
-    // see ClipMode in geometry.hpp). Off by default; on only for replaying the
-    // old code's output bit for bit.
+    // ---- Test-only switches (tests/golden_all): the production behaviour is one
+    // fixed profile; these two reproduce the OLD code so the port can be proven
+    // against the old binary (bit-exact replay, tag legacy-replay-verified).
+    //
+    // Production profile (see docs/paper-deltas.md "Profil retenu"): the patch is
+    // its convex polygon with vertices within 1 nm of their neighbours' line
+    // removed and a canonical start vertex (same vertex order in every run);
+    // Node::centroid is the polygon's area centroid and Node::perimeter its
+    // contour length; no 3D prism is built.
+    //
+    // legacy_node_keys: the old code's node data instead - patch_vertices = the
+    // raw clip output (collinear / duplicate points included), centroid = their
+    // average, perimeter = sum of every edge of a thin prism (triangulation
+    // diagonals included) which is also stored in patch_polyhedron_3d.
+    bool legacy_node_keys = false;
+    // legacy_clip: the old 2D clip, which can silently drop an intersection
+    // point (ClipMode::Legacy in geometry.hpp).
     bool legacy_clip = false;
-    // Node dedup keys (Node::centroid, Node::perimeter). Off (default) = the old
-    // code's values: centroid = average of the raw clip vertices (collinear and
-    // duplicate points included), perimeter = sum of every edge of the thin
-    // prism polyhedron (triangulation diagonals included). Both change with the
-    // convex hull's triangulation, i.e. with heap state. On = the area centroid
-    // / the geometric perimeter of the patch's convex polygon, which do not
-    // depend on how many collinear points the clip produced. Independent
-    // switches (ablation). See docs/paper-deltas.md "Clés de dédoublonnage
-    // canoniques": neither is on by default because they change which nodes
-    // the search merges.
-    // The patch IS the convex polygon: patch_vertices, the 3D polyhedron and the
-    // keys are all built from the convex hull's vertices, not from the raw clip
-    // output (collinear / duplicate points). A patch is convex by construction,
-    // so the extra points carry no information; this also makes everything
-    // derived from it independent of how many of them the clip produced. The
-    // keys keep the old definitions (vertex average, prism edge sum) applied to
-    // these vertices, unless canonical_* is also set. Off by default: the old
-    // code keeps the raw points, and bit-exact replay needs that.
-    bool convex_patch = false;
-    // With convex_patch: drop hull vertices lying within this distance (metres)
-    // of the line through their neighbours, repeatedly. The exact convex hull
-    // keeps a vertex that is collinear only up to 1e-16 noise, and the number of
-    // such vertices changes with heap state; each one adds a long triangulation
-    // diagonal (top and bottom face) to the prism-edge "perimeter". 0 = off.
-    double convex_patch_simplify_tol = 0.0;
-    // Build the node's prism (perimeter) from a canonical vertex start, see
-    // convex_hull_3_from_coplanar_points.
-    bool canonical_prism_start = false;
-    bool canonical_centroid = false;
-    bool canonical_perimeter = false;
-    // Variant: keep the old definition (sum of every prism edge, diagonals
-    // included) but build the prism from the convex polygon's own vertices, so
-    // collinear clip points no longer change it.
-    bool hull_prism_perimeter = false;
-    // Test seam only (tests/golden_all replays the old code's exact P_union
-    // through it): when set, replaces the edge list of
-    // minkowski_sum(parent patch, reachability polytope). CGAL::convex_hull_3's
-    // triangulation depends on heap order, so this is the only way to feed two
-    // runs the same hull.
+    // Replaces the edge list of minkowski_sum(parent patch, reachability
+    // polytope) with the old run's exact P_union, since CGAL::convex_hull_3's
+    // triangulation depends on heap order.
     std::function<EdgeList(const Node& parent)> union_edges_override;
 };
 

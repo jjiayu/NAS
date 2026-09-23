@@ -1,32 +1,21 @@
 // Replays EVERY scenario captured in phase 0 (tests/golden/*_astar.json)
-// through the new AstarSearch + footstep QP and compares against what the
-// old code produced. The two dedicated golden tests only cover
-// NarrowPassage and ThreePathsNAS; this closes the gap for the other
-// scenes the old code solved.
-//
-// Per scene, using exactly the configuration tests/capture_golden_references.sh
-// ran the old code with (start position / goal offset per scene, everything
-// else from the old constants.hpp: right stance start, left stance goal,
-// EPA heuristic x10, 2cm node similarity, rotation on with 3 yaws of 10deg,
-// cycle detection on):
-//   - path: same length and (depth, stance_foot, foot_yaw, surface_id) per
-//     node. Node centroids are only REPORTED (max deviation), not asserted:
-//     re-running the old astar binary today reproduces the path fields of
-//     its own stored golden but not its centroids (up to 5cm off on
-//     ThreePathsNAS, identical across 3 reruns) - the stored golden came
-//     from a slightly different old build, so 1e-6 would be a criterion
-//     the old code itself fails;
-//   - scenes where the OLD code is itself unstable (Stairs, LongStairs,
-//     LongLongStairs, LongStairsComplete, LongStairsExp, ThreePathsScene,
-//     Stairs_Up_Down: re-running the old expansion with only its heap order
-//     scrambled changes patch polygons on 0.3-1.8% of children, see
-//     tests/golden_all/test_expansion_differential.cpp): a differing path is
-//     reported, not failed, as long as the new search finds one; where the
-//     path is identical the QP is still compared;
-//   - QP: where the old QP succeeded, same footstep count and positions
-//     within 5cm (different solver, same loose tolerance as
-//     footstep_qp's own golden test); where the old QP failed, the new
-//     result is only reported, not asserted.
+// through AstarSearch + footstep QP and compares against the plans the old code
+// stored, using exactly the configuration tests/capture_golden_references.sh ran
+// the old code with (start position / goal offset per scene, right stance start,
+// left stance goal, EPA heuristic x10, rotation on with 3 yaws of 10deg, cycle
+// detection on). The planner has a single behaviour (docs/paper-deltas.md,
+// "Profil retenu"), so:
+//   - path: same number of nodes and same (depth, stance_foot, surface_id) per
+//     node as the old plan. foot_yaw is reported, not compared: equal-cost plans
+//     differ only by yaw and the old code's choice was arbitrary (it varied with
+//     heap state);
+//   - QP, where the old QP succeeded: the new QP succeeds on the new path, same
+//     footstep count, and the distance walked is within 6% of the old plan's
+//     (yaw ties move footsteps by up to ~35cm, so positions are not compared);
+//     where the old QP failed the new result is only reported;
+//   - determinism: each search is run twice, the second time after a fragmentation
+//     of the heap; the expansion count and the path must be identical (the old
+//     code was not: NAS_SCRAMBLE showed up to 9 different results per scene).
 // Scenes where the old search found no path are reported, not asserted.
 
 #include "nas/config/scenario.hpp"
@@ -63,13 +52,6 @@ struct SceneSetup {
     Point_3 start;
     Vector_3 goal_offset;
 };
-
-// Scenes where the old code is itself unstable (see header comment).
-bool is_unstable_in_old(const std::string& name) {
-    static const std::vector<std::string> names = {"Stairs", "LongStairs", "LongLongStairs", "LongStairsComplete",
-                                                   "LongStairsExp", "ThreePathsScene", "Stairs_Up_Down"};
-    return std::find(names.begin(), names.end(), name) != names.end();
-}
 
 // From tests/capture_golden_references.sh's SCENARIOS table.
 const std::vector<SceneSetup> kScenes = {
@@ -108,50 +90,52 @@ AstarSearchConfig old_constants_config(const SceneSetup& setup, const Point_3& g
     c.expansion_params.yaw_discretization_num = 3;
     c.expansion_params.yaw_angle_increment = 10.0 / 180.0 * M_PI;
     c.expansion_params.cycle_detection_enabled = true;
-    // NAS_CANONICAL=c|p|q|h|hc|ht|htc|hts|htsc|htscd|htscg|htscpk: canonical centroid / perimeter dedup keys (see ExpansionParams).
-    if (const char* k = std::getenv("NAS_CANONICAL")) {
-        std::string keys = k;
-        c.expansion_params.canonical_centroid = keys.find('c') != std::string::npos;
-        c.expansion_params.canonical_perimeter = keys.find('p') != std::string::npos;
-        c.expansion_params.hull_prism_perimeter = keys.find('q') != std::string::npos;
-        c.expansion_params.convex_patch = keys.find('h') != std::string::npos;
-        if (keys.find('g') != std::string::npos) c.dedup_mode = DedupMode::PatchDistance;
-        if (keys.find('k') != std::string::npos) c.dedup_mode = DedupMode::CentroidPerimeterTolerance;
-        c.deterministic_ties = keys.find('d') != std::string::npos;
-        c.ties_lifo = keys.find('l') != std::string::npos;
-        c.expansion_params.canonical_prism_start = keys.find('s') != std::string::npos;
-        if (keys.find('t') != std::string::npos) c.expansion_params.convex_patch_simplify_tol = 1e-9;
-    }
     return c;
 }
 
 struct Outcome {
     std::string name;
     bool old_found = false;
-    bool path_ok = true;       // meaningful when old_found
-    bool same_length = false;
-    bool known_tie_divergence = false;
-    double max_centroid_dev = 0.0;
-    std::string qp_status;     // human-readable
-    bool qp_ok = true;
     bool new_found = false;
+    bool path_ok = true;        // meaningful when old_found
+    bool deterministic = true;
+    bool qp_ok = true;
+    int yaw_differs = 0;
+    std::string qp_status;      // human-readable
+    int expansions = 0;
 };
+
+// Path signature (surface, stance, yaw per node) + expansion count, to compare runs.
+std::string signature(const AstarSearch& search) {
+    std::string sig = "expansions=" + std::to_string(search.expansion_count()) + " ";
+    for (const auto* n : search.result_path())
+        sig += std::to_string(n->surface_id) + ":" + std::to_string(static_cast<int>(n->stance_foot)) + ":" + std::to_string(n->foot_yaw) + " ";
+    return sig;
+}
+
+// Fragments the heap in a seed-dependent way, so allocation-order-dependent
+// behaviour (CGAL::convex_hull_3's triangulation) changes between two runs.
+void scramble_heap(unsigned seed) {
+    std::srand(seed);
+    std::vector<void*> blocks;
+    for (int i = 0; i < 4000; ++i) blocks.push_back(std::malloc(16 + std::rand() % 1500));
+    for (size_t i = blocks.size(); i > 1; --i) std::swap(blocks[i - 1], blocks[std::rand() % i]);
+    for (size_t i = 0; i < blocks.size(); i += 2) std::free(blocks[i]);
+}
+
+double walked_distance(const std::vector<Point_3>& steps) {
+    double d = 0;
+    for (size_t i = 1; i < steps.size(); ++i)
+        d += std::hypot(CGAL::to_double(steps[i].x() - steps[i - 1].x()), CGAL::to_double(steps[i].y() - steps[i - 1].y()));
+    return d;
+}
 
 } // namespace
 
 int main() {
-    // NAS_SCRAMBLE=<seed>: fragment the heap in a seed-dependent way so that
-    // allocation-order-dependent behaviour (CGAL::convex_hull_3's triangulation)
-    // changes between runs; used to check the search is independent of it.
-    if (const char* seed = std::getenv("NAS_SCRAMBLE")) {
-        std::srand(std::stoul(seed));
-        std::vector<void*> blocks;
-        for (int i = 0; i < 4000; ++i) blocks.push_back(std::malloc(16 + std::rand() % 1500));
-        for (size_t i = blocks.size(); i > 1; --i) std::swap(blocks[i - 1], blocks[std::rand() % i]);
-        for (size_t i = 0; i < blocks.size(); i += 2) std::free(blocks[i]);
-    }
     ReachabilityModel reachability = make_forward_reachability();
     std::vector<Outcome> outcomes;
+    unsigned seed = 1;
 
     for (const SceneSetup& setup : kScenes) {
         Outcome out;
@@ -171,11 +155,16 @@ int main() {
         search.search();
         const auto& path = search.result_path();
         out.new_found = !path.empty();
-        {   // path signature, to compare runs (see NAS_SCRAMBLE above)
-            std::string sig;
-            for (const auto* n : path) sig += std::to_string(n->surface_id) + ":" + std::to_string(static_cast<int>(n->stance_foot)) + ":" + std::to_string(n->foot_yaw) + " ";
-            std::cout << "SIG " << setup.name << " expansions=" << search.expansion_count() << " " << sig << "\n";
-        }
+        out.expansions = search.expansion_count();
+        std::string sig = signature(search);
+        std::cout << "SIG " << setup.name << " " << sig << "\n";
+
+        // determinism: same search after a different heap state
+        scramble_heap(seed++);
+        AstarSearch again(scenario.surfaces, reachability, cfg);
+        again.search();
+        out.deterministic = signature(again) == sig;
+        std::cout << (out.deterministic ? "ok" : "FAIL") << ": search is identical after a heap fragmentation\n";
 
         if (!out.old_found) {
             out.qp_status = "n/a (old search found no path)";
@@ -185,20 +174,6 @@ int main() {
         }
 
         out.path_ok = fixtures::check_path_matches_golden(path, std::string(GOLDEN_DATA_DIR) + "/" + setup.name + "_astar.json");
-
-        const auto& gnodes = golden["nodes"];
-        out.same_length = path.size() == gnodes.size();
-        out.known_tie_divergence = is_unstable_in_old(setup.name);
-        if (out.same_length) {
-            for (size_t i = 0; i < path.size(); ++i) {
-                const auto& gc = gnodes[i]["centroid"];
-                double d = std::max({std::abs(CGAL::to_double(path[i]->centroid.x()) - gc[0].get<double>()),
-                                     std::abs(CGAL::to_double(path[i]->centroid.y()) - gc[1].get<double>()),
-                                     std::abs(CGAL::to_double(path[i]->centroid.z()) - gc[2].get<double>())});
-                out.max_centroid_dev = std::max(out.max_centroid_dev, d);
-            }
-        }
-        std::cout << "info: max node-centroid deviation vs stored golden = " << out.max_centroid_dev << " m (reported only)\n";
 
         if (path.empty()) {
             out.qp_status = "n/a (new search found no path)";
@@ -215,22 +190,16 @@ int main() {
 
         const auto& gfp = golden["footstep_plan"];
         bool old_qp_ok = gfp.value("success", false);
-        if (!out.path_ok) {
-            out.qp_status = "skipped (different path, positions not comparable)";
-        } else if (old_qp_ok) {
+        if (old_qp_ok) {
             const auto& gsteps = gfp["footsteps"];
-            double max_dev = 0.0;
-            bool same_count = plan.footsteps.size() == gsteps.size();
-            for (size_t i = 0; same_count && i < gsteps.size(); ++i) {
-                for (int k = 0; k < 3; ++k) {
-                    double v = k == 0 ? CGAL::to_double(plan.footsteps[i].x())
-                             : k == 1 ? CGAL::to_double(plan.footsteps[i].y())
-                                      : CGAL::to_double(plan.footsteps[i].z());
-                    max_dev = std::max(max_dev, std::abs(v - gsteps[i][k].get<double>()));
-                }
-            }
-            out.qp_ok = plan.success && same_count && max_dev < 0.05;
-            out.qp_status = std::string(plan.success ? "solved" : "FAILED") + ", max dev vs old QP " + std::to_string(max_dev) + " m";
+            std::vector<Point_3> old_steps;
+            for (const auto& g : gsteps) old_steps.emplace_back(g[0].get<double>(), g[1].get<double>(), g[2].get<double>());
+            bool same_count = plan.footsteps.size() == old_steps.size();
+            double w_new = walked_distance(plan.footsteps), w_old = walked_distance(old_steps);
+            bool walk_ok = std::abs(w_new - w_old) <= 0.06 * w_old;
+            out.qp_ok = plan.success && same_count && walk_ok;
+            out.qp_status = std::string(plan.success ? "solved" : "FAILED") + ", " + std::to_string(plan.footsteps.size()) + " footsteps vs old " +
+                            std::to_string(old_steps.size()) + ", walked " + std::to_string(w_new) + " m vs old " + std::to_string(w_old) + " m";
         } else {
             out.qp_status = std::string("old QP failed; new QP ") + (plan.success ? "SOLVES it" : "also fails") + " (reported only)";
         }
@@ -241,16 +210,15 @@ int main() {
     std::cout << "\n================ SUMMARY ================\n";
     bool all_ok = true;
     for (const Outcome& o : outcomes) {
-        bool path_acceptable = o.path_ok || (o.known_tie_divergence && o.new_found);
-        bool ok = !o.old_found || (path_acceptable && o.qp_ok);
+        bool ok = o.deterministic && (!o.old_found || (o.path_ok && o.qp_ok));
         all_ok = all_ok && ok;
-        std::cout << (ok ? "PASS  " : "FAIL  ") << o.name << ": ";
+        std::cout << (ok ? "PASS  " : "FAIL  ") << o.name << ": " << o.expansions << " expansions, ";
         if (!o.old_found) {
-            std::cout << "old found no path; new " << (o.new_found ? "finds one" : "finds none") << "\n";
+            std::cout << "old found no path; new " << (o.new_found ? "finds one" : "finds none");
         } else {
-            std::cout << "path " << (o.path_ok ? "identical" : (o.known_tie_divergence ? "differs (old code unstable in this scene)" : "DIFFERS"))
-                      << ", centroid dev " << o.max_centroid_dev << " m, QP: " << o.qp_status << "\n";
+            std::cout << "path " << (o.path_ok ? "same length/surfaces/stances as the old plan" : "DIFFERS from the old plan") << ", QP: " << o.qp_status;
         }
+        std::cout << (o.deterministic ? "" : " [NOT DETERMINISTIC]") << "\n";
     }
     return all_ok ? 0 : 1;
 }
