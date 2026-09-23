@@ -6,7 +6,7 @@
 
 See [`include/nas/planners/astar_search.hpp`](include/nas/planners/astar_search.hpp).
 - `AstarSearch(surfaces, reachability, config)`, `search()`, `result_path()`, `expansion_count()`.
-- `AstarSearchConfig`: start/goal position+stance foot, `distance_metric` (Euclidean/Gjk/Epa), `heuristic_weight` (×10 for gjk/epa only, matching the old code — see `docs/paper-deltas.md`), `node_similarity_threshold` (paper: "set empirically to 2cm"), `expansion_params`.
+- `AstarSearchConfig`: start/goal position+stance foot, `distance_metric` (Euclidean/Epa, default Epa), `heuristic_weight` (×10 for gjk/epa only, matching the old code — see `docs/paper-deltas.md`), `node_similarity_threshold` (paper: "set empirically to 2cm"), `expansion_params`.
 
 Behavior: same weighted A* as the old `AstarSearch` (priority queue `boost::heap::fibonacci_heap`, EPA/GJK heuristic ×10), with three deliberate, measured differences ("Profil retenu" in `docs/paper-deltas.md`), which make the search deterministic (identical across heap states):
 - the open set orders by f rounded to 1 nm, then creation order (the old code compared raw f, so last-bit noise decided ties);

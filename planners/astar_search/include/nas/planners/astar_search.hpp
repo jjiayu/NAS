@@ -20,6 +20,13 @@
 
 namespace nas {
 
+// Heuristic distance from the goal. Epa: distance from the goal to the node's
+// patch (COAL EPA), weighted by heuristic_weight - the CASSR heuristic.
+// Euclidean: distance from the goal to the node's patch centroid, unweighted
+// (as in the old code). The old code also offered a GJK variant of the patch
+// distance; it was dropped.
+enum class DistanceMetric { Euclidean, Epa };
+
 // What the search did with a freshly expanded child (see AstarSearchConfig::on_child).
 enum class ChildAction {
     SkippedClosed,     // an equal node was already expanded
@@ -35,6 +42,13 @@ struct AstarSearchConfig {
 
     Point_3 goal_location;
     StanceFoot goal_stance_foot = StanceFoot::Left;
+
+    DistanceMetric distance_metric = DistanceMetric::Epa;
+
+    // Safety limit: the search gives up (empty path) after this many expansions. 0 = no limit.
+    // Unweighted heuristics (Euclidean) can expand a very large number of nodes on a continuous
+    // state space, and nodes are never freed during a search.
+    int max_expansions = 0;
 
     // Weight on the EPA distance from the goal to a node's patch: what makes
     // CASSR a *weighted* A*, sacrificing the admissibility guarantee (the paper

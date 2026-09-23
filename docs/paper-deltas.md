@@ -258,6 +258,10 @@ Après le tag `cassr-stage-a-validated`, sur demande de l'utilisateur (« on gar
 
 Vérifié équivalent : les signatures de recherche (chemin et nombre d'expansions des 11 scènes) et les distances parcourues par le QP sont identiques avant et après le refactor ; 14/14 tests dans `tests/golden_all`, config 12/12, bindings 13/13, grille 13/13 ; `nas_expansion_oracle` : 7953 coupes réelles, écart max 3,6e-15 m.
 
+### Heuristique euclidienne rétablie (2026-09-19)
+
+Le refactor avait supprimé `DistanceMetric` en croyant que « la mesure choisie » désignait l'heuristique ; l'utilisateur parlait de la mesure de similarité des nœuds (centroïdes et polygones, déjà réduite au critère de distance entre patchs). `DistanceMetric { Euclidean, Epa }` est rétabli (défaut Epa, clé JSON `distance_metric`) ; la variante GJK reste supprimée. L'euclidien garde la sémantique de l'ancien code : distance du but au centroïde du patch, **non pondérée**. Conséquence mesurée : beaucoup plus d'expansions qu'avec l'EPA pondéré x10 (Flat 1568 contre 11, Stairs 101 contre 34 avec un chemin plus court, 4 nœuds contre 6 ; plus de 20 000 sur LongStairsComplete où l'EPA en fait 26). D'où `AstarSearchConfig::max_expansions` (0 = illimité) comme garde-fou : la recherche abandonne au lieu d'épuiser la mémoire (les nœuds ne sont jamais libérés pendant une recherche). Test : `nas_euclidean_metric` (Flat, Stairs). Le comportement par défaut (EPA) est inchangé : signatures des 11 recherches identiques à la baseline validée.
+
 ## À vérifier
 
 - Incohérence `foot_width` dans `constants.hpp` : valeur active `0.22`, commentaire à côté dit `0.12` — laquelle est correcte ?

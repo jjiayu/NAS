@@ -22,6 +22,7 @@ void test_full_config_overrides_every_field() {
     assert(near(CGAL::to_double(config.astar.goal_location.x()), 8.0));
     assert(config.astar.start_stance_foot == StanceFoot::Right);
     assert(config.astar.goal_stance_foot == StanceFoot::Left);
+    assert(config.astar.distance_metric == DistanceMetric::Epa);
     assert(near(config.astar.heuristic_weight, 10.0));
     assert(near(config.astar.node_similarity_threshold, 0.02));
     assert(config.astar.expansion_params.rotation_enabled == true);
@@ -67,6 +68,15 @@ void test_goal_offset_is_kept_for_the_caller_to_resolve() {
     std::cout << "test_goal_offset_is_kept_for_the_caller_to_resolve passed\n";
 }
 
+void test_distance_metric_is_parsed() {
+    PlannerConfig config = load_planner_config(data_path("euclidean_planner_config.json"));
+    assert(config.astar.distance_metric == DistanceMetric::Euclidean);
+    bool threw = false;
+    try { load_planner_config(data_path("gjk_planner_config.json")); } catch (const std::runtime_error&) { threw = true; }
+    assert(threw); // GJK was dropped
+    std::cout << "test_distance_metric_is_parsed passed\n";
+}
+
 void test_missing_astar_section_throws() {
     bool threw = false;
     try {
@@ -106,6 +116,7 @@ int main() {
     test_full_config_overrides_every_field();
     test_minimal_config_keeps_struct_defaults();
     test_goal_offset_is_kept_for_the_caller_to_resolve();
+    test_distance_metric_is_parsed();
     test_missing_astar_section_throws();
     test_missing_start_position_throws();
     test_nonexistent_file_throws();

@@ -136,7 +136,13 @@ AstarSearch::AstarSearch(std::vector<Surface> surfaces, ReachabilityModel reacha
 }
 
 double AstarSearch::heuristic(const Node* node) const {
-    return config_.heuristic_weight * calculate_epa_distance_point_to_patch(node->patch_vertices, config_.goal_location);
+    switch (config_.distance_metric) {
+        case DistanceMetric::Euclidean:
+            return compute_euclidean_distance(node->centroid, config_.goal_location);
+        case DistanceMetric::Epa:
+        default:
+            return config_.heuristic_weight * calculate_epa_distance_point_to_patch(node->patch_vertices, config_.goal_location);
+    }
 }
 
 void AstarSearch::search() {
@@ -153,6 +159,7 @@ void AstarSearch::search() {
     open_index.insert(start_node_);
 
     while (!open_set.empty()) {
+        if (config_.max_expansions > 0 && expansion_count_ >= config_.max_expansions) return;
         Node* current_node = open_set.top();
         open_set.pop();
         ++expansion_count_;

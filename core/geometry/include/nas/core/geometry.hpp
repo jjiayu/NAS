@@ -58,7 +58,7 @@ double is_leftside_of_edge(const Point_2& point, const Point_2& edge_start, cons
 double compute_euclidean_distance(const Point_3& start_location, const Point_3& end_location);
 
 // Distance from a point to a convex patch (COAL EPA): the CASSR heuristic.
-// The paper compares GJK/Euclidean variants; EPA is the one kept.
+// (The old code also had a GJK variant; dropped.)
 double calculate_epa_distance_point_to_patch(const std::vector<Point_3>& patch_points, const Point_3& goal);
 
 // Convert half-space polytope constraint to H-representation

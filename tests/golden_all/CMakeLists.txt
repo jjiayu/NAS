@@ -54,3 +54,11 @@ target_link_libraries(nas_perf_all_scenes PRIVATE nas_config nas_footstep_qp nas
 target_compile_definitions(nas_perf_all_scenes PRIVATE
     TALOS_REACHABILITY_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../../talosReachability/data/reachability_constraints"
 )
+
+# The alternative Euclidean heuristic (see test_euclidean_metric.cpp).
+add_executable(nas_euclidean_metric test_euclidean_metric.cpp)
+target_link_libraries(nas_euclidean_metric PRIVATE nas_config CGAL::CGAL)
+target_compile_definitions(nas_euclidean_metric PRIVATE
+    TALOS_REACHABILITY_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../../talosReachability/data/reachability_constraints"
+)
+add_test(NAME nas_euclidean_metric COMMAND nas_euclidean_metric)
