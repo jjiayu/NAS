@@ -7,6 +7,27 @@ un avis sur la théorie, puis un plan d'exécution ancré dans le code réel
 `core/expansion.cpp`, `core/reachability.hpp`, `footstep_qp/footstep_qp.cpp`,
 `planners/astar_search.hpp`).
 
+## Statut (2026-09-23)
+
+Étapes 1 à 5 faites et testées (primitives géométriques taguées, `Node` +
+`expand_cube_placement`/`expand_onto_cube`, dédoublonnage). Étape 6 partielle :
+le branchement dans `AstarSearch::search()` est fait (voir plus bas), et
+`K_cube` a été calibré empiriquement contre `StairsGap` (trois corrections
+trouvées en testant, pas devinées à l'avance -- voir l'historique dans
+`talosReachability/data/reachability_constraints/Cube_constraints_in_{LF,RF}.obj`
+et le commit "étape 6"). Vérifié avec des diagnostics autonomes (hors suite de
+tests) que la pose et le pas sur le cube fonctionnent bout en bout, géométriquement,
+sur le vrai scénario `StairsGap`. **Non résolu : la recherche complète
+(`AstarSearch::search()` sur `StairsGap`) ne converge pas dans un budget
+praticable** (testé jusqu'à ~12000 expansions / ~4min sans trouver de chemin) --
+l'heuristique ne récompensant jamais une action cube (§5.4), ces actions sont
+explorées en dernier à chaque palier de coût `f`, exactement le risque de
+performance déjà anticipé plus bas dans ce document. C'est une limite de
+performance, pas de correction : à reprendre via soit une calibration plus fine
+de `K_cube`, soit un travail sur l'heuristique/les coûts qui anticipe l'usage du
+cube plutôt que de le découvrir seulement une fois toutes les options moins
+chères épuisées.
+
 ## 1. Avis sur la théorie de la spec
 
 **D'accord avec le diagnostic et la solution.** Le piège du §2 est réel et
