@@ -225,6 +225,25 @@ Le profil :
 
 Aucune longueur de chemin ne diffère, aucune séquence de surfaces ni de pieds ne diffère, le QP réussit partout où l'ancien réussissait et résout 4 scènes que l'ancien ne résolvait pas. Les différences sont : (a) les lacets, qui ne coûtent rien dans la recherche (g compte les pas), donc un choix d'ex æquo ; l'ancien code lui-même varie sur 4 de ces scènes selon l'état du tas, mais reproduit toujours le même plan sur ThreePathsNAS (9,74 m, 5 états de tas) alors que le profil donne 10,14 m (+4 %) : cet écart vient de l'ordre des ex æquo (mesuré : avec cellules ou distance entre patchs il est le même, sans départage déterministe le plan ancien est retrouvé), pas du critère de similarité ; (b) le nombre d'expansions, qui dépend de cet ordre (A* pondérée). Perf : total 0,90x l'ancien ; la scène la plus lente relativement est ThreePathsNAS (+21 ms, 115 expansions au lieu de 91) ; le coût par expansion du critère géométrique est de +6 à +14 % par rapport aux cellules, compensé par des patchs plus simples (moins de sommets dans la somme de Minkowski et l'heuristique). La recherche est déterministe : 3 états de tas puis un contrôle de déterminisme intégré à `nas_golden_all_scenes` (chaque scène est recherchée deux fois, la seconde après fragmentation du tas) donnent des résultats identiques.
 
+**Mesure finale sur les 11 scénarios, version consolidée à mode unique** (refaite après la suppression du prisme et le changement du QP, le tableau précédent datant d'avant). Outil `nas_perf_all_scenes` (`tests/golden_all/perf_all_scenes.cpp`), compilé deux fois : dans un checkout du commit `f97e445` (dernier commit dont les défauts sont l'ancien comportement, avec `legacy_clip`) = base « ancien », et dans l'arbre courant = « nouveau » ; 10 recherches par scène et par binaire, 2 passages alternés, moyenne des deux :
+
+| scène | ancien : recherche ms (exp.) | nouveau : recherche ms (exp.) | rapport | QP ancien / nouveau ms |
+|---|---|---|---|---|
+| NarrowPassage | 136,2 (90) | 91,8 (98) | 0,67 | 3,97 / 2,47 |
+| Stairs | 14,9 (38) | 13,2 (34) | 0,88 | 0,08 / 0,07 |
+| TwoFlatSurfaces | 0,06 (1) | 0,06 (1) | 1,00 | - |
+| LongStairs | 13,3 (28) | 13,4 (28) | 1,01 | 0,17 / 0,17 |
+| LongLongStairs | 44,5 (75) | 44,1 (75) | 0,99 | 0,69 / 0,65 |
+| Flat | 28,2 (10) | 21,6 (11) | 0,76 | 0,14 / 0,08 |
+| LongStairsComplete | 9,8 (24) | 10,8 (26) | 1,10 | 0,16 / 0,15 |
+| LongStairsExp | 89,1 (249) | 66,1 (189) | 0,74 | 0,10 / 0,10 |
+| ThreePathsScene | 193,0 (416) | 152,2 (323) | 0,79 | 0,45 / 0,34 |
+| Stairs_Up_Down | 16,4 (33) | 15,8 (33) | 0,96 | 0,24 / 0,22 |
+| ThreePathsNAS | 60,4 (91) | 77,4 (115) | **1,28** | 0,77 / 0,74 |
+| **total** | **605,8** | **506,4** | **0,84** | **6,75 / 4,99 (0,74)** |
+
+Aucune scène n'est plus lente de plus de 28 % ; deux seulement sont plus lentes : ThreePathsNAS (+17 ms : 115 expansions au lieu de 91 à cause de l'ordre des ex æquo ; le coût par expansion est le même, 0,67 ms) et LongStairsComplete (+1 ms, 2 expansions de plus). Les 9 autres sont égales ou plus rapides. (Le nombre d'expansions de l'ancien code varie avec le tas : 416 au lieu de 367-374 sur ThreePathsScene dans ce run.)
+
 Tests : `nas_golden_all_scenes` vérifie maintenant longueur, profondeur, pieds et surfaces contre l'ancien plan (lacets rapportés seulement), le QP (nombre de pas, distance parcourue à 6 %), et le déterminisme. `nas_expansion_differential` (replay bit-exact et oracle exact) passe toujours en activant `legacy_node_keys` / `legacy_clip`.
 
 ## À vérifier

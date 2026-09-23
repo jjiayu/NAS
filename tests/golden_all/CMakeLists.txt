@@ -57,3 +57,10 @@ target_link_libraries(nas_trace_divergence PRIVATE nas_config CGAL::CGAL)
 target_compile_definitions(nas_trace_divergence PRIVATE
     TALOS_REACHABILITY_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../../talosReachability/data/reachability_constraints"
 )
+
+# Search + QP timing on every scenario (see perf_all_scenes.cpp).
+add_executable(nas_perf_all_scenes perf_all_scenes.cpp)
+target_link_libraries(nas_perf_all_scenes PRIVATE nas_config nas_footstep_qp nas_footstep_qp_backend nas_planners_astar_search CGAL::CGAL)
+target_compile_definitions(nas_perf_all_scenes PRIVATE
+    TALOS_REACHABILITY_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../../talosReachability/data/reachability_constraints"
+)
