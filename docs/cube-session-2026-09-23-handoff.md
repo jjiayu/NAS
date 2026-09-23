@@ -10,6 +10,17 @@ bas, régénéré après le fix du bug de centroid) — pas de connexion au
 dépôt, donc si le plan change il faut regénérer le JSON et republier sur
 cette même URL.
 
+**Correction (version 2, après relecture de l'utilisateur)** : la v1 de la
+page dessinait le cube à l'étendue du *patch de reachability* `K_cube`
+(large, non carré — la zone où le point de contact pourrait être), pas à la
+taille réelle de l'objet. Corrigé : carré fixe de `2*cube_half_extent`
+(60cm avec le cube de test), centré sur la position du pas "sur le cube"
+(depth 3, x=0.0948, y=0.0026) puisque c'est là que le pied a physiquement
+besoin de le trouver. Le rendu montre maintenant honnêtement que le cube
+déborde au-dessus du trou — la v1 du code ne valide que le point de contact
+contre le bord (érodé) du sol, pas l'emprise entière du cube (simplification
+documentée dans `expand_cube_placement`, pas un bug caché).
+
 Session interrompue par la limite hebdomadaire. Ce document résume l'état
 exact pour reprendre sans perdre de contexte. Voir aussi
 `docs/cube-extension-spec.md` (la spec d'origine) et
