@@ -1,0 +1,15 @@
+{
+  "astar": {
+    "start_position": [
+      0,
+      0,
+      0
+    ],
+    "goal_location": [
+      4,
+      0,
+      0
+    ],
+    "yaw_change_weight": 0.1
+  }
+}

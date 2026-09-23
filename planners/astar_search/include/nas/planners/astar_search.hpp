@@ -51,6 +51,12 @@ struct AstarSearchConfig {
 
     DistanceMetric distance_metric = DistanceMetric::Epa;
 
+    // Optional edge cost on rotating: the cost of an edge is 1 + yaw_change_weight * |yaw of the child - yaw of the
+    // parent| (wrapped to [0, pi]). 0 (default) = the paper's cost, always 1 ("we do not impose a penalty on the
+    // rotation", V-B.5). 0.1 is the weight of the old code's unused penalty (its grid baseline, commented out) and
+    // the paper mentions a small cost penalising foot rotation for its videos. Only with rotation enabled.
+    double yaw_change_weight = 0.0;
+
     // Safety limit: the search gives up (empty path) after this many expansions. 0 = no limit.
     // Unweighted heuristics (Euclidean) can expand a very large number of nodes on a continuous
     // state space, and nodes are never freed during a search.

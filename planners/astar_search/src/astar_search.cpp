@@ -233,7 +233,13 @@ void AstarSearch::search() {
                 continue;
             }
 
-            double tentative_g_score = current_node->g_score + 1.0;
+            double edge_cost = 1.0;
+            if (config_.yaw_change_weight > 0.0 && config_.expansion_params.rotation_enabled) {
+                double dyaw = std::fmod(std::abs(child->foot_yaw - current_node->foot_yaw), 2.0 * M_PI);
+                if (dyaw > M_PI) dyaw = 2.0 * M_PI - dyaw;
+                edge_cost += config_.yaw_change_weight * dyaw;
+            }
+            double tentative_g_score = current_node->g_score + edge_cost;
             double tentative_h_score = heuristic(child);
             double tentative_f_score = tentative_g_score + tentative_h_score;
 

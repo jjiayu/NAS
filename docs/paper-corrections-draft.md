@@ -74,3 +74,7 @@ Implémenté comme `cycle_path_detection` (historique des surfaces par pied). V�
 ## 14. [précision] Convention du lacet
 
 Le papier donne le lacet « en radians », sans sens ni axe. Code : positif dans le sens inverse des aiguilles d'une montre, autour de la normale de la surface après inclinaison. Le signe compte (inverser le lacet fait violer les contraintes de 0,4 à 1 m).
+
+## 15. [précision, option faite] Coût pénalisant la rotation (V-B.5)
+
+Le papier : « We do not impose a penalty on the rotation to illustrate the interest of our approach », et des vidéos avec « a small cost » pénalisant la rotation. Code : coût d'arête 1 par défaut ; option `yaw_change_weight` (coût `1 + w·|Δ lacet|`, 0 par défaut). Mesures : `docs/paper-deltas.md`, « Coût optionnel sur la rotation ». À préciser dans le papier : la forme exacte du petit coût utilisé pour les vidéos.

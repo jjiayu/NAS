@@ -350,6 +350,31 @@ Question de l'auteur : les fusions se passent-elles bien avec l'heuristique eucl
 - **L'explosion est combinatoire, pas un défaut de fusion.** Nœuds poussés par profondeur, euclidien LongStairs : 14, 171, 1068, 3104, ... ; Flat : 7, 39, 224, 1296, 7064 (facteur ~5 à 6 par profondeur). Avec un coût d'arête de 1 et une heuristique non pondérée (une foulée couvre au plus ~0,9 m, donc h baisse d'environ 0,5 par pas alors que g monte de 1), f croît avec la profondeur et la recherche revient à explorer en largeur : tous les patchs distincts à 2 cm près, sur 7 lacets, à chaque profondeur. L'EPA pondérée x10 fait l'inverse (h domine), d'où 26 à 98 expansions.
 - **Le papier** : même phénomène, mesuré sur l'A\* discrétisé qui utilise l'heuristique euclidienne (VII-E, tableau I) : 23 233 nœuds sur les minima locaux avec rotation, 1 851 sur le passage étroit, 253 sur l'escalier, contre 92, 88 et 33 pour CASSR ; et le papier suppose que l'EPA est une meilleure heuristique que l'euclidienne « même sans rotation », d'après le nombre d'expansions de la version discrète. Il ne rapporte pas CASSR avec l'heuristique euclidienne : notre mesure (CASSR continu + euclidien, non pondéré) n'est pas dans le papier ; l'explosion observée est cohérente avec la leur.
 
+### Coût optionnel sur la rotation (2026-09-20)
+
+Demande de l'auteur : un coût qui favorise un déplacement sans tourner, en option. Dans l'ancien A\* de CASSR le coût d'arête était toujours 1 (`getCostOfEdge` du papier) : rien n'a été retiré. Le seul coût de lacet de l'ancien code était du code mort de la baseline grille (`yaw_weight = 0,1` sur `|Δ lacet|`, ligne commentée). Le papier (V-B.5) mentionne un petit coût pénalisant la rotation pour ses vidéos. Choix de l'auteur : la pénalité sur le **changement de lacet**.
+
+`AstarSearchConfig::yaw_change_weight` (JSON `astar.yaw_change_weight`, **0 par défaut** : coût 1, comportement inchangé) : coût d'arête `1 + w · |lacet de l'enfant − lacet du parent|`, ramené à [0, π]. Test `nas_yaw_cost` : w = 0 reproduit exactement la recherche par défaut ; pour tous les poids un chemin est trouvé là où il l'était, son QP réussit, la recherche est déterministe. Mesure sur les 15 scénarios (expansions / nœuds du chemin / rotation totale du chemin, somme des |Δ lacet| en degrés) :
+
+| scène | w = 0 (défaut) | w = 0,1 | w = 1 |
+|---|---|---|---|
+| NarrowPassage | 98 / 30 / 750° | 82 / 26 / 140° | 78 / 30 / 90° |
+| Stairs | 34 / 6 / 80° | 12 / 6 / 0° | 12 / 6 / 0° |
+| LongStairs | 28 / 10 / 230° | 20 / 14 / 0° | 20 / 14 / 0° |
+| LongLongStairs | 75 / 20 / 530° | 32 / 26 / 0° | 32 / 26 / 0° |
+| Flat | 11 / 6 / 140° | 52 / 8 / 0° | 50 / 8 / 0° |
+| LongStairsComplete | 26 / 10 / 260° | 20 / 14 / 0° | 20 / 14 / 0° |
+| LongStairsExp | 189 / 6 / 150° | 196 / 6 / 20° | 94 / 6 / 10° |
+| ThreePathsScene | 323 / 14 / 320° | 389 / 16 / 150° | 432 / 16 / 150° |
+| Stairs_Up_Down | 33 / 12 / 310° | 60 / 16 / 0° | 58 / 16 / 0° |
+| ThreePathsNAS | 115 / 20 / 490° | 347 / 22 / 150° | 1928 / 24 / 110° |
+| Ramp | 47 / 14 / 370° | 24 / 18 / 0° | 24 / 18 / 0° |
+| SteepRamp | 65 / 12 / 310° | 14 / 14 / 0° | 14 / 14 / 0° |
+| SlopedGround, SideSlope | 11 / 6 / 140° | 14 / 8 / 0° | 8-12 / 8 / 0° |
+| TwoFlatSurfaces | pas de chemin | idem | idem |
+
+Lecture : la rotation totale tombe de 80-750° à 0-150° dès w = 0,1, et à 0° sur 9 scènes ; mais **le chemin gagne 2 à 4 nœuds sur 8 scènes** (LongStairs 10 → 14, LongLongStairs 20 → 26, Stairs_Up_Down 12 → 16, Ramp 14 → 18, SteepRamp 12 → 14, Flat 6 → 8, ThreePathsScene 14 → 16, ThreePathsNAS 20 → 22), alors qu'un coût de 0,05 par pas ne devrait pas valoir un pas de plus : l'A\* est pondéré (heuristique x10, non admissible, glouton) et le coût de lacet ne fait que départager des chemins presque égaux ; le chemin sans rotation trouvé en premier est plus long. Sur ThreePathsNAS, w = 1 fait passer les expansions de 115 à 1928. Le coût est donc un compromis à choisir, pas un gain gratuit. Non mesuré : l'effet sur le QP (distances parcourues).
+
 ## À vérifier
 
 - Incohérence `foot_width` dans `constants.hpp` : valeur active `0.22`, commentaire à côté dit `0.12` — laquelle est correcte ?

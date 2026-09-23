@@ -112,6 +112,13 @@ void test_goal_surface() {
     std::cout << "test_goal_surface passed\n";
 }
 
+void test_yaw_change_weight() {
+    // optional edge cost on rotating: 0 (the paper's cost) unless the config sets it
+    assert(near(load_planner_config(data_path("minimal_planner_config.json")).astar.yaw_change_weight, 0.0));
+    assert(near(load_planner_config(data_path("yaw_cost_planner_config.json")).astar.yaw_change_weight, 0.1));
+    std::cout << "test_yaw_change_weight passed\n";
+}
+
 void test_missing_astar_section_throws() {
     bool threw = false;
     try {
@@ -154,6 +161,7 @@ int main() {
     test_distance_metric_is_parsed();
     test_resolve_goal_uses_the_last_surface_centroid();
     test_goal_surface();
+    test_yaw_change_weight();
     test_missing_astar_section_throws();
     test_missing_start_position_throws();
     test_nonexistent_file_throws();
