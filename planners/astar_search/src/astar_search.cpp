@@ -1,6 +1,7 @@
 #include "nas/planners/astar_search.hpp"
 #include "nas/core/geometry.hpp"
 
+#include <CGAL/squared_distance_2.h>
 #include <boost/functional/hash.hpp>
 #include <boost/heap/fibonacci_heap.hpp>
 
@@ -126,6 +127,34 @@ AstarSearch::AstarSearch(std::vector<Surface> surfaces, ReachabilityModel reacha
     start_node_->centroid = config_.start_position;
     start_node_->foot_yaw = config_.expansion_params.rotation_enabled ? config_.start_foot_yaw : 0.0;
     start_node_->depth = 0;
+    // The start foot stands on some surface: give the start node that surface's frame (its normal
+    // orients the reachability polytope of the first step). surface_id stays -1 (the start is not a
+    // visited surface for the cycle detection). No surface within reach: flat.
+    {
+        const Surface* best = nullptr;
+        double best_dist = 0.05; // metres from the surface plane
+        for (const Surface& s : surfaces_) {
+            double a = CGAL::to_double(s.plane.a()), b = CGAL::to_double(s.plane.b()), c = CGAL::to_double(s.plane.c()), d = CGAL::to_double(s.plane.d());
+            double norm = std::sqrt(a * a + b * b + c * c);
+            double dist = std::abs(a * CGAL::to_double(config_.start_position.x()) + b * CGAL::to_double(config_.start_position.y()) +
+                                   c * CGAL::to_double(config_.start_position.z()) + d) / norm;
+            if (dist >= best_dist) continue;
+            std::vector<Point_2> local = transform_3d_points_to_surface_plane({config_.start_position}, s.transform_to_surface);
+            // inside the (foot-shrunk) footprint, or within 0.2 m of it: the start foot may stand near the edge
+            bool near_footprint = s.polygon_2d.bounded_side(local[0]) != CGAL::ON_UNBOUNDED_SIDE;
+            if (!near_footprint) {
+                for (size_t k = 0; k < s.polygon_2d.size(); ++k) {
+                    Segment_2 e(s.polygon_2d.vertex(k), s.polygon_2d.vertex((k + 1) % s.polygon_2d.size()));
+                    if (std::sqrt(CGAL::to_double(CGAL::squared_distance(local[0], e))) < 0.2) { near_footprint = true; break; }
+                }
+            }
+            if (near_footprint) { best = &s; best_dist = dist; }
+        }
+        if (best) {
+            start_node_->transformation_to_3d = best->transform_to_3d;
+            start_node_->transformation_to_2d = best->transform_to_surface;
+        }
+    }
     start_node_->g_score = 0.0;
     // A single-point patch has no area for EPA (it needs >=3 points), so the
     // start node's heuristic is the plain Euclidean distance — matches the old

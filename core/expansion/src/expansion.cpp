@@ -92,9 +92,16 @@ std::vector<Node*> expand_node(Node* parent,
     const Polyhedron& queried_polytope = reachability.query(
         effector_name(child_stance_foot), effector_name(parent->stance_foot), direction);
 
+    // The polytope is in the support (parent) foot's frame: rotate it by the paper's Q (Eq. 2),
+    // the parent's yaw composed with the tilt of the surface it stands on. Flat surfaces take
+    // the exact yaw-only path (identical to what horizontal scenes always did).
     Polyhedron rotated_polytope;
     const Polyhedron* base_polytope = &queried_polytope;
-    if (params.rotation_enabled) {
+    const Vector_3 support_normal = parent->up_normal();
+    if (!is_vertical_normal(support_normal)) {
+        rotated_polytope = rotate_polyhedron(queried_polytope, foot_frame_rotation(support_normal, params.rotation_enabled ? parent->foot_yaw : 0.0));
+        base_polytope = &rotated_polytope;
+    } else if (params.rotation_enabled) {
         rotated_polytope = rotate_polyhedron_z(queried_polytope, parent->foot_yaw);
         base_polytope = &rotated_polytope;
     }

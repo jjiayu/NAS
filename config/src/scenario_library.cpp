@@ -1,5 +1,6 @@
 #include "nas/config/scenario.hpp"
 
+#include <cmath>
 #include <stdexcept>
 #include <unordered_map>
 
@@ -214,6 +215,28 @@ const RawScenario kNarrowPassage = {
     {Point_3(6.0, -2.0, 0.0), Point_3(10.0, -2.0, 0.0), Point_3(10.0, 2.0, 0.0), Point_3(6.0, 2.0, 0.0)},
 };
 
+// ---- Inclined scenes (NOT from the old environments.hpp, which is all horizontal) ----
+// Ramp helpers: a plane rising at `slope_deg` along x, y in [-1, 1].
+RawScenario make_ramp(double slope_deg, double ramp_length) {
+    const double dz = ramp_length * std::tan(slope_deg * M_PI / 180.0);
+    return {
+        {Point_3(-1.5, -1.0, 0.0), Point_3(0.0, -1.0, 0.0), Point_3(0.0, 1.0, 0.0), Point_3(-1.5, 1.0, 0.0)},          // floor
+        {Point_3(0.0, -1.0, 0.0), Point_3(ramp_length, -1.0, dz), Point_3(ramp_length, 1.0, dz), Point_3(0.0, 1.0, 0.0)}, // ramp
+        {Point_3(ramp_length, -1.0, dz), Point_3(ramp_length + 1.5, -1.0, dz), Point_3(ramp_length + 1.5, 1.0, dz), Point_3(ramp_length, 1.0, dz)}, // top
+    };
+}
+// One inclined plane over the whole scene, x in [-2, 3], y in [-1, 1]: z = tan(a) * x (slope along the walk)
+// or z = tan(a) * y (cross slope).
+RawScenario make_sloped_plane(double slope_deg, bool cross_slope) {
+    const double t = std::tan(slope_deg * M_PI / 180.0);
+    auto z = [&](double x, double y) { return cross_slope ? t * y : t * x; };
+    return {{Point_3(-2.0, -1.0, z(-2.0, -1.0)), Point_3(3.0, -1.0, z(3.0, -1.0)), Point_3(3.0, 1.0, z(3.0, 1.0)), Point_3(-2.0, 1.0, z(-2.0, 1.0))}};
+}
+const RawScenario kRamp = make_ramp(12.0, 3.0);
+const RawScenario kSteepRamp = make_ramp(20.0, 2.0);
+const RawScenario kSlopedGround = make_sloped_plane(10.0, false);
+const RawScenario kSideSlope = make_sloped_plane(10.0, true);
+
 const std::unordered_map<std::string, const RawScenario*>& registry() {
     static const std::unordered_map<std::string, const RawScenario*> kRegistry = {
         {"Stairs", &kStairs},
@@ -227,6 +250,10 @@ const std::unordered_map<std::string, const RawScenario*>& registry() {
         {"Stairs_Up_Down", &kStairsUpDown},
         {"ThreePathsNAS", &kThreePathsNAS},
         {"NarrowPassage", &kNarrowPassage},
+        {"Ramp", &kRamp},
+        {"SteepRamp", &kSteepRamp},
+        {"SlopedGround", &kSlopedGround},
+        {"SideSlope", &kSideSlope},
     };
     return kRegistry;
 }

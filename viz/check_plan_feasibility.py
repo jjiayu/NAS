@@ -2,8 +2,10 @@
 
 Reads plan JSONs written by apps/astar_plan and the reachability polytopes (.obj), and tests
 every constraint the footstep QP is supposed to satisfy, directly:
-  - reachability: for each step i, A . R(yaw_{i-1})^T (x_i - x_{i-1}) <= b, with the polytope of
-    the stepping foot in the support foot's frame (LF in RF or RF in LF), as in the old code;
+  - reachability: for each step i, A . Q^T (x_i - x_{i-1}) <= b with Q = R_tilt . R_z(yaw_{i-1}) the support
+    foot's frame (paper Eq. 2: yaw composed with the contact surface's rotation; R_tilt takes e_z to the
+    surface's up normal, so Q = R_z(yaw) on a flat surface), and the polytope of the stepping foot in the
+    support foot's frame (LF in RF or RF in LF);
   - surface: every intermediate footstep lies on its patch (on the patch plane, inside its polygon);
   - the first footstep is the start, the last is the goal.
 A plan passes when the largest violation of each family is below --tol (default 1e-6 m).
@@ -28,6 +30,20 @@ def hrep(path):
     return eq[:, :3], -eq[:, 3]
 
 
+def frame_Q(normal, yaw):
+    """Q = R_tilt . R_z(yaw); R_tilt = minimal rotation taking e_z to the (up) normal."""
+    n = np.array(normal, dtype=float); n /= np.linalg.norm(n)
+    if n[2] < 0: n = -n
+    c, s = math.cos(yaw), math.sin(yaw)
+    Rz = np.array([[c, -s, 0], [s, c, 0], [0, 0, 1]])
+    axis = np.cross([0, 0, 1], n); sin_t = np.linalg.norm(axis)
+    if sin_t < 1e-12: return Rz
+    k = axis / sin_t
+    K = np.array([[0, -k[2], k[1]], [k[2], 0, -k[0]], [-k[1], k[0], 0]])
+    Rt = np.eye(3) + sin_t * K + (1 - n[2]) * (K @ K)
+    return Rt @ Rz
+
+
 def check(plan, polys, tol):
     feet = np.array([f["position"] for f in plan["footsteps"]])
     path = plan["path"]
@@ -37,8 +53,7 @@ def check(plan, polys, tol):
     out["goal"] = float(np.abs(feet[-1] - np.array(plan["goal"])).max())
     for i in range(1, n):
         A, b = polys[path[i]["stance_foot"]]          # stance 0 = LF -> LF in RF ; 1 = RF -> RF in LF
-        yaw = path[i - 1]["foot_yaw"]
-        R = np.array([[math.cos(yaw), -math.sin(yaw), 0], [math.sin(yaw), math.cos(yaw), 0], [0, 0, 1]])
+        R = frame_Q(path[i - 1].get("up_normal", [0, 0, 1]), path[i - 1]["foot_yaw"])
         local = R.T @ (feet[i] - feet[i - 1])
         out["reach"] = max(out["reach"], float((A @ local - b).max()))
     for i in range(1, n - 1):

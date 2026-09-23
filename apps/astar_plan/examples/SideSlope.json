@@ -1,0 +1,29 @@
+{
+  "astar": {
+    "start_position": [
+      -1.5,
+      0,
+      0
+    ],
+    "start_stance_foot": "Right",
+    "goal_offset": [
+      0,
+      0,
+      0
+    ],
+    "goal_stance_foot": "Left",
+    "heuristic_weight": 10.0,
+    "node_similarity_threshold": 0.02,
+    "expansion": {
+      "rotation_enabled": true,
+      "yaw_discretization_num": 3,
+      "yaw_angle_increment_deg": 10.0,
+      "cycle_detection_enabled": true
+    }
+  },
+  "qp": {
+    "alpha_weight": 10.0,
+    "rotation_enabled": true,
+    "hessian_regularization": 1e-08
+  }
+}

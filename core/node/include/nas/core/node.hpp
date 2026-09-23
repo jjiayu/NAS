@@ -79,6 +79,11 @@ public:
     // True if `point`, expressed in this node's surface frame, falls
     // inside (or on the boundary of) patch_polygon_2d.
     bool check_if_node_contains_point(const Point_3& point) const;
+
+    // Unit normal of the contact surface this node's foot stands on, pointing up
+    // (world +z for a node with no surface, i.e. the start node unless the search
+    // assigned it one). Read from transformation_to_3d, whose third column is the surface normal.
+    Vector_3 up_normal() const;
 };
 
 // Prevents re-visiting the same surface with the same foot after having

@@ -11,6 +11,7 @@
 // This is what proves the corrected clip: the old code's clip dropped an
 // intersection point on near-parallel edges (docs/paper-deltas.md).
 #include "exact_clip.hpp"
+#include "frame_check.hpp"
 #include "nas/config/scenario.hpp"
 #include "nas/core/expansion.hpp"
 #include "nas/core/geometry.hpp"
@@ -74,7 +75,14 @@ double polygon_deviation(const std::vector<Point_3>& a, const std::vector<Point_
     for (const auto& p : ha) dev = std::max(dev, boundary_distance(p, hb));
     for (const auto& p : hb) dev = std::max(dev, boundary_distance(p, ha));
     dev = std::max(dev, std::abs(polygon_area(ha) - polygon_area(hb)));
-    if (!a.empty() && !b.empty()) dev = std::max(dev, std::abs(CGAL::to_double(a[0].z() - b[0].z())));
+    if (a.size() >= 3 && b.size() >= 3) {
+        // heights: every vertex of a must lie on b's plane (patches may be inclined); b's plane from its first 3 vertices
+        Eigen::Vector3d nb = (nas::test::to_vec(b[1]) - nas::test::to_vec(b[0])).cross(nas::test::to_vec(b[2]) - nas::test::to_vec(b[0]));
+        if (nb.norm() > 1e-12) {
+            nb.normalize();
+            for (const auto& p : a) dev = std::max(dev, std::abs(nb.dot(nas::test::to_vec(p) - nas::test::to_vec(b[0]))));
+        }
+    }
     return dev;
 }
 
@@ -84,7 +92,8 @@ struct Tally {
     std::vector<std::string> examples;
 };
 
-struct SceneSetup { const char* name; Point_3 start; Vector_3 goal_offset; };
+struct SceneSetup { const char* name; Point_3 start; Vector_3 goal_offset; Eigen::Vector3d start_normal = Eigen::Vector3d::UnitZ(); };
+const double kT10 = std::tan(10.0 * M_PI / 180.0);
 const std::vector<SceneSetup> kScenes = {
     {"NarrowPassage", Point_3(0, 0, 0), Vector_3(0, 0, 0)}, {"Stairs", Point_3(0.1, 0, 0), Vector_3(0, 0, 0)},
     {"TwoFlatSurfaces", Point_3(2.2, 0.7, 0), Vector_3(0, 0, 0)}, {"LongStairs", Point_3(0, 0, 0), Vector_3(0, 0, 0)},
@@ -92,6 +101,10 @@ const std::vector<SceneSetup> kScenes = {
     {"LongStairsComplete", Point_3(0, 0, 0), Vector_3(0, 0, 0)}, {"LongStairsExp", Point_3(0, 0, 0), Vector_3(0, 0, 0)},
     {"ThreePathsScene", Point_3(0, 0, 0), Vector_3(0, 0, 0)}, {"Stairs_Up_Down", Point_3(0, 0, 0), Vector_3(0, 0, 0)},
     {"ThreePathsNAS", Point_3(0, 0, 0), Vector_3(0, 1, 0)},
+    // inclined scenes (new): the polytope's frame follows the support foot's surface
+    {"Ramp", Point_3(-1, 0, 0), Vector_3(0, 0, 0)}, {"SteepRamp", Point_3(-1, 0, 0), Vector_3(0, 0, 0)},
+    {"SlopedGround", Point_3(-1.5, 0, -1.5 * kT10), Vector_3(0, 0, 0), Eigen::Vector3d(-kT10, 0, 1).normalized()},
+    {"SideSlope", Point_3(-1.5, 0, 0), Vector_3(0, 0, 0), Eigen::Vector3d(0, -kT10, 1).normalized()},
 };
 
 bool clean_polygon(const Polygon_2& poly) {
@@ -145,14 +158,19 @@ int main() {
             parent->depth = node.depth;
             parent->surface_id = node.surface_id;
             parent->pred_surface_ids = node.pred_surface_ids;
+            parent->transformation_to_3d = node.transformation_to_3d; // the surface frame: its normal orients the polytope
+            parent->transformation_to_2d = node.transformation_to_2d;
             std::vector<Node*> kids = expand_node(parent, sc.surfaces, reach, ReachabilityDirection::Forward, cfg.expansion_params, pool);
             std::map<int, std::vector<const Node*>> by_surface;
             for (const Node* k : kids) by_surface[k->surface_id].push_back(k);
 
             // the oracle's polytope: same construction, done here from scratch
             StanceFoot child_stance = other_foot(parent->stance_foot);
-            Polyhedron base = rotate_polyhedron_z(
-                reach.query(effector_name(child_stance), effector_name(parent->stance_foot), ReachabilityDirection::Forward), parent->foot_yaw);
+            // Q = the support foot's yaw composed with its surface's tilt, independent implementation (frame_check.hpp)
+            Eigen::Vector3d support_normal = parent->patch_vertices.size() >= 3 ? nas::test::up_normal_of(parent->patch_vertices) : s.start_normal;
+            Polyhedron base = rotate_polyhedron(
+                reach.query(effector_name(child_stance), effector_name(parent->stance_foot), ReachabilityDirection::Forward),
+                nas::test::frame_Q(support_normal, parent->foot_yaw));
             Polyhedron P = minkowski_sum(parent->patch_vertices, base);
             for (const Surface& surf : sc.surfaces) {
                 ++t.cuts;

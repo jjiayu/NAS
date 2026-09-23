@@ -113,6 +113,7 @@ int main(int argc, char** argv) {
         node_j["foot_yaw"] = n->foot_yaw;
         node_j["surface_id"] = n->surface_id;
         node_j["centroid"] = point_json(n->centroid);
+        node_j["up_normal"] = point_json(Point_3(CGAL::to_double(n->up_normal().x()), CGAL::to_double(n->up_normal().y()), CGAL::to_double(n->up_normal().z())));
         json patch = json::array();
         for (const auto& v : n->patch_vertices) patch.push_back(point_json(v));
         node_j["patch_vertices"] = patch;

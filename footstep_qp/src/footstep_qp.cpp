@@ -25,6 +25,14 @@ Eigen::Matrix3d yaw_rotation_matrix(double yaw, bool rotation_enabled) {
     return R;
 }
 
+// Q of the paper (Eq. 2) for the support foot of path node `node`: yaw composed with the tilt of its contact
+// surface. Flat surface: the yaw-only matrix, exactly as before.
+Eigen::Matrix3d support_frame_rotation(const Node& node, bool rotation_enabled) {
+    const Vector_3 n = node.up_normal();
+    if (is_vertical_normal(n)) return yaw_rotation_matrix(node.foot_yaw, rotation_enabled);
+    return foot_frame_rotation(n, rotation_enabled ? node.foot_yaw : 0.0);
+}
+
 Eigen::Vector3d to_eigen(const Point_3& p) {
     return Eigen::Vector3d(CGAL::to_double(p.x()), CGAL::to_double(p.y()), CGAL::to_double(p.z()));
 }
@@ -81,7 +89,7 @@ FootstepPlan solve_footstep_qp(const std::vector<Node*>& path_nodes,
         const Polyhedron& poly = reachability.query(effector_name(moving), effector_name(support),
                                                       ReachabilityDirection::Forward);
         HalfSpacePolytopeConstraint hrep = convert_polytope_to_half_space_constraint(poly);
-        Eigen::Matrix3d R_yaw = yaw_rotation_matrix(path_nodes[i - 1]->foot_yaw, config.rotation_enabled);
+        Eigen::Matrix3d R_yaw = support_frame_rotation(*path_nodes[i - 1], config.rotation_enabled);
 
         for (int r = 0; r < hrep.A.rows(); ++r) {
             Eigen::RowVector3d a_rotated = hrep.A.row(r) * R_yaw.transpose();

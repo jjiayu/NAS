@@ -25,11 +25,11 @@ def near(a, b, eps=1e-6):
     return abs(a - b) < eps
 
 
-def test_available_scenarios_lists_all_eleven():
+def test_available_scenarios_lists_all():
     names = nb.available_scenarios()
-    assert len(names) == 11
-    assert len(set(names)) == 11
-    print("test_available_scenarios_lists_all_eleven passed")
+    assert len(names) == 15  # the 11 of the old environments.hpp + Ramp, SteepRamp, SlopedGround, SideSlope
+    assert len(set(names)) == 15
+    print("test_available_scenarios_lists_all passed")
 
 
 def test_narrow_passage_matches_golden():
@@ -65,7 +65,7 @@ def test_unknown_scenario_raises():
 
 
 if __name__ == "__main__":
-    test_available_scenarios_lists_all_eleven()
+    test_available_scenarios_lists_all()
     test_narrow_passage_matches_golden()
     test_three_paths_nas_matches_golden()
     test_unknown_scenario_raises()

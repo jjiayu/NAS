@@ -11,7 +11,8 @@ import os
 import sys
 
 SCENES = ["NarrowPassage", "Stairs", "TwoFlatSurfaces", "LongStairs", "LongLongStairs", "Flat",
-          "LongStairsComplete", "LongStairsExp", "ThreePathsScene", "Stairs_Up_Down", "ThreePathsNAS"]
+          "LongStairsComplete", "LongStairsExp", "ThreePathsScene", "Stairs_Up_Down", "ThreePathsNAS",
+          "Ramp", "SteepRamp", "SlopedGround", "SideSlope"]   # the last four are inclined scenes, new (no old-code plan)
 
 # Old code (same machine, same tool, interleaved runs; docs/paper-deltas.md, "Mesure finale"):
 # search ms and expansions of the old behaviour, built from commit f97e445.
@@ -27,8 +28,8 @@ def main(dumps, golden, out):
     for sc in SCENES:
         with open(os.path.join(dumps, sc + ".json")) as f:
             new = json.load(f)
-        with open(os.path.join(golden, sc + "_astar.json")) as f:
-            old = json.load(f)
+        gpath = os.path.join(golden, sc + "_astar.json")
+        old = json.load(open(gpath)) if os.path.exists(gpath) else {"success": False, "nodes": []}
         fp = old.get("footstep_plan", {})
         old_nodes = [{"c": n["centroid"], "yaw": n["foot_yaw"], "stance": n["stance_foot"], "surf": n["surface_id"]}
                      for n in old.get("nodes", [])]
@@ -43,7 +44,7 @@ def main(dumps, golden, out):
             "feet": new["footsteps"],
             "old": {"found": old.get("success", False), "qp": fp.get("success", False), "nodes": old_nodes,
                     "feet": fp.get("footsteps", []) if fp.get("success", False) else [],
-                    "ms": OLD_PERF[sc][0], "exp": OLD_PERF[sc][1]},
+                    "ms": OLD_PERF.get(sc, (0, 0))[0], "exp": OLD_PERF.get(sc, (0, 0))[1], "new_scene": sc not in OLD_PERF},
         })
     html = TEMPLATE.replace("/*DATA*/[]", json.dumps(data, separators=(",", ":")))
     with open(out, "w") as f:
@@ -124,14 +125,14 @@ h3 { font-size: 15px; margin: 8px 0 -8px; font-weight: 600; }
 
 <div class="wrap">
   <header>
-    <h1>Plans CASSR sur les 11 scénarios</h1>
-    <p>Chaque plan est produit par l'interface minimale <code>astar_plan</code> (recherche + QP des pas) sur la version validée. Le plan de l'ancien code, quand il existe, est superposé en pointillés violets.</p>
+    <h1>Plans CASSR sur 15 scénarios</h1>
+    <p>Chaque plan est produit par l'interface minimale <code>astar_plan</code> (recherche + QP des pas) sur la version validée. Le plan de l'ancien code, quand il existe, est superposé en pointillés violets. Les quatre derniers scénarios (Ramp, SteepRamp, SlopedGround, SideSlope) sont des surfaces inclinées, nouvelles : l'ancien code n'en a pas.</p>
   </header>
   <div class="layout">
     <nav id="nav" aria-label="Scénarios"></nav>
     <section class="stage" id="stage"></section>
   </div>
-  <h3>Comparaison sur les 11 scénarios</h3>
+  <h3>Comparaison avec l'ancien code</h3>
   <div class="tablewrap"><table id="cmp"></table></div>
   <p class="note">Ancien : configuration de l'ancien code, mesurée avec le même outil sur la même machine (recherche seule, moyenne de 10 exécutions alternées). « Pas » = distance horizontale parcourue par les pieds d'après le QP. Les lacets d'un plan peuvent différer de l'ancien sans que les surfaces, les pieds ou la longueur changent : à coût égal, l'ordre de sortie des candidats est un simple départage.</p>
 </div>
@@ -171,12 +172,13 @@ function topView(s) {
   const step = niceStep(Math.max(W, H));
   for (let x = Math.ceil((x0 + fs * 3) / step) * step; x <= x1 - fs * 3; x += step) { svg.append(el('line', { x1: x, y1: -y1, x2: x, y2: -y0, stroke: 'var(--grid)', 'stroke-width': 1, 'vector-effect': 'non-scaling-stroke' })); const t = el('text', { x: x + fs * 0.2, y: -y0 - fs * 0.35, 'font-size': fs * 0.72 }); t.textContent = fmt(x, step < 1 ? 1 : 0) + ' m'; svg.append(t); }
   for (let y = Math.ceil((y0 + fs * 2) / step) * step; y <= y1 - fs; y += step) { svg.append(el('line', { x1: x0, y1: -y, x2: x1, y2: -y, stroke: 'var(--grid)', 'stroke-width': 1, 'vector-effect': 'non-scaling-stroke' })); const t = el('text', { x: x0 + fs * 0.3, y: -y - fs * 0.25, 'font-size': fs * 0.72 }); t.textContent = fmt(y, step < 1 ? 1 : 0) + ' m'; svg.append(t); }
-  const zs = s.surfaces.map(v => v[0][2]), zmin = Math.min(...zs), zmax = Math.max(...zs);
+  const zmean = v => v.reduce((a, p) => a + p[2], 0) / v.length;
+  const zs = s.surfaces.map(zmean), zmin = Math.min(...zs), zmax = Math.max(...zs);
   s.surfaces.forEach((v, k) => {
-    const t = zmax > zmin ? (v[0][2] - zmin) / (zmax - zmin) : 0.5;
-    svg.append(el('polygon', { points: v.map(p => `${p[0]},${-p[1]}`).join(' '), fill: 'var(--surf)', 'fill-opacity': 0.3 + 0.55 * t, stroke: 'var(--surf-edge)', 'stroke-width': 1, 'vector-effect': 'non-scaling-stroke' }, [el('title', {}, [`surface ${k}, hauteur ${fmt(v[0][2], 2)} m`])]));
+    const t = zmax > zmin ? (zmean(v) - zmin) / (zmax - zmin) : 0.5;
+    svg.append(el('polygon', { points: v.map(p => `${p[0]},${-p[1]}`).join(' '), fill: 'var(--surf)', 'fill-opacity': 0.3 + 0.55 * t, stroke: 'var(--surf-edge)', 'stroke-width': 1, 'vector-effect': 'non-scaling-stroke' }, [el('title', {}, [`surface ${k}, hauteur ${fmt(Math.min(...v.map(p => p[2])), 2)} à ${fmt(Math.max(...v.map(p => p[2])), 2)} m`])]));
     const cx = v.reduce((a, p) => a + p[0], 0) / v.length, cy = v.reduce((a, p) => a + p[1], 0) / v.length;
-    const tx = el('text', { x: cx, y: -cy, 'text-anchor': 'middle', 'font-size': fs * 0.95, style: 'opacity:.85' }); tx.textContent = `#${k}` + (zmax > zmin ? `  z=${fmt(v[0][2], 2)}` : ''); svg.append(tx);
+    const tx = el('text', { x: cx, y: -cy, 'text-anchor': 'middle', 'font-size': fs * 0.95, style: 'opacity:.85' }); { const lo = Math.min(...v.map(p => p[2])), hi = Math.max(...v.map(p => p[2])); tx.textContent = `#${k}` + (zmax > zmin || hi - lo > 0.01 ? (hi - lo > 0.01 ? `  z=${fmt(lo, 2)}→${fmt(hi, 2)}` : `  z=${fmt(lo, 2)}`) : ''); } svg.append(tx);
   });
   if (state.patches) s.path.forEach((n, k) => { if (k === 0 || !n.patch.length) return; svg.append(el('polygon', { points: n.patch.map(p => `${p[0]},${-p[1]}`).join(' '), fill: `var(--patch-${n.stance ? 'r' : 'l'})`, 'fill-opacity': 0.09, stroke: `var(--patch-${n.stance ? 'r' : 'l'})`, 'stroke-opacity': 0.35, 'stroke-width': 1, 'vector-effect': 'non-scaling-stroke' })); });
   if (state.old && s.old.feet.length) {
@@ -202,7 +204,7 @@ function sideView(s) {
   const px = s.feet.map(f => f.position);
   const spanX = Math.max(...px.map(p => p[0])) - Math.min(...px.map(p => p[0])), spanY = Math.max(...px.map(p => p[1])) - Math.min(...px.map(p => p[1]));
   const ax = spanX >= spanY ? 0 : 1, axn = ax ? 'y' : 'x';
-  const zs = [...s.surfaces.map(v => v[0][2]), ...px.map(p => p[2])];
+  const zs = [...s.surfaces.flat().map(p => p[2]), ...px.map(p => p[2])];
   const a0 = Math.min(...s.surfaces.flat().map(p => p[ax]), ...px.map(p => p[ax])) - 0.2, a1 = Math.max(...s.surfaces.flat().map(p => p[ax]), ...px.map(p => p[ax])) + 0.2;
   const zmin = Math.min(...zs), zmax = Math.max(...zs);
   if (zmax - zmin < 0.02) return null; // flat scene: nothing to see
@@ -211,8 +213,11 @@ function sideView(s) {
   // z is stretched so steps of ~10 cm read: scale factor k on z
   const k = Math.min(W / H * 0.28, 6), Hs = H * k;
   const svg = el('svg', { viewBox: `${a0} ${-z1 * k} ${W} ${Hs}`, role: 'img', 'aria-label': `Profil de hauteur, ${s.name}` });
-  const seen = new Set();
-  s.surfaces.forEach((v, i) => { const z = v[0][2], lo = Math.min(...v.map(p => p[ax])), hi = Math.max(...v.map(p => p[ax])); svg.append(el('line', { x1: lo, y1: -z * k, x2: hi, y2: -z * k, stroke: 'var(--surf-edge)', 'stroke-width': 3, 'stroke-linecap': 'round', 'vector-effect': 'non-scaling-stroke', 'stroke-opacity': 0.55 }, [el('title', {}, [`surface ${i}, z=${fmt(z, 2)} m`])])); const key = z.toFixed(3); if (!seen.has(key)) { seen.add(key); const t = el('text', { x: a0 + fs * 0.3, y: -z * k - fs * 0.5, 'font-size': fs }); t.textContent = `z=${fmt(z, 2)}`; svg.append(t); } });
+  s.surfaces.forEach((v, i) => {
+    const zlo = Math.min(...v.map(p => p[2])), zhi = Math.max(...v.map(p => p[2]));
+    svg.append(el('polygon', { points: v.map(p => `${p[ax]},${-p[2] * k}`).join(' '), fill: 'var(--surf)', 'fill-opacity': 0.35, stroke: 'var(--surf-edge)', 'stroke-width': 2.5, 'stroke-linejoin': 'round', 'vector-effect': 'non-scaling-stroke' }, [el('title', {}, [`surface ${i}, z de ${fmt(zlo, 2)} à ${fmt(zhi, 2)} m`])]));
+  });
+  for (const zv of [zmin, zmax]) { const t = el('text', { x: a0 + fs * 0.3, y: -zv * k - fs * 0.5, 'font-size': fs }); t.textContent = `z=${fmt(zv, 2)}`; svg.append(t); }
   if (state.old && s.old.feet.length) s.old.feet.forEach(p => svg.append(el('circle', { cx: p[ax], cy: -p[2] * k, r: fs * 0.62, fill: 'none', stroke: 'var(--old)', 'stroke-width': 1.5, 'stroke-dasharray': '3 2', 'vector-effect': 'non-scaling-stroke' })));
   s.feet.forEach((f, i) => { svg.append(el('circle', { cx: f.position[ax], cy: -f.position[2] * k, r: fs * 0.45, fill: `var(--${f.stance_foot ? 'right' : 'left'})` }, [el('title', {}, [`pas ${i}, ${axn}=${fmt(f.position[ax], 2)} m, z=${fmt(f.position[2], 2)} m`])])); });
   return { svg, cap: `Profil : ${axn} (m) en abscisse, hauteur z en ordonnée, étirée ×${fmt(k, 0)} pour lire les marches.` };
@@ -230,9 +235,9 @@ function renderStage() {
   const wn = walked(newFeet(s)), wo = walked(s.old.feet);
   const dl = el('dl', { class: 'stats' });
   const stat = (k, v, small) => dl.append(el('div', {}, [el('dt', {}, [k]), el('dd', {}, [v, small ? el('small', {}, [' ' + small]) : ''])]));
-  stat('Pas', s.found ? String(s.path.length - 1) : '–', s.old.found ? `ancien ${s.old.nodes.length - 1}` : 'ancien : aucun chemin');
-  stat('Expansions', String(s.expansions), `ancien ${s.old.exp}`);
-  stat('Recherche', fmt(s.search_ms) + ' ms', `ancien ${fmt(s.old.ms)} ms`);
+  stat('Pas', s.found ? String(s.path.length - 1) : '–', s.old.found ? `ancien ${s.old.nodes.length - 1}` : (s.old.new_scene ? 'scène nouvelle' : 'ancien : aucun chemin'));
+  stat('Expansions', String(s.expansions), s.old.new_scene ? '' : `ancien ${s.old.exp}`);
+  stat('Recherche', fmt(s.search_ms) + ' ms', s.old.new_scene ? '' : `ancien ${fmt(s.old.ms)} ms`);
   stat('QP', s.found ? fmt(s.qp_ms, 2) + ' ms' : '–', s.old.qp ? 'ancien QP résolu' : (s.old.found ? 'ancien QP en échec' : ''));
   stat('Distance parcourue', wn ? fmt(wn, 2) + ' m' : '–', wo ? `ancien ${fmt(wo, 2)} m` : '');
   st.append(dl);
@@ -260,12 +265,12 @@ function renderTable() {
   t.append(el('thead', {}, [el('tr', {}, head.map(h => el('th', {}, [h])))]));
   const tb = el('tbody'); let tn = 0, to = 0;
   DATA.forEach((s, i) => {
-    const wn = walked(newFeet(s)), wo = walked(s.old.feet), r = s.search_ms / s.old.ms; if (s.found) { tn += s.search_ms; to += s.old.ms; }
-    const cells = [s.name, s.found ? s.path.length - 1 : '–', s.old.found ? s.old.nodes.length - 1 : '–', s.expansions, s.old.exp, fmt(s.search_ms), fmt(s.old.ms), (s.found ? fmt(r, 2) + '×' : '–'), wn ? fmt(wn, 2) : '–', wo ? fmt(wo, 2) : '–', s.found ? (s.qp ? (s.old.qp ? 'ok' : 'ok (ancien : échec)') : 'échec') : '–'];
-    const tr = el('tr', { class: i === state.i ? 'sel' : '' }, cells.map((c, j) => { const td = el('td', j === 7 && s.found ? { class: r > 1.15 ? 'warn' : 'good' } : {}); td.textContent = String(c); return td; }));
+    const wn = walked(newFeet(s)), wo = walked(s.old.feet), r = s.search_ms / s.old.ms; const nw = s.old.new_scene; if (s.found && !nw) { tn += s.search_ms; to += s.old.ms; }
+    const cells = [s.name, s.found ? s.path.length - 1 : '–', s.old.found ? s.old.nodes.length - 1 : '–', s.expansions, nw ? '–' : s.old.exp, fmt(s.search_ms), nw ? '–' : fmt(s.old.ms), (s.found && !nw ? fmt(r, 2) + '×' : '–'), wn ? fmt(wn, 2) : '–', wo ? fmt(wo, 2) : '–', s.found ? (s.qp ? (s.old.qp ? 'ok' : 'ok (ancien : échec)') : 'échec') : '–'];
+    const tr = el('tr', { class: i === state.i ? 'sel' : '' }, cells.map((c, j) => { const td = el('td', j === 7 && s.found && !nw ? { class: r > 1.15 ? 'warn' : 'good' } : {}); td.textContent = String(c); return td; }));
     tb.append(tr);
   });
-  const sum = el('tr', {}, ['Total (avec chemin)', '', '', '', '', fmt(tn), fmt(to), fmt(tn / to, 2) + '×', '', '', ''].map((c, j) => { const td = el('td', j === 7 ? { class: 'good' } : {}); td.textContent = c; td.style.fontWeight = '600'; return td; }));
+  const sum = el('tr', {}, ['Total (11 scènes anciennes avec chemin)', '', '', '', '', fmt(tn), fmt(to), fmt(tn / to, 2) + '×', '', '', ''].map((c, j) => { const td = el('td', j === 7 ? { class: 'good' } : {}); td.textContent = c; td.style.fontWeight = '600'; return td; }));
   tb.append(sum); t.append(tb);
 }
 

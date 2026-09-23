@@ -304,6 +304,20 @@ Lecture directe du PDF, sections IV à VII et tableau I.
 
 **Non défini par le papier** : le signe du lacet (« angle en radians »). Il repose sur la cohérence interne recherche/QP ; le témoin négatif de `nas_golden_all_scenes` montre que le signe compte (violations de 0,4 à 1 m s'il est inversé).
 
+### Surfaces inclinées : la rotation de la surface de contact (Eq. 2 du papier) (2026-09-19)
+
+L'ancien code (et le portage jusque-là) ne tournait le polytope d'atteignabilité que du lacet autour de l'axe z du monde. Le papier (IV-B, Eq. 2) le tourne par `Q`, « la matrice de rotation qui correspond au lacet courant **et à la rotation de la surface de contact** » : le polytope est défini dans le repère du pied d'appui, dont l'axe z est la normale de la surface sur laquelle il se tient. Implémenté : `Q = R_tilt · R_z(lacet)`, `R_tilt` étant la rotation minimale qui amène z sur la normale (orientée vers le haut) de la surface du pied d'appui (`foot_frame_rotation` dans `core/geometry`, utilisée par `expand_node` et par le QP ; `Node::up_normal()` la lit dans `transformation_to_3d`). Pour une surface horizontale c'est exactement l'ancien chemin (`rotate_polyhedron_z`) : les 11 recherches horizontales sont identiques bit à bit à la référence. Le nœud de départ prend le repère de la surface sur laquelle se tient le point de départ (à moins de 5 cm du plan et à moins de 20 cm de l'empreinte), sans changer son `surface_id`.
+
+Scènes ajoutées (nouvelles, l'ancien `environments.hpp` est entièrement horizontal) : `Ramp` (sol, rampe à 12° sur 3 m, plateau), `SteepRamp` (20° sur 2 m), `SlopedGround` (un seul plan à 10° dans le sens de la marche, départ sur la pente), `SideSlope` (un seul plan à 10° en dévers).
+
+Constats mesurés :
+- Le polytope `quasi_flat` est très ouvert en z (de −0,67 à +0,54 m) : le code sans inclinaison trouvait déjà des chemins sur ces pentes, mais avec un repère du pied à plat. Avant / après l'inclinaison : Ramp 88 → 47 expansions (14 nœuds dans les deux cas), SteepRamp 25 → 65 expansions (10 → 12 nœuds), SlopedGround et SideSlope 11 → 11.
+- Faisabilité contrôlée par une implémentation indépendante (`tests/golden_all/frame_check.hpp` : `Eigen::AngleAxis`, normales tirées des sommets des patchs) dans `nas_inclined_scenes` : recherche déterministe, QP résolu, pire violation 1e-7 m. **Témoin négatif** : le même plan vérifié avec le repère à plat viole les contraintes jusqu'à 3 mm (SideSlope) et 0,28 mm (Ramp) ; sur SteepRamp et SlopedGround la contrainte d'atteignabilité n'est pas active, les deux repères sont satisfaits.
+- `nas_expansion_oracle` couvre aussi ces 4 scènes (patchs comparés au calcul exact avec la rotation indépendante) : 8311 coupes, écart maximal 5,6e-12 m. Un défaut de mon test (le parent recopié perdait son repère de surface) l'avait d'abord fait échouer : le test est bien sensible à l'inclinaison.
+- Vérificateur Python `viz/check_plan_feasibility.py` mis à jour (Q avec inclinaison ; le JSON de `astar_plan` porte `up_normal` par nœud) : les 14 plans avec chemin sont faisables.
+
+Limites : pentes jusqu'à 20° seulement ; le lacet est mesuré autour de la normale de la surface après inclinaison (convention `R_tilt · R_z`), non définie par le papier ; un pied dont le rectangle déborde du patch n'est pas contrôlé (seul son centre l'est, avec la marge du pied).
+
 ## À vérifier
 
 - Incohérence `foot_width` dans `constants.hpp` : valeur active `0.22`, commentaire à côté dit `0.12` — laquelle est correcte ?

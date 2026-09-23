@@ -62,3 +62,9 @@ target_compile_definitions(nas_euclidean_metric PRIVATE
     TALOS_REACHABILITY_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../../talosReachability/data/reachability_constraints"
 )
 add_test(NAME nas_euclidean_metric COMMAND nas_euclidean_metric)
+
+# Inclined surfaces: the polytope's frame follows the contact surface (test_inclined_scenes.cpp).
+add_executable(nas_inclined_scenes test_inclined_scenes.cpp)
+target_link_libraries(nas_inclined_scenes PRIVATE nas_config nas_footstep_qp nas_footstep_qp_backend nas_planners_astar_search CGAL::CGAL)
+target_compile_definitions(nas_inclined_scenes PRIVATE TALOS_REACHABILITY_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../../talosReachability/data/reachability_constraints")
+add_test(NAME nas_inclined_scenes COMMAND nas_inclined_scenes)

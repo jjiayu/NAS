@@ -12,12 +12,12 @@ namespace {
 
 bool near(double a, double b, double eps = 1e-9) { return std::abs(a - b) < eps; }
 
-void test_available_scenarios_lists_all_eleven() {
+void test_available_scenarios_lists_all() {
     auto names = available_scenarios();
-    assert(names.size() == 11);
+    assert(names.size() == 15); // the 11 of the old environments.hpp + 4 inclined scenes (Ramp, SteepRamp, SlopedGround, SideSlope)
     std::set<std::string> unique(names.begin(), names.end());
-    assert(unique.size() == 11); // no duplicate names
-    std::cout << "test_available_scenarios_lists_all_eleven passed\n";
+    assert(unique.size() == 15); // no duplicate names
+    std::cout << "test_available_scenarios_lists_all passed\n";
 }
 
 void test_every_scenario_loads_without_exception() {
@@ -80,7 +80,7 @@ void test_custom_robot_model_changes_shrink() {
 } // namespace
 
 int main() {
-    test_available_scenarios_lists_all_eleven();
+    test_available_scenarios_lists_all();
     test_every_scenario_loads_without_exception();
     test_unknown_scenario_throws();
     test_narrow_passage_matches_environments_hpp();

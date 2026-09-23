@@ -392,4 +392,45 @@ Polyhedron rotate_polyhedron_z(const Polyhedron& polytope, double yaw_angle) {
     return rotated_polytope;
 }
 
+bool is_vertical_normal(const Vector_3& normal) {
+    double nx = CGAL::to_double(normal.x()), ny = CGAL::to_double(normal.y());
+    return std::abs(nx) < 1e-9 && std::abs(ny) < 1e-9;
+}
+
+Eigen::Matrix3d foot_frame_rotation(const Vector_3& surface_normal, double yaw) {
+    double nx = CGAL::to_double(surface_normal.x()), ny = CGAL::to_double(surface_normal.y()), nz = CGAL::to_double(surface_normal.z());
+    double len = std::sqrt(nx * nx + ny * ny + nz * nz);
+    if (len < 1e-12) { nx = 0; ny = 0; nz = 1; } else { nx /= len; ny /= len; nz /= len; }
+    if (nz < 0) { nx = -nx; ny = -ny; nz = -nz; } // up normal
+
+    Eigen::Matrix3d Rz;
+    double c = std::cos(yaw), s = std::sin(yaw);
+    Rz << c, -s, 0,
+          s,  c, 0,
+          0,  0, 1;
+
+    // Rodrigues: minimal rotation taking e_z to n, axis = e_z x n = (-ny, nx, 0), sin = |axis|, cos = nz.
+    double sin_t = std::hypot(nx, ny);
+    Eigen::Matrix3d Rt = Eigen::Matrix3d::Identity();
+    if (sin_t > 1e-12) {
+        // skew matrix of the axis (ax, ay, az) = (-ny, nx, 0): [[0,-az,ay],[az,0,-ax],[-ay,ax,0]]
+        Eigen::Matrix3d K;
+        K << 0, 0, nx,
+             0, 0, ny,
+             -nx, -ny, 0;
+        Rt = Eigen::Matrix3d::Identity() + K + K * K * ((1.0 - nz) / (sin_t * sin_t));
+    }
+    return Rt * Rz;
+}
+
+Polyhedron rotate_polyhedron(const Polyhedron& polytope, const Eigen::Matrix3d& R) {
+    Polyhedron rotated = polytope;
+    for (auto v = rotated.vertices_begin(); v != rotated.vertices_end(); ++v) {
+        Eigen::Vector3d p(CGAL::to_double(v->point().x()), CGAL::to_double(v->point().y()), CGAL::to_double(v->point().z()));
+        Eigen::Vector3d q = R * p;
+        v->point() = Point_3(q.x(), q.y(), q.z());
+    }
+    return rotated;
+}
+
 } // namespace nas

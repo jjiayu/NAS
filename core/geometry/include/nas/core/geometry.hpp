@@ -73,4 +73,18 @@ SurfaceConstraint generate_surface_constraint(const std::vector<Point_3>& polygo
 // Rotate polyhedron around Z-axis by given angle in radians
 Polyhedron rotate_polyhedron_z(const Polyhedron& polytope, double yaw_angle);
 
+// Rotation of a foot's frame in the world: the paper's Q (Eq. 2, "the rotation matrix that matches the
+// current yaw and contact surface rotation"). The reachability polytopes are expressed in the frame of the
+// support foot, z up along the contact surface's normal: Q = R_tilt * R_z(yaw), with R_tilt the minimal rotation
+// taking the world z axis to the surface's up normal (the normal is flipped to point up if needed). For a
+// horizontal surface Q = R_z(yaw).
+Eigen::Matrix3d foot_frame_rotation(const Vector_3& surface_normal, double yaw);
+
+// True when a normal is (numerically) vertical: Q is then a pure yaw rotation, and callers use the exact
+// rotate_polyhedron_z path (bit-identical to the flat-scene behaviour).
+bool is_vertical_normal(const Vector_3& normal);
+
+// Rotates every vertex of a polyhedron by R (general counterpart of rotate_polyhedron_z).
+Polyhedron rotate_polyhedron(const Polyhedron& polytope, const Eigen::Matrix3d& R);
+
 } // namespace nas

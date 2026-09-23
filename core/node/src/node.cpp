@@ -1,9 +1,19 @@
 #include "nas/core/node.hpp"
+
+#include <cmath>
 #include "nas/core/geometry.hpp"
 
 #include <algorithm>
 
 namespace nas {
+
+Vector_3 Node::up_normal() const {
+    Vector_3 n = transformation_to_3d.transform(Vector_3(0, 0, 1));
+    double len = std::sqrt(CGAL::to_double(n.squared_length()));
+    if (!(len > 1e-9)) return Vector_3(0, 0, 1); // default-constructed transformation: no surface
+    n = n / len;
+    return CGAL::to_double(n.z()) < 0 ? -n : n;
+}
 
 bool Node::check_if_node_contains_point(const Point_3& point) const {
     std::vector<Point_2> point_in_surface_coord =
