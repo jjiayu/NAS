@@ -27,12 +27,11 @@ Le papier dit que l'EPA est « une mise à l'échelle » de la borne inférieure
 
 Le nœud de départ est un point (pas de patch, l'EPA demande au moins 3 sommets) : le code utilise la distance euclidienne au but. À écrire.
 
-## 5. [décision] Robustesse du placement du pied (VI)
+## 5. [décision prise, travail à faire] Robustesse du placement du pied (VI)
 
 - **Papier** : « Our algorithm allows stepping on the edge of contact surfaces, where the entire foot is not guaranteed to fit. […] robustness can be obtained by avoiding these positions if possible » (le paramètre `α` de l'Eq. 6).
-- **Code** : chaque surface est rétrécie de la demi-longueur et de la demi-largeur du pied (0,22 m par défaut, donc 11 cm) avant toute recherche, si bien que le centre du pied ne peut pas se poser à moins de 11 cm d'un bord, en plus de la marge `α`.
-- **Effet visible** : NarrowPassage, dont le passage de 24 cm devient un passage de ~2 cm.
-- **Décision** : décrire ce rétrécissement dans le papier, ou le retirer du code.
+- **Code** : chaque surface est rétrécie de la demi-longueur et de la demi-largeur du pied (0,22 m par défaut, donc 11 cm) avant toute recherche, si bien que le centre du pied ne peut pas se poser à moins de 11 cm d'un bord, en plus de la marge `α`. Effet visible : NarrowPassage, dont le passage de 24 cm devient un passage de ~2 cm.
+- **Décision de l'auteur (2026-09-20)** : ce rétrécissement devient un **paramètre de la config** : l'utilisateur donne un seuil `d` en cm et les surfaces réellement utilisées par le problème sont réduites d'autant. Les modalités (par surface ou global, isotrope ou selon x et y, valeur par défaut) sont à définir plus tard. Noté en TODO dans `PLAN.md` (section « Différé »).
 
 ## 6. [décision] Objectif du QP (Eq. 3)
 
