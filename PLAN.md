@@ -130,7 +130,7 @@ Critère de sortie **unique** : séquence de nœuds golden (égalité stricte : 
 - B5. Correction de l'infaisabilité QP : mêmes chemins précis jugés infaisables ancien/nouveau, pas juste un taux similaire.
 - B6. Mémoire longue durée de vie : boucle de `plan()` en process long, surveillance fuite/croissance (nouveau besoin, motivé par l'usage Python live).
 - B7. Déterminisme cross-machine des golden references (pertinent vu le portage Linux en cours).
-- B8. Loader testé contre les vraies données go2Reachability (N=4 effecteurs, 12 paires + CoM) — sans intégration Go2 complète.
+- ~~B8. Loader testé contre les vraies données go2Reachability (N=4 effecteurs, 12 paires + CoM)~~ — **différé (décision utilisateur, 2026-09-19)** : le périmètre reste le bipède (2 effecteurs), le multi-effecteurs n'a pas encore de sens ; à reprendre si le quadrupède entre dans le périmètre.
 
 ## Nettoyage final (après Stage B)
 
