@@ -87,6 +87,8 @@ std::vector<Event> run(const std::string& scene, std::string variant, int& expan
     c.expansion_params.canonical_perimeter = variant.find('p') != std::string::npos;
     c.expansion_params.convex_patch = variant.find('h') != std::string::npos;
     c.expansion_params.convex_patch_simplify_tol = variant.find('t') != std::string::npos ? 1e-9 : 0.0;
+    if (variant.find('g') != std::string::npos) c.dedup_mode = DedupMode::PatchDistance;
+    if (variant.find('k') != std::string::npos) c.dedup_mode = DedupMode::CentroidPerimeterTolerance;
     c.deterministic_ties = variant.find('d') != std::string::npos;
     c.expansion_params.canonical_prism_start = variant.find('s') != std::string::npos;
     c.expansion_params.canonical_centroid = variant.find('c') != std::string::npos;

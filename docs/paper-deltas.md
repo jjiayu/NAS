@@ -169,6 +169,31 @@ Lecture :
 - Le nombre d'expansions n'est pas proportionnel au nombre de fusions (NarrowPassage : 116 fusions pour 99 expansions contre 91 pour 90) : c'est une A* pondérée (h x 10), ses expansions dépendent de l'ordre d'exploration. Le départage déterministe ne change presque pas la déduplication (97 fusions contre 91) : sa différence d'expansions (103 contre 90) vient de l'ordre entre nœuds de même f, pas de la clé.
 - Piste, non implémentée : critère géométrique direct (même surface / pied / lacet et distance entre patchs < 2 cm), avec un index spatial pour la recherche ; sans frontière de cellule ni périmètre.
 
+### Critère de similarité entre nœuds : cellules tronquées vs centroïde+périmètre avec tolérance vs distance entre patchs
+
+Ajouté le 2026-09-19 : `AstarSearchConfig::dedup_mode` (`DedupMode`), défaut = l'ancien. La recherche passe par un `NodeIndex` (un pour la file ouverte, un pour la fermée) : `LegacyIndex` reproduit exactement l'`unordered_set` ancien ; `SpatialIndex` (tolérance, seuil = `node_similarity_threshold` = 2 cm) range les nœuds par (surface, pied, lacet, cellule de centroïde de 10 cm) et interroge les 27 cellules voisines, donc trouve les similaires de part et d'autre d'une frontière. Vérifié que la refonte ne change rien : signatures de recherche (chemins + nombre d'expansions) identiques avant/après sur les 11 scènes pour la variante déterministe `htscd` ; scènes stables identiques en mode par défaut ; ctest 13/13.
+
+Trois critères, tous avec le même profil canonique (patch convexe simplifié, sommet de départ canonique, centroïde d'aire, départage déterministe), donc comparables entre eux ; 3 états de tas, un seul résultat à chaque fois (déterministe) :
+- **cellules** : l'ancien critère (troncature `int(x / 2 cm)` du centroïde et du périmètre) ;
+- **centroïde+périmètre avec tolérance** : distance de centroïdes < 2 cm et écart de périmètre géométrique < 2 cm ;
+- **distance entre patchs** : même surface, pied et lacet, et polygones à moins de 2 cm l'un de l'autre (plus grand écart sommet-contour, dans les deux sens).
+
+| scène | nœuds du chemin de référence | cellules | centroïde+périmètre tolérance | distance entre patchs |
+|---|---|---|---|---|
+| NarrowPassage | 30 | 103 exp. / 34 nœuds | 145 / **42** | **98 / 30** |
+| Stairs | 6 | 39 / 6 | 31 / 6 | 34 / 6 |
+| LongStairs, LongLongStairs, Flat, LongStairsComplete, Stairs_Up_Down | 10, 20, 6, 10, 12 | 28, 75, 11, 26, 33 | idem | idem |
+| LongStairsExp | 6 | 249 / 6 | 159 / 6 | 189 / 6 |
+| ThreePathsScene | 14 | 388 / 14 | 342 / 14 | 323 / 14 |
+| ThreePathsNAS | 20 | 115 / 20 | 83 / 20 | 115 / 20 |
+| **total des expansions (10 scènes)** | | 1067 | 933 | **932** |
+
+Lecture : **la distance entre patchs redonne la longueur de chemin de référence partout** (30 nœuds sur NarrowPassage, où les cellules en donnent 34 et centroïde+périmètre 42, un chemin nettement plus long : le périmètre fusionne à tort des nœuds différents) et réduit le total d'expansions de 13 % par rapport aux cellules. Centroïde+périmètre a la meilleure valeur sur ThreePathsNAS (83) mais dégrade NarrowPassage : il ne mesure pas la similarité.
+
+Perf (`nas_compare_perf`, 20 runs entrelacés, 2 passages, temps par expansion) : ancien 1,60 ms (NarrowPassage) / 0,69 (ThreePathsNAS) ; profil canonique + cellules 0,98 / 0,67 ; + tolérance 0,81 / 0,68 ; **+ distance entre patchs 1,04 / 0,77**. Le critère géométrique coûte donc +6 % (NarrowPassage) à +14 % (ThreePathsNAS) par expansion par rapport aux cellules canoniques, et reste 35 % moins cher que l'ancien sur NarrowPassage (le profil canonique fait gagner plus que le critère ne coûte). En temps total : NarrowPassage 101,6 ms (0,71x l'ancien), ThreePathsNAS 88,1 ms (1,37x : 115 expansions au lieu de 93, à cause de l'ordre des ex æquo et non du critère, non important selon l'utilisateur).
+
+Limites : 10 scènes, temps mesurés sur 2 d'entre elles seulement ; la distance entre patchs n'a pas d'audit de fausses fusions comparable à celui des cellules (`--audit` ne connaît que les clés tronquées).
+
 ## À vérifier
 
 - Incohérence `foot_width` dans `constants.hpp` : valeur active `0.22`, commentaire à côté dit `0.12` — laquelle est correcte ?

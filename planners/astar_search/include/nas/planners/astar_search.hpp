@@ -31,6 +31,23 @@ namespace nas {
 
 enum class DistanceMetric { Euclidean, Gjk, Epa };
 
+// How two nodes are judged "the same" (the search keeps only the better one).
+enum class DedupMode {
+    // The old code: same surface, stance and yaw bin, and int(centroid / t) and
+    // int(perimeter / t) equal on every coordinate (truncation to t-wide cells,
+    // t = node_similarity_threshold). Not a distance: two patches a few mm apart
+    // can fall on different sides of a cell boundary.
+    LegacyCells,
+    // Same surface/stance/yaw bin, |centroid difference| < t and |perimeter
+    // difference| < t. Meant to be used with canonical_centroid and
+    // canonical_perimeter (the old perimeter is not a geometric quantity).
+    CentroidPerimeterTolerance,
+    // Same surface/stance/yaw bin and the two patch polygons within t of each
+    // other (largest vertex-to-boundary distance, both ways). Needs no
+    // centroid/perimeter quantization.
+    PatchDistance,
+};
+
 // What the search did with a freshly expanded child (see AstarSearchConfig::on_child).
 enum class ChildAction {
     SkippedClosed,     // an equal node was already expanded
@@ -56,6 +73,7 @@ struct AstarSearchConfig {
 
     // Node-similarity dedup threshold (paper: "set empirically to 2cm").
     double node_similarity_threshold = 0.02;
+    DedupMode dedup_mode = DedupMode::LegacyCells;
 
     ExpansionParams expansion_params;
 

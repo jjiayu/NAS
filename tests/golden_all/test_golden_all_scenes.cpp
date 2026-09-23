@@ -108,13 +108,15 @@ AstarSearchConfig old_constants_config(const SceneSetup& setup, const Point_3& g
     c.expansion_params.yaw_discretization_num = 3;
     c.expansion_params.yaw_angle_increment = 10.0 / 180.0 * M_PI;
     c.expansion_params.cycle_detection_enabled = true;
-    // NAS_CANONICAL=c|p|q|h|hc|ht|htc|hts|htsc|htscd|htscdp: canonical centroid / perimeter dedup keys (see ExpansionParams).
+    // NAS_CANONICAL=c|p|q|h|hc|ht|htc|hts|htsc|htscd|htscg|htscpk: canonical centroid / perimeter dedup keys (see ExpansionParams).
     if (const char* k = std::getenv("NAS_CANONICAL")) {
         std::string keys = k;
         c.expansion_params.canonical_centroid = keys.find('c') != std::string::npos;
         c.expansion_params.canonical_perimeter = keys.find('p') != std::string::npos;
         c.expansion_params.hull_prism_perimeter = keys.find('q') != std::string::npos;
         c.expansion_params.convex_patch = keys.find('h') != std::string::npos;
+        if (keys.find('g') != std::string::npos) c.dedup_mode = DedupMode::PatchDistance;
+        if (keys.find('k') != std::string::npos) c.dedup_mode = DedupMode::CentroidPerimeterTolerance;
         c.deterministic_ties = keys.find('d') != std::string::npos;
         c.ties_lifo = keys.find('l') != std::string::npos;
         c.expansion_params.canonical_prism_start = keys.find('s') != std::string::npos;

@@ -114,35 +114,38 @@ void compare_clip(const fixtures::Scenario& scenario, const ReachabilityModel& r
 // A/B of the node-key variants (ExpansionParams::convex_patch / canonical_*),
 // interleaved, on the default (robust) clip.
 void compare_keys(const fixtures::Scenario& scenario, const ReachabilityModel& reachability, int num_runs) {
-    struct Variant { const char* name; bool convex, centroid, det; std::vector<double> ms; int exp = 0; };
-    std::vector<Variant> variants = {{"old keys", false, false, false, {}},
-                                     {"convex patch + area centroid", true, true, false, {}},
-                                     {"... + simplify/canonical start (hts c)", true, true, false, {}},
-                                     {"... + deterministic ties (htscd)", true, true, true, {}}};
+    // "canon" = convex patch + 1 nm simplification + canonical start + area centroid + deterministic ties
+    struct Variant { const char* name; bool canon; bool geometric_perimeter; DedupMode mode; std::vector<double> ms; int exp = 0; int path = 0; };
+    std::vector<Variant> variants = {{"old (legacy cells, old keys)", false, false, DedupMode::LegacyCells, {}},
+                                     {"canon + legacy cells", true, false, DedupMode::LegacyCells, {}},
+                                     {"canon + centroid/perimeter tolerance", true, true, DedupMode::CentroidPerimeterTolerance, {}},
+                                     {"canon + patch distance", true, false, DedupMode::PatchDistance, {}}};
     for (int run = 0; run < num_runs; ++run) {
-        for (size_t k = 0; k < variants.size(); ++k) {
-            Variant& v = variants[k];
+        for (auto& v : variants) {
             AstarSearchConfig cfg = scenario.astar_config;
-            cfg.expansion_params.convex_patch = v.convex;
-            cfg.expansion_params.canonical_centroid = v.centroid;
-            if (k >= 2) {
+            cfg.dedup_mode = v.mode;
+            if (v.canon) {
+                cfg.expansion_params.convex_patch = true;
+                cfg.expansion_params.canonical_centroid = true;
                 cfg.expansion_params.convex_patch_simplify_tol = 1e-9;
                 cfg.expansion_params.canonical_prism_start = true;
+                cfg.deterministic_ties = true;
             }
-            cfg.deterministic_ties = v.det;
+            cfg.expansion_params.canonical_perimeter = v.geometric_perimeter;
             AstarSearch search(scenario.surfaces, reachability, cfg);
             auto t0 = std::chrono::high_resolution_clock::now();
             search.search();
             auto t1 = std::chrono::high_resolution_clock::now();
             v.ms.push_back(std::chrono::duration<double, std::milli>(t1 - t0).count());
             v.exp = search.expansion_count();
+            v.path = static_cast<int>(search.result_path().size());
         }
     }
     double base = compute_stats(variants[0].ms).mean_ms;
     for (auto& v : variants) {
         Stats st = compute_stats(v.ms);
-        std::cout << "  keys A/B " << scenario.name << " [" << v.name << "]: " << st.mean_ms << " +/- " << st.stddev_ms << " ms (" << v.exp
-                  << " expansions, " << st.mean_ms / base << "x)  " << st.mean_ms / v.exp << " ms/expansion\n";
+        std::cout << "  dedup A/B " << scenario.name << " [" << v.name << "]: " << st.mean_ms << " +/- " << st.stddev_ms << " ms (" << v.exp
+                  << " expansions, " << v.path << " path nodes, " << st.mean_ms / base << "x)  " << st.mean_ms / v.exp << " ms/expansion\n";
     }
 }
 
