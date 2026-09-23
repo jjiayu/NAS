@@ -406,3 +406,7 @@ Lecture : le cap aligne les pieds sur la direction (erreur de cap de 34-100° à
 ### Poids de tous les coûts dans la config
 
 Demande de l'auteur : chaque coût a un poids éditable dans `astar` de la config JSON, et 0 l'ignore. `step_weight` (coût constant d'un pas, le « 1 » du papier ; **1 par défaut**), `yaw_change_weight` (0), `heading_weight` (0), `heuristic_weight` (10 ; 0 donne une recherche sans heuristique). Un poids négatif est refusé au chargement (`load_planner_config`). Avec les défauts la recherche est inchangée (golden 20/20). Poids du QP : `alpha_weight` (déjà dans `qp`).
+
+### Terme (x₁ − x₀)² de l'objectif du QP (en suspens)
+
+L'objectif est Σ (xᵢ − xᵢ₋₂)² : déplacement d'un même pied entre deux poses, les pieds alternant. Pour i = 1 il n'y a pas de pas i−2 dans le plan ; le code (`footstep_qp.cpp`, boucle de l'objectif) prend x₀ (pied de départ) comme référence, donc `(x₁ − x₀)²` compare deux pieds différents (l'écart gauche/droite au départ) et n'est pas homogène avec les autres termes. Effet : il rapproche le premier pas du pied de départ ; sans lui, x₁ n'est plus lié que par les polytopes d'atteignabilité et par (x₃ − x₁)². Il n'explique pas le zigzag latéral observé (aucun terme ne lie le pied gauche au pied droit le long du chemin). Non vérifié : ce que fait l'ancien code, ce qu'en dit le papier, l'effet d'un retrait sur les 15 scènes. **Décision : gardé tel quel, à reprendre plus tard.**
