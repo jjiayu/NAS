@@ -463,4 +463,136 @@ Polyhedron rotate_polyhedron(const Polyhedron& polytope, const Eigen::Matrix3d& 
     return rotated;
 }
 
+namespace {
+// Hull vertices from CGAL::convex_hull_3/2 are always literal copies of specific
+// input points (never synthesized) -- linear scan is exact and simple at the
+// sizes these polytopes have (tens of vertices, not thousands).
+template <typename Point>
+const Point& find_payload(const Point& p, const std::vector<Point>& points, const std::vector<Point>& payloads) {
+    for (size_t i = 0; i < points.size(); ++i) {
+        if (points[i] == p) return payloads[i];
+    }
+    throw std::logic_error("find_payload: hull vertex not found among inputs (unexpected)");
+}
+} // namespace
+
+TaggedPolyhedron minkowski_sum_tagged(const std::vector<Point_3>& patch_vertices,
+                                       const std::vector<Point_3>& payloads,
+                                       const Polyhedron& polytope) {
+    if (patch_vertices.size() != payloads.size()) {
+        throw std::invalid_argument("minkowski_sum_tagged: patch_vertices and payloads must have the same size");
+    }
+    std::vector<Point_3> all_vertices;
+    std::vector<Point_3> all_payloads;
+    for (size_t i = 0; i < patch_vertices.size(); ++i) {
+        Transformation translation(CGAL::TRANSLATION, patch_vertices[i] - CGAL::ORIGIN);
+        for (auto v = polytope.vertices_begin(); v != polytope.vertices_end(); ++v) {
+            all_vertices.push_back(translation(v->point()));
+            all_payloads.push_back(payloads[i]);
+        }
+    }
+
+    TaggedPolyhedron result;
+    CGAL::convex_hull_3(all_vertices.begin(), all_vertices.end(), result.mesh);
+    for (auto v = result.mesh.vertices_begin(); v != result.mesh.vertices_end(); ++v) {
+        result.vertices.push_back(v->point());
+        result.payloads.push_back(find_payload(v->point(), all_vertices, all_payloads));
+    }
+    return result;
+}
+
+std::vector<TaggedPoint3> compute_polytope_plane_intersection_tagged(const Plane_3& plane, const TaggedPolyhedron& tp) {
+    std::vector<TaggedPoint3> intersection_points;
+    for (auto edge = tp.mesh.edges_begin(); edge != tp.mesh.edges_end(); ++edge) {
+        const Point_3& p0 = edge->vertex()->point();
+        const Point_3& p1 = edge->opposite()->vertex()->point();
+        double d0 = CGAL::to_double(plane.a() * p0.x() + plane.b() * p0.y() + plane.c() * p0.z() + plane.d());
+        double d1 = CGAL::to_double(plane.a() * p1.x() + plane.b() * p1.y() + plane.c() * p1.z() + plane.d());
+        if ((d0 > 0) == (d1 > 0)) continue; // both on the same side: this edge doesn't cross the plane
+        if (d0 == d1) continue; // degenerate (both exactly on-plane): same as the untagged function, not special-cased
+
+        double t = d0 / (d0 - d1);
+        const Point_3& pay0 = find_payload(p0, tp.vertices, tp.payloads);
+        const Point_3& pay1 = find_payload(p1, tp.vertices, tp.payloads);
+
+        auto lerp = [t](const Point_3& a, const Point_3& b) {
+            return Point_3(CGAL::to_double(a.x()) + t * CGAL::to_double(b.x() - a.x()),
+                           CGAL::to_double(a.y()) + t * CGAL::to_double(b.y() - a.y()),
+                           CGAL::to_double(a.z()) + t * CGAL::to_double(b.z() - a.z()));
+        };
+        intersection_points.push_back({lerp(p0, p1), lerp(pay0, pay1)});
+    }
+    return intersection_points;
+}
+
+std::vector<TaggedPoint2> convex_hull_2_tagged(const std::vector<TaggedPoint2>& points) {
+    std::vector<Point_2> pts;
+    pts.reserve(points.size());
+    for (const auto& tp : points) pts.push_back(tp.point);
+
+    Polygon_2 hull;
+    CGAL::convex_hull_2(pts.begin(), pts.end(), std::back_inserter(hull));
+
+    std::vector<TaggedPoint2> result;
+    for (auto v = hull.vertices_begin(); v != hull.vertices_end(); ++v) {
+        for (const auto& tp : points) {
+            if (tp.point == *v) {
+                result.push_back(tp);
+                break;
+            }
+        }
+    }
+    return result;
+}
+
+std::vector<TaggedPoint2> compute_2d_polygon_intersection_tagged(
+    const std::vector<TaggedPoint2>& subject_polygon,
+    const std::vector<Point_2>& clip_polygon,
+    const std::function<Point_2(const TaggedPoint2&)>& classify_coord) {
+    if (subject_polygon.empty() || clip_polygon.empty()) {
+        throw std::invalid_argument("compute_2d_polygon_intersection_tagged: subject/clip polygon must not be empty");
+    }
+
+    std::vector<TaggedPoint2> output_list = subject_polygon;
+
+    auto clip_end = clip_polygon.end();
+    for (auto clip_it = clip_polygon.begin(); clip_it != clip_end; ++clip_it) {
+        if (output_list.empty()) return std::vector<TaggedPoint2>();
+
+        Point_2 edge_start = *clip_it;
+        Point_2 edge_end = (std::next(clip_it) == clip_end) ? clip_polygon.front() : *std::next(clip_it);
+
+        std::vector<TaggedPoint2> input_list = output_list;
+        output_list.clear();
+
+        for (size_t i = 0; i < input_list.size(); i++) {
+            const TaggedPoint2& current = input_list[i];
+            const TaggedPoint2& prev = input_list[(i + input_list.size() - 1) % input_list.size()];
+
+            double current_side = is_leftside_of_edge(classify_coord(current), edge_start, edge_end);
+            double prev_side = is_leftside_of_edge(classify_coord(prev), edge_start, edge_end);
+            bool current_inside = current_side >= 0;
+            bool prev_inside = prev_side >= 0;
+
+            auto push_crossing = [&]() {
+                double t = prev_side / (prev_side - current_side);
+                Point_2 pt(prev.point.x() + t * (current.point.x() - prev.point.x()),
+                           prev.point.y() + t * (current.point.y() - prev.point.y()));
+                Point_2 pay(prev.payload.x() + t * (current.payload.x() - prev.payload.x()),
+                            prev.payload.y() + t * (current.payload.y() - prev.payload.y()));
+                output_list.push_back({pt, pay});
+            };
+
+            if (current_inside) {
+                if (!prev_inside) push_crossing();
+                output_list.push_back(current);
+            } else if (prev_inside) {
+                push_crossing();
+            }
+        }
+    }
+
+    return output_list;
+}
+
 } // namespace nas
