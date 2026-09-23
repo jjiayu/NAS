@@ -22,3 +22,6 @@ Asserted: same number/order of children, surface, stance foot, depth, yaw, cycle
 
 ## Why centroid/perimeter/vertex lists are not asserted
 They are not reproducible even by the old code: `compute_polygon_perimeter` sums every edge of a thin prism polyhedron (triangulation diagonals included) and the centroid averages raw clip vertices, and both depend on the order/triangulation `CGAL::convex_hull_3` returns for P_union. Running the old expansion twice with only its heap allocation order changed (`NAS_SCRAMBLE=<seed>` in `old_expansion_dump`) changes P_union's vertex order in 15/15 expansions and ~270 of ~300 children centroids (up to 12.6 cm). On the stair scenes it even changes patch polygons (0.3-1.8% of children, up to 0.9 m) — in those scenes the surface plane can coincide with a facet of P_union, and the edge-based plane/polytope intersection then depends on the triangulation. The differential test therefore asserts exact polygons on the scenes where the old code is stable and a bounded rate (5%) where it is not. See `docs/paper-deltas.md`.
+
+## `nas_bench_plane_cut <dump_dir> [repeat]`
+Step-1 comparison (edge/plane vs `CGAL::Polygon_mesh_slicer` vs exact arithmetic) on the dumped real parents: final patch deviation from the exact result and time per cut. Results in `docs/paper-deltas.md`.

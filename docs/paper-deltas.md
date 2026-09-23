@@ -66,6 +66,24 @@ Liste de départ trouvée en auditant le code le 2026-09-18 (pas exhaustive — 
   - **Chemins finaux** (`nas_golden_all_scenes`, config de l'ancien `constants.hpp`) : identiques au golden sur 7 des 10 scènes où l'ancien code trouve un chemin (`NarrowPassage`, `LongStairs`, `LongLongStairs`, `Flat`, `LongStairsComplete`, `Stairs_Up_Down`, `ThreePathsNAS`), QP identique à < 1e-6 m là où l'ancien QP réussit ; différents sur `Stairs`, `LongStairsExp`, `ThreePathsScene`, trois scènes de la liste instable. `TwoFlatSurfaces` : aucun chemin des deux côtés.
   - **Écart non résolu** : `ThreePathsNAS` fait 92 expansions dans le nouveau code contre 91 pour l'ancien binaire (rejoué 3 fois : 91), alors que la géométrie de ses patchs est identique à 1e-15. Cohérent avec un effet des clés de dédoublonnage (centroïde/périmètre) mais **non démontré**.
 
+### Coupe polytope/plan (étape 1 de `expand_node`) : arêtes vs `Polygon_mesh_slicer` vs exact
+
+Mesuré le 2026-09-19 avec `tests/golden_all/bench_plane_cut.cpp` (`nas_bench_plane_cut <dumps> [repeat]`), sur les 150 parents réels par scène des dumps de l'ancien code, 19 952 coupes (parent x surface), 11 scènes. Les trois méthodes reçoivent le **même** `P_union` (calculé une fois par parent dans le processus) et passent par le même aval (projection 2D, enveloppe, clip Sutherland-Hodgman) : on compare le patch final.
+- **EDGE** : `CGAL::intersection(plan, segment)` sur chaque arête (méthode de l'ancien code et du nôtre).
+- **SLICER** : `CGAL::Polygon_mesh_slicer<Polyhedron, Kernel>` (EPICK, construit à chaque `P_union`).
+- **EXACT** : la méthode EDGE en arithmétique exacte (Epeck) sur la même triangulation. Sert d'arbitre : `P_union` est combinatoirement exact (prédicats exacts), seules les constructions d'intersection sont inexactes dans EDGE.
+
+Résultats (identiques sur 3 exécutions) :
+| | écarts au patch exact (> 1e-7) | dont vide/non vide | écart max | temps moyen / coupe |
+|---|---|---|---|---|
+| EDGE | 31 / 19 952 (0,16 %) | 1 | 0,90 m | 8,5 µs |
+| SLICER | 14 / 19 952 (0,07 %) | 1 | 0,27 m | 50 µs (~6x) |
+| EXACT | référence | | | 92 µs (~11x) |
+
+Par scène : 0 écart sur NarrowPassage, Flat, ThreePathsNAS, TwoFlatSurfaces ; tous les écarts sont sur les scènes à marches (Stairs 3, LongStairs 5, LongLongStairs 7, LongStairsComplete 6, LongStairsExp 7, ThreePathsScene 2, Stairs_Up_Down 1 pour EDGE ; SLICER : 2, 2, 4, 2, 3, 1, 0). Le temps par coupe dépend surtout de la taille de `P_union` (NarrowPassage/Flat, 161 sommets : 48 µs EDGE, 510 µs SLICER, 900 µs EXACT ; marches, 30 sommets : 7-12 µs, 23-94 µs).
+
+Lecture : le SLICER n'est **pas** indépendant de la triangulation non plus (il se trompe encore sur 14 coupes, aux mêmes endroits critiques) ; il réduit les erreurs de moitié mais coûte ~6x plus cher. Seul l'exact les supprime, à ~11x. Aucune de ces trois n'est une correction "gratuite". Une coupe par demi-espaces n'a pas été testée. Limite : l'arbitre EXACT n'est exact que pour la coupe, le plan lui-même reste celui du fit en flottants.
+
 ## À vérifier
 
 - Incohérence `foot_width` dans `constants.hpp` : valeur active `0.22`, commentaire à côté dit `0.12` — laquelle est correcte ?

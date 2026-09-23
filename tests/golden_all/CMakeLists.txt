@@ -42,3 +42,11 @@ target_link_libraries(nas_expansion_differential PRIVATE nas_config CGAL::CGAL)
 target_compile_definitions(nas_expansion_differential PRIVATE
     TALOS_REACHABILITY_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../../talosReachability/data/reachability_constraints"
 )
+
+# Step-1 comparison (edge/plane vs CGAL slicer vs exact) on the dumped real
+# parent states; takes the dump dir, not registered with ctest.
+add_executable(nas_bench_plane_cut bench_plane_cut.cpp)
+target_link_libraries(nas_bench_plane_cut PRIVATE nas_config CGAL::CGAL)
+target_compile_definitions(nas_bench_plane_cut PRIVATE
+    TALOS_REACHABILITY_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../../talosReachability/data/reachability_constraints"
+)
