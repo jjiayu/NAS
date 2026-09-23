@@ -74,7 +74,7 @@ FootstepResult plan(const std::string& scenario_name, const std::string& planner
 
         if (!path.empty()) {
             QuadprogBackend backend;
-            plan_result = solve_footstep_qp(path, planner_config.astar.start_position, planner_config.astar.goal_location,
+            plan_result = solve_footstep_qp(path, planner_config.astar.start_position, config::qp_goal(planner_config),
                                              reachability, planner_config.qp, backend);
         }
     }

@@ -41,7 +41,7 @@ Eigen::Vector3d to_eigen(const Point_3& p) {
 
 FootstepPlan solve_footstep_qp(const std::vector<Node*>& path_nodes,
                                 const Point_3& start_position,
-                                const Point_3& goal_position,
+                                const std::optional<Point_3>& goal_position,
                                 const ReachabilityModel& reachability,
                                 const FootstepQPConfig& config,
                                 QPBackend& backend) {
@@ -100,10 +100,12 @@ FootstepPlan solve_footstep_qp(const std::vector<Node*>& path_nodes,
         }
     }
 
-    // --- Surface constraints for intermediate steps (1..n-2) ---
+    // --- Surface constraints for intermediate steps (1..n-2), and for the last step too when the goal is a
+    // surface (no goal position to fix it to) ---
     // Row 0 of generate_surface_constraint is the plane equality, the rest
     // are boundary inequalities with the alpha robustness margin.
-    for (int i = 1; i <= n - 2; ++i) {
+    const int last_surface_step = goal_position ? n - 2 : n - 1;
+    for (int i = 1; i <= last_surface_step; ++i) {
         SurfaceConstraint sc = generate_surface_constraint(path_nodes[i]->patch_vertices);
 
         for (int r = 0; r < sc.A.rows(); ++r) {
@@ -125,15 +127,18 @@ FootstepPlan solve_footstep_qp(const std::vector<Node*>& path_nodes,
 
     // --- Initial/final footstep equality constraints ---
     Eigen::Vector3d start_eigen = to_eigen(start_position);
-    Eigen::Vector3d goal_eigen = to_eigen(goal_position);
     for (int c = 0; c < 3; ++c) {
         Eigen::RowVectorXd row0 = Eigen::RowVectorXd::Zero(dim);
         row0(idx(0, c)) = 1.0;
         add_eq(row0, start_eigen(c));
-
-        Eigen::RowVectorXd rowN = Eigen::RowVectorXd::Zero(dim);
-        rowN(idx(n - 1, c)) = 1.0;
-        add_eq(rowN, goal_eigen(c));
+    }
+    if (goal_position) {
+        Eigen::Vector3d goal_eigen = to_eigen(*goal_position);
+        for (int c = 0; c < 3; ++c) {
+            Eigen::RowVectorXd rowN = Eigen::RowVectorXd::Zero(dim);
+            rowN(idx(n - 1, c)) = 1.0;
+            add_eq(rowN, goal_eigen(c));
+        }
     }
 
     // --- alpha >= 0 ---

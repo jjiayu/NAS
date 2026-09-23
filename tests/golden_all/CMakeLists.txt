@@ -68,3 +68,15 @@ add_executable(nas_inclined_scenes test_inclined_scenes.cpp)
 target_link_libraries(nas_inclined_scenes PRIVATE nas_config nas_footstep_qp nas_footstep_qp_backend nas_planners_astar_search CGAL::CGAL)
 target_compile_definitions(nas_inclined_scenes PRIVATE TALOS_REACHABILITY_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../../talosReachability/data/reachability_constraints")
 add_test(NAME nas_inclined_scenes COMMAND nas_inclined_scenes)
+
+# The goal as a surface (test_goal_surface.cpp).
+add_executable(nas_goal_surface test_goal_surface.cpp)
+target_link_libraries(nas_goal_surface PRIVATE nas_config nas_footstep_qp nas_footstep_qp_backend nas_planners_astar_search CGAL::CGAL)
+target_compile_definitions(nas_goal_surface PRIVATE TALOS_REACHABILITY_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../../talosReachability/data/reachability_constraints")
+add_test(NAME nas_goal_surface COMMAND nas_goal_surface)
+
+# Cycle exclusion checked from the outside, on the parent chain of every expanded node (test_cycle_detection.cpp).
+add_executable(nas_cycle_detection test_cycle_detection.cpp)
+target_link_libraries(nas_cycle_detection PRIVATE nas_config nas_planners_astar_search CGAL::CGAL)
+target_compile_definitions(nas_cycle_detection PRIVATE TALOS_REACHABILITY_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../../talosReachability/data/reachability_constraints")
+add_test(NAME nas_cycle_detection COMMAND nas_cycle_detection)

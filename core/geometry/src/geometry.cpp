@@ -11,6 +11,7 @@
 #include <coal/distance.h>
 
 #include <algorithm>
+#include <memory>
 #include <cmath>
 #include <limits>
 #include <numeric>
@@ -194,6 +195,35 @@ double calculate_epa_distance_point_to_patch(const std::vector<Point_3>& patch_p
         // rather than propagating the failure — see docs/paper-deltas.md, 8d-1.
         Point_3 centroid = get_centroid(patch_points);
         return compute_euclidean_distance(goal, centroid);
+    }
+}
+
+namespace {
+// A planar convex polygon as a coal convex shape (triangle fan), like the point-to-patch distance does.
+std::shared_ptr<coal::Convex<coal::Triangle>> fan_convex(const std::vector<Point_3>& pts) {
+    auto vertices = std::make_shared<std::vector<coal::Vec3s>>();
+    for (const auto& p : pts) vertices->emplace_back(p.x(), p.y(), p.z());
+    auto triangles = std::make_shared<std::vector<coal::Triangle>>();
+    for (size_t i = 1; i + 1 < pts.size(); ++i) triangles->push_back(coal::Triangle(0, i, i + 1));
+    return std::make_shared<coal::Convex<coal::Triangle>>(vertices, vertices->size(), triangles, triangles->size());
+}
+} // namespace
+
+double calculate_epa_distance_patch_to_patch(const std::vector<Point_3>& patch_a, const std::vector<Point_3>& patch_b) {
+    if (patch_a.size() < 3 || patch_b.size() < 3) {
+        throw std::invalid_argument("calculate_epa_distance_patch_to_patch: both patches must have at least 3 points");
+    }
+    try {
+        coal::CollisionObject obj_a(fan_convex(patch_a));
+        coal::CollisionObject obj_b(fan_convex(patch_b));
+        coal::DistanceRequest request;
+        coal::DistanceResult result;
+        request.enable_signed_distance = false;
+        coal::distance(&obj_a, &obj_b, request, result);
+        return std::max(0.0, result.min_distance);
+    } catch (const std::exception&) {
+        // as in the point-to-patch distance: fall back to the distance between centroids
+        return compute_euclidean_distance(get_centroid(patch_a), get_centroid(patch_b));
     }
 }
 

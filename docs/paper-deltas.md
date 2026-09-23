@@ -327,6 +327,22 @@ Motif : l'usage Python en direct. Un appel de `nas_bindings.plan` recharge le sc
 - **Risque restant** : les nœuds ne sont libérés qu'à la fin de la recherche (`NodePool` sans libération individuelle). Une recherche qui explose (heuristique euclidienne non pondérée, 20 000 expansions et plus) consommerait de l'ordre du Go : d'où `AstarSearchConfig::max_expansions` (0 = illimité par défaut), à régler pour un usage en direct.
 - **Défaut trouvé au passage et corrigé** : les liaisons Python ne résolvaient pas `astar.goal_offset` (seul `astar_plan` le faisait), donc une config par scénario cherchait vers le but par défaut à l'origine et rendait un chemin trivial (28 ms au lieu de 150 ms sur ThreePathsScene, ce qui m'a alerté). La résolution est maintenant `config::resolve_goal`, appelée par `astar_plan` et par les liaisons, avec un test dans chacun.
 
+### But par position ou par surface (2026-09-20)
+
+Décision de l'auteur : la cible du problème, et du QP, peut être une **position** ou une **surface**. Le comportement par défaut (position) est inchangé.
+- **Recherche** (`AstarSearchConfig::goal_surface_id`, -1 = pas de but surface) : avec une surface, elle s'arrête sur un nœud du pied but qui se tient sur cette surface. L'heuristique EPA est la distance entre deux polytopes, le nœud et l'empreinte de la surface (`calculate_epa_distance_patch_to_patch`, 0 si les patchs se touchent) ; le papier (V-B.5) prévoit qu'« on peut décrire la cible ou le nœud comme un polytope ». L'heuristique euclidienne vise le centroïde de la surface. Un index de surface invalide lève une erreur.
+- **QP** (`solve_footstep_qp(..., const std::optional<Point_3>& goal, ...)`, un `Point_3` convertit vers le cas position) : sans position, le dernier pas n'est plus fixé à un point, il est libre sur son patch (même contrainte de surface avec marge `alpha` que les pas intermédiaires). Avec une position, comme avant : égalité au but, pas de contrainte de surface sur le dernier pas.
+- **Config JSON** : `astar.goal_surface` (index), au choix parmi `goal_location`, `goal_offset`, `goal_surface` (un seul, sinon erreur) ; `config::resolve_goal` valide l'index contre le scénario, `config::qp_goal` donne au QP le but ou rien. `astar_plan` écrit `goal_surface` dans sa sortie ; liaisons Python identiques.
+- **Mesuré** (`nas_goal_surface`, 5 scènes) : chemins plus courts ou égaux à ceux du but position : Stairs 4 nœuds contre 6, NarrowPassage 24 contre 30, Ramp 12 contre 14, LongStairs 10 contre 10 ; le dernier pas est sur le patch (écart ≤ 4e-8 m) et loin du centroïde (0,14 à 1,9 m), donc non fixé ; pas de but position cassé (dernier pas au but à 1e-15 m).
+- Sur Flat (une seule surface, celle du départ) le but surface est atteint dès le premier pas (2 nœuds).
+
+### Détection des cycles : vérifiée de l'extérieur (2026-09-20)
+
+Demande de l'auteur (à propos de l'euclidien qui explose) : vérifier que les cycles sont bien détectés, notamment sur des surfaces similaires. La règle (papier IV et V-B.4) : un pied qui a quitté une surface n'y remet plus jamais le pied. `cycle_path_detection` la teste à partir de `pred_surface_ids`, un historique **copié à la création du nœud** ; un nœud fusionné (`ImprovedExisting`) garde cet historique alors que son parent est remplacé : les deux peuvent diverger. Test `nas_cycle_detection` : la règle est vérifiée sur la chaîne `Node::parent` de **chaque nœud développé**, pas sur l'historique du nœud.
+- 10 scènes en EPA (plafond 3000 expansions), Flat, Stairs et LongStairs en euclidien (plafond 4000), et un sol dupliqué (deux carrés coplanaires qui se recouvrent, ids 0 et 1, puis une marche) : **0 cycle sur 9486 nœuds développés**, chemins finaux propres.
+- **Témoin négatif** : sol dupliqué avec un but hors d'atteinte (3000 expansions), détection **désactivée** : 466 nœuds sur 3000 revisitent une surface ; avec la détection : 0. Le contrôle sait donc voir un cycle.
+- Conclusion : l'explosion de l'euclidien vient du branchement dans un espace continu (patchs différents sur la même surface, que la règle autorise, et sans poids sur l'heuristique), pas d'un cycle non détecté. Limite : la règle est par identifiant de surface ; deux surfaces différentes mais géométriquement identiques ne sont pas confondues (mais un pied ne peut de toute façon pas alterner entre elles plus d'une fois, ce que le test du sol dupliqué confirme).
+
 ## À vérifier
 
 - Incohérence `foot_width` dans `constants.hpp` : valeur active `0.22`, commentaire à côté dit `0.12` — laquelle est correcte ?

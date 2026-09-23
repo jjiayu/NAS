@@ -79,7 +79,7 @@ int main(int argc, char** argv) {
     double qp_ms = 0.0;
     if (!path.empty()) {
         auto q0 = Clock::now();
-        plan = solve_footstep_qp(path, planner_config.astar.start_position, planner_config.astar.goal_location,
+        plan = solve_footstep_qp(path, planner_config.astar.start_position, config::qp_goal(planner_config),
                                  reachability, planner_config.qp, backend);
         qp_ms = std::chrono::duration<double, std::milli>(Clock::now() - q0).count();
     }
@@ -91,6 +91,7 @@ int main(int argc, char** argv) {
     out["qp_max_violation"] = plan.max_violation;
     out["start"] = point_json(planner_config.astar.start_position);
     out["goal"] = point_json(planner_config.astar.goal_location);
+    out["goal_surface"] = planner_config.astar.goal_surface_id >= 0 ? json(planner_config.astar.goal_surface_id) : json(nullptr);
     out["expansions"] = search.expansion_count();
     out["search_ms"] = search_ms;
     out["qp_ms"] = qp_ms;

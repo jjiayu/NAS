@@ -32,7 +32,7 @@ struct PlannerConfig {
 };
 
 // Throws std::runtime_error if the file can't be read or parsed, or if
-// "astar.start_position" or both "astar.goal_location" and "astar.goal_offset" are missing. See
+// "astar.start_position" or all of "astar.goal_location", "astar.goal_offset" and "astar.goal_surface" are missing. See
 // config/README.md for the full JSON schema.
 PlannerConfig load_planner_config(const std::string& json_path);
 
@@ -41,5 +41,9 @@ PlannerConfig load_planner_config(const std::string& json_path);
 // loads a config for a named scenario must call it before searching (astar_plan, the Python bindings):
 // without it a goal_offset config silently searches towards the default goal at the origin.
 void resolve_goal(PlannerConfig& config, const Scenario& scenario);
+
+// The goal to give solve_footstep_qp: the goal position, or empty when the goal is a surface
+// ("astar.goal_surface": the last footstep is then free on the last patch).
+std::optional<Point_3> qp_goal(const PlannerConfig& config);
 
 } // namespace nas::config

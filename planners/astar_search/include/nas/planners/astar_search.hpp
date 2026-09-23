@@ -40,7 +40,13 @@ struct AstarSearchConfig {
     StanceFoot start_stance_foot = StanceFoot::Right;
     double start_foot_yaw = 0.0;
 
+    // The goal is EITHER a position (goal_location, the default) OR a surface (goal_surface_id >= 0).
+    // Position: the search ends on a node of the goal stance foot whose patch contains goal_location; the
+    // heuristic measures the distance to that point. Surface: it ends on a node of the goal stance foot standing
+    // on that surface (an index into the surfaces the search was given); the heuristic measures the distance to
+    // the surface's patch (EPA between two polytopes) or, for the Euclidean metric, to its centroid.
     Point_3 goal_location;
+    int goal_surface_id = -1;
     StanceFoot goal_stance_foot = StanceFoot::Left;
 
     DistanceMetric distance_metric = DistanceMetric::Epa;
@@ -95,6 +101,7 @@ private:
     int expansion_count_ = 0;
 
     double heuristic(const Node* node) const;
+    Point_3 goal_point() const; // the goal position, or the goal surface's centroid
 };
 
 } // namespace nas

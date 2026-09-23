@@ -61,6 +61,10 @@ double compute_euclidean_distance(const Point_3& start_location, const Point_3& 
 // (The old code also had a GJK variant; dropped.)
 double calculate_epa_distance_point_to_patch(const std::vector<Point_3>& patch_points, const Point_3& goal);
 
+// Same between two convex planar patches (the paper, V-B.5: "either the target or the node can be described as a
+// polytope"): 0 when they touch or overlap, the minimum distance otherwise. Used when the goal is a surface.
+double calculate_epa_distance_patch_to_patch(const std::vector<Point_3>& patch_a, const std::vector<Point_3>& patch_b);
+
 // Convert half-space polytope constraint to H-representation
 HalfSpacePolytopeConstraint convert_polytope_to_half_space_constraint(const Polyhedron& polytope);
 

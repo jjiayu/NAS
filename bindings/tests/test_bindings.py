@@ -43,6 +43,16 @@ def test_goal_offset_config_is_resolved():
     print("test_goal_offset_config_is_resolved passed")
 
 
+def test_goal_as_a_surface():
+    # goal_surface instead of a goal position: the last footstep is free on the last patch, not pinned to a point
+    result = nb.plan("Stairs", os.path.join(EXAMPLES_DIR, "Stairs_goal_surface.json"), TALOS_DATA_DIR)
+    assert result.success and len(result.positions) > 2
+    last = result.positions[-1]
+    assert 1.2 - 1e-6 <= last[0] <= 1.5 + 1e-6 and -0.16 - 1e-6 <= last[1] <= 0.6 + 1e-6 and abs(last[2] - 0.4) < 1e-6, last  # on Stairs' last step
+    assert not all(abs(a - b) < 1e-6 for a, b in zip(last, (1.35, 0.22, 0.4))), last  # not pinned to its centroid
+    print("test_goal_as_a_surface passed")
+
+
 def test_narrow_passage_matches_golden():
     result = nb.plan("NarrowPassage", os.path.join(EXAMPLES_DIR, "narrow_passage.json"), TALOS_DATA_DIR)
     assert result.success
@@ -78,6 +88,7 @@ def test_unknown_scenario_raises():
 if __name__ == "__main__":
     test_available_scenarios_lists_all()
     test_goal_offset_config_is_resolved()
+    test_goal_as_a_surface()
     test_narrow_passage_matches_golden()
     test_three_paths_nas_matches_golden()
     test_unknown_scenario_raises()

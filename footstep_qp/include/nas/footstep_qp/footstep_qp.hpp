@@ -29,6 +29,7 @@
 #include "nas/core/reachability.hpp"
 #include "nas/footstep_qp/qp_backend.hpp"
 
+#include <optional>
 #include <vector>
 
 namespace nas {
@@ -60,9 +61,12 @@ struct FootstepPlan {
 // node, path_nodes.back() is the goal-containing node) — the same object
 // AstarSearch::result_path() returns. `reachability` must hold Forward
 // entries for every (moving, support) pair the path exercises.
+// The goal is either a position (the last footstep is fixed to it: an equality) or, with `goal_position` empty, a
+// surface: the last footstep is then free on the last patch (the same surface constraint, with the margin alpha, as the
+// intermediate footsteps). A Point_3 converts to the position case.
 FootstepPlan solve_footstep_qp(const std::vector<Node*>& path_nodes,
                                 const Point_3& start_position,
-                                const Point_3& goal_position,
+                                const std::optional<Point_3>& goal_position,
                                 const ReachabilityModel& reachability,
                                 const FootstepQPConfig& config,
                                 QPBackend& backend);

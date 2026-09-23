@@ -92,6 +92,26 @@ void test_resolve_goal_uses_the_last_surface_centroid() {
     std::cout << "test_resolve_goal_uses_the_last_surface_centroid passed\n";
 }
 
+void test_goal_surface() {
+    // the goal as a surface: parsed, resolved against the scenario (index checked), no goal position for the QP
+    PlannerConfig config = load_planner_config(data_path("goal_surface_planner_config.json"));
+    assert(config.astar.goal_surface_id == 2);
+    Scenario ground = load_scenario("Stairs"); // 5 surfaces
+    resolve_goal(config, ground);
+    assert(!qp_goal(config).has_value());
+    PlannerConfig position = load_planner_config(data_path("minimal_planner_config.json"));
+    assert(position.astar.goal_surface_id == -1 && qp_goal(position).has_value());
+    Scenario flat = load_scenario("Flat"); // 1 surface: index 2 does not exist
+    bool threw = false;
+    try { resolve_goal(config, flat); } catch (const std::runtime_error&) { threw = true; }
+    assert(threw);
+    // two goals at once are refused
+    threw = false;
+    try { load_planner_config(data_path("two_goals_planner_config.json")); } catch (const std::runtime_error&) { threw = true; }
+    assert(threw);
+    std::cout << "test_goal_surface passed\n";
+}
+
 void test_missing_astar_section_throws() {
     bool threw = false;
     try {
@@ -133,6 +153,7 @@ int main() {
     test_goal_offset_is_kept_for_the_caller_to_resolve();
     test_distance_metric_is_parsed();
     test_resolve_goal_uses_the_last_surface_centroid();
+    test_goal_surface();
     test_missing_astar_section_throws();
     test_missing_start_position_throws();
     test_nonexistent_file_throws();

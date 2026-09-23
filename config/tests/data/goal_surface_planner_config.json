@@ -1,0 +1,10 @@
+{
+  "astar": {
+    "start_position": [
+      0,
+      0,
+      0
+    ],
+    "goal_surface": 2
+  }
+}

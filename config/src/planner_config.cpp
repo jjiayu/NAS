@@ -5,6 +5,7 @@
 #include <cmath>
 #include <fstream>
 #include <stdexcept>
+#include <string>
 
 namespace nas::config {
 
@@ -34,11 +35,18 @@ DistanceMetric distance_metric_from_string(const std::string& s) {
 AstarSearchConfig parse_astar_config(const json& j, std::optional<Vector_3>& goal_offset) {
     AstarSearchConfig config; // starts from the struct's own defaults
 
-    if (!j.contains("start_position") || (!j.contains("goal_location") && !j.contains("goal_offset"))) {
-        throw std::runtime_error("load_planner_config: \"astar.start_position\" and one of \"astar.goal_location\" / \"astar.goal_offset\" are required");
+    const int goals = int(j.contains("goal_location")) + int(j.contains("goal_offset")) + int(j.contains("goal_surface"));
+    if (!j.contains("start_position") || goals == 0) {
+        throw std::runtime_error("load_planner_config: \"astar.start_position\" and one of \"astar.goal_location\" / \"astar.goal_offset\" / \"astar.goal_surface\" are required");
+    }
+    if (goals > 1) {
+        throw std::runtime_error("load_planner_config: give ONE goal: \"astar.goal_location\", \"astar.goal_offset\" or \"astar.goal_surface\"");
     }
     config.start_position = point_from_json(j.at("start_position"));
-    if (j.contains("goal_location")) {
+    if (j.contains("goal_surface")) {
+        config.goal_surface_id = j.at("goal_surface").get<int>();
+        if (config.goal_surface_id < 0) throw std::runtime_error("load_planner_config: \"astar.goal_surface\" must be a surface index >= 0");
+    } else if (j.contains("goal_location")) {
         config.goal_location = point_from_json(j.at("goal_location"));
     } else {
         Point_3 o = point_from_json(j.at("goal_offset"));
@@ -101,9 +109,20 @@ PlannerConfig load_planner_config(const std::string& json_path) {
 }
 
 void resolve_goal(PlannerConfig& config, const Scenario& scenario) {
-    if (config.goal_offset) {
+    if (config.astar.goal_surface_id >= static_cast<int>(scenario.surfaces.size())) {
+        throw std::runtime_error("resolve_goal: goal_surface " + std::to_string(config.astar.goal_surface_id) + " is not a surface of scenario '" +
+                                 scenario.name + "' (" + std::to_string(scenario.surfaces.size()) + " surfaces)");
+    }
+    if (config.astar.goal_surface_id >= 0) {
+        config.astar.goal_location = scenario.surfaces[static_cast<size_t>(config.astar.goal_surface_id)].centroid; // informative
+    } else if (config.goal_offset) {
         config.astar.goal_location = scenario.surfaces.back().centroid + *config.goal_offset;
     }
+}
+
+std::optional<Point_3> qp_goal(const PlannerConfig& config) {
+    if (config.astar.goal_surface_id >= 0) return std::nullopt;
+    return config.astar.goal_location;
 }
 
 } // namespace nas::config

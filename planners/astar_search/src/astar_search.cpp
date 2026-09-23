@@ -10,6 +10,8 @@
 #include <vector>
 
 #include <cmath>
+#include <stdexcept>
+#include <string>
 
 namespace nas {
 
@@ -121,6 +123,9 @@ private:
 AstarSearch::AstarSearch(std::vector<Surface> surfaces, ReachabilityModel reachability, AstarSearchConfig config)
     : surfaces_(std::move(surfaces)), reachability_(std::move(reachability)), config_(std::move(config)) {
 
+    if (config_.goal_surface_id >= static_cast<int>(surfaces_.size())) {
+        throw std::invalid_argument("AstarSearch: goal_surface_id " + std::to_string(config_.goal_surface_id) + " is not a surface of the scenario");
+    }
     start_node_ = pool_.create();
     start_node_->patch_vertices = {config_.start_position};
     start_node_->stance_foot = config_.start_stance_foot;
@@ -159,17 +164,26 @@ AstarSearch::AstarSearch(std::vector<Surface> surfaces, ReachabilityModel reacha
     // A single-point patch has no area for EPA (it needs >=3 points), so the
     // start node's heuristic is the plain Euclidean distance — matches the old
     // code exactly (see docs/paper-deltas.md).
-    start_node_->h_score = compute_euclidean_distance(config_.start_position, config_.goal_location);
+    start_node_->h_score = compute_euclidean_distance(config_.start_position, goal_point());
     start_node_->f_score = start_node_->g_score + start_node_->h_score;
     start_node_->parent = nullptr;
 }
 
+Point_3 AstarSearch::goal_point() const {
+    return config_.goal_surface_id >= 0 ? surfaces_[static_cast<size_t>(config_.goal_surface_id)].centroid : config_.goal_location;
+}
+
 double AstarSearch::heuristic(const Node* node) const {
+    const bool surface_goal = config_.goal_surface_id >= 0;
     switch (config_.distance_metric) {
         case DistanceMetric::Euclidean:
-            return compute_euclidean_distance(node->centroid, config_.goal_location);
+            return compute_euclidean_distance(node->centroid, goal_point());
         case DistanceMetric::Epa:
         default:
+            if (surface_goal) {
+                return config_.heuristic_weight *
+                       calculate_epa_distance_patch_to_patch(node->patch_vertices, surfaces_[static_cast<size_t>(config_.goal_surface_id)].vertices_3d);
+            }
             return config_.heuristic_weight * calculate_epa_distance_point_to_patch(node->patch_vertices, config_.goal_location);
     }
 }
@@ -196,8 +210,9 @@ void AstarSearch::search() {
         open_index.erase(current_node);
         if (config_.on_expand) config_.on_expand(expansion_count_, *current_node);
 
-        if (current_node->stance_foot == config_.goal_stance_foot &&
-            current_node->check_if_node_contains_point(config_.goal_location)) {
+        const bool at_goal = config_.goal_surface_id >= 0 ? current_node->surface_id == config_.goal_surface_id
+                                                           : current_node->check_if_node_contains_point(config_.goal_location);
+        if (current_node->stance_foot == config_.goal_stance_foot && at_goal) {
             Node* current = current_node;
             while (current != nullptr) {
                 result_path_.push_back(current);

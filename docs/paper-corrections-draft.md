@@ -35,13 +35,13 @@ Le nœud de départ est un point (pas de patch, l'EPA demande au moins 3 sommets
 
 ## 6. [décision] Objectif du QP (Eq. 3)
 
-- **Papier** : `c(X) = Σ_{i=2}^{l} (x_i − x_{i−2})²`.
-- **Code** : la même somme, plus un premier terme `(x_1 − x_0)²` (première foulée depuis le pied de départ).
-- **Décision** : garder le terme (comportement de l'ancien code) ou le retirer pour coller au papier.
+- **Papier** : `c(X) = Σ_{i=2}^{l} (x_i − x_{i−2})²`. Les pas alternent (`x_0` pied droit de départ, `x_1` gauche, `x_2` droit...) : chaque terme compare un pied à **sa propre position précédente**, une foulée complète.
+- **Code** : la même somme, plus un premier terme `(x_1 − x_0)²` qui compare deux pieds **différents** (le premier pas gauche au pied droit de départ), un demi-pas. Le premier pas n'a pas de pied gauche précédent connu, le papier ne le pénalise donc pas ; le code lui ajoute une pénalité qui le tire vers `x_0`, sans le faire pour les autres demi-pas.
+- **Décision** : garder le terme (comportement de l'ancien code) ou le retirer pour coller au papier. En attente.
 
-## 7. [à vérifier] Pied final et but dans le QP (Eq. 3 et 6)
+## 7. [décision prise, faite] But du QP : position ou surface (Eq. 3 et 6)
 
-Le code impose le dernier pas égal au but (égalité), et applique les contraintes de surface aux pas intermédiaires seulement. Les Eq. 3 et 6 imposent `x_i ∈ R ∩ F_i` pour tous les pas, sans égalité au but visible dans ce que j'ai lu. À confirmer contre le papier complet.
+Le code fixait le dernier pas au but (égalité) et n'appliquait les contraintes de surface qu'aux pas intermédiaires ; les Eq. 3 et 6 imposent `x_i ∈ R ∩ F_i` pour tous les pas, sans égalité au but. Décision de l'auteur (2026-09-20) : laisser le choix d'une **surface** ou d'une **position** en cible, au niveau du problème et du QP. Fait : voir « But par position ou par surface » dans `docs/paper-deltas.md`. Avec une surface, le QP est exactement celui des Eq. 3 et 6 (dernier pas dans `R ∩ F_l`).
 
 ## 8. [code corrigé] Rotation de la surface de contact (Eq. 2)
 
@@ -67,9 +67,9 @@ Des nœuds ont un f égal en exact ; le code compare f arrondi au nanomètre pui
 
 Avec rotation : NarrowPassage 88 nœuds / 29 pas dans le papier, 98 expansions / 29 pas chez nous (l'ancien code : 90) ; minima locaux (ThreePathsNAS) 92 nœuds / 19 pas dans le papier, 115 expansions / 19 pas chez nous (l'ancien : 91 à 93 selon l'état du tas). Les nombres de pas coïncident ; les nombres de nœuds dépendent de l'ordre des ex æquo et du critère de fusion.
 
-## 13. [à vérifier] `hasContactSurfaceNotBeenLeft` (V-B.4)
+## 13. [vérifié] `hasContactSurfaceNotBeenLeft` (V-B.4)
 
-Implémenté comme `cycle_path_detection` (historique des surfaces par pied). Non recontrôlé point par point contre la phrase du papier.
+Implémenté comme `cycle_path_detection` (historique des surfaces par pied). Vérifié de l'extérieur, sur la chaîne des parents de chaque nœud développé : 0 cycle sur 9486 nœuds (10 scènes en EPA, 3 en euclidien, un sol dupliqué) ; témoin négatif : 466 cycles sur 3000 nœuds sans la détection. Voir « Détection des cycles » dans `docs/paper-deltas.md`. Une réserve théorique, non observée : l'historique est copié à la création d'un nœud et n'est pas mis à jour quand un nœud fusionné change de parent.
 
 ## 14. [précision] Convention du lacet
 
