@@ -95,13 +95,16 @@ public:
 
 private:
     struct Cell {
-        int surface, stance, yaw, x, y, z;
-        bool operator==(const Cell& o) const { return surface == o.surface && stance == o.stance && yaw == o.yaw && x == o.x && y == o.y && z == o.z; }
+        int surface, stance, yaw, x, y, z, cube_state;
+        bool operator==(const Cell& o) const {
+            return surface == o.surface && stance == o.stance && yaw == o.yaw && x == o.x && y == o.y && z == o.z &&
+                   cube_state == o.cube_state;
+        }
     };
     struct CellHash {
         size_t operator()(const Cell& c) const {
             size_t seed = 0;
-            for (int v : {c.surface, c.stance, c.yaw, c.x, c.y, c.z}) boost::hash_combine(seed, v);
+            for (int v : {c.surface, c.stance, c.yaw, c.x, c.y, c.z, c.cube_state}) boost::hash_combine(seed, v);
             return seed;
         }
     };
@@ -112,9 +115,19 @@ private:
                 rotation_enabled_ ? static_cast<int>(n.foot_yaw / yaw_increment_) : 0,
                 static_cast<int>(std::floor(CGAL::to_double(n.centroid.x()) / CELL)),
                 static_cast<int>(std::floor(CGAL::to_double(n.centroid.y()) / CELL)),
-                static_cast<int>(std::floor(CGAL::to_double(n.centroid.z()) / CELL))};
+                static_cast<int>(std::floor(CGAL::to_double(n.centroid.z()) / CELL)),
+                static_cast<int>(n.cube_state)};
     }
     bool similar(const Node& a, const Node& b) const {
+        // Two nodes whose x-patch/surface/stance/yaw coincide are NOT the same state if
+        // one carries a usable cube and the other doesn't (or a different cube_state
+        // entirely, e.g. PlacedActive vs PlacedInactive) -- one can still take an on-cube
+        // step later and the other can't, so merging them would silently drop a real
+        // option (docs/cube-implementation-plan.md Etape 5, spec §5.3). cube_state alone
+        // (not also comparing the cube patch itself) is enough for v1's single-cube scope:
+        // there is never more than one PlacedActive cube live at a time to distinguish
+        // further within that state.
+        if (a.cube_state != b.cube_state) return false;
         if (a.surface_id != b.surface_id || a.stance_foot != b.stance_foot) return false;
         if (rotation_enabled_ && static_cast<int>(a.foot_yaw / yaw_increment_) != static_cast<int>(b.foot_yaw / yaw_increment_)) return false;
         return patch_distance(a, b) < tol_;
