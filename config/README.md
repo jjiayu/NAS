@@ -1,12 +1,13 @@
 # config
 
-Runtime configuration types (see PLAN.md phase 9): `RobotModel` (foot/CoM dimensions), the `Scenario` registry, and `PlannerConfig` — replacing the old code's `environments.hpp`/`constants.hpp` globals.
+Runtime configuration types (see PLAN.md phase 9): `RobotModel` (foot/CoM dimensions), the `Scenario` registry, `PlannerConfig`, and STL scene import — replacing the old code's `environments.hpp`/`constants.hpp` globals.
 
 ## API
 
 - [`include/nas/config/robot_model.hpp`](include/nas/config/robot_model.hpp): `RobotModel{foot_length=0.22, foot_width=0.22, com_z_height=0.75}` — couche 0 only (no file loader), same pattern as `core/reachability`.
 - [`include/nas/config/scenario.hpp`](include/nas/config/scenario.hpp): `Scenario{name, std::vector<Surface> surfaces}`, `available_scenarios()`, `load_scenario(name, robot_model = RobotModel{})`.
 - [`include/nas/config/planner_config.hpp`](include/nas/config/planner_config.hpp): `PlannerConfig{AstarSearchConfig astar, FootstepQPConfig qp}`, `load_planner_config(json_path)`.
+- [`include/nas/config/stl_import.hpp`](include/nas/config/stl_import.hpp): `load_scenario_from_stl(stl_path, robot_model = RobotModel{})`.
 
 `load_scenario` builds `Surface` objects from one of the 11 raw vertex lists ported verbatim from the old code's `include/environments.hpp` (`Stairs`, `TwoFlatSurfaces`, `Flat`, `LongStairs`, `LongLongStairs`, `LongStairsComplete`, `LongStairsExp`, `ThreePathsScene`, `Stairs_Up_Down`, `ThreePathsNAS`, `NarrowPassage`), shrunk by the given `RobotModel`'s foot dimensions.
 
@@ -40,7 +41,7 @@ This is distinct from [`tests/fixtures`](../tests/fixtures), which stays the tes
 }
 ```
 
-Not yet implemented (see PLAN.md phase 9d): importing a scenario from an STL file instead of a hardcoded vertex list.
+`load_scenario_from_stl` reads an ASCII or binary STL mesh, groups its triangles into convex, planar surfaces (triangles whose plane — normal direction + offset — matches within ~1e-4 are merged into one surface's raw vertex list), then builds `Surface` objects exactly like `load_scenario()` does. This assumes each flat face of the input mesh is already triangulated with a consistent per-face normal (true of any STL exporter), not an arbitrary triangle soup that happens to be locally coplanar. Degenerate triangles (zero-length normal even after falling back to the vertices' own cross product) are silently skipped, matching `core/geometry`'s own tolerance for a single bad facet.
 
 ## Dependencies
 

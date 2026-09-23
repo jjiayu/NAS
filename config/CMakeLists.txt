@@ -29,7 +29,7 @@ if(NOT TARGET nas_footstep_qp)
   add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../footstep_qp ${CMAKE_CURRENT_BINARY_DIR}/_footstep_qp)
 endif()
 
-add_library(nas_config src/scenario_library.cpp src/planner_config.cpp)
+add_library(nas_config src/scenario_library.cpp src/planner_config.cpp src/stl_import.cpp)
 target_include_directories(nas_config PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
 )
@@ -51,3 +51,10 @@ target_compile_definitions(nas_config_planner_tests PRIVATE
     TEST_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests/data"
 )
 add_test(NAME nas_config_planner_tests COMMAND nas_config_planner_tests)
+
+add_executable(nas_config_stl_tests tests/test_stl_import.cpp)
+target_link_libraries(nas_config_stl_tests PRIVATE nas_config)
+target_compile_definitions(nas_config_stl_tests PRIVATE
+    TEST_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests/data"
+)
+add_test(NAME nas_config_stl_tests COMMAND nas_config_stl_tests)

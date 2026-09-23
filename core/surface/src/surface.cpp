@@ -52,15 +52,28 @@ Surface::Surface(const std::vector<Point_3>& points, int surface_idx, double foo
 }
 
 void Surface::establish_surface_coordinate_system(const std::vector<Point_3>& points) {
-    Vector_3 world_x(1, 0, 0);
-    Vector_3 world_y(0, 1, 0);
+    // Project whichever world axis is *least* aligned with norm (smallest
+    // |component|), instead of always projecting world_x then world_y:
+    // projecting a fixed axis degenerates to the zero vector whenever norm
+    // happens to equal that axis exactly (x_axis or y_axis normalizes
+    // 0/0 -> NaN, silently poisoning the whole Surface). Every scenario
+    // in environments.hpp has a near-horizontal normal, which never hit
+    // this — found via 9d's STL import, where an arbitrary mesh's vertical
+    // faces (normal exactly (+-1,0,0) or (0,+-1,0)) do. See
+    // docs/paper-deltas.md. y_axis is then the exact cross product, not a
+    // second, separately-normalized Gram-Schmidt projection — orthonormal
+    // by construction, no separate degenerate case to worry about.
+    double abs_x = std::abs(CGAL::to_double(norm.x()));
+    double abs_y = std::abs(CGAL::to_double(norm.y()));
+    double abs_z = std::abs(CGAL::to_double(norm.z()));
+    Vector_3 reference = (abs_x <= abs_y && abs_x <= abs_z) ? Vector_3(1, 0, 0)
+                        : (abs_y <= abs_z)                   ? Vector_3(0, 1, 0)
+                                                              : Vector_3(0, 0, 1);
 
-    Vector_3 x_axis = world_x - (world_x * norm) * norm;
+    Vector_3 x_axis = reference - (reference * norm) * norm;
     x_axis = x_axis / std::sqrt(x_axis.squared_length());
 
-    Vector_3 y_axis = world_y - (world_y * norm) * norm;
-    y_axis = y_axis - (x_axis * y_axis) * x_axis; // Gram-Schmidt
-    y_axis = y_axis / std::sqrt(y_axis.squared_length());
+    Vector_3 y_axis = CGAL::cross_product(norm, x_axis);
 
     transform_to_3d = Transformation(
         x_axis.x(), y_axis.x(), norm.x(), centroid.x(),
