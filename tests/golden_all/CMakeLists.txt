@@ -80,3 +80,9 @@ add_executable(nas_cycle_detection test_cycle_detection.cpp)
 target_link_libraries(nas_cycle_detection PRIVATE nas_config nas_planners_astar_search CGAL::CGAL)
 target_compile_definitions(nas_cycle_detection PRIVATE TALOS_REACHABILITY_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../../talosReachability/data/reachability_constraints")
 add_test(NAME nas_cycle_detection COMMAND nas_cycle_detection)
+
+# Merges of similar nodes, also when the search explodes (test_merge_consistency.cpp).
+add_executable(nas_merge_consistency test_merge_consistency.cpp)
+target_link_libraries(nas_merge_consistency PRIVATE nas_config nas_planners_astar_search CGAL::CGAL)
+target_compile_definitions(nas_merge_consistency PRIVATE TALOS_REACHABILITY_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../../talosReachability/data/reachability_constraints")
+add_test(NAME nas_merge_consistency COMMAND nas_merge_consistency)
