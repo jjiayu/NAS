@@ -595,4 +595,74 @@ std::vector<TaggedPoint2> compute_2d_polygon_intersection_tagged(
     return output_list;
 }
 
+std::vector<TaggedPoint2WithOrigin> convex_hull_2_with_origin(const std::vector<TaggedPoint2WithOrigin>& points) {
+    std::vector<Point_2> pts;
+    pts.reserve(points.size());
+    for (const auto& tp : points) pts.push_back(tp.point);
+
+    Polygon_2 hull;
+    CGAL::convex_hull_2(pts.begin(), pts.end(), std::back_inserter(hull));
+
+    std::vector<TaggedPoint2WithOrigin> result;
+    for (auto v = hull.vertices_begin(); v != hull.vertices_end(); ++v) {
+        for (const auto& tp : points) {
+            if (tp.point == *v) {
+                result.push_back(tp);
+                break;
+            }
+        }
+    }
+    return result;
+}
+
+std::vector<TaggedPoint2WithOrigin> compute_2d_polygon_intersection_with_origin(
+    const std::vector<TaggedPoint2WithOrigin>& subject_polygon,
+    const std::vector<Point_2>& clip_polygon) {
+    if (subject_polygon.empty() || clip_polygon.empty()) {
+        throw std::invalid_argument("compute_2d_polygon_intersection_with_origin: subject/clip polygon must not be empty");
+    }
+
+    std::vector<TaggedPoint2WithOrigin> output_list = subject_polygon;
+
+    auto clip_end = clip_polygon.end();
+    for (auto clip_it = clip_polygon.begin(); clip_it != clip_end; ++clip_it) {
+        if (output_list.empty()) return std::vector<TaggedPoint2WithOrigin>();
+
+        Point_2 edge_start = *clip_it;
+        Point_2 edge_end = (std::next(clip_it) == clip_end) ? clip_polygon.front() : *std::next(clip_it);
+
+        std::vector<TaggedPoint2WithOrigin> input_list = output_list;
+        output_list.clear();
+
+        for (size_t i = 0; i < input_list.size(); i++) {
+            const TaggedPoint2WithOrigin& current = input_list[i];
+            const TaggedPoint2WithOrigin& prev = input_list[(i + input_list.size() - 1) % input_list.size()];
+
+            double current_side = is_leftside_of_edge(current.point, edge_start, edge_end);
+            double prev_side = is_leftside_of_edge(prev.point, edge_start, edge_end);
+            bool current_inside = current_side >= 0;
+            bool prev_inside = prev_side >= 0;
+
+            auto push_crossing = [&]() {
+                double t = prev_side / (prev_side - current_side);
+                Point_2 pt(prev.point.x() + t * (current.point.x() - prev.point.x()),
+                           prev.point.y() + t * (current.point.y() - prev.point.y()));
+                Point_3 pay(CGAL::to_double(prev.payload.x()) + t * CGAL::to_double(current.payload.x() - prev.payload.x()),
+                            CGAL::to_double(prev.payload.y()) + t * CGAL::to_double(current.payload.y() - prev.payload.y()),
+                            CGAL::to_double(prev.payload.z()) + t * CGAL::to_double(current.payload.z() - prev.payload.z()));
+                output_list.push_back({pt, pay});
+            };
+
+            if (current_inside) {
+                if (!prev_inside) push_crossing();
+                output_list.push_back(current);
+            } else if (prev_inside) {
+                push_crossing();
+            }
+        }
+    }
+
+    return output_list;
+}
+
 } // namespace nas

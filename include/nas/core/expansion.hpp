@@ -61,4 +61,21 @@ std::vector<Node*> expand_node(Node* parent,
                                 const ExpansionParams& params,
                                 NodePool& pool);
 
+// Cube-placement action (spec §3.1, docs/cube-implementation-plan.md Etape 3): candidate
+// only when parent->cube_state == InHand. Does not move the foot -- children keep
+// parent's patch_vertices/stance_foot/foot_yaw/surface_id unchanged, only cube_state
+// (-> PlacedActive) and cube (the new CubePlacement) differ. Queries reachability for
+// ("Cube", effector_name(parent->stance_foot), Forward), rotated the same way by
+// yaw/surface tilt as expand_node's own query. cube_half_extent is used only to pick a
+// conservative placement-surface constraint (see the .cpp for why the existing
+// foot-eroded surface.vertices_2d is reused rather than a cube-specific erosion --
+// deliberate v1 simplification, always at least as conservative as a true cube erosion
+// for a cube smaller than half the foot's own margin).
+std::vector<Node*> expand_cube_placement(Node* parent,
+                                          const std::vector<Surface>& surfaces,
+                                          const ReachabilityModel& reachability,
+                                          double cube_half_extent,
+                                          const ExpansionParams& params,
+                                          NodePool& pool);
+
 } // namespace nas

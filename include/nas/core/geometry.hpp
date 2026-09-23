@@ -158,4 +158,31 @@ std::vector<TaggedPoint2> compute_2d_polygon_intersection_tagged(
     const std::vector<Point_2>& clip_polygon,
     const std::function<Point_2(const TaggedPoint2&)>& classify_coord);
 
+// A 2D point (e.g. a candidate cube position projected into a candidate surface's local
+// frame) together with a 3D payload (e.g. the exact world-space foot position it's
+// coupled to). Unlike TaggedPoint2 above, whose payload is always meant to already live
+// in the same 2D frame as point, this payload is generally NOT itself on that surface's
+// plane -- projecting it through that plane's transform the way TaggedPoint2's payload
+// is meant to be used would silently drop its out-of-plane component. Kept as a genuine
+// 3D point instead so nothing is lost (spec §3.1: z, the foot position the placement
+// point is coupled to, usually isn't on the surface the cube itself is being placed on).
+struct TaggedPoint2WithOrigin {
+    Point_2 point;
+    Point_3 payload;
+};
+
+// convex_hull_2_tagged, but with a 3D payload (pure subset selection either way, so this
+// is exactly as safe as the 2D-payload version).
+std::vector<TaggedPoint2WithOrigin> convex_hull_2_with_origin(const std::vector<TaggedPoint2WithOrigin>& points);
+
+// compute_2d_polygon_intersection_tagged, but with a 3D payload interpolated with the
+// same t as the 2D point on a cut edge, and always classifying/clipping on point itself
+// (no classify_coord parameter -- this variant is only used for the plain surface-
+// boundary clip, spec §3.1, never for a derived-coordinate cut like §3.3's, which stays
+// on compute_2d_polygon_intersection_tagged above since there both point and payload
+// need to be in the same 2D space to be subtracted from each other).
+std::vector<TaggedPoint2WithOrigin> compute_2d_polygon_intersection_with_origin(
+    const std::vector<TaggedPoint2WithOrigin>& subject_polygon,
+    const std::vector<Point_2>& clip_polygon);
+
 } // namespace nas

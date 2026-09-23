@@ -31,6 +31,7 @@ int run_config_scenario();
 int run_config_stl();
 int run_config_cube();
 int run_cube_geometry();
+int run_cube_expansion();
 
 int run_astar_search_golden();
 int run_astar_search_golden_threepaths();
@@ -66,6 +67,7 @@ const Suite kSuites[] = {
     {"config_stl", "unit", run_config_stl},
     {"config_cube", "unit", run_config_cube},
     {"cube_geometry", "unit", run_cube_geometry},
+    {"cube_expansion", "unit", run_cube_expansion},
 
     {"astar_search_golden", "golden", run_astar_search_golden},
     {"astar_search_golden_threepaths", "golden", run_astar_search_golden_threepaths},

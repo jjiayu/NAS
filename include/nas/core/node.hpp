@@ -19,11 +19,36 @@
 
 #include <array>
 #include <deque>
+#include <optional>
 #include <vector>
 
 namespace nas {
 
 enum class StanceFoot : int { Left = 0, Right = 1 };
+
+// Cube-extension state (see docs/cube-extension-spec.md, docs/cube-implementation-plan.md):
+// None -- no cube in play (every node today, unless the extension is used).
+// InHand -- carried, not yet placed: expand_cube_placement() is a candidate action.
+// PlacedActive -- placed and still steppable (surface not yet left for good, §3.3/3.4).
+// PlacedInactive -- placed but left for good: `cube` has been projected away (§3.4),
+// only the state itself is kept as a record that a cube was used earlier on this path.
+enum class CubeState { None, InHand, PlacedActive, PlacedInactive };
+
+// The joint state's `c` component (spec §3): where the cube is, alongside the node's
+// own `x` (patch_vertices below). vertices_3d/polygon_2d are aligned index-for-index
+// with patch_vertices/patch_polygon_2d -- vertices_3d[i] is the specific cube position
+// coupled to patch_vertices[i] (same reasoning as the joint polytope J, §3.1).
+struct CubePlacement {
+    std::vector<Point_3> vertices_3d;
+    Polygon_2 polygon_2d;
+    Transformation transform_to_2d, transform_to_3d; // the cube's own surface frame -- may differ from the foot's
+    int surface_id = -1;
+
+    // Frozen at placement time (spec §3.3's carre_cube is expressed in this frame),
+    // distinct from the node's own foot_yaw below which keeps evolving on later
+    // steps that don't touch the cube.
+    double placement_yaw = 0.0;
+};
 
 inline StanceFoot other_foot(StanceFoot foot) {
     return foot == StanceFoot::Left ? StanceFoot::Right : StanceFoot::Left;
@@ -65,6 +90,11 @@ public:
     std::array<std::vector<std::vector<int>>, 2> pred_surface_ids;
 
     double foot_yaw = 0.0;
+
+    // Cube-extension state, unused (None/nullopt) unless the extension is active --
+    // see CubeState/CubePlacement above.
+    CubeState cube_state = CubeState::None;
+    std::optional<CubePlacement> cube;
 
     // For CASSR/AstarSearch only: single parent + open-set bookkeeping.
     // Deliberately NOT initialized to any sentinel here (the old code's
