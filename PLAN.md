@@ -128,7 +128,7 @@ Critère de sortie **unique** : séquence de nœuds golden (égalité stricte : 
 - ~~B3. Golden étendu aux 11 scénarios~~ — absorbé dans la phase 0 (2026-09-17) : on capture déjà tous les scénarios qui marchent dès le départ, pas seulement les 3 du papier.
 - B4. Complétude d'énumération NAS : comparer tout l'ensemble de chemins à profondeur minimale (`find_paths_to_root`), pas juste un chemin.
 - B5. Correction de l'infaisabilité QP : mêmes chemins précis jugés infaisables ancien/nouveau, pas juste un taux similaire.
-- B6. Mémoire longue durée de vie : boucle de `plan()` en process long, surveillance fuite/croissance (nouveau besoin, motivé par l'usage Python live).
+- ~~B6. Mémoire longue durée de vie~~ — **fait (2026-09-20)** : pas de fuite (RSS constante sur des centaines d'appels), test `bindings/tests/test_memory.py`, pic 2 à 8 Mo par plan ; voir `docs/paper-deltas.md`.
 - B7. Déterminisme cross-machine des golden references (pertinent vu le portage Linux en cours).
 - ~~B8. Loader testé contre les vraies données go2Reachability (N=4 effecteurs, 12 paires + CoM)~~ — **différé (décision utilisateur, 2026-09-19)** : le périmètre reste le bipède (2 effecteurs), le multi-effecteurs n'a pas encore de sens ; à reprendre si le quadrupède entre dans le périmètre.
 

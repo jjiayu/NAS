@@ -46,3 +46,5 @@ target_link_libraries(nas_bindings PRIVATE nas_config CGAL::CGAL)
 enable_testing()
 add_test(NAME nas_bindings_tests
     COMMAND "${Python_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/tests/test_bindings.py" "$<TARGET_FILE_DIR:nas_bindings>")
+add_test(NAME nas_bindings_memory
+    COMMAND "${Python_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/tests/test_memory.py" "$<TARGET_FILE_DIR:nas_bindings>")

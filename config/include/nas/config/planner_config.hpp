@@ -12,6 +12,7 @@
 // what differs from the default, except start/goal position, which have
 // no sensible scenario-independent default and are required.
 
+#include "nas/config/scenario.hpp"
 #include "nas/footstep_qp/footstep_qp.hpp"
 #include "nas/planners/astar_search.hpp"
 
@@ -34,5 +35,11 @@ struct PlannerConfig {
 // "astar.start_position" or both "astar.goal_location" and "astar.goal_offset" are missing. See
 // config/README.md for the full JSON schema.
 PlannerConfig load_planner_config(const std::string& json_path);
+
+// Resolves "astar.goal_offset" against the scenario: goal_location = centroid of the scenario's last
+// surface + offset. No-op when the config gave an absolute "astar.goal_location". Every caller that
+// loads a config for a named scenario must call it before searching (astar_plan, the Python bindings):
+// without it a goal_offset config silently searches towards the default goal at the origin.
+void resolve_goal(PlannerConfig& config, const Scenario& scenario);
 
 } // namespace nas::config

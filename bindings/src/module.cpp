@@ -56,6 +56,7 @@ FootstepResult plan(const std::string& scenario_name, const std::string& planner
                      const std::string& talos_reachability_data_dir) {
     config::Scenario scenario = config::load_scenario(scenario_name);
     config::PlannerConfig planner_config = config::load_planner_config(planner_config_path);
+    config::resolve_goal(planner_config, scenario); // "goal_offset" configs (see planner_config.hpp)
     ReachabilityModel reachability = load_forward_reachability(talos_reachability_data_dir);
 
     FootstepResult result;

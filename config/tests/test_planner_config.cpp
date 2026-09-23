@@ -77,6 +77,21 @@ void test_distance_metric_is_parsed() {
     std::cout << "test_distance_metric_is_parsed passed\n";
 }
 
+void test_resolve_goal_uses_the_last_surface_centroid() {
+    PlannerConfig config = load_planner_config(data_path("goal_offset_planner_config.json")); // goal_offset (0, 1, 0)
+    Scenario scenario = load_scenario("Flat");
+    resolve_goal(config, scenario);
+    Point_3 expected = scenario.surfaces.back().centroid + Vector_3(0.0, 1.0, 0.0);
+    assert(near(CGAL::to_double(config.astar.goal_location.x()), CGAL::to_double(expected.x())));
+    assert(near(CGAL::to_double(config.astar.goal_location.y()), CGAL::to_double(expected.y())));
+    // an absolute goal is left alone
+    PlannerConfig absolute = load_planner_config(data_path("minimal_planner_config.json"));
+    Point_3 before = absolute.astar.goal_location;
+    resolve_goal(absolute, scenario);
+    assert(absolute.astar.goal_location == before);
+    std::cout << "test_resolve_goal_uses_the_last_surface_centroid passed\n";
+}
+
 void test_missing_astar_section_throws() {
     bool threw = false;
     try {
@@ -117,6 +132,7 @@ int main() {
     test_minimal_config_keeps_struct_defaults();
     test_goal_offset_is_kept_for_the_caller_to_resolve();
     test_distance_metric_is_parsed();
+    test_resolve_goal_uses_the_last_surface_centroid();
     test_missing_astar_section_throws();
     test_missing_start_position_throws();
     test_nonexistent_file_throws();

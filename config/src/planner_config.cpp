@@ -100,4 +100,10 @@ PlannerConfig load_planner_config(const std::string& json_path) {
     return config;
 }
 
+void resolve_goal(PlannerConfig& config, const Scenario& scenario) {
+    if (config.goal_offset) {
+        config.astar.goal_location = scenario.surfaces.back().centroid + *config.goal_offset;
+    }
+}
+
 } // namespace nas::config

@@ -318,6 +318,15 @@ Constats mesurés :
 
 Limites : pentes jusqu'à 20° seulement ; le lacet est mesuré autour de la normale de la surface après inclinaison (convention `R_tilt · R_z`), non définie par le papier ; un pied dont le rectangle déborde du patch n'est pas contrôlé (seul son centre l'est, avec la marge du pied).
 
+### B6 : mémoire d'un processus long qui appelle `plan()` en boucle (2026-09-20)
+
+Motif : l'usage Python en direct. Un appel de `nas_bindings.plan` recharge le scénario, la config et les deux polytopes `.obj`, fait la recherche et le QP, et libère tout.
+
+- **Aucune fuite mesurée.** RSS lue dans `/proc/self/statm` après `malloc_trim` (la rétention de l'allocateur n'est pas comptée) : Stairs 23,5 → 23,8 Mo sur 300 appels, NarrowPassage 24,1 → 24,3 Mo sur 80, ThreePathsScene et LongStairsExp inchangés (24,4 Mo). Test `bindings/tests/test_memory.py` (ctest `nas_bindings_memory`, 9 s) : après échauffement, croissance ≤ 2 Mo sur 3 scènes, et chaque appel doit renvoyer un vrai plan.
+- **Pic d'un seul appel** (processus neuf, plus grand `ru_maxrss` moins la base) : 1,9 Mo (Stairs, Flat) à 8,0 Mo (NarrowPassage, 98 expansions), 6,0 Mo pour ThreePathsScene (323 expansions). Ordre de grandeur : 60 à 80 ko par expansion (7 enfants par surface, chacun avec son polygone et ses sommets).
+- **Risque restant** : les nœuds ne sont libérés qu'à la fin de la recherche (`NodePool` sans libération individuelle). Une recherche qui explose (heuristique euclidienne non pondérée, 20 000 expansions et plus) consommerait de l'ordre du Go : d'où `AstarSearchConfig::max_expansions` (0 = illimité par défaut), à régler pour un usage en direct.
+- **Défaut trouvé au passage et corrigé** : les liaisons Python ne résolvaient pas `astar.goal_offset` (seul `astar_plan` le faisait), donc une config par scénario cherchait vers le but par défaut à l'origine et rendait un chemin trivial (28 ms au lieu de 150 ms sur ThreePathsScene, ce qui m'a alerté). La résolution est maintenant `config::resolve_goal`, appelée par `astar_plan` et par les liaisons, avec un test dans chacun.
+
 ## À vérifier
 
 - Incohérence `foot_width` dans `constants.hpp` : valeur active `0.22`, commentaire à côté dit `0.12` — laquelle est correcte ?

@@ -32,6 +32,17 @@ def test_available_scenarios_lists_all():
     print("test_available_scenarios_lists_all passed")
 
 
+def test_goal_offset_config_is_resolved():
+    # The per-scenario configs give the goal as an offset from the last surface's centroid; the bindings must resolve it
+    # (they once left the goal at the origin, so the "plan" was a trivial one-step path).
+    result = nb.plan("Stairs", os.path.join(EXAMPLES_DIR, "Stairs.json"), TALOS_DATA_DIR)
+    assert result.success
+    assert len(result.positions) == 6, len(result.positions)
+    last = result.positions[-1]
+    assert all(abs(a - b) < 1e-6 for a, b in zip(last, (1.35, 0.22, 0.4))), last  # centroid of Stairs' last step
+    print("test_goal_offset_config_is_resolved passed")
+
+
 def test_narrow_passage_matches_golden():
     result = nb.plan("NarrowPassage", os.path.join(EXAMPLES_DIR, "narrow_passage.json"), TALOS_DATA_DIR)
     assert result.success
@@ -66,6 +77,7 @@ def test_unknown_scenario_raises():
 
 if __name__ == "__main__":
     test_available_scenarios_lists_all()
+    test_goal_offset_config_is_resolved()
     test_narrow_passage_matches_golden()
     test_three_paths_nas_matches_golden()
     test_unknown_scenario_raises()

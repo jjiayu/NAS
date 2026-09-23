@@ -63,9 +63,7 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    if (planner_config.goal_offset) {
-        planner_config.astar.goal_location = scenario.surfaces.back().centroid + *planner_config.goal_offset;
-    }
+    config::resolve_goal(planner_config, scenario);
 
     ReachabilityModel reachability = load_forward_reachability(talos_data_dir);
 
