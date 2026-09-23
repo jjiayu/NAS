@@ -4,7 +4,6 @@
     "start_stance_foot": "Right",
     "goal_location": [8.0, 0.0, 0.0],
     "goal_stance_foot": "Left",
-    "distance_metric": "Epa",
     "heuristic_weight": 10.0,
     "node_similarity_threshold": 0.02,
     "expansion": {

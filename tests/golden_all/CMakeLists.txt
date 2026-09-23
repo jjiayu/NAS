@@ -33,23 +33,13 @@ target_compile_definitions(nas_golden_all_scenes PRIVATE
 )
 add_test(NAME nas_golden_all_scenes COMMAND nas_golden_all_scenes)
 
-# Differential test of core/expansion against the OLD get_children on real
-# states: needs the JSON dumps from the old repo's old_expansion_dump tool,
-# so it takes the dump directory as an argument and isn't registered with
-# ctest (see tests/golden_all/README.md).
-add_executable(nas_expansion_differential test_expansion_differential.cpp)
-target_link_libraries(nas_expansion_differential PRIVATE nas_config CGAL::CGAL)
-target_compile_definitions(nas_expansion_differential PRIVATE
+# core/expansion against an exact-arithmetic oracle, on the states a real search expands.
+add_executable(nas_expansion_oracle test_expansion_oracle.cpp)
+target_link_libraries(nas_expansion_oracle PRIVATE nas_config CGAL::CGAL)
+target_compile_definitions(nas_expansion_oracle PRIVATE
     TALOS_REACHABILITY_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../../talosReachability/data/reachability_constraints"
 )
-
-# Step-1 comparison (edge/plane vs CGAL slicer vs exact) on the dumped real
-# parent states; takes the dump dir, not registered with ctest.
-add_executable(nas_bench_plane_cut bench_plane_cut.cpp)
-target_link_libraries(nas_bench_plane_cut PRIVATE nas_config CGAL::CGAL)
-target_compile_definitions(nas_bench_plane_cut PRIVATE
-    TALOS_REACHABILITY_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../../talosReachability/data/reachability_constraints"
-)
+add_test(NAME nas_expansion_oracle COMMAND nas_expansion_oracle)
 
 # Diagnostic: where do two heap states first make the search diverge?
 add_executable(nas_trace_divergence trace_divergence.cpp)

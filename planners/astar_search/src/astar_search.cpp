@@ -1,7 +1,12 @@
 #include "nas/planners/astar_search.hpp"
 #include "nas/core/geometry.hpp"
 
+#include <boost/functional/hash.hpp>
+#include <boost/heap/fibonacci_heap.hpp>
+
 #include <algorithm>
+#include <unordered_map>
+#include <vector>
 
 #include <cmath>
 
@@ -121,29 +126,17 @@ AstarSearch::AstarSearch(std::vector<Surface> surfaces, ReachabilityModel reacha
     start_node_->centroid = config_.start_position;
     start_node_->foot_yaw = config_.expansion_params.rotation_enabled ? config_.start_foot_yaw : 0.0;
     start_node_->depth = 0;
-    start_node_->perimeter = 0.0;
     start_node_->g_score = 0.0;
-    // A single-point patch has no area for gjk/epa (they need >=3 points),
-    // so the start node's heuristic is always euclidean regardless of the
-    // configured metric — matches the old code exactly (see
-    // docs/paper-deltas.md).
+    // A single-point patch has no area for EPA (it needs >=3 points), so the
+    // start node's heuristic is the plain Euclidean distance — matches the old
+    // code exactly (see docs/paper-deltas.md).
     start_node_->h_score = compute_euclidean_distance(config_.start_position, config_.goal_location);
     start_node_->f_score = start_node_->g_score + start_node_->h_score;
     start_node_->parent = nullptr;
 }
 
 double AstarSearch::heuristic(const Node* node) const {
-    switch (config_.distance_metric) {
-        case DistanceMetric::Gjk:
-            return config_.heuristic_weight *
-                   calculate_gjk_distance_point_to_patch(node->patch_vertices, config_.goal_location);
-        case DistanceMetric::Epa:
-            return config_.heuristic_weight *
-                   calculate_epa_distance_point_to_patch(node->patch_vertices, config_.goal_location);
-        case DistanceMetric::Euclidean:
-        default:
-            return compute_euclidean_distance(node->centroid, config_.goal_location);
-    }
+    return config_.heuristic_weight * calculate_epa_distance_point_to_patch(node->patch_vertices, config_.goal_location);
 }
 
 void AstarSearch::search() {

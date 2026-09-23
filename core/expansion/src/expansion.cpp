@@ -14,46 +14,34 @@ std::string effector_name(StanceFoot foot) {
 
 namespace {
 
-struct NodeKeys {
-    double perimeter = 0.0;
-    Point_3 centroid{0.0, 0.0, 0.0};
-};
-
-// Area centroid and edge-length perimeter of the patch's convex polygon (in the
-// surface's orthonormal 2D frame, so lengths are true lengths). Adding a
-// collinear point to the polygon changes neither. Falls back to the vertex
-// average when the polygon has (near) zero area.
-NodeKeys canonical_keys(const Polygon_2& hull, const Transformation& to_3d, const std::vector<Point_3>& raw_patch_3d) {
-    NodeKeys keys;
-    const size_t n = hull.size();
-    double area2 = 0.0, cx = 0.0, cy = 0.0, perimeter = 0.0;
+// Area centroid of a convex polygon given in the surface's 2D frame, mapped to
+// world. Adding a collinear point to the polygon does not change it. Falls back
+// to the vertex average when the polygon has (near) zero area.
+Point_3 area_centroid(const std::vector<Point_2>& polygon, const Transformation& to_3d, const std::vector<Point_3>& vertices_3d) {
+    const size_t n = polygon.size();
+    double area2 = 0.0, cx = 0.0, cy = 0.0;
     for (size_t i = 0; i < n; ++i) {
-        const Point_2& p = hull.vertex(i);
-        const Point_2& q = hull.vertex((i + 1) % n);
+        const Point_2& p = polygon[i];
+        const Point_2& q = polygon[(i + 1) % n];
         double px = CGAL::to_double(p.x()), py = CGAL::to_double(p.y());
         double qx = CGAL::to_double(q.x()), qy = CGAL::to_double(q.y());
         double cross = px * qy - qx * py;
         area2 += cross;
         cx += (px + qx) * cross;
         cy += (py + qy) * cross;
-        perimeter += std::hypot(qx - px, qy - py);
     }
-    keys.perimeter = perimeter;
-    if (std::abs(area2) > 1e-12) {
-        keys.centroid = to_3d(Point_3(cx / (3.0 * area2), cy / (3.0 * area2), 0.0));
-    } else {
-        keys.centroid = get_centroid(raw_patch_3d);
-    }
-    return keys;
+    if (std::abs(area2) > 1e-12) return to_3d(Point_3(cx / (3.0 * area2), cy / (3.0 * area2), 0.0));
+    return get_centroid(vertices_3d);
 }
 
 // Removes vertices within 1 nm of the line through their neighbours, then
 // rotates the list to start at the vertex minimal after rounding to 1 nm.
 // The exact convex hull keeps a vertex that is collinear only up to 1e-16
-// noise and starts at a lexicographic-minimum vertex that is an x-tie decided
+// noise, and starts at a lexicographic-minimum vertex that is an x-tie decided
 // by that same noise for any axis-aligned edge; both change from run to run
-// with heap state (docs/paper-deltas.md, "Bilan : périmètre...").
-void simplify_and_canonicalize(std::vector<Point_2>& pts) {
+// with heap state, and the search's decisions with them (docs/paper-deltas.md,
+// "Bilan : périmètre, clés de dédoublonnage et déterminisme").
+void clean_polygon(std::vector<Point_2>& pts) {
     constexpr double TOL = 1e-9;
     bool removed = true;
     while (removed && pts.size() > 3) {
@@ -111,13 +99,10 @@ std::vector<Node*> expand_node(Node* parent,
         base_polytope = &rotated_polytope;
     }
 
-    // One edge list per expansion, shared by all surfaces.
-    const EdgeList union_edges = params.union_edges_override
-        ? params.union_edges_override(*parent)
-        : polytope_edges(minkowski_sum(parent->patch_vertices, *base_polytope));
+    Polyhedron P_union = minkowski_sum(parent->patch_vertices, *base_polytope);
 
     for (const auto& surface : surfaces) {
-        std::vector<Point_3> plane_intersect_3d = compute_edges_plane_intersection(surface.plane, union_edges);
+        std::vector<Point_3> plane_intersect_3d = compute_polytope_plane_intersection(surface.plane, P_union);
         if (plane_intersect_3d.size() <= 2) {
             continue;
         }
@@ -129,41 +114,28 @@ std::vector<Node*> expand_node(Node* parent,
         CGAL::convex_hull_2(plane_intersect_2d.begin(), plane_intersect_2d.end(), std::back_inserter(plane_hull_2d));
         std::vector<Point_2> plane_hull_pts(plane_hull_2d.vertices_begin(), plane_hull_2d.vertices_end());
 
-        std::vector<Point_2> polygon_intersect_2d = compute_2d_polygon_intersection(
-            plane_hull_pts, surface.vertices_2d, params.legacy_clip ? ClipMode::Legacy : ClipMode::Robust);
+        std::vector<Point_2> polygon_intersect_2d = compute_2d_polygon_intersection(plane_hull_pts, surface.vertices_2d);
         if (polygon_intersect_2d.size() <= 2) {
             continue;
         }
 
-        Polygon_2 final_hull_2d;
-        CGAL::convex_hull_2(polygon_intersect_2d.begin(), polygon_intersect_2d.end(), std::back_inserter(final_hull_2d));
-
-        std::vector<Point_3> patch_3d;
-        NodeKeys keys;
-        Polyhedron patch_polyhedron;
-        if (params.legacy_node_keys) {
-            // The old code's node data (see ExpansionParams): only patch_polygon_2d
-            // is the convex hull of the clip output; patch_vertices, the prism and
-            // the centroid come from the raw Sutherland-Hodgman points, near-
-            // collinear ones included (found by tests/golden_all's replay test).
-            patch_3d = transform_2d_points_to_world(polygon_intersect_2d, surface.transform_to_3d);
-            patch_polyhedron = convex_hull_3_from_coplanar_points(patch_3d, surface.norm);
-            keys.perimeter = compute_polygon_perimeter(patch_polyhedron);
-            keys.centroid = get_centroid(patch_3d);
-        } else {
-            // Production profile: the patch IS its (cleaned) convex polygon.
-            std::vector<Point_2> hull_pts(final_hull_2d.vertices_begin(), final_hull_2d.vertices_end());
-            simplify_and_canonicalize(hull_pts);
-            if (hull_pts.size() < 3) continue; // degenerated to a segment/point: no patch
-            final_hull_2d = Polygon_2(hull_pts.begin(), hull_pts.end());
-            patch_3d = transform_2d_points_to_world(hull_pts, surface.transform_to_3d);
-            keys = canonical_keys(final_hull_2d, surface.transform_to_3d, patch_3d);
+        // The patch is the convex polygon of the clip output, cleaned (see clean_polygon).
+        Polygon_2 hull_2d;
+        CGAL::convex_hull_2(polygon_intersect_2d.begin(), polygon_intersect_2d.end(), std::back_inserter(hull_2d));
+        std::vector<Point_2> patch_2d(hull_2d.vertices_begin(), hull_2d.vertices_end());
+        clean_polygon(patch_2d);
+        if (patch_2d.size() < 3) {
+            continue; // degenerated to a segment/point: no patch
         }
 
         if (params.cycle_detection_enabled &&
             cycle_path_detection(parent, child_stance_foot, surface.surface_id)) {
             continue;
         }
+
+        std::vector<Point_3> patch_3d = transform_2d_points_to_world(patch_2d, surface.transform_to_3d);
+        Polygon_2 patch_polygon(patch_2d.begin(), patch_2d.end());
+        Point_3 centroid = area_centroid(patch_2d, surface.transform_to_3d, patch_3d);
 
         std::vector<double> yaw_angles;
         if (params.rotation_enabled) {
@@ -181,12 +153,10 @@ std::vector<Node*> expand_node(Node* parent,
             child->stance_foot = child_stance_foot;
             child->surface_id = surface.surface_id;
             child->depth = parent->depth + 1;
-            child->patch_polygon_2d = final_hull_2d;
-            if (params.legacy_node_keys) child->patch_polyhedron_3d = patch_polyhedron;
+            child->patch_polygon_2d = patch_polygon;
             child->transformation_to_2d = surface.transform_to_surface;
             child->transformation_to_3d = surface.transform_to_3d;
-            child->perimeter = keys.perimeter;
-            child->centroid = keys.centroid;
+            child->centroid = centroid;
 
             if (params.rotation_enabled) {
                 double normalized_yaw = yaw;

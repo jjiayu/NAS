@@ -25,13 +25,6 @@ StanceFoot stance_foot_from_string(const std::string& s) {
     throw std::runtime_error("load_planner_config: unknown stance foot '" + s + "' (expected 'Left'/'Right')");
 }
 
-DistanceMetric distance_metric_from_string(const std::string& s) {
-    if (s == "Euclidean") return DistanceMetric::Euclidean;
-    if (s == "Gjk") return DistanceMetric::Gjk;
-    if (s == "Epa") return DistanceMetric::Epa;
-    throw std::runtime_error("load_planner_config: unknown distance metric '" + s + "' (expected 'Euclidean'/'Gjk'/'Epa')");
-}
-
 AstarSearchConfig parse_astar_config(const json& j) {
     AstarSearchConfig config; // starts from the struct's own defaults
 
@@ -44,7 +37,10 @@ AstarSearchConfig parse_astar_config(const json& j) {
     if (j.contains("start_stance_foot")) config.start_stance_foot = stance_foot_from_string(j.at("start_stance_foot").get<std::string>());
     if (j.contains("start_foot_yaw")) config.start_foot_yaw = j.at("start_foot_yaw").get<double>();
     if (j.contains("goal_stance_foot")) config.goal_stance_foot = stance_foot_from_string(j.at("goal_stance_foot").get<std::string>());
-    if (j.contains("distance_metric")) config.distance_metric = distance_metric_from_string(j.at("distance_metric").get<std::string>());
+    // The heuristic distance is always EPA (the Euclidean / GJK variants of the old code were dropped).
+    if (j.contains("distance_metric") && j.at("distance_metric").get<std::string>() != "Epa") {
+        throw std::runtime_error("load_planner_config: only the \"Epa\" distance metric is supported");
+    }
     if (j.contains("heuristic_weight")) config.heuristic_weight = j.at("heuristic_weight").get<double>();
     if (j.contains("node_similarity_threshold")) config.node_similarity_threshold = j.at("node_similarity_threshold").get<double>();
 

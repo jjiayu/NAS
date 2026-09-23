@@ -1,33 +1,16 @@
 # tests/golden_all
 
-Two checks against the OLD code, covering every scene of `environments.hpp` (the dedicated golden tests only cover `NarrowPassage` and `ThreePathsNAS`).
+Checks of the rewritten CASSR on every scene of the old `environments.hpp`.
 
-## `nas_golden_all_scenes` (registered with ctest)
-Replays each `tests/golden/*_astar.json` scene with the old `constants.hpp` configuration and compares the final path (length, depth, stance foot, surface id per node; yaw is reported only, equal-cost plans differ by yaw ties) and, where the old QP succeeded, the QP (footstep count, distance walked within 6%). Also checks determinism: each search runs twice, the second after a heap fragmentation, and must be identical.
+## `nas_golden_all_scenes` (ctest)
+Replays each `tests/golden/*_astar.json` scene with the old `constants.hpp` configuration and compares against the plan the old code stored: path length, depth, stance foot and surface id per node (yaw is reported only: equal-cost plans differ by yaw ties, which the old code broke arbitrarily), and, where the old QP succeeded, the QP (footstep count, distance walked within 6%). Also checks determinism: each search runs twice, the second after a heap fragmentation, and must be identical.
 
-## `nas_expansion_differential <dump_dir>` (needs old-code dumps)
-The strong check. `tests/old_expansion_dump.cpp` calls the OLD `AstarSearch::get_children` on real parent states (150 breadth-first expansions per scene, ~18 000 children) and dumps everything, including intermediate stages (rotated polytope, Minkowski sum, plane/polytope intersections). The test rebuilds each parent and pushes it through `expand_node`.
+## `nas_expansion_oracle` (ctest)
+`core/expansion` against an exact-arithmetic oracle (`exact_clip.hpp`) on the states a real search expands, on every scene: for each expanded parent and each surface the child patch must equal the patch recomputed from the plane cut with the 2D projection, hull and clip done in exact arithmetic, children must exist exactly when that patch is non-empty and the cycle detection allows them, and every patch must be a clean convex polygon. This is what proves the corrected 2D clip (the old code dropped an intersection point on near-parallel edges, `docs/paper-deltas.md`).
 
-```sh
-cmake --build build --target old_expansion_dump -j1     # old tree, conda env rwa
-tests/golden_all/generate_old_dumps.sh /tmp/old_dumps
-cd tests/golden_all && mkdir -p build && cd build && cmake .. && cmake --build . -j1 --target nas_expansion_differential
-./nas_expansion_differential /tmp/old_dumps
-```
+## Tools (not tests)
+- `nas_perf_all_scenes [runs]`: search + QP timing on every scene. The same source builds in a checkout of an older commit (e.g. tag `legacy-replay-verified`) to get an old-behaviour baseline on the same machine.
+- `nas_trace_divergence <scene> <seed>`: runs a scene twice (the second after a heap fragmentation) and reports the first divergence between the two searches; uses the `on_expand` / `on_child` hooks of `AstarSearchConfig`. The search used to diverge on 7 of 11 scenes and is now deterministic, so this is a regression diagnostic.
 
-Asserted: same number/order of children, surface, stance foot, depth, yaw, cycle history (exact), and the patch **polygon** (two-way Hausdorff of the hull boundaries + area, 1e-7). Reported only: centroid, perimeter, raw vertex list.
-
-### `--replay-old-hull`: same triangulation in, everything exact out
-`nas_expansion_differential <dump_dir> --replay-old-hull` (runs `expand_node` with `legacy_node_keys` and `legacy_clip`) feeds `expand_node` the old run's exact `P_union` (the hull `get_children` itself used, captured by a link-time `--wrap` of `minkowski_sum`, old code untouched) as an ordered edge list (`ExpansionParams::union_edges_override`, a test seam) and demands **everything** bit-identical: structure, polygon, perimeter, centroid, raw vertex list. Measured: all 11 scenes, ~18 000 children, max deviation 0.0. So the only source of old/new difference is the hull's triangulation/edge order (heap-order dependent in CGAL), not the port. (Rebuilding a Polyhedron from the dumped facets does not reproduce the edge order, hence the edge list.) Dumps must be regenerated with the current `old_expansion_dump` (they now carry `p_union_mesh`).
-
-### `--robust`: the corrected clip, checked against an exact oracle
-`nas_expansion_differential <dump_dir> --robust` runs the corrected 2D clip (`ClipMode::Robust`, the default) on the old run's exact hull and checks every surface of every expansion against an independent exact-arithmetic recomputation (`exact_clip.hpp`), and against the old output (a difference is accepted only when the old patch is contained in the new one). `NAS_SCRAMBLE=<seed> nas_golden_all_scenes` prints path signatures (`SIG` lines) to compare runs across heap states.
-
-## Why centroid/perimeter/vertex lists are not asserted
-They are not reproducible even by the old code: `compute_polygon_perimeter` sums every edge of a thin prism polyhedron (triangulation diagonals included) and the centroid averages raw clip vertices, and both depend on the order/triangulation `CGAL::convex_hull_3` returns for P_union. Running the old expansion twice with only its heap allocation order changed (`NAS_SCRAMBLE=<seed>` in `old_expansion_dump`) changes P_union's vertex order in 15/15 expansions and ~270 of ~300 children centroids (up to 12.6 cm). On the stair scenes it even changes patch polygons (0.3-1.8% of children, up to 0.9 m) — the plane/polytope cut itself is triangulation-independent (`nas_bench_plane_cut`), but the 2D clip loses an intersection point when its double inside-test and CGAL's exact segment/line intersection disagree on a near-parallel edge (a defect inherited from the old code; a clip computing the crossing from the same signed values, or an exact one, gives 0 differences). The differential test therefore asserts exact polygons on the scenes where the old code is stable and a bounded rate (5%) where it is not. See `docs/paper-deltas.md`.
-
-## `nas_bench_plane_cut <dump_dir> [repeat]`
-Step-1 comparison (edge/plane vs `CGAL::Polygon_mesh_slicer` vs half-space cut vs exact arithmetic, plus the final patch with the current vs an exact 2D clip) on the dumped real parents: final patch deviation from the exact result and time per cut. Results in `docs/paper-deltas.md`.
-
-## Determinism of the full search
-`NAS_SCRAMBLE`-style heap fragmentation is built into `nas_golden_all_scenes` (second run of each scene). `nas_trace_divergence <scene> <seed>` runs a scene twice (the second after a heap fragmentation of that seed) and reports the first divergence, if any, classified as GRID / TIE / GEOMETRY / ORDER (it uses the `on_expand` / `on_child` hooks of `AstarSearchConfig`). The search used to diverge on 7 of 11 scenes; its causes and the fixes are in `docs/paper-deltas.md`.
+## Where the old-code proofs went
+The old CASSR was removed from the tree. Its differential test (`old_expansion_dump` + replay of the old `get_children`'s exact output: bit-identical on ~18 000 children on 11 scenes) and the tools that captured the golden plans live in git history: tags `legacy-replay-verified` and `cassr-stage-a-validated`. The stored plans in `tests/golden/` remain the reference.

@@ -8,6 +8,13 @@
 // with every surface, and creates one child Node per non-empty
 // intersection (more if rotation is enabled — see ExpansionParams).
 //
+// A child's patch is the convex polygon of (P_union ∩ surface plane) ∩ surface
+// footprint: vertices within 1 nm of their neighbours' line are dropped and the
+// list starts at a canonical vertex, so it is identical from run to run (the
+// exact convex hull's own start vertex and near-collinear vertices change with
+// 1e-16 noise, i.e. with heap state). Node::centroid is the polygon's area
+// centroid. See docs/paper-deltas.md, "Profil retenu".
+//
 // Scope decided 2026-09-18 (see PLAN.md "Décisions clés"):
 //  - 2 effectors only (StanceFoot::{Left,Right}) — the moving/support
 //    effector names queried on ReachabilityModel are hardcoded via
@@ -18,13 +25,11 @@
 //    enables it today (NAS's call site leaves it false, matching NAS's
 //    current no-rotation behavior exactly).
 
-#include "nas/core/geometry.hpp"
 #include "nas/core/node.hpp"
 #include "nas/core/reachability.hpp"
 #include "nas/core/surface.hpp"
 
 #include <cmath>
-#include <functional>
 #include <string>
 #include <vector>
 
@@ -42,28 +47,6 @@ struct ExpansionParams {
     int yaw_discretization_num = 3;
     double yaw_angle_increment = 10.0 / 180.0 * M_PI;
     bool cycle_detection_enabled = true;
-    // ---- Test-only switches (tests/golden_all): the production behaviour is one
-    // fixed profile; these two reproduce the OLD code so the port can be proven
-    // against the old binary (bit-exact replay, tag legacy-replay-verified).
-    //
-    // Production profile (see docs/paper-deltas.md "Profil retenu"): the patch is
-    // its convex polygon with vertices within 1 nm of their neighbours' line
-    // removed and a canonical start vertex (same vertex order in every run);
-    // Node::centroid is the polygon's area centroid and Node::perimeter its
-    // contour length; no 3D prism is built.
-    //
-    // legacy_node_keys: the old code's node data instead - patch_vertices = the
-    // raw clip output (collinear / duplicate points included), centroid = their
-    // average, perimeter = sum of every edge of a thin prism (triangulation
-    // diagonals included) which is also stored in patch_polyhedron_3d.
-    bool legacy_node_keys = false;
-    // legacy_clip: the old 2D clip, which can silently drop an intersection
-    // point (ClipMode::Legacy in geometry.hpp).
-    bool legacy_clip = false;
-    // Replaces the edge list of minkowski_sum(parent patch, reachability
-    // polytope) with the old run's exact P_union, since CGAL::convex_hull_3's
-    // triangulation depends on heap order.
-    std::function<EdgeList(const Node& parent)> union_edges_override;
 };
 
 // Expands `parent` into its children. `direction` selects which

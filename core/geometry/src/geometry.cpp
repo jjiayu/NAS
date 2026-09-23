@@ -61,19 +61,10 @@ Polyhedron minkowski_sum(const std::vector<Point_3>& patch_vertices,
     return P_union;
 }
 
-EdgeList polytope_edges(const Polyhedron& polytope) {
-    EdgeList edges;
-    for (auto edge = polytope.edges_begin(); edge != polytope.edges_end(); ++edge) {
-        edges.emplace_back(edge->vertex()->point(), edge->opposite()->vertex()->point());
-    }
-    return edges;
-}
-
-std::vector<Point_3> compute_edges_plane_intersection(const Plane_3& plane, const EdgeList& edges) {
+std::vector<Point_3> compute_polytope_plane_intersection(const Plane_3& plane, const Polyhedron& polytope) {
     std::vector<Point_3> intersection_points;
-    for (const auto& [p1, p2] : edges) {
-        Kernel::Segment_3 segment(p1, p2);
-
+    for (auto edge = polytope.edges_begin(); edge != polytope.edges_end(); ++edge) {
+        Kernel::Segment_3 segment(edge->vertex()->point(), edge->opposite()->vertex()->point());
         auto intersection = CGAL::intersection(plane, segment);
         if (intersection) {
             Point_3 intersection_point;
@@ -85,10 +76,6 @@ std::vector<Point_3> compute_edges_plane_intersection(const Plane_3& plane, cons
     return intersection_points;
 }
 
-std::vector<Point_3> compute_polytope_plane_intersection(const Plane_3& plane, const Polyhedron& polytope) {
-    return compute_edges_plane_intersection(plane, polytope_edges(polytope));
-}
-
 double is_leftside_of_edge(const Point_2& point, const Point_2& edge_start, const Point_2& edge_end) {
     return ((edge_end.x() - edge_start.x()) * (point.y() - edge_start.y()) -
             (edge_end.y() - edge_start.y()) * (point.x() - edge_start.x()));
@@ -97,8 +84,7 @@ double is_leftside_of_edge(const Point_2& point, const Point_2& edge_start, cons
 // Sutherland-Hodgman clip. See the header comment: a CGAL-native
 // implementation was tried and reverted here because it crashed on the
 // real NarrowPassage scenario's near-degenerate shrunk "Passage" polygon.
-std::vector<Point_2> compute_2d_polygon_intersection(const std::vector<Point_2>& subject_polygon, const std::vector<Point_2>& clip_polygon,
-                                                     ClipMode mode) {
+std::vector<Point_2> compute_2d_polygon_intersection(const std::vector<Point_2>& subject_polygon, const std::vector<Point_2>& clip_polygon) {
     // Both polygons come from a convex hull upstream (expand_node,
     // Surface's own constructor) and are never empty in practice — an
     // empty polygon here means a caller broke that invariant, not a
@@ -121,8 +107,6 @@ std::vector<Point_2> compute_2d_polygon_intersection(const std::vector<Point_2>&
         std::vector<Point_2> input_list = output_list;
         output_list.clear();
 
-        Line_2 line(edge_start, edge_end);
-
         for (size_t i = 0; i < input_list.size(); i++) {
             Point_2 current_point = input_list[i];
             Point_2 prev_point = input_list[(i + input_list.size() - 1) % input_list.size()];
@@ -132,26 +116,13 @@ std::vector<Point_2> compute_2d_polygon_intersection(const std::vector<Point_2>&
             bool current_inside = current_side >= 0;
             bool prev_inside = prev_side >= 0;
 
-            // Called only when the segment prev->current straddles the clip
-            // line according to the inside test above.
+            // Called only when the segment prev->current straddles the clip line
+            // according to the inside test above: the two signed values have
+            // opposite signs, so the denominator is non-zero and the point exists.
             auto push_crossing = [&]() {
-                if (mode == ClipMode::Robust) {
-                    // Crossing derived from the very signed values that
-                    // decided the straddle: it always exists (the two sides
-                    // have opposite signs, so the denominator is non-zero).
-                    double t = prev_side / (prev_side - current_side);
-                    output_list.emplace_back(prev_point.x() + t * (current_point.x() - prev_point.x()),
-                                             prev_point.y() + t * (current_point.y() - prev_point.y()));
-                } else {
-                    // Legacy (old code): a second, exact predicate. On a
-                    // near-parallel edge it can disagree with the double test
-                    // above; the point is then silently dropped.
-                    auto result = CGAL::intersection(Segment_2(prev_point, current_point), line);
-                    Point_2 intersection_point;
-                    if (result && CGAL::assign(intersection_point, *result)) {
-                        output_list.push_back(intersection_point);
-                    }
-                }
+                double t = prev_side / (prev_side - current_side);
+                output_list.emplace_back(prev_point.x() + t * (current_point.x() - prev_point.x()),
+                                         prev_point.y() + t * (current_point.y() - prev_point.y()));
             };
 
             if (current_inside) {
@@ -166,76 +137,14 @@ std::vector<Point_2> compute_2d_polygon_intersection(const std::vector<Point_2>&
     return output_list;
 }
 
-double compute_polygon_perimeter(const Polyhedron& polyhedron) {
-    double perimeter = 0.0;
-    for (auto edge = polyhedron.edges_begin(); edge != polyhedron.edges_end(); ++edge) {
-        perimeter += CGAL::sqrt(CGAL::squared_distance(edge->vertex()->point(),
-                                                     edge->opposite()->vertex()->point()));
-    }
-    return perimeter;
-}
-
 double compute_euclidean_distance(const Point_3& start_location, const Point_3& end_location) {
     return CGAL::sqrt(CGAL::squared_distance(start_location, end_location));
 }
 
-double calculate_gjk_distance_point_to_patch(const std::vector<Point_3>& patch_points, const Point_3& goal) {
-    // A real patch always has >=3 vertices by construction (expand_node
-    // checks this before creating a Node) — this guards a caller contract,
-    // not a recoverable geometric edge case.
-    if (patch_points.size() < 3) {
-        throw std::invalid_argument("calculate_gjk_distance_point_to_patch: patch must have at least 3 points");
-    }
-
-    coal::Vec3s coal_goal(goal.x(), goal.y(), goal.z());
-    std::vector<coal::Vec3s> coal_patch_vertices;
-    coal_patch_vertices.reserve(patch_points.size());
-    for (const auto& point : patch_points) {
-        coal_patch_vertices.emplace_back(point.x(), point.y(), point.z());
-    }
-
-    auto point_shape = std::make_shared<coal::Sphere>(1e-6);
-    coal::CollisionObject point_obj(point_shape);
-    coal::Transform3s point_tf = coal::Transform3s::Identity();
-    point_tf.translation() = coal_goal;
-    point_obj.setTransform(point_tf);
-
-    try {
-        auto vertices_ptr = std::make_shared<std::vector<coal::Vec3s>>(coal_patch_vertices);
-        std::vector<coal::Triangle> triangles;
-        for (size_t i = 1; i < coal_patch_vertices.size() - 1; ++i) {
-            triangles.push_back(coal::Triangle(0, i, i + 1));
-        }
-        auto triangles_ptr = std::make_shared<std::vector<coal::Triangle>>(triangles);
-
-        auto convex_shape = std::make_shared<coal::Convex<coal::Triangle>>(
-            vertices_ptr, coal_patch_vertices.size(),
-            triangles_ptr, triangles.size()
-        );
-
-        coal::CollisionObject convex_obj(convex_shape);
-        coal::Transform3s convex_tf = coal::Transform3s::Identity();
-        convex_obj.setTransform(convex_tf);
-
-        coal::DistanceRequest request;
-        coal::DistanceResult result;
-        coal::distance(&point_obj, &convex_obj, request, result);
-        return result.min_distance;
-
-    } catch (const std::exception&) {
-        // Unlike the precondition above, this is coal itself failing on
-        // otherwise-valid input (e.g. a numerically thin/degenerate
-        // triangle fan) — a genuine runtime condition, not a caller error.
-        // Falling back to centroid distance is a deliberate, kept-from-the-
-        // old-code choice rather than propagating the failure — see
-        // docs/paper-deltas.md, 8d-1.
-        Point_3 centroid = get_centroid(patch_points);
-        return compute_euclidean_distance(goal, centroid);
-    }
-}
-
 double calculate_epa_distance_point_to_patch(const std::vector<Point_3>& patch_points, const Point_3& goal) {
-    // Same reasoning as calculate_gjk_distance_point_to_patch above.
+    // A real patch always has >=3 vertices by construction (expand_node checks
+    // this before creating a Node) — this guards a caller contract, not a
+    // recoverable geometric edge case.
     if (patch_points.size() < 3) {
         throw std::invalid_argument("calculate_epa_distance_point_to_patch: patch must have at least 3 points");
     }
@@ -278,7 +187,11 @@ double calculate_epa_distance_point_to_patch(const std::vector<Point_3>& patch_p
         return std::abs(distance_result.min_distance);
 
     } catch (const std::exception&) {
-        // Same reasoning as the catch block in calculate_gjk_distance_point_to_patch.
+        // Unlike the precondition above, this is coal itself failing on
+        // otherwise-valid input (e.g. a numerically thin/degenerate triangle
+        // fan) — a genuine runtime condition, not a caller error. Falling back
+        // to centroid distance is a deliberate, kept-from-the-old-code choice
+        // rather than propagating the failure — see docs/paper-deltas.md, 8d-1.
         Point_3 centroid = get_centroid(patch_points);
         return compute_euclidean_distance(goal, centroid);
     }
@@ -359,14 +272,6 @@ HalfSpacePolytopeConstraint convert_polytope_to_half_space_constraint(const Poly
     }
 
     return constraint;
-}
-
-SurfaceConstraint generate_surface_constraint(const Polyhedron& surface_3d) {
-    std::vector<Point_3> vertices;
-    for (auto v = surface_3d.vertices_begin(); v != surface_3d.vertices_end(); ++v) {
-        vertices.push_back(v->point());
-    }
-    return generate_surface_constraint(vertices);
 }
 
 SurfaceConstraint generate_surface_constraint(const std::vector<Point_3>& vertices) {
@@ -471,88 +376,6 @@ Polyhedron rotate_polyhedron_z(const Polyhedron& polytope, double yaw_angle) {
         v_it->point() = rotation(v_it->point());
     }
     return rotated_polytope;
-}
-
-// Helper: build a prism Polyhedron from ordered 2D hull vertices reprojected
-// to 3D — CGAL::convex_hull_3 asserts on coplanar input, so this avoids
-// calling it at all for the "flat patch" case that's pervasive here.
-template <class HDS>
-class Build_prism : public CGAL::Modifier_base<HDS> {
-    std::vector<Point_3> top_, bot_;
-public:
-    Build_prism(std::vector<Point_3> top, std::vector<Point_3> bot)
-        : top_(std::move(top)), bot_(std::move(bot)) {}
-    void operator()(HDS& hds) {
-        CGAL::Polyhedron_incremental_builder_3<HDS> B(hds, true);
-        const int n = static_cast<int>(top_.size());
-        B.begin_surface(2 * n, 2 * n + 2 * (n - 2), 0);
-        for (int i = 0; i < n; ++i) B.add_vertex(top_[i]);
-        for (int i = 0; i < n; ++i) B.add_vertex(bot_[i]);
-        for (int i = 1; i < n - 1; ++i) {
-            B.begin_facet();
-            B.add_vertex_to_facet(0);
-            B.add_vertex_to_facet(i);
-            B.add_vertex_to_facet(i + 1);
-            B.end_facet();
-        }
-        for (int i = 1; i < n - 1; ++i) {
-            B.begin_facet();
-            B.add_vertex_to_facet(n);
-            B.add_vertex_to_facet(n + i + 1);
-            B.add_vertex_to_facet(n + i);
-            B.end_facet();
-        }
-        for (int i = 0; i < n; ++i) {
-            int j = (i + 1) % n;
-            B.begin_facet();
-            B.add_vertex_to_facet(j);
-            B.add_vertex_to_facet(i);
-            B.add_vertex_to_facet(n + i);
-            B.end_facet();
-            B.begin_facet();
-            B.add_vertex_to_facet(j);
-            B.add_vertex_to_facet(n + i);
-            B.add_vertex_to_facet(n + j);
-            B.end_facet();
-        }
-        B.end_surface();
-    }
-};
-
-Polyhedron convex_hull_3_from_coplanar_points(const std::vector<Point_3>& points, const Vector_3& normal) {
-    Vector_3 n = normal / std::sqrt(normal.squared_length());
-
-    Vector_3 t = (std::abs(n.x()) < 0.9) ? Vector_3(1, 0, 0) : Vector_3(0, 1, 0);
-    Vector_3 u = CGAL::cross_product(n, t);
-    u = u / std::sqrt(u.squared_length());
-    Vector_3 v = CGAL::cross_product(n, u);
-
-    Point_3 origin = get_centroid(points);
-
-    std::vector<Point_2> pts2d;
-    pts2d.reserve(points.size());
-    for (const auto& p : points) {
-        Vector_3 d = p - origin;
-        pts2d.emplace_back(d * u, d * v);
-    }
-
-    std::vector<Point_2> hull2d;
-    CGAL::convex_hull_2(pts2d.begin(), pts2d.end(), std::back_inserter(hull2d));
-
-    const double eps = 1e-6;
-    std::vector<Point_3> top, bot;
-    top.reserve(hull2d.size());
-    bot.reserve(hull2d.size());
-    for (const auto& p2 : hull2d) {
-        Point_3 p3 = origin + p2.x() * u + p2.y() * v;
-        top.push_back(p3 + eps * n);
-        bot.push_back(p3 - eps * n);
-    }
-
-    Polyhedron poly;
-    Build_prism<Polyhedron::HalfedgeDS> builder(std::move(top), std::move(bot));
-    poly.delegate(builder);
-    return poly;
 }
 
 } // namespace nas

@@ -70,9 +70,9 @@ void test_custom_robot_model_changes_shrink() {
     narrow_feet.foot_width = 0.05;
     Scenario wide = load_scenario("NarrowPassage"); // default 0.22/0.22
     Scenario narrow = load_scenario("NarrowPassage", narrow_feet);
-    // A larger foot shrinks the passage surface's patch more, so its
-    // perimeter should be strictly smaller than with a smaller foot.
-    assert(wide.surfaces[1].polyhedron_3d.size_of_vertices() > 0);
+    // A larger foot shrinks the passage surface's patch more, so its extent
+    // should be strictly smaller than with a smaller foot.
+    assert(wide.surfaces[1].vertices_3d.size() >= 3);
     assert(narrow.surfaces[1].vertices_3d.size() >= 3);
     std::cout << "test_custom_robot_model_changes_shrink passed\n";
 }

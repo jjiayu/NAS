@@ -83,7 +83,6 @@ AstarSearchConfig old_constants_config(const SceneSetup& setup, const Point_3& g
     c.start_foot_yaw = 0.0;
     c.goal_location = goal;
     c.goal_stance_foot = StanceFoot::Left;
-    c.distance_metric = DistanceMetric::Epa;
     c.heuristic_weight = 10.0;
     c.node_similarity_threshold = 0.02;
     c.expansion_params.rotation_enabled = true;

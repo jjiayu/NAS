@@ -1,7 +1,7 @@
 // Search + QP timing on every scenario, same configuration as nas_golden_all_scenes.
-// Built with -DOLD_BASELINE in a checkout of an older commit (whose defaults still
-// are the old behaviour) it gives the baseline the final version is compared to,
-// on the same machine with the same tool. Usage: nas_perf_all_scenes [runs]
+// Written so the same source builds in a checkout of an older commit (e.g. the tag
+// legacy-replay-verified, whose defaults are the old behaviour): that gives a baseline
+// measured on the same machine with the same tool. Usage: nas_perf_all_scenes [runs]
 #include "nas/config/scenario.hpp"
 #include "nas/core/reachability.hpp"
 #include "nas/footstep_qp/footstep_qp.hpp"
@@ -47,12 +47,9 @@ int main(int argc, char** argv) {
         Point_3 goal = sc.surfaces.back().centroid + s.goal_offset;
         AstarSearchConfig c;
         c.start_position = s.start; c.start_stance_foot = StanceFoot::Right; c.goal_location = goal; c.goal_stance_foot = StanceFoot::Left;
-        c.distance_metric = DistanceMetric::Epa; c.heuristic_weight = 10.0; c.node_similarity_threshold = 0.02;
+        c.heuristic_weight = 10.0; c.node_similarity_threshold = 0.02;
         c.expansion_params.rotation_enabled = true; c.expansion_params.yaw_discretization_num = 3;
         c.expansion_params.yaw_angle_increment = 10.0 / 180.0 * M_PI; c.expansion_params.cycle_detection_enabled = true;
-#ifdef OLD_BASELINE
-        c.expansion_params.legacy_clip = true; // the old clip; every other default of that commit is the old behaviour
-#endif
         std::vector<double> t, q;
         int exp = 0;
         for (int r = 0; r < runs; ++r) {

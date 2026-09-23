@@ -8,6 +8,8 @@ See [`include/nas/core/expansion.hpp`](include/nas/core/expansion.hpp).
 - `expand_node(parent, surfaces, reachability, direction, params, pool)`: `direction` selects Forward (CASSR, start->goal) or Antecedent (NAS, goal->start) reachability polytopes.
 - `ExpansionParams`: `rotation_enabled` (real parameter since NAS eventually wants it too, even though only CASSR enables it today), `yaw_discretization_num`/`yaw_angle_increment` (fan-out is `2n+1` candidate yaws when enabled), `cycle_detection_enabled`.
 
+Patch produced for each child: the convex polygon of the clipped plane cut, cleaned (vertices within 1 nm of their neighbours' line dropped, canonical start vertex), with the polygon's area centroid as `Node::centroid`; no 3D prism, no perimeter. The clip is the corrected one (`compute_2d_polygon_intersection`). Both changes make the search deterministic (`docs/paper-deltas.md`, "Profil retenu").
+
 Scope decided 2026-09-18: 2 effectors only, no `GaitSequencer` (alternation is just `other_foot(parent->stance_foot)`).
 
 Perf note (8d-4): the reachability polytope is queried by reference and only copied when `rotation_enabled` actually needs to rotate it — a `Polyhedron` copy rebuilds a CGAL halfedge structure, not free.

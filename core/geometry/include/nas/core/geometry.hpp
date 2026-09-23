@@ -33,14 +33,9 @@ Point_3 get_centroid(const std::vector<Point_3>& points);
 
 Polyhedron minkowski_sum(const std::vector<Point_3>& patch_vertices, const Polyhedron& polytope);
 
-// Ordered edge list of a polyhedron (edges_begin order, each as
-// (vertex(), opposite()->vertex())). The plane/polytope intersection below is
-// a pure function of this sequence, so it is exposed to let tests replay the
-// exact hull triangulation an older run produced.
-using EdgeList = std::vector<std::pair<Point_3, Point_3>>;
-EdgeList polytope_edges(const Polyhedron& polytope);
-std::vector<Point_3> compute_edges_plane_intersection(const Plane_3& plane, const EdgeList& edges);
-
+// Points where the plane crosses the polytope's edges (CGAL::intersection on
+// each edge segment). Measured equivalent to CGAL::Polygon_mesh_slicer, a
+// half-space cut and an exact-arithmetic cut on the cut polygon (docs/paper-deltas.md).
 std::vector<Point_3> compute_polytope_plane_intersection(const Plane_3& plane, const Polyhedron& polytope);
 
 // 2D polygon intersection (Sutherland-Hodgman clip). A CGAL-native
@@ -50,45 +45,32 @@ std::vector<Point_3> compute_polytope_plane_intersection(const Plane_3& plane, c
 // shrinks to a ~2cm-wide near-degenerate rectangle after the foot-size
 // margin — see docs/paper-deltas.md "Tentatives abandonnées".
 //
-// ClipMode::Robust (default) computes each crossing point from the signed
-// values that classified the endpoints. ClipMode::Legacy reproduces the old
-// code, which asked CGAL::intersection (exact predicates) for the point and
-// silently dropped it when that disagreed with the double inside-test on a
-// near-parallel edge (measured: 23 wrong patches in 19952 cuts, up to 1 m;
-// docs/paper-deltas.md). Legacy exists only so the old code's output can be
-// replayed bit for bit in tests.
-enum class ClipMode { Robust, Legacy };
-std::vector<Point_2> compute_2d_polygon_intersection(const std::vector<Point_2>& subject_polygon, const std::vector<Point_2>& clip_polygon,
-                                                     ClipMode mode = ClipMode::Robust);
+// Each crossing point is computed from the signed values that classified its
+// two endpoints, so a segment classified as straddling the clip line always
+// yields a point. The old code asked CGAL::intersection (exact predicates) for
+// it and silently dropped the point when that disagreed with the double
+// inside-test on a near-parallel edge (measured: 23 wrong patches in 19952
+// cuts, up to 1 m; docs/paper-deltas.md).
+std::vector<Point_2> compute_2d_polygon_intersection(const std::vector<Point_2>& subject_polygon, const std::vector<Point_2>& clip_polygon);
 
 double is_leftside_of_edge(const Point_2& point, const Point_2& edge_start, const Point_2& edge_end);
 
-double compute_polygon_perimeter(const Polyhedron& polyhedron);
-
 double compute_euclidean_distance(const Point_3& start_location, const Point_3& end_location);
 
-// COAL GJK distance computation function
-double calculate_gjk_distance_point_to_patch(const std::vector<Point_3>& patch_points, const Point_3& goal);
-
-// COAL EPA distance computation function
+// Distance from a point to a convex patch (COAL EPA): the CASSR heuristic.
+// The paper compares GJK/Euclidean variants; EPA is the one kept.
 double calculate_epa_distance_point_to_patch(const std::vector<Point_3>& patch_points, const Point_3& goal);
 
 // Convert half-space polytope constraint to H-representation
 HalfSpacePolytopeConstraint convert_polytope_to_half_space_constraint(const Polyhedron& polytope);
 
-// Convert surface constraint to H-representation
-// Plane equality (row 0) + one boundary inequality per polygon edge. The
-// vertices are the patch polygon's, in order (either winding: each edge normal
-// is oriented towards the vertex average). The Polyhedron overload takes the
-// vertices of the old thin-prism patch (top and bottom faces: every edge
-// appears twice), kept for the old code's node data.
-SurfaceConstraint generate_surface_constraint(const Polyhedron& surface_3d);
+// Surface constraint in H-representation: plane equality (row 0) + one
+// boundary inequality per polygon edge. The vertices are the patch polygon's,
+// in order (either winding: each edge normal is oriented towards the vertex
+// average).
 SurfaceConstraint generate_surface_constraint(const std::vector<Point_3>& polygon_vertices);
 
 // Rotate polyhedron around Z-axis by given angle in radians
 Polyhedron rotate_polyhedron_z(const Polyhedron& polytope, double yaw_angle);
-
-// Build a polyhedron from coplanar points (convex_hull_3 fails on degenerate input)
-Polyhedron convex_hull_3_from_coplanar_points(const std::vector<Point_3>& points, const Vector_3& normal);
 
 } // namespace nas

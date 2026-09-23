@@ -59,8 +59,6 @@ int main() {
     check(close(max_x - min_x, 1.8, 1e-6), "footprint shrunk by foot_length on the x extent (2.0 -> 1.8)");
     check(close(max_y - min_y, 1.9, 1e-6), "footprint shrunk by foot_width on the y extent (2.0 -> 1.9)");
 
-    check(std::distance(surf.polyhedron_3d.vertices_begin(), surf.polyhedron_3d.vertices_end()) > 0,
-          "polyhedron_3d is built (non-empty) from the coplanar footprint");
 
     if (g_failures > 0) {
         std::cerr << g_failures << " test(s) FAILED\n";

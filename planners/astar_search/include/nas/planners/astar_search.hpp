@@ -1,35 +1,24 @@
 #pragma once
 
-// AstarSearch — CASSR, ported onto core/{node,expansion,reachability,
-// surface} (see PLAN.md phase 5). De-globalized: every old global read
-// from constants.hpp (start/goal, distance metric, node similarity
-// threshold, ...) is now a constructor parameter via AstarSearchConfig,
-// instead of the old code reading nas:: globals directly inside the class.
+// AstarSearch — CASSR, on core/{node,expansion,reachability,surface} (see
+// PLAN.md phase 5). Nothing is read from globals: start/goal, heuristic weight
+// and node-similarity threshold are AstarSearchConfig fields.
 //
-// Behavior is a faithful port of the old AstarSearch — same priority
-// queue, same node-similarity dedup by (surface_id, stance_foot, yaw,
-// quantized centroid+perimeter), same heuristic weighting (x10 for
-// gjk/epa, unweighted for euclidean, see docs/paper-deltas.md) — with the
-// actual expansion delegated entirely to core/expansion's expand_node(),
-// which is the whole point of this rewrite (no more duplicated
-// get_children between this and planners/tree_search).
+// A weighted A* (g counts steps, h = heuristic_weight x EPA distance from the
+// goal to the node's patch), the expansion delegated to core/expansion's
+// expand_node(). Where it departs from the old code (open-set tie order,
+// node-similarity test, clip, patch cleaning) and why is in
+// docs/paper-deltas.md, "Profil retenu".
 
 #include "nas/core/expansion.hpp"
 #include "nas/core/node.hpp"
 #include "nas/core/reachability.hpp"
 #include "nas/core/surface.hpp"
 
-#include <boost/functional/hash.hpp>
-#include <boost/heap/fibonacci_heap.hpp>
-#include <string>
-#include <unordered_map>
-#include <unordered_set>
 #include <functional>
 #include <vector>
 
 namespace nas {
-
-enum class DistanceMetric { Euclidean, Gjk, Epa };
 
 // What the search did with a freshly expanded child (see AstarSearchConfig::on_child).
 enum class ChildAction {
@@ -47,11 +36,10 @@ struct AstarSearchConfig {
     Point_3 goal_location;
     StanceFoot goal_stance_foot = StanceFoot::Left;
 
-    DistanceMetric distance_metric = DistanceMetric::Epa;
-    // Applied to the gjk/epa heuristic only — NOT to euclidean, matching
-    // the old code exactly (see docs/paper-deltas.md: this weight is what
-    // makes CASSR a *weighted* A*, sacrificing the admissibility
-    // guarantee; the paper confirms this but not the value itself).
+    // Weight on the EPA distance from the goal to a node's patch: what makes
+    // CASSR a *weighted* A*, sacrificing the admissibility guarantee (the paper
+    // confirms this but not the value; see docs/paper-deltas.md). The start
+    // node, a single point, uses the plain Euclidean distance.
     double heuristic_weight = 10.0;
 
     // Two nodes are "the same" (only the better one is kept) when they share

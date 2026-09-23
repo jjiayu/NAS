@@ -246,6 +246,18 @@ Aucune scène n'est plus lente de plus de 28 % ; deux seulement sont plus lentes
 
 Tests : `nas_golden_all_scenes` vérifie maintenant longueur, profondeur, pieds et surfaces contre l'ancien plan (lacets rapportés seulement), le QP (nombre de pas, distance parcourue à 6 %), et le déterminisme. `nas_expansion_differential` (replay bit-exact et oracle exact) passe toujours en activant `legacy_node_keys` / `legacy_clip`.
 
+### Refactor après validation : ce qui a été supprimé du nouveau code (2026-09-19)
+
+Après le tag `cassr-stage-a-validated`, sur demande de l'utilisateur (« on garde que la mesure choisie de distance », « on vire le vieux CASSR »), tout ce qui ne servait qu'à comparer à l'ancien code ou à explorer des variantes a été retiré ; les sections « Bilan », « Audit de similarité », « Critère de similarité » et « Profil retenu » ci-dessus décrivent des interrupteurs qui n'existent plus, elles restent comme historique des mesures :
+- `DistanceMetric` (Euclidean / Gjk / Epa) : il ne reste que **l'EPA** (`calculate_epa_distance_point_to_patch`), donc plus de `calculate_gjk_distance_point_to_patch` ni de clé `distance_metric` dans le JSON de config (une valeur autre que `"Epa"` est refusée) ;
+- `ExpansionParams::legacy_node_keys`, `legacy_clip`, `union_edges_override`, `ClipMode`, `polytope_edges` / `compute_edges_plane_intersection` ;
+- le prisme 3D : `Node::patch_polyhedron_3d`, `Surface::polyhedron_3d`, `convex_hull_3_from_coplanar_points`, `compute_polygon_perimeter`, `generate_surface_constraint(Polyhedron)`, et `Node::perimeter` ;
+- `Surface::norm` est maintenant directement canonique (plus grande composante positive) au lieu de garder le signe brut de l'ajustement : le signe brut ne servait qu'au prisme ;
+- l'ancien CASSR de l'arbre racine (`src/astar_search.cpp`, la baseline grille, les outils de capture et de dump) : conservé dans l'historique git (tags `legacy-replay-verified` et `cassr-stage-a-validated`) ; l'ancien NAS (`nas_plan`, `tree`, `footstep_planner`) est conservé et compile toujours ;
+- `tests/golden_all` : le test différentiel contre l'ancien binaire est remplacé par `nas_expansion_oracle` (oracle exact, sur les états d'une vraie recherche, sans dumps) ; le banc de comparaison des méthodes de coupe et `nas_validate_profile` sont supprimés.
+
+Vérifié équivalent : les signatures de recherche (chemin et nombre d'expansions des 11 scènes) et les distances parcourues par le QP sont identiques avant et après le refactor ; 14/14 tests dans `tests/golden_all`, config 12/12, bindings 13/13, grille 13/13 ; `nas_expansion_oracle` : 7953 coupes réelles, écart max 3,6e-15 m.
+
 ## À vérifier
 
 - Incohérence `foot_width` dans `constants.hpp` : valeur active `0.22`, commentaire à côté dit `0.12` — laquelle est correcte ?

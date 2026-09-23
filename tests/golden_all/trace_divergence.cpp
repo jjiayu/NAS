@@ -1,13 +1,12 @@
 // Finds where two runs of the SAME search first differ when only the heap
 // state differs (the second run happens after a seed-dependent heap
-// fragmentation, like NAS_SCRAMBLE). Records every expansion (pop) and every
-// child dedup decision, then reports the first event where the runs disagree
-// and classifies it:
-//   GRID   - same node up to < 1e-9 in centroid/perimeter but different dedup
-//            cell (int(x/threshold) flipped across a cell boundary);
-//   TIE    - the two runs pop different nodes whose f-scores are equal to 1e-9
-//            (order decided by noise/tie-breaking);
-//   GEOMETRY - the nodes' centroid/perimeter really differ (> 1e-9).
+// fragmentation). Records every expansion (pop) and every child dedup
+// decision, then reports the first event where the runs disagree and classifies
+// it: TIE (different nodes popped with equal f), ORDER (different nodes popped,
+// different f), GEOMETRY (same node, centroid differs), STRUCTURE (different
+// child/action sequence). The search used to diverge on 7 of 11 scenes; it is
+// now deterministic (docs/paper-deltas.md), so this is a diagnostic for
+// regressions. Uses the on_expand / on_child hooks of AstarSearchConfig.
 // Usage: nas_trace_divergence <scene> <seed>
 #include "nas/config/scenario.hpp"
 #include "nas/core/reachability.hpp"
@@ -35,8 +34,7 @@ struct Event {
     int index;          // expansion index (pop) / parent's expansion index (child)
     int action;         // ChildAction for 'C', -1 for 'P'
     int surface, stance, depth, yawq;
-    int kx, ky, kz, kp; // dedup cell
-    double f, cx, cy, cz, per, yaw;
+    double f, cx, cy, cz, yaw;
     std::vector<std::array<double, 3>> verts; // patch_vertices
 };
 
@@ -46,15 +44,14 @@ Event make(char kind, int idx, int action, const Node& n) {
     e.surface = n.surface_id; e.stance = static_cast<int>(n.stance_foot); e.depth = n.depth;
     e.yaw = n.foot_yaw; e.yawq = static_cast<int>(n.foot_yaw / (10.0 / 180.0 * M_PI));
     e.cx = CGAL::to_double(n.centroid.x()); e.cy = CGAL::to_double(n.centroid.y()); e.cz = CGAL::to_double(n.centroid.z());
-    e.per = n.perimeter; e.f = n.f_score;
+    e.f = n.f_score;
     for (const auto& v : n.patch_vertices) e.verts.push_back({CGAL::to_double(v.x()), CGAL::to_double(v.y()), CGAL::to_double(v.z())});
-    e.kx = static_cast<int>(e.cx / THR); e.ky = static_cast<int>(e.cy / THR); e.kz = static_cast<int>(e.cz / THR); e.kp = static_cast<int>(e.per / THR);
     return e;
 }
 
 bool same_identity(const Event& a, const Event& b) {
     return a.kind == b.kind && a.index == b.index && a.action == b.action && a.surface == b.surface && a.stance == b.stance && a.depth == b.depth &&
-           a.yawq == b.yawq && a.kx == b.kx && a.ky == b.ky && a.kz == b.kz && a.kp == b.kp;
+           a.yawq == b.yawq;
 }
 
 std::vector<Event> run(const std::string& scene, int& expansions) {
@@ -73,7 +70,6 @@ std::vector<Event> run(const std::string& scene, int& expansions) {
     c.start_stance_foot = StanceFoot::Right;
     c.goal_location = sc.surfaces.back().centroid + goal_offset;
     c.goal_stance_foot = StanceFoot::Left;
-    c.distance_metric = DistanceMetric::Epa;
     c.heuristic_weight = 10.0;
     c.node_similarity_threshold = THR;
     c.expansion_params.rotation_enabled = true;
@@ -100,14 +96,8 @@ void scramble(unsigned seed) {
 const char* kActions[] = {"SkippedClosed", "Pushed", "ImprovedExisting", "MergedWorse"};
 
 void show(const char* tag, const Event& e) {
-    std::printf("   %s %c #%d %s surf %d stance %d depth %d yaw %.4f | centroid (%.12f, %.12f, %.12f) perim %.12f | cell (%d,%d,%d,p%d) f %.9f\n", tag, e.kind, e.index,
-                e.kind == 'C' ? kActions[e.action] : "pop", e.surface, e.stance, e.depth, e.yaw, e.cx, e.cy, e.cz, e.per, e.kx, e.ky, e.kz, e.kp, e.f);
-}
-
-// distance (m) of a coordinate to the nearest cell boundary
-double boundary_dist(double v) {
-    double t = v / THR;
-    return std::abs(t - std::round(t)) * THR;
+    std::printf("   %s %c #%d %s surf %d stance %d depth %d yaw %.4f | centroid (%.12f, %.12f, %.12f) | f %.9f\n", tag, e.kind, e.index,
+                e.kind == 'C' ? kActions[e.action] : "pop", e.surface, e.stance, e.depth, e.yaw, e.cx, e.cy, e.cz, e.f);
 }
 
 } // namespace
@@ -125,29 +115,22 @@ int main(int argc, char** argv) {
     double max_prefix_dev = 0;
     for (; i < n; ++i) {
         if (!same_identity(A[i], B[i])) break;
-        max_prefix_dev = std::max({max_prefix_dev, std::abs(A[i].cx - B[i].cx), std::abs(A[i].cy - B[i].cy), std::abs(A[i].cz - B[i].cz), std::abs(A[i].per - B[i].per)});
+        max_prefix_dev = std::max({max_prefix_dev, std::abs(A[i].cx - B[i].cx), std::abs(A[i].cy - B[i].cy), std::abs(A[i].cz - B[i].cz)});
     }
-    if (i == n && A.size() == B.size()) { std::printf("  -> IDENTICAL (max centroid/perimeter deviation over all events %.2e)\n", max_prefix_dev); return 0; }
-    std::printf("\n  first divergence at event %zu (identical before, max centroid/perimeter deviation in that prefix %.2e)\n", i, max_prefix_dev);
+    if (i == n && A.size() == B.size()) { std::printf("  -> IDENTICAL (max centroid deviation over all events %.2e)\n", max_prefix_dev); return 0; }
+    std::printf("\n  first divergence at event %zu (identical before, max centroid deviation in that prefix %.2e)\n", i, max_prefix_dev);
     if (i < n) {
         show("A", A[i]); show("B", B[i]);
         const Event &a = A[i], &b = B[i];
-        double dc = std::max({std::abs(a.cx - b.cx), std::abs(a.cy - b.cy), std::abs(a.cz - b.cz), std::abs(a.per - b.per)});
+        double dc = std::max({std::abs(a.cx - b.cx), std::abs(a.cy - b.cy), std::abs(a.cz - b.cz)});
         bool same_node = a.kind == b.kind && a.surface == b.surface && a.stance == b.stance && a.depth == b.depth && a.yawq == b.yawq;
         const char* verdict;
-        if (same_node && dc < 1e-9) verdict = "GRID: the same node (centroid/perimeter equal to 1e-9) lands in a different dedup cell";
+        if (same_node && dc < 1e-9) verdict = "SAME NODE, same patch to 1e-9: a difference in the scores or in the set of open nodes";
         else if (a.kind == 'P' && b.kind == 'P' && std::abs(a.f - b.f) < 1e-9) verdict = "TIE: different nodes popped with equal f-scores";
-        else if (a.kind == 'P' && b.kind == 'P') verdict = "ORDER: different nodes popped, f-scores differ (check earlier events: a merge/push difference upstream would show first)";
-        else if (same_node) verdict = "GEOMETRY: same node id but centroid/perimeter differ by more than 1e-9";
+        else if (a.kind == 'P' && b.kind == 'P') verdict = "ORDER: different nodes popped, f-scores differ (an earlier merge/push difference would show first)";
+        else if (same_node) verdict = "GEOMETRY: same node id but the centroid differs by more than 1e-9";
         else verdict = "STRUCTURE: a different child/action sequence";
-        for (int w = 0; w < 2; ++w) {
-            const Event& e = w == 0 ? a : b;
-            std::printf("  %c patch: %zu vertices:", w == 0 ? 'A' : 'B', e.verts.size());
-            for (auto& v : e.verts) std::printf(" (%.9f,%.9f)", v[0], v[1]);
-            std::printf("\n");
-        }
-        std::printf("  deviation A-B: %.3e m;  A distance to nearest cell boundary: cx %.2e cy %.2e per %.2e\n  VERDICT: %s\n", dc,
-                    boundary_dist(a.cx), boundary_dist(a.cy), boundary_dist(a.per), verdict);
+        std::printf("  deviation A-B: %.3e m\n  VERDICT: %s\n", dc, verdict);
     } else {
         std::printf("  one run is a prefix of the other\n");
     }

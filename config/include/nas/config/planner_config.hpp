@@ -2,7 +2,7 @@
 
 // PlannerConfig — JSON-loaded bundle for AstarSearchConfig/FootstepQPConfig
 // (see PLAN.md phase 9c), replacing the old code's constants.hpp globals
-// (a_star_distance_metric, node_similarity_threshold, foot_yaw_*,
+// (node_similarity_threshold, foot_yaw_*,
 // alpha_weight, ...) and its comment-in/comment-out scenario selection.
 //
 // Deliberately not a new type duplicating those structs' fields: this only

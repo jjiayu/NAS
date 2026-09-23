@@ -22,7 +22,6 @@ void test_full_config_overrides_every_field() {
     assert(near(CGAL::to_double(config.astar.goal_location.x()), 8.0));
     assert(config.astar.start_stance_foot == StanceFoot::Right);
     assert(config.astar.goal_stance_foot == StanceFoot::Left);
-    assert(config.astar.distance_metric == DistanceMetric::Epa);
     assert(near(config.astar.heuristic_weight, 10.0));
     assert(near(config.astar.node_similarity_threshold, 0.02));
     assert(config.astar.expansion_params.rotation_enabled == true);
@@ -49,7 +48,6 @@ void test_minimal_config_keeps_struct_defaults() {
     assert(near(CGAL::to_double(config.astar.start_position.x()), 1.0));
     assert(near(CGAL::to_double(config.astar.goal_location.x()), 4.0));
     assert(config.astar.start_stance_foot == defaults.start_stance_foot);
-    assert(config.astar.distance_metric == defaults.distance_metric);
     assert(near(config.astar.heuristic_weight, defaults.heuristic_weight));
     assert(near(config.astar.node_similarity_threshold, defaults.node_similarity_threshold));
     assert(config.astar.expansion_params.rotation_enabled == defaults.expansion_params.rotation_enabled);

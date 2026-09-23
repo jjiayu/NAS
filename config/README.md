@@ -23,7 +23,6 @@ This is distinct from [`tests/fixtures`](../tests/fixtures), which stays the tes
     "start_stance_foot": "Right",            // "Left" | "Right"
     "start_foot_yaw": 0.0,
     "goal_stance_foot": "Left",
-    "distance_metric": "Epa",                // "Euclidean" | "Gjk" | "Epa"
     "heuristic_weight": 10.0,
     "node_similarity_threshold": 0.02,
     "expansion": {

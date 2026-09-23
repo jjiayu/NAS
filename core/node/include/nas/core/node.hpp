@@ -46,7 +46,6 @@ public:
 
     std::vector<Point_3> patch_vertices;
     Polygon_2 patch_polygon_2d;
-    Polyhedron patch_polyhedron_3d;
     Transformation transformation_to_2d;
     Transformation transformation_to_3d;
 
@@ -58,7 +57,6 @@ public:
     int surface_id = -1;
 
     int depth = 0;
-    double perimeter = 0.0;
     Point_3 centroid{0.0, 0.0, 0.0};
 
     // Per-stance-foot history of visited surface ids, one entry per depth

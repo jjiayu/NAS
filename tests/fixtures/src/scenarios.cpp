@@ -9,7 +9,6 @@ AstarSearchConfig make_default_config() {
     config.start_position = Point_3(0.0, 0.0, 0.0);
     config.start_stance_foot = StanceFoot::Right;
     config.goal_stance_foot = StanceFoot::Left;
-    config.distance_metric = DistanceMetric::Epa;
     config.heuristic_weight = 10.0;
     config.node_similarity_threshold = 0.02;
     config.expansion_params.rotation_enabled = true;

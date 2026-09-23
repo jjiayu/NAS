@@ -65,7 +65,7 @@ void test_polygon_intersection_partial_overlap() {
 // Regression: real input captured from a Stairs expansion (tests/golden_all
 // bench_plane_cut, docs/paper-deltas.md). Stage 3 of the clip (top edge y=0.89)
 // receives a polygon whose right side is nearly vertical (x = 0.93999999999999995
-// / 0.94000000000000006). The legacy clip classified that side as straddling
+// / 0.94000000000000006). The old clip classified that side as straddling
 // the clip line with the double inside-test, then CGAL::intersection returned
 // no point, so the polygon lost its (0.94, 0.89) corner. The whole clip (four
 // clip edges) is replayed from the polygon before the losing stage.
@@ -78,14 +78,12 @@ void test_polygon_intersection_near_parallel_edge_keeps_corner() {
     std::vector<Point_2> clip = {Point_2(0.94000000000000006, 0.89000000000000001), Point_2(-0.94000000000000006, 0.89000000000000001),
                                  Point_2(-0.94000000000000006, -0.89000000000000001), Point_2(0.94000000000000006, -0.89000000000000001)};
     auto robust = compute_2d_polygon_intersection(subject, clip);
-    auto legacy = compute_2d_polygon_intersection(subject, clip, ClipMode::Legacy);
     auto has_corner = [](const std::vector<Point_2>& poly) {
         for (const auto& p : poly)
             if (std::abs(CGAL::to_double(p.x()) - 0.94) < 1e-9 && std::abs(CGAL::to_double(p.y()) - 0.89) < 1e-9) return true;
         return false;
     };
     check(has_corner(robust), "polygon intersection (near-parallel edge): robust clip keeps the (0.94, 0.89) corner");
-    check(!has_corner(legacy), "polygon intersection (near-parallel edge): legacy clip loses it (documents the old defect)");
 }
 
 void test_polygon_intersection_no_overlap() {

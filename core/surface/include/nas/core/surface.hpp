@@ -16,11 +16,10 @@ public:
     std::vector<Point_3> vertices_3d;   // sorted counterclockwise
     std::vector<Point_2> vertices_2d;   // sorted counterclockwise
     Plane_3 plane;
-    Vector_3 norm;
+    Vector_3 norm;                       // unit plane normal, sign-canonical (largest component positive)
     Point_3 centroid;
     Transformation transform_to_3d;      // surface coordinate system -> world
     Transformation transform_to_surface; // cached inverse (world -> surface)
-    Polyhedron polyhedron_3d;
     Polygon_2 polygon_2d;
 
     // foot_length/foot_width shrink the surface footprint on each axis by
