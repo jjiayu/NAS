@@ -136,40 +136,38 @@ double walked_distance(const std::vector<Point_3>& steps) {
     return d;
 }
 
-// Independent feasibility check of a QP result: reachability against the TRUE polytope
-// (planes of the facets of the convex hull of the reachability mesh's vertices, recomputed
-// here, not through core/geometry), footstep on its patch plane and inside its polygon,
-// start and goal. Returns the largest violation in metres.
+// Independent feasibility check of a QP result: reachability against the TRUE polytope (hull
+// of the mesh vertices) rotated by the support foot's yaw with the search's own
+// rotate_polyhedron_z and translated to the support footstep, footstep on its patch plane and
+// inside its polygon, start and goal. Returns the largest violation in metres.
 double max_violation(const std::vector<Node*>& path, const std::vector<Point_3>& feet, const ReachabilityModel& reach,
                      const Point_3& start, const Point_3& goal) {
-    auto hull_planes = [&](StanceFoot moving) {
-        const Polyhedron& mesh = reach.query(effector_name(moving), effector_name(other_foot(moving)), ReachabilityDirection::Forward);
-        std::vector<Point_3> v;
-        for (auto it = mesh.vertices_begin(); it != mesh.vertices_end(); ++it) v.push_back(it->point());
-        Polyhedron hull;
-        CGAL::convex_hull_3(v.begin(), v.end(), hull);
-        std::vector<Plane_3> planes; // CGAL hull facets are counter-clockwise seen from outside: normal points outward
-        for (auto f = hull.facets_begin(); f != hull.facets_end(); ++f) {
-            auto h = f->halfedge();
-            planes.emplace_back(h->vertex()->point(), h->next()->vertex()->point(), h->next()->next()->vertex()->point());
-        }
-        return planes;
-    };
-    const std::vector<Plane_3> planes[2] = {hull_planes(StanceFoot::Left), hull_planes(StanceFoot::Right)};
     double worst = 0.0;
     auto d3 = [](const Point_3& a, const Point_3& b) {
         return std::max({std::abs(CGAL::to_double(a.x() - b.x())), std::abs(CGAL::to_double(a.y() - b.y())), std::abs(CGAL::to_double(a.z() - b.z()))});
     };
     worst = std::max({worst, d3(feet.front(), start), d3(feet.back(), goal)});
     const size_t n = path.size();
+    // Reachability, checked with the object the SEARCH uses (not the QP's R^T formula): the
+    // polytope of the stepping foot in the support foot's frame, rotated about z by the
+    // support foot's yaw (rotate_polyhedron_z, as expand_node does), translated to the support
+    // foot's position; the next footstep must lie inside it.
     for (size_t i = 1; i < n; ++i) {
-        double yaw = path[i - 1]->foot_yaw, c = std::cos(yaw), s = std::sin(yaw);
-        double dx = CGAL::to_double(feet[i].x() - feet[i - 1].x()), dy = CGAL::to_double(feet[i].y() - feet[i - 1].y()), dz = CGAL::to_double(feet[i].z() - feet[i - 1].z());
-        Point_3 local(c * dx + s * dy, -s * dx + c * dy, dz); // R(yaw)^T * relative position
-        for (const Plane_3& pl : planes[static_cast<int>(path[i]->stance_foot)]) {
+        const Polyhedron& mesh = reach.query(effector_name(path[i]->stance_foot), effector_name(path[i - 1]->stance_foot), ReachabilityDirection::Forward);
+        // NAS_CHECK_NEGATE_YAW=1: negative control, the sign of the rotation is flipped; the check
+        // must then report violations (it proves the check is sensitive to the rotation).
+        double yaw = std::getenv("NAS_CHECK_NEGATE_YAW") ? -path[i - 1]->foot_yaw : path[i - 1]->foot_yaw;
+        Polyhedron rotated = rotate_polyhedron_z(mesh, yaw);
+        Vector_3 shift = feet[i - 1] - CGAL::ORIGIN;
+        std::vector<Point_3> v;
+        for (auto it = rotated.vertices_begin(); it != rotated.vertices_end(); ++it) v.push_back(it->point() + shift);
+        Polyhedron hull;
+        CGAL::convex_hull_3(v.begin(), v.end(), hull); // facets counter-clockwise seen from outside: outward normals
+        for (auto f = hull.facets_begin(); f != hull.facets_end(); ++f) {
+            auto h = f->halfedge();
+            Plane_3 pl(h->vertex()->point(), h->next()->vertex()->point(), h->next()->next()->vertex()->point());
             double norm = std::sqrt(CGAL::to_double(pl.a() * pl.a() + pl.b() * pl.b() + pl.c() * pl.c()));
-            worst = std::max(worst, (CGAL::to_double(pl.a()) * CGAL::to_double(local.x()) + CGAL::to_double(pl.b()) * CGAL::to_double(local.y()) +
-                                     CGAL::to_double(pl.c()) * CGAL::to_double(local.z()) + CGAL::to_double(pl.d())) / norm);
+            worst = std::max(worst, (CGAL::to_double(pl.a() * feet[i].x() + pl.b() * feet[i].y() + pl.c() * feet[i].z() + pl.d())) / norm);
         }
     }
     for (size_t i = 1; i + 1 < n; ++i) {
