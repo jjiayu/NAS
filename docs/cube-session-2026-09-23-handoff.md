@@ -1,4 +1,40 @@
-# Rapport de session — extension "cube" (2026-09-23, à reprendre)
+# Rapport de session — extension "cube" (2026-09-23/24)
+
+## Mise à jour du 2026-09-24 : le vrai cube de 15cm marche
+
+Après la coupure du 23, la session a repris et l'ITEM OUVERT ci-dessous
+("le vrai cube de 15cm ne converge pas") **est résolu**. Idée de
+l'utilisateur : au lieu de faire bridger au cube un trou horizontal de
+0.5m (dur), recentrer `StairsGap` sur un vrai problème de HAUTEUR :
+
+- Le sol de `kStairsGap` s'étend maintenant jusqu'à x=0.55 (au lieu de
+  0.3) — à seulement 5cm de Step2 (x=0.6). Trou horizontal minime, gardé
+  volontairement non-nul.
+- Nouvelle reachability `*_clamp_z18.obj` (même clamp X/Y que `_clamp_z25`,
+  Z plafonné à 0.18m au lieu de 0.25m) : un pas normal ne peut plus monter
+  les 20cm de Step2 d'un coup, mais 0→15cm (cube) puis 15→20cm (Step2)
+  passent chacun largement sous ce plafond.
+
+**Résultat, avec le vrai `Cube_constraints_in_{LF,RF}.obj` du dépôt
+(inchangés, cube de 15cm) : `AstarSearch::search()` trouve un chemin
+complet en 218 expansions, 0.44s.** Commits `e469399` (scénario +
+reachability) et `419f33d` (retrait du filtre de découverte — vérifié
+empiriquement qu'il ne filtre plus rien sur ce scénario plus simple, donc
+inutile sous sa forme actuelle, retiré à la demande de l'utilisateur).
+
+**Vidéo mise à jour et corrigée** (même URL, maintenant version 4) :
+https://claude.ai/artifact/1QQdV9T3igvn9PeowLvihW — vrai cube 15cm, vraies
+dimensions physiques des marches (pas l'érosion interne à la recherche,
+bug repéré par l'utilisateur), échelle X/Y identique dans la vue de dessus
+(le cube y ressemblait à un rectangle avant, autre bug repéré par
+l'utilisateur).
+
+Le reste de ce document (ci-dessous) est le rapport original écrit au
+moment de la coupure du 23, gardé tel quel pour l'historique du débogage
+(toujours correct sur le mécanisme lui-même, juste dépassé sur "est-ce que
+15cm marche").
+
+---
 
 **Visualisation animée publiée** (demande explicite de l'utilisateur, faite
 juste avant la coupure) : https://claude.ai/artifact/1QQdV9T3igvn9PeowLvihW
@@ -301,15 +337,19 @@ moment, puis les pas qui continuent. Plan (pas encore exécuté) :
 (le `z: 0` du pas `depth 3` ci-dessus vient tourné avec le bug pré-fix ;
 après `9fbeba8`, régénérer devrait donner `z: 0.2`.)
 
-## Décisions ouvertes pour l'utilisateur au retour
+## Décisions ouvertes (mises à jour 2026-09-24)
 
-- Une fois la visualisation vue : continuer à calibrer le cube de 15cm sur
-  `StairsGap`, ou accepter que ce scénario de démo utilise un cube plus
-  grand et documenter 15cm comme "mécanisme validé, calibrage fin non
-  terminé" ?
-- Le filtre de découverte (seuil dérivé de l'enveloppe 3D complète, ~0.74m)
-  est peu sélectif à cause de la portée verticale incluse — resserrer en
-  planaire (X-Y seulement) reste une piste non essayée.
+- ~~Continuer à calibrer le cube de 15cm~~ **RÉSOLU** — voir la mise à jour
+  en haut de ce document : 218 expansions avec le vrai cube, scénario
+  recentré sur la hauteur.
+- ~~Le filtre de découverte...~~ **RETIRÉ** (commit `419f33d`), plus un
+  sujet ouvert.
 - Rien n'a été poussé sur `rwa` depuis le début de la branche `cube` — à
   faire quand l'utilisateur le demandera explicitement (règle du projet :
   jamais de push sans consigne).
+- Reste réellement ouvert : le golden test de bout en bout pour cette
+  extension (docs/cube-implementation-plan.md, étape 6 de la checklist
+  d'origine) n'est pas encore écrit dans `tests/` — seulement validé via
+  des diagnostics scratch (perdus, voir plus haut) dans cette session. À
+  faire si l'extension doit rester dans une suite de non-régression
+  durable plutôt qu'une branche de démonstration.
