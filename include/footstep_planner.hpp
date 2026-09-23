@@ -6,7 +6,8 @@
 #include "visualizer.hpp"
 #include "utils.hpp"
 #include "tree.hpp"
-#include "astar_search.hpp"
+#include "node.hpp"
+#include "surface.hpp"
 #include <iostream>
 #include <queue>
 #include <unordered_map>

@@ -63,10 +63,7 @@ add_library(node_lib src/node.cpp)
 add_library(tree_lib src/tree.cpp)
 add_library(geometry_lib src/geometry.cpp)
 add_library(surface_lib src/surface.cpp)
-add_library(grid_environment_lib src/grid_environment.cpp)
 add_library(visualizer_lib src/visualizer.cpp)
-add_library(astar_search_lib src/astar_search.cpp)
-add_library(astar_grid_search_lib src/astar_grid_search.cpp)
 add_library(footstep_planner_lib src/footstep_planner.cpp)
 
 # Set library dependencies
@@ -76,15 +73,9 @@ target_link_libraries(utils_lib PRIVATE
     ${VTK_LIBRARIES}
     CGAL::CGAL
 )
-target_link_libraries(grid_environment_lib PRIVATE
-    surface_lib
-    geometry_lib
-    CGAL::CGAL
-)
 target_link_libraries(visualizer_lib PRIVATE
     ${VTK_LIBRARIES}
     CGAL::CGAL
-    grid_environment_lib
 )
 target_link_libraries(geometry_lib PRIVATE
     CGAL::CGAL
@@ -98,31 +89,7 @@ target_link_libraries(surface_lib PRIVATE
     ${VTK_LIBRARIES}
     CGAL::CGAL
 )
-target_link_libraries(astar_search_lib PRIVATE
-    tree_lib
-    utils_lib
-    node_lib
-    surface_lib
-    geometry_lib
-    visualizer_lib
-    ${VTK_LIBRARIES}
-    CGAL::CGAL
-    Boost::boost
-)
-target_link_libraries(astar_grid_search_lib PRIVATE
-    tree_lib
-    utils_lib
-    node_lib
-    surface_lib
-    geometry_lib
-    grid_environment_lib
-    visualizer_lib
-    ${VTK_LIBRARIES}
-    CGAL::CGAL
-    Boost::boost
-)
 target_link_libraries(footstep_planner_lib PRIVATE
-    astar_search_lib
     tree_lib
     utils_lib
     geometry_lib
@@ -134,19 +101,12 @@ target_link_libraries(footstep_planner_lib PRIVATE
 
 # Add executables
 add_executable(nas_plan src/nas_plan.cpp)
-add_executable(astar_plan src/astar_plan.cpp)
-add_executable(astar_grid_plan src/astar_grid_plan.cpp)
-add_executable(test_grid_visualization test_grid_visualization.cpp)
-add_executable(test_auto_plot test_auto_plot.cpp)
 add_executable(test_bench_operations test_bench_operations.cpp)
 add_executable(test_print_paths test_print_paths.cpp)
-add_executable(golden_capture tests/golden_capture.cpp)
-add_executable(old_expansion_dump tests/old_expansion_dump.cpp)
 
 # Link libraries for first executable
 target_link_libraries(nas_plan PRIVATE
     footstep_planner_lib
-    astar_search_lib
     tree_lib
     utils_lib
     node_lib
@@ -157,73 +117,11 @@ target_link_libraries(nas_plan PRIVATE
     CGAL::CGAL
     yaml-cpp::yaml-cpp
     casadi::casadi
-)
-
-# Link libraries for A* planning executable
-target_link_libraries(astar_plan PRIVATE
-    tree_lib
-    utils_lib
-    node_lib
-    surface_lib
-    geometry_lib
-    visualizer_lib
-    ${VTK_LIBRARIES}
-    CGAL::CGAL
-    yaml-cpp::yaml-cpp
-    astar_search_lib
-    footstep_planner_lib
-    casadi::casadi
-)
-
-# Link libraries for grid A* planning executable
-target_link_libraries(astar_grid_plan PRIVATE
-    tree_lib
-    utils_lib
-    node_lib
-    surface_lib
-    geometry_lib
-    grid_environment_lib
-    visualizer_lib
-    ${VTK_LIBRARIES}
-    CGAL::CGAL
-    yaml-cpp::yaml-cpp
-    astar_search_lib
-    astar_grid_search_lib
-    footstep_planner_lib
-    casadi::casadi
-)
-
-# Link libraries for test grid visualization executable
-target_link_libraries(test_grid_visualization PRIVATE
-    astar_grid_search_lib
-    grid_environment_lib
-    visualizer_lib
-    surface_lib
-    geometry_lib
-    utils_lib
-    node_lib
-    ${VTK_LIBRARIES}
-    CGAL::CGAL
-    yaml-cpp::yaml-cpp
-)
-
-# Link libraries for test auto plot executable
-target_link_libraries(test_auto_plot PRIVATE
-    astar_grid_search_lib
-    grid_environment_lib
-    visualizer_lib
-    surface_lib
-    geometry_lib
-    utils_lib
-    node_lib
-    ${VTK_LIBRARIES}
-    CGAL::CGAL
-    yaml-cpp::yaml-cpp
 )
 
 # Enable VTK module autoinit for all executables
 vtk_module_autoinit(
-  TARGETS nas_plan astar_plan astar_grid_plan test_grid_visualization test_auto_plot test_bench_operations golden_capture old_expansion_dump
+  TARGETS nas_plan test_bench_operations
   MODULES ${VTK_LIBRARIES}
 )
 
@@ -245,39 +143,3 @@ target_link_libraries(test_print_paths PRIVATE
     CGAL::CGAL
     Boost::boost
 )
-
-# Link libraries for golden_capture (Stage A phase 0, see PLAN.md) — mirrors
-# astar_plan's dependency set since it drives the same AstarSearch/Tree/
-# FootstepPlanner classes, minus any actual VTK usage (headless capture).
-target_link_libraries(golden_capture PRIVATE
-    tree_lib
-    utils_lib
-    node_lib
-    surface_lib
-    geometry_lib
-    visualizer_lib
-    ${VTK_LIBRARIES}
-    CGAL::CGAL
-    astar_search_lib
-    footstep_planner_lib
-    casadi::casadi
-)
-
-# Differential-testing ground truth for the rewrite's core/expansion: calls the
-# old AstarSearch::get_children on real parent states and dumps exact results.
-target_link_libraries(old_expansion_dump PRIVATE
-    tree_lib
-    utils_lib
-    node_lib
-    surface_lib
-    geometry_lib
-    visualizer_lib
-    ${VTK_LIBRARIES}
-    CGAL::CGAL
-    astar_search_lib
-    footstep_planner_lib
-    casadi::casadi
-)
-# Records the exact P_union hull get_children uses (see tests/old_expansion_dump.cpp).
-target_link_options(old_expansion_dump PRIVATE
-    "LINKER:--wrap=_ZN3nas13minkowski_sumERKSt6vectorIN4CGAL7Point_3INS1_5EpickEEESaIS4_EERKNS1_12Polyhedron_3IS3_NS1_18Polyhedron_items_3ENS1_18HalfedgeDS_defaultESaIiEEE")
