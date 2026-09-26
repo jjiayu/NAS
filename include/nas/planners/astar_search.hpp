@@ -15,8 +15,10 @@
 #include "nas/core/reachability.hpp"
 #include "nas/core/surface.hpp"
 
+#include <array>
 #include <functional>
 #include <optional>
+#include <variant>
 #include <vector>
 
 namespace nas {
@@ -88,6 +90,34 @@ struct AstarSearchConfig {
     double goal_yaw_tolerance = 0.0;
     double goal_yaw_weight = 0.0;
 
+    // A goal for ONE foot: either a precise point (like goal_location above) or an arbitrary
+    // polytope (>= 3 vertices, world frame, validated at construction) -- the two shapes
+    // goal_location/goal_surface_id already use separately, unified into one representation.
+    // Independent of the shape, an optional accepted yaw range narrows the target further (unset =
+    // no yaw constraint, generalizing goal_yaw_target's own "unset = free" convention). Unwrap the
+    // range if it would otherwise cross +/-pi (e.g. {170deg, 190deg}, not {170deg, -170deg}).
+    struct FootGoal {
+        std::variant<Point_3, std::vector<Point_3>> region;
+        std::optional<std::pair<double, double>> yaw_range;
+    };
+
+    // Indexed by StanceFoot, each slot INDEPENDENTLY optional (not an array that must be filled in
+    // full):
+    //   - neither slot set (default): this mechanism is off, goal_location/goal_surface_id/
+    //     goal_stance_foot/goal_yaw_target above govern exactly as before this option existed;
+    //   - exactly one slot set: direct generalization of today's behaviour -- that foot must satisfy
+    //     its own slot (shape + optional yaw), the other foot stays as free as it is today;
+    //   - both slots set: "closing stance" -- terminates only when the last two consecutive
+    //     footsteps (one per foot, whichever arrives last) each satisfy their own slot at once. The
+    //     naive approach (aim for one target, then the other) does not work here: the heuristic must
+    //     track both feet's remaining distance at every node, not just the one currently being
+    //     placed, or the search can converge one foot onto its target while never pulling the
+    //     trailing foot toward its own (see astar_search.cpp for the corrected heuristic).
+    // Mutually exclusive with goal_surface_id/goal_yaw_target (validated at construction);
+    // goal_location/goal_stance_foot have no "unset" sentinel to validate against (already the case
+    // today for goal_location whenever goal_surface_id is used) and are simply ignored.
+    std::array<std::optional<FootGoal>, 2> foot_goals;
+
     // Safety limit: the search gives up (empty path) after this many expansions. 0 = no limit.
     // Unweighted heuristics (Euclidean) can expand a very large number of nodes on a continuous
     // state space, and nodes are never freed during a search.
@@ -137,8 +167,19 @@ private:
     std::vector<Node*> result_path_;
     int expansion_count_ = 0;
 
+    // Convex hull of foot_goals[i]'s polytope, built once at construction -- only populated for a
+    // slot whose region actually holds a polytope (unused/nullopt for a point-shaped or empty slot).
+    std::array<std::optional<Polyhedron>, 2> target_polyhedra_;
+
     double heuristic(const Node* node) const;
     Point_3 goal_point() const; // the goal position, or the goal surface's centroid
+
+    // foot_goals support (see AstarSearchConfig::foot_goals). `which` selects config_.foot_goals[which]
+    // (must be set). distance_to_goal is unweighted (see weight_if_epa); goal_satisfied tests shape
+    // (point containment or polytope overlap) and yaw range together.
+    double distance_to_goal(const Node& node, StanceFoot which) const;
+    bool goal_satisfied(const Node& node, StanceFoot which) const;
+    double weight_if_epa(double raw_distance) const;
 };
 
 } // namespace nas
