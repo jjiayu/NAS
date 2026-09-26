@@ -20,6 +20,14 @@
 // on the same floor the foot is already on) made compute_polytope_plane_intersection return nothing
 // at all, because its edge-crossing search never finds a crossing when every vertex already lies
 // exactly on the cutting plane. Variant (c) below (and (d)'s left slot) exercise exactly this case.
+//
+// One negative control (foot_goals + cube_half_extent) was added when this feature was merged with
+// the cube extension: expand_cube_placement gives its child the same stance foot as its parent
+// (placing a cube doesn't move a foot), breaking the alternation invariant the closing-stance mode's
+// node+parent termination test and heuristic both rely on — rejected at construction rather than
+// silently computed wrong. A single foot_goals slot never reads the parent's own foot at all, so it
+// doesn't actually have this problem, but the exclusion applies to foot_goals as a whole for
+// simplicity (see astar_search.hpp's own comment on foot_goals).
 #include "nas/config/scenario.hpp"
 #include "nas/core/reachability.hpp"
 #include "nas/planners/astar_search.hpp"
@@ -245,6 +253,18 @@ int run_foot_goals() {
         g.yaw_range = std::make_pair(0.0, 0.1);
         cfg.foot_goals[static_cast<size_t>(StanceFoot::Left)] = g;
         expect_throw(cfg, "un yaw_range sans rotation_enabled leve une erreur claire");
+    }
+    {
+        // Merged from the cube branch: expand_cube_placement gives its child the same stance foot as
+        // its parent (placing a cube doesn't move a foot), breaking the alternation invariant the
+        // closing-stance mode's node+parent test relies on -- rejected outright at construction.
+        AstarSearchConfig cfg = base_config();
+        cfg.cube_half_extent = 0.075;
+        cfg.cube_height = 0.15;
+        AstarSearchConfig::FootGoal g;
+        g.region = Point_3(0.3, 0.15, 0.0);
+        cfg.foot_goals[static_cast<size_t>(StanceFoot::Left)] = g;
+        expect_throw(cfg, "foot_goals + cube_half_extent > 0 leve une erreur claire (mecanismes mutuellement exclusifs)");
     }
 
     if (g_failures > 0) {

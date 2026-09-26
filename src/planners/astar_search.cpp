@@ -97,13 +97,16 @@ public:
 
 private:
     struct Cell {
-        int surface, stance, yaw, x, y, z;
-        bool operator==(const Cell& o) const { return surface == o.surface && stance == o.stance && yaw == o.yaw && x == o.x && y == o.y && z == o.z; }
+        int surface, stance, yaw, x, y, z, cube_state;
+        bool operator==(const Cell& o) const {
+            return surface == o.surface && stance == o.stance && yaw == o.yaw && x == o.x && y == o.y && z == o.z &&
+                   cube_state == o.cube_state;
+        }
     };
     struct CellHash {
         size_t operator()(const Cell& c) const {
             size_t seed = 0;
-            for (int v : {c.surface, c.stance, c.yaw, c.x, c.y, c.z}) boost::hash_combine(seed, v);
+            for (int v : {c.surface, c.stance, c.yaw, c.x, c.y, c.z, c.cube_state}) boost::hash_combine(seed, v);
             return seed;
         }
     };
@@ -114,9 +117,19 @@ private:
                 rotation_enabled_ ? static_cast<int>(n.foot_yaw / yaw_increment_) : 0,
                 static_cast<int>(std::floor(CGAL::to_double(n.centroid.x()) / CELL)),
                 static_cast<int>(std::floor(CGAL::to_double(n.centroid.y()) / CELL)),
-                static_cast<int>(std::floor(CGAL::to_double(n.centroid.z()) / CELL))};
+                static_cast<int>(std::floor(CGAL::to_double(n.centroid.z()) / CELL)),
+                static_cast<int>(n.cube_state)};
     }
     bool similar(const Node& a, const Node& b) const {
+        // Two nodes whose x-patch/surface/stance/yaw coincide are NOT the same state if
+        // one carries a usable cube and the other doesn't (or a different cube_state
+        // entirely, e.g. PlacedActive vs PlacedInactive) -- one can still take an on-cube
+        // step later and the other can't, so merging them would silently drop a real
+        // option (docs/cube-implementation-plan.md Etape 5, spec §5.3). cube_state alone
+        // (not also comparing the cube patch itself) is enough for v1's single-cube scope:
+        // there is never more than one PlacedActive cube live at a time to distinguish
+        // further within that state.
+        if (a.cube_state != b.cube_state) return false;
         if (a.surface_id != b.surface_id || a.stance_foot != b.stance_foot) return false;
         if (rotation_enabled_ && static_cast<int>(a.foot_yaw / yaw_increment_) != static_cast<int>(b.foot_yaw / yaw_increment_)) return false;
         return patch_distance(a, b) < tol_;
@@ -150,6 +163,15 @@ AstarSearch::AstarSearch(std::vector<Surface> surfaces, ReachabilityModel reacha
         throw std::invalid_argument("AstarSearch: foot_goals is set together with goal_yaw_target — mutually "
                                      "exclusive goal mechanisms");
     }
+    if (has_foot_goal && config_.cube_half_extent > 0.0) {
+        // See astar_search.hpp's own comment on foot_goals: expand_cube_placement gives its child the
+        // same stance foot as its parent, breaking the alternation invariant the closing-stance mode
+        // relies on for its node+parent termination test — rejected outright rather than silently
+        // computed wrong.
+        throw std::invalid_argument("AstarSearch: foot_goals is set together with cube_half_extent > 0 — "
+                                     "the cube extension breaks the foot-alternation invariant the closing-stance "
+                                     "mode (both foot_goals slots filled) relies on");
+    }
     for (size_t i = 0; i < 2; ++i) {
         if (!config_.foot_goals[i]) continue;
         const AstarSearchConfig::FootGoal& g = *config_.foot_goals[i];
@@ -176,12 +198,19 @@ AstarSearch::AstarSearch(std::vector<Surface> surfaces, ReachabilityModel reacha
             }
         }
     }
+    if (config_.cube_half_extent > 0.0 &&
+        (!reachability_.has("Cube", "LF", ReachabilityDirection::Forward) || !reachability_.has("Cube", "RF", ReachabilityDirection::Forward))) {
+        throw std::invalid_argument("AstarSearch: cube_half_extent > 0 but the reachability model has no \"Cube\" "
+                                     "entry for LF and/or RF support — load Cube_constraints_in_{LF,RF}.obj alongside "
+                                     "the usual foot-in-foot entries to enable the cube extension");
+    }
     start_node_ = pool_.create();
     start_node_->patch_vertices = {config_.start_position};
     start_node_->stance_foot = config_.start_stance_foot;
     start_node_->centroid = config_.start_position;
     start_node_->foot_yaw = config_.expansion_params.rotation_enabled ? config_.start_foot_yaw : 0.0;
     start_node_->depth = 0;
+    start_node_->cube_state = config_.cube_half_extent > 0.0 ? CubeState::InHand : CubeState::None;
     // The start foot stands on some surface: give the start node that surface's frame (its normal
     // orients the reachability polytope of the first step). surface_id stays -1 (the start is not a
     // visited surface for the cycle detection). No surface within reach: flat.
@@ -417,20 +446,22 @@ void AstarSearch::search() {
         // Mode 2 only: the trailing foot's own remaining distance doesn't change across this node's
         // children (they all share the same current_node), so it is computed once here instead of
         // once per child. child->parent is not usable for this — it is only assigned after this
-        // node's children are scored below (see the loop), always nullptr before that.
+        // node's children are scored below (see process_child), always nullptr before that.
         const double current_own_term =
             (has_left_goal && has_right_goal) ? distance_to_goal(*current_node, current_node->stance_foot) : 0.0;
 
-        std::vector<Node*> children = expand_node(current_node, surfaces_, reachability_,
-                                                   ReachabilityDirection::Forward, config_.expansion_params, pool_);
-
-        for (Node* child : children) {
+        // Shared by every action source below (expand_node, and -- when the cube
+        // extension is enabled -- expand_cube_placement/expand_onto_cube): same
+        // edge-cost formula (only the base action cost differs), same open/closed-set
+        // bookkeeping. Extracted so the cube actions don't duplicate this ~30-line block
+        // twice more (docs/cube-implementation-plan.md's search-integration step).
+        auto process_child = [&](Node* child, double base_cost) {
             if (closed_index.find(child) != nullptr) {
                 if (config_.on_child) config_.on_child(expansion_count_, *child, ChildAction::SkippedClosed);
-                continue;
+                return;
             }
 
-            double edge_cost = config_.step_weight;
+            double edge_cost = base_cost;
             if (config_.yaw_change_weight > 0.0 && config_.expansion_params.rotation_enabled) {
                 edge_cost += config_.yaw_change_weight * angdiff(child->foot_yaw, current_node->foot_yaw);
             }
@@ -486,6 +517,22 @@ void AstarSearch::search() {
                 // docs/paper-deltas.md.
             } else if (config_.on_child) {
                 config_.on_child(expansion_count_, *child, ChildAction::MergedWorse);
+            }
+        };
+
+        for (Node* child : expand_node(current_node, surfaces_, reachability_, ReachabilityDirection::Forward, config_.expansion_params, pool_)) {
+            process_child(child, config_.step_weight);
+        }
+
+        if (config_.cube_half_extent > 0.0) {
+            if (current_node->cube_state == CubeState::InHand) {
+                for (Node* child : expand_cube_placement(current_node, surfaces_, reachability_, config_.cube_half_extent, config_.expansion_params, pool_)) {
+                    process_child(child, config_.cube_place_cost);
+                }
+            } else if (current_node->cube_state == CubeState::PlacedActive) {
+                for (Node* child : expand_onto_cube(current_node, reachability_, config_.cube_height, config_.cube_half_extent, config_.expansion_params, pool_)) {
+                    process_child(child, config_.cube_step_cost);
+                }
             }
         }
     }

@@ -7,6 +7,7 @@
 // PLAN.md's "core/geometry" entry.
 
 #include "nas/core/types.hpp"
+#include <functional>
 #include <vector>
 #include <Eigen/Dense>
 
@@ -90,5 +91,98 @@ bool is_vertical_normal(const Vector_3& normal);
 
 // Rotates every vertex of a polyhedron by R (general counterpart of rotate_polyhedron_z).
 Polyhedron rotate_polyhedron(const Polyhedron& polytope, const Eigen::Matrix3d& R);
+
+// --- Cube-extension support: payload-carrying primitives ---
+// See docs/cube-extension-spec.md §2-3 and docs/cube-implementation-plan.md §2:
+// the joint-state polytope needed to keep a foot position and a derived cube
+// position correlated (instead of losing that correlation the way two
+// independently-computed Minkowski sums would, per the spec's own 1D
+// counterexample) never needs real n-dimensional convex-hull/halfspace
+// machinery. Every stage of the existing footstep-patch pipeline
+// (minkowski_sum -> compute_polytope_plane_intersection -> 2D hull ->
+// compute_2d_polygon_intersection -> 2D hull) is either a subset selection
+// (a convex hull's vertices are always among its input points, never
+// synthesized) or an explicit affine interpolation already parameterized by a
+// scalar t (a plane/segment or clip-edge crossing) -- both generalize
+// cleanly to carry an extra "payload" point through unchanged. These sibling
+// functions do exactly that, next to the existing (unmodified) ones so every
+// other call site is untouched.
+
+struct TaggedPoint2 {
+    Point_2 point;
+    Point_2 payload;
+};
+
+struct TaggedPoint3 {
+    Point_3 point;
+    Point_3 payload;
+};
+
+// A 3D convex hull (as minkowski_sum computes) together with, for every
+// surviving vertex, the payload of the specific (patch_vertex, polytope_vertex)
+// pair it was translated from.
+struct TaggedPolyhedron {
+    Polyhedron mesh;
+    std::vector<Point_3> vertices; // parallel arrays: mesh's vertex points ...
+    std::vector<Point_3> payloads; // ... and their payload, same order/size
+};
+
+// minkowski_sum, but payloads[i] is carried onto every hull vertex descended
+// from patch_vertices[i] (patch_vertices and payloads must be the same size).
+TaggedPolyhedron minkowski_sum_tagged(const std::vector<Point_3>& patch_vertices,
+                                       const std::vector<Point_3>& payloads,
+                                       const Polyhedron& polytope);
+
+// compute_polytope_plane_intersection, but interpolating tp's payload along
+// each cut edge with the same parameter t as the position itself. Uses an
+// explicit double-precision t (not CGAL::intersection) on purpose, like
+// compute_2d_polygon_intersection's own push_crossing below -- consistent
+// with this file's established preference for that style over CGAL-native
+// intersection on this kind of cut (see that function's header comment).
+std::vector<TaggedPoint3> compute_polytope_plane_intersection_tagged(const Plane_3& plane, const TaggedPolyhedron& tp);
+
+// CGAL::convex_hull_2, but keeping the payload of whichever input point
+// survives onto the hull (2D convex hull never synthesizes new points, same
+// subset property as the 3D case above).
+std::vector<TaggedPoint2> convex_hull_2_tagged(const std::vector<TaggedPoint2>& points);
+
+// compute_2d_polygon_intersection (Sutherland-Hodgman), but classifying/cutting
+// against classify_coord(subject_point) instead of subject_point itself (e.g.
+// point - payload for the spec's on-cube-step cut, §3.3), while carrying (and,
+// on a cut edge, interpolating with the exact same t as the classify
+// coordinate) both point and payload. Pass `[](const TaggedPoint2& p){ return
+// p.point; }` to clip on the position itself, same behaviour as the untagged
+// function.
+std::vector<TaggedPoint2> compute_2d_polygon_intersection_tagged(
+    const std::vector<TaggedPoint2>& subject_polygon,
+    const std::vector<Point_2>& clip_polygon,
+    const std::function<Point_2(const TaggedPoint2&)>& classify_coord);
+
+// A 2D point (e.g. a candidate cube position projected into a candidate surface's local
+// frame) together with a 3D payload (e.g. the exact world-space foot position it's
+// coupled to). Unlike TaggedPoint2 above, whose payload is always meant to already live
+// in the same 2D frame as point, this payload is generally NOT itself on that surface's
+// plane -- projecting it through that plane's transform the way TaggedPoint2's payload
+// is meant to be used would silently drop its out-of-plane component. Kept as a genuine
+// 3D point instead so nothing is lost (spec §3.1: z, the foot position the placement
+// point is coupled to, usually isn't on the surface the cube itself is being placed on).
+struct TaggedPoint2WithOrigin {
+    Point_2 point;
+    Point_3 payload;
+};
+
+// convex_hull_2_tagged, but with a 3D payload (pure subset selection either way, so this
+// is exactly as safe as the 2D-payload version).
+std::vector<TaggedPoint2WithOrigin> convex_hull_2_with_origin(const std::vector<TaggedPoint2WithOrigin>& points);
+
+// compute_2d_polygon_intersection_tagged, but with a 3D payload interpolated with the
+// same t as the 2D point on a cut edge, and always classifying/clipping on point itself
+// (no classify_coord parameter -- this variant is only used for the plain surface-
+// boundary clip, spec §3.1, never for a derived-coordinate cut like §3.3's, which stays
+// on compute_2d_polygon_intersection_tagged above since there both point and payload
+// need to be in the same 2D space to be subtracted from each other).
+std::vector<TaggedPoint2WithOrigin> compute_2d_polygon_intersection_with_origin(
+    const std::vector<TaggedPoint2WithOrigin>& subject_polygon,
+    const std::vector<Point_2>& clip_polygon);
 
 } // namespace nas

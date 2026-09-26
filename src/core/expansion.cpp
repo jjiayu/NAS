@@ -4,6 +4,8 @@
 #include <CGAL/convex_hull_2.h>
 #include <algorithm>
 #include <cmath>
+#include <cstdio>
+#include <cstdlib>
 #include <stdexcept>
 
 namespace nas {
@@ -71,6 +73,74 @@ void clean_polygon(std::vector<Point_2>& pts) {
     std::rotate(pts.begin(), pts.begin() + static_cast<std::ptrdiff_t>(start), pts.end());
 }
 
+// clean_polygon's exact algorithm (see above), generalized to carry a TaggedPoint2's
+// payload along through the same subset-removal/rotation-to-canonical-start decisions --
+// both operations are pure reordering/subset-selection on positions, never interpolation,
+// so the payload just rides along unchanged (see core/geometry.hpp's header comment on
+// this file's tagged primitives for why that generalizes safely).
+void clean_tagged_polygon(std::vector<TaggedPoint2>& pts) {
+    constexpr double TOL = 1e-9;
+    bool removed = true;
+    while (removed && pts.size() > 3) {
+        removed = false;
+        for (size_t i = 0; i < pts.size(); ++i) {
+            const Point_2& a = pts[(i + pts.size() - 1) % pts.size()].point;
+            const Point_2& b = pts[i].point;
+            const Point_2& c = pts[(i + 1) % pts.size()].point;
+            double ex = CGAL::to_double(c.x() - a.x()), ey = CGAL::to_double(c.y() - a.y());
+            double len = std::hypot(ex, ey);
+            double dist = len > 0 ? std::abs(ex * CGAL::to_double(b.y() - a.y()) - ey * CGAL::to_double(b.x() - a.x())) / len
+                                  : std::hypot(CGAL::to_double(b.x() - a.x()), CGAL::to_double(b.y() - a.y()));
+            if (dist < TOL) {
+                pts.erase(pts.begin() + static_cast<std::ptrdiff_t>(i));
+                removed = true;
+                break;
+            }
+        }
+    }
+    if (pts.empty()) return;
+    auto key = [](const Point_2& p) {
+        return std::make_pair(std::llround(CGAL::to_double(p.x()) * 1e9), std::llround(CGAL::to_double(p.y()) * 1e9));
+    };
+    size_t start = 0;
+    for (size_t i = 1; i < pts.size(); ++i)
+        if (key(pts[i].point) < key(pts[start].point)) start = i;
+    std::rotate(pts.begin(), pts.begin() + static_cast<std::ptrdiff_t>(start), pts.end());
+}
+
+// Same algorithm again, for TaggedPoint2WithOrigin (see clean_tagged_polygon above for
+// why this generalizes safely -- pure subset-removal/reordering on `point`, `payload`
+// just rides along).
+void clean_tagged_polygon_with_origin(std::vector<TaggedPoint2WithOrigin>& pts) {
+    constexpr double TOL = 1e-9;
+    bool removed = true;
+    while (removed && pts.size() > 3) {
+        removed = false;
+        for (size_t i = 0; i < pts.size(); ++i) {
+            const Point_2& a = pts[(i + pts.size() - 1) % pts.size()].point;
+            const Point_2& b = pts[i].point;
+            const Point_2& c = pts[(i + 1) % pts.size()].point;
+            double ex = CGAL::to_double(c.x() - a.x()), ey = CGAL::to_double(c.y() - a.y());
+            double len = std::hypot(ex, ey);
+            double dist = len > 0 ? std::abs(ex * CGAL::to_double(b.y() - a.y()) - ey * CGAL::to_double(b.x() - a.x())) / len
+                                  : std::hypot(CGAL::to_double(b.x() - a.x()), CGAL::to_double(b.y() - a.y()));
+            if (dist < TOL) {
+                pts.erase(pts.begin() + static_cast<std::ptrdiff_t>(i));
+                removed = true;
+                break;
+            }
+        }
+    }
+    if (pts.empty()) return;
+    auto key = [](const Point_2& p) {
+        return std::make_pair(std::llround(CGAL::to_double(p.x()) * 1e9), std::llround(CGAL::to_double(p.y()) * 1e9));
+    };
+    size_t start = 0;
+    for (size_t i = 1; i < pts.size(); ++i)
+        if (key(pts[i].point) < key(pts[start].point)) start = i;
+    std::rotate(pts.begin(), pts.begin() + static_cast<std::ptrdiff_t>(start), pts.end());
+}
+
 } // namespace
 
 std::vector<Node*> expand_node(Node* parent,
@@ -104,6 +174,100 @@ std::vector<Node*> expand_node(Node* parent,
     } else if (params.rotation_enabled) {
         rotated_polytope = rotate_polyhedron_z(queried_polytope, parent->foot_yaw);
         base_polytope = &rotated_polytope;
+    }
+
+    // Carrying an active cube (spec §3.2): transport it through this step unchanged,
+    // using the tagged primitives so it stays coupled to whichever parent patch vertex
+    // produced each child vertex (docs/cube-implementation-plan.md Etape 4) -- a
+    // completely separate loop from the untouched one below, on purpose: every existing
+    // caller (NAS/Tree, and CASSR's existing non-cube usage) has cube_state == None and
+    // must hit the exact same code path as before this extension existed, unchanged.
+    if (parent->cube_state == CubeState::PlacedActive) {
+        TaggedPolyhedron swept = minkowski_sum_tagged(parent->patch_vertices, parent->cube->vertices_3d, *base_polytope);
+
+        for (const auto& surface : surfaces) {
+            std::vector<TaggedPoint3> plane_intersect_3d = compute_polytope_plane_intersection_tagged(surface.plane, swept);
+            if (plane_intersect_3d.size() <= 2) continue;
+
+            std::vector<Point_3> points_3d;
+            points_3d.reserve(plane_intersect_3d.size());
+            for (const auto& tp : plane_intersect_3d) points_3d.push_back(tp.point);
+            std::vector<Point_2> points_2d = transform_3d_points_to_surface_plane(points_3d, surface.transform_to_surface);
+
+            std::vector<TaggedPoint2WithOrigin> tagged_2d;
+            tagged_2d.reserve(points_2d.size());
+            for (size_t i = 0; i < points_2d.size(); ++i) tagged_2d.push_back({points_2d[i], plane_intersect_3d[i].payload});
+
+            std::vector<TaggedPoint2WithOrigin> plane_hull_2d = convex_hull_2_with_origin(tagged_2d);
+            std::vector<TaggedPoint2WithOrigin> polygon_intersect_2d =
+                compute_2d_polygon_intersection_with_origin(plane_hull_2d, surface.vertices_2d);
+            if (polygon_intersect_2d.size() <= 2) continue;
+
+            std::vector<TaggedPoint2WithOrigin> hull_2d = convex_hull_2_with_origin(polygon_intersect_2d);
+            clean_tagged_polygon_with_origin(hull_2d);
+            if (hull_2d.size() < 3) continue; // degenerated to a segment/point: no patch
+
+            if (params.cycle_detection_enabled && cycle_path_detection(parent, child_stance_foot, surface.surface_id)) continue;
+
+            std::vector<Point_2> patch_2d;
+            std::vector<Point_3> cube_2d_payload; // still full 3D world points -- see TaggedPoint2WithOrigin
+            patch_2d.reserve(hull_2d.size());
+            cube_2d_payload.reserve(hull_2d.size());
+            for (const auto& tp : hull_2d) {
+                patch_2d.push_back(tp.point);
+                cube_2d_payload.push_back(tp.payload);
+            }
+            std::vector<Point_3> patch_3d = transform_2d_points_to_world(patch_2d, surface.transform_to_3d);
+            Polygon_2 patch_polygon(patch_2d.begin(), patch_2d.end());
+            Point_3 centroid = area_centroid(patch_2d, surface.transform_to_3d, patch_3d);
+
+            std::vector<double> yaw_angles;
+            if (params.rotation_enabled) {
+                for (int i = -params.yaw_discretization_num; i <= params.yaw_discretization_num; ++i)
+                    yaw_angles.push_back(parent->foot_yaw + i * params.yaw_angle_increment);
+            } else {
+                yaw_angles.push_back(0.0);
+            }
+
+            for (double yaw : yaw_angles) {
+                Node* child = pool.create();
+                child->parent_ptrs.push_back(parent);
+                child->patch_vertices = patch_3d;
+                child->stance_foot = child_stance_foot;
+                child->surface_id = surface.surface_id;
+                child->depth = parent->depth + 1;
+                child->patch_polygon_2d = patch_polygon;
+                child->transformation_to_2d = surface.transform_to_surface;
+                child->transformation_to_3d = surface.transform_to_3d;
+                child->centroid = centroid;
+
+                if (params.rotation_enabled) {
+                    double normalized_yaw = yaw;
+                    while (normalized_yaw > M_PI) normalized_yaw -= 2.0 * M_PI;
+                    while (normalized_yaw < -M_PI) normalized_yaw += 2.0 * M_PI;
+                    child->foot_yaw = normalized_yaw;
+                } else {
+                    child->foot_yaw = 0.0;
+                }
+
+                child->pred_surface_ids = parent->pred_surface_ids;
+                child->pred_surface_ids[static_cast<size_t>(parent->stance_foot)].push_back({parent->surface_id});
+
+                // Cube transported unchanged (§3.2: "c est simplement transporté sans
+                // etre modifie") -- same surface/frame/yaw it already had, only the
+                // vertex list changes (index-aligned with the new patch_vertices above,
+                // restricted/interpolated exactly like x itself was, via the tagged
+                // primitives -- not a verbatim copy of the parent's cube patch).
+                child->cube_state = CubeState::PlacedActive;
+                CubePlacement placement = *parent->cube;
+                placement.vertices_3d = cube_2d_payload;
+                child->cube = std::move(placement);
+
+                children.push_back(child);
+            }
+        }
+
+        return children;
     }
 
     Polyhedron P_union = minkowski_sum(parent->patch_vertices, *base_polytope);
@@ -177,8 +341,293 @@ std::vector<Node*> expand_node(Node* parent,
             child->pred_surface_ids = parent->pred_surface_ids;
             child->pred_surface_ids[static_cast<size_t>(parent->stance_foot)].push_back({parent->surface_id});
 
+            // Preserve InHand across an ordinary step (the cube isn't placed by this
+            // action, so it doesn't get silently dropped while still being carried) --
+            // this loop is only ever reached with cube_state None, InHand or
+            // PlacedInactive (PlacedActive takes the tagged branch above), and for the
+            // pre-existing None case this is an exact no-op (child->cube_state already
+            // defaults to None), so every caller that predates the cube extension is
+            // completely unaffected.
+            child->cube_state = parent->cube_state;
+
             children.push_back(child);
         }
+    }
+
+    return children;
+}
+
+std::vector<Node*> expand_cube_placement(Node* parent,
+                                          const std::vector<Surface>& surfaces,
+                                          const ReachabilityModel& reachability,
+                                          double cube_half_extent,
+                                          const ExpansionParams& params,
+                                          NodePool& pool) {
+    std::vector<Node*> children;
+    if (parent->cube_state != CubeState::InHand) return children;
+
+    const Polyhedron& queried_polytope =
+        reachability.query("Cube", effector_name(parent->stance_foot), ReachabilityDirection::Forward);
+
+    // Rotate K_cube into world frame -- identical logic to expand_node's own reachability
+    // rotation (Q, paper Eq. 2), since the cube is aligned to the support foot's yaw at
+    // placement time (spec §3.1: "cube posé... aligné en yaw sur le pied").
+    Polyhedron rotated_polytope;
+    const Polyhedron* base_polytope = &queried_polytope;
+    const Vector_3 support_normal = parent->up_normal();
+    if (!is_vertical_normal(support_normal)) {
+        rotated_polytope = rotate_polyhedron(queried_polytope, foot_frame_rotation(support_normal, params.rotation_enabled ? parent->foot_yaw : 0.0));
+        base_polytope = &rotated_polytope;
+    } else if (params.rotation_enabled) {
+        rotated_polytope = rotate_polyhedron_z(queried_polytope, parent->foot_yaw);
+        base_polytope = &rotated_polytope;
+    }
+
+    // Tagged Minkowski sum: payload = the originating foot-patch vertex (z), so every
+    // candidate cube position (c) stays coupled to which z produced it -- the whole point
+    // of the joint state (spec §2-3, docs/cube-implementation-plan.md §2). This is the
+    // step that the naive approach (§2) gets wrong by using the untagged minkowski_sum.
+    TaggedPolyhedron swept = minkowski_sum_tagged(parent->patch_vertices, parent->patch_vertices, *base_polytope);
+
+    for (const auto& surface : surfaces) {
+        std::vector<TaggedPoint3> plane_intersect_3d = compute_polytope_plane_intersection_tagged(surface.plane, swept);
+        if (plane_intersect_3d.size() <= 2) continue;
+
+        // Project only the candidate position (c) into the surface's local 2D frame for
+        // the hull/clip steps below; keep the coupled origin (z) as an exact 3D payload
+        // throughout (TaggedPoint2WithOrigin) -- z usually is NOT itself on this
+        // candidate surface's plane (it's the foot's position, generally on a different
+        // surface), so projecting it the lossy way TaggedPoint2 does would silently drop
+        // its out-of-plane component and corrupt it. See geometry.hpp's header comment
+        // on TaggedPoint2WithOrigin.
+        std::vector<Point_3> points_3d;
+        points_3d.reserve(plane_intersect_3d.size());
+        for (const auto& tp : plane_intersect_3d) points_3d.push_back(tp.point);
+        std::vector<Point_2> points_2d = transform_3d_points_to_surface_plane(points_3d, surface.transform_to_surface);
+
+        std::vector<TaggedPoint2WithOrigin> tagged_2d;
+        tagged_2d.reserve(points_2d.size());
+        for (size_t i = 0; i < points_2d.size(); ++i) tagged_2d.push_back({points_2d[i], plane_intersect_3d[i].payload});
+
+        std::vector<TaggedPoint2WithOrigin> plane_hull_2d = convex_hull_2_with_origin(tagged_2d);
+
+        // Placement-surface constraint (spec §3.1's S~_j, surface eroded by half the
+        // cube's footprint): reuses the surface's own (foot-eroded) boundary
+        // (surface.vertices_2d) rather than a cube-specific erosion. Deliberate v1
+        // simplification (docs/cube-implementation-plan.md Etape 3): the foot's own
+        // erosion margin (RobotModel foot_width/2 = 0.11m by default) is larger than the
+        // 15cm cube's half-extent (0.075m), so this can only be MORE conservative than a
+        // true cube erosion, never less -- it never claims a placement is valid where the
+        // cube would actually overhang the surface.
+        (void)cube_half_extent; // not yet used beyond documenting the above -- kept as a
+                                 // parameter so a real cube-specific erosion can use it
+                                 // later without changing this function's signature.
+        std::vector<TaggedPoint2WithOrigin> polygon_intersect_2d =
+            compute_2d_polygon_intersection_with_origin(plane_hull_2d, surface.vertices_2d);
+        if (polygon_intersect_2d.size() <= 2) continue;
+
+        std::vector<TaggedPoint2WithOrigin> hull_2d = convex_hull_2_with_origin(polygon_intersect_2d);
+        clean_tagged_polygon_with_origin(hull_2d);
+        if (hull_2d.size() < 3) continue; // degenerated to a segment/point: no patch
+
+        std::vector<Point_2> cube_patch_2d;
+        std::vector<Point_3> origin_patch_3d;
+        cube_patch_2d.reserve(hull_2d.size());
+        origin_patch_3d.reserve(hull_2d.size());
+        for (const auto& tp : hull_2d) {
+            cube_patch_2d.push_back(tp.point);
+            origin_patch_3d.push_back(tp.payload);
+        }
+        std::vector<Point_3> cube_patch_3d = transform_2d_points_to_world(cube_patch_2d, surface.transform_to_3d);
+
+        // x (the foot's own state) is NOT simply parent->patch_vertices carried through
+        // unchanged: it must be the specific z's that are actually coupled to a surviving
+        // c (origin_patch_3d, index-aligned with cube_patch_3d/cube.vertices_3d below,
+        // spec §3.1's J0), which can be a genuine, generally-clipped, subset/interpolation
+        // of the parent's full patch -- not every z necessarily has a valid placement on
+        // THIS particular candidate surface. Re-expressed in the foot's own 2D frame the
+        // same way expand_node derives patch_polygon_2d from patch_vertices; these points
+        // are affine combinations of parent->patch_vertices (through hull/slice/clip),
+        // hence exactly coplanar with them, so this projection is exact, not approximate.
+        std::vector<Point_2> origin_patch_2d = transform_3d_points_to_surface_plane(origin_patch_3d, parent->transformation_to_2d);
+
+        Node* child = pool.create();
+        child->parent_ptrs.push_back(parent);
+        child->patch_vertices = origin_patch_3d;
+        child->patch_polygon_2d = Polygon_2(origin_patch_2d.begin(), origin_patch_2d.end());
+        child->transformation_to_2d = parent->transformation_to_2d;
+        child->transformation_to_3d = parent->transformation_to_3d;
+        child->stance_foot = parent->stance_foot;
+        child->surface_id = parent->surface_id;
+        child->depth = parent->depth + 1;
+        child->centroid = get_centroid(origin_patch_3d); // heuristic stays on the x-projection (spec §5.4)
+        child->foot_yaw = parent->foot_yaw;
+        child->pred_surface_ids = parent->pred_surface_ids; // no footstep was taken
+
+        child->cube_state = CubeState::PlacedActive;
+        CubePlacement placement;
+        placement.vertices_3d = cube_patch_3d;
+        placement.polygon_2d = Polygon_2(cube_patch_2d.begin(), cube_patch_2d.end());
+        placement.transform_to_2d = surface.transform_to_surface;
+        placement.transform_to_3d = surface.transform_to_3d;
+        placement.surface_id = surface.surface_id;
+        placement.placement_yaw = parent->foot_yaw;
+        child->cube = std::move(placement);
+
+        children.push_back(child);
+    }
+
+    return children;
+}
+
+std::vector<Node*> expand_onto_cube(Node* parent,
+                                     const ReachabilityModel& reachability,
+                                     double cube_height,
+                                     double cube_half_extent,
+                                     const ExpansionParams& params,
+                                     NodePool& pool) {
+    std::vector<Node*> children;
+    if (parent->cube_state != CubeState::PlacedActive) return children;
+
+    StanceFoot child_stance_foot = other_foot(parent->stance_foot);
+    const Polyhedron& queried_polytope = reachability.query(
+        effector_name(child_stance_foot), effector_name(parent->stance_foot), ReachabilityDirection::Forward);
+
+    Polyhedron rotated_polytope;
+    const Polyhedron* base_polytope = &queried_polytope;
+    const Vector_3 support_normal = parent->up_normal();
+    if (!is_vertical_normal(support_normal)) {
+        rotated_polytope = rotate_polyhedron(queried_polytope, foot_frame_rotation(support_normal, params.rotation_enabled ? parent->foot_yaw : 0.0));
+        base_polytope = &rotated_polytope;
+    } else if (params.rotation_enabled) {
+        rotated_polytope = rotate_polyhedron_z(queried_polytope, parent->foot_yaw);
+        base_polytope = &rotated_polytope;
+    }
+
+    // Same swept object as expand_node's cube-transport branch (x driven by K, c as
+    // payload) -- this step differs only in which plane it lands on and the extra cut
+    // below, not in how the reachability sum itself is built (spec §3.3: "meme
+    // operation que 3.2").
+    TaggedPolyhedron swept = minkowski_sum_tagged(parent->patch_vertices, parent->cube->vertices_3d, *base_polytope);
+
+    // The cube's own top plane: local z = cube_height in cube->transform_to_3d's frame
+    // (calibrated to the cube's BASE, z=0, at placement time -- see expand_cube_placement).
+    Vector_3 cube_normal = parent->cube->transform_to_3d.transform(Vector_3(0, 0, 1));
+    double cube_normal_len = std::sqrt(CGAL::to_double(cube_normal.squared_length()));
+    cube_normal = cube_normal / cube_normal_len;
+    Point_3 top_plane_point = parent->cube->transform_to_3d(Point_3(0, 0, cube_height));
+    Plane_3 top_plane(top_plane_point, cube_normal);
+
+    std::vector<TaggedPoint3> plane_intersect_3d = compute_polytope_plane_intersection_tagged(top_plane, swept);
+    if (plane_intersect_3d.size() <= 2) return children;
+
+    // Project both the candidate landing point (x', local z = cube_height on this plane)
+    // and the cube's own reference point (c, local z = 0) through the SAME transform
+    // (parent->cube->transform_to_2d): both are exactly representable in that frame (each
+    // genuinely lies on one of its two z-levels, base or top), so nothing is lost the way
+    // it would be projecting an unrelated point through an arbitrary plane -- dropping z
+    // here is exactly what's wanted, since the extra cut below only compares footprint
+    // position, not height (spec §3.3's x' - c - h*n: the h*n term is exactly this height
+    // difference, already accounted for by slicing at the top plane in the first place).
+    std::vector<Point_3> points_3d, payloads_3d;
+    points_3d.reserve(plane_intersect_3d.size());
+    payloads_3d.reserve(plane_intersect_3d.size());
+    for (const auto& tp : plane_intersect_3d) {
+        points_3d.push_back(tp.point);
+        payloads_3d.push_back(tp.payload);
+    }
+    std::vector<Point_2> points_2d = transform_3d_points_to_surface_plane(points_3d, parent->cube->transform_to_2d);
+    std::vector<Point_2> payloads_2d = transform_3d_points_to_surface_plane(payloads_3d, parent->cube->transform_to_2d);
+
+    std::vector<TaggedPoint2> tagged_2d;
+    tagged_2d.reserve(points_2d.size());
+    for (size_t i = 0; i < points_2d.size(); ++i) tagged_2d.push_back({points_2d[i], payloads_2d[i]});
+
+    std::vector<TaggedPoint2> plane_hull_2d = convex_hull_2_tagged(tagged_2d);
+
+    // carre_cube: the cube's own footprint square, centered on c (spec §3.3). classify on
+    // (point - payload) = (x' - c) in this shared 2D frame.
+    std::vector<Point_2> carre_cube = {
+        Point_2(-cube_half_extent, -cube_half_extent), Point_2(cube_half_extent, -cube_half_extent),
+        Point_2(cube_half_extent, cube_half_extent), Point_2(-cube_half_extent, cube_half_extent)};
+    auto classify_x_minus_c = [](const TaggedPoint2& p) { return Point_2(p.point.x() - p.payload.x(), p.point.y() - p.payload.y()); };
+    std::vector<TaggedPoint2> clipped = compute_2d_polygon_intersection_tagged(plane_hull_2d, carre_cube, classify_x_minus_c);
+    if (clipped.size() <= 2) return children;
+
+    if (params.cycle_detection_enabled && cycle_path_detection(parent, child_stance_foot, kOnCubeSurfaceId)) return children;
+
+    std::vector<TaggedPoint2> hull_2d = convex_hull_2_tagged(clipped);
+    clean_tagged_polygon(hull_2d);
+    if (hull_2d.size() < 3) return children; // degenerated to a segment/point: no patch
+
+    // Back to world 3D: local (x, y, cube_height) through the cube's own base-calibrated
+    // transform (not transform_2d_points_to_world, which always assumes local z=0).
+    std::vector<Point_3> patch_3d;
+    patch_3d.reserve(hull_2d.size());
+    std::vector<Point_2> patch_2d;
+    patch_2d.reserve(hull_2d.size());
+    for (const auto& tp : hull_2d) {
+        patch_2d.push_back(tp.point);
+        patch_3d.push_back(parent->cube->transform_to_3d(Point_3(tp.point.x(), tp.point.y(), cube_height)));
+    }
+    Polygon_2 patch_polygon(patch_2d.begin(), patch_2d.end());
+
+    // The child's own surface frame: the cube's top plane, not its base -- same rotation
+    // as parent->cube->transform_to_3d (up_normal() only reads the linear part, so this
+    // doesn't matter there), but translated so local z=0 lands exactly on the top, unlike
+    // reusing the base transform verbatim would.
+    Transformation lift_to_top(CGAL::TRANSLATION, cube_height * cube_normal);
+    Transformation top_transform_to_3d = lift_to_top * parent->cube->transform_to_3d;
+    Transformation top_transform_to_surface = top_transform_to_3d.inverse();
+
+    // area_centroid's non-degenerate branch assumes to_3d's local z=0 is the patch's own
+    // height (true for every other caller, which pass a surface's own transform): must use
+    // the TOP-calibrated transform here, not parent->cube->transform_to_3d (calibrated to
+    // the base, z=0 there is cube_height below where this patch actually is) -- passing the
+    // base transform silently put centroid.z at the cube's base height instead of its top,
+    // found while building a plan visualization, not by any test (patch_vertices/patch_3d
+    // above were already correct; only this convenience field was wrong).
+    Point_3 centroid = area_centroid(patch_2d, top_transform_to_3d, patch_3d);
+
+    std::vector<double> yaw_angles;
+    if (params.rotation_enabled) {
+        for (int i = -params.yaw_discretization_num; i <= params.yaw_discretization_num; ++i)
+            yaw_angles.push_back(parent->foot_yaw + i * params.yaw_angle_increment);
+    } else {
+        yaw_angles.push_back(0.0);
+    }
+
+    for (double yaw : yaw_angles) {
+        Node* child = pool.create();
+        child->parent_ptrs.push_back(parent);
+        child->patch_vertices = patch_3d;
+        child->patch_polygon_2d = patch_polygon;
+        child->transformation_to_2d = top_transform_to_surface;
+        child->transformation_to_3d = top_transform_to_3d;
+        child->stance_foot = child_stance_foot;
+        child->surface_id = kOnCubeSurfaceId;
+        child->depth = parent->depth + 1;
+        child->centroid = centroid;
+
+        if (params.rotation_enabled) {
+            double normalized_yaw = yaw;
+            while (normalized_yaw > M_PI) normalized_yaw -= 2.0 * M_PI;
+            while (normalized_yaw < -M_PI) normalized_yaw += 2.0 * M_PI;
+            child->foot_yaw = normalized_yaw;
+        } else {
+            child->foot_yaw = 0.0;
+        }
+
+        child->pred_surface_ids = parent->pred_surface_ids;
+        child->pred_surface_ids[static_cast<size_t>(parent->stance_foot)].push_back({parent->surface_id});
+
+        // v1 scope: the cube is single-use -- immediately inactive after being stepped
+        // on, never a candidate for a second on-cube step (docs/cube-implementation-plan.md
+        // §4, "un seul cube actif a la fois", extended here to "used once").
+        child->cube_state = CubeState::PlacedInactive;
+        child->cube = std::nullopt;
+
+        children.push_back(child);
     }
 
     return children;
