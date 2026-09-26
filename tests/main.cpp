@@ -44,6 +44,7 @@ int run_merge_consistency();
 int run_edge_costs();
 int run_goal_yaw();
 int run_foot_goals();
+int run_dual_target_all_scenes();
 
 namespace {
 
@@ -78,6 +79,7 @@ const Suite kSuites[] = {
     {"edge_costs", "golden", run_edge_costs},
     {"goal_yaw", "golden", run_goal_yaw},
     {"foot_goals", "golden", run_foot_goals},
+    {"dual_target_all_scenes", "golden", run_dual_target_all_scenes},
 };
 
 } // namespace

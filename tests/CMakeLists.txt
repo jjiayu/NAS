@@ -29,6 +29,7 @@ add_executable(nas_tests
     golden/edge_costs_test.cpp
     golden/goal_yaw_test.cpp
     golden/foot_goals_test.cpp
+    golden/dual_target_all_scenes_test.cpp
 )
 target_link_libraries(nas_tests PRIVATE nas nas_fixtures nlohmann_json::nlohmann_json)
 target_compile_definitions(nas_tests PRIVATE
