@@ -145,6 +145,38 @@ struct AstarSearchConfig {
     double cube_place_cost = 1.0;
     double cube_step_cost = 1.0;
 
+    // Cube-pickup extension (see docs/cube-pickup-spec.md): a cube that rests in the
+    // scene from the very start of the search, at a fixed, known position -- as opposed
+    // to the "carried from the start" cube modeled by cube_half_extent/cube_height alone
+    // above. NOT a Surface (never a surface_id, never injected into the scene's surfaces,
+    // never seen by cycle_path_detection): same precedent as FootGoal::region above,
+    // which already lives directly in this config rather than in the scene.
+    //
+    // pickup_affordance reuses FootGoal's own per-foot region+yaw-range shape and 0/1/2-
+    // slot convention verbatim -- 1 slot filled: that foot alone must reach in and satisfy
+    // it; 2 slots filled: a symmetric two-footed stance is required, tested against the
+    // last two consecutive footsteps exactly like foot_goals' own closing-stance mode --
+    // but evaluated as a trigger DURING the search (at every expansion), not as a
+    // termination condition. Inspired by (not consuming) g1motion's own in-progress,
+    // uncommitted "grasp affordance polytope" prototype: a per-foot (x, y, yaw) region
+    // around a seed stance, the same shape as FootGoal.
+    struct SceneCube {
+        std::array<std::optional<FootGoal>, 2> pickup_affordance;
+    };
+
+    // Empty (default): this mechanism is entirely off, start_node_->cube_state keeps
+    // today's exact convention (cube_half_extent > 0 ? InHand : None). Non-empty: the
+    // search starts with EMPTY hands (None) and must pick one of these up before
+    // expand_cube_placement/expand_onto_cube ever become candidate actions. Requires
+    // cube_half_extent > 0 (validated at construction) -- v1: every scene cube shares the
+    // same half_extent/height, no per-cube geometry (nobody asked for differently-sized
+    // cubes in one scene).
+    std::vector<SceneCube> scene_cubes;
+
+    // Edge cost of the pickup pseudo-action (zero displacement, same rationale as
+    // cube_place_cost). Defaults to 1.0, same convention as cube_place_cost/cube_step_cost.
+    double cube_pickup_cost = 1.0;
+
     // Safety limit: the search gives up (empty path) after this many expansions. 0 = no limit.
     // Unweighted heuristics (Euclidean) can expand a very large number of nodes on a continuous
     // state space, and nodes are never freed during a search.
@@ -175,6 +207,32 @@ struct AstarSearchConfig {
     std::function<void(int parent_expansion_index, const Node& child, ChildAction action)> on_child;
 };
 
+// Shared shape+yaw test (point containment, or polytope plane-slice + 2D clip against the
+// node's own patch): the geometric core of AstarSearch::goal_satisfied/distance_to_goal,
+// generalized to take their FootGoal and pre-built hull explicitly instead of reading them
+// off `config_`/a cached member, so the same logic backs both AstarSearchConfig::foot_goals
+// and the cube-pickup trigger below without duplicating it. `cached_hull` must be non-null
+// whenever goal.region holds a polytope (built once, see AstarSearch's target_polyhedra_/
+// scene_cube_polyhedra_) -- ignored for a point-shaped region.
+bool foot_goal_satisfied(const Node& node, const AstarSearchConfig::FootGoal& goal, const Polyhedron* cached_hull);
+double foot_goal_distance(const Node& node, const AstarSearchConfig::FootGoal& goal, DistanceMetric metric);
+
+// Cube-pickup trigger (docs/cube-pickup-spec.md): for every config-level scene cube not yet
+// marked picked-up on `parent`'s own path (parent->cubes_picked_up), tests its
+// pickup_affordance against `parent` alone (one slot filled) or against (parent,
+// parent->parent) together (both slots filled -- same node+parent pairing as foot_goals'
+// closing-stance mode) -- a candidate only when parent->cube_state is None or PlacedInactive
+// (hands free; InHand/PlacedActive mean a cube is already in play). A free function, not a
+// private AstarSearch method, so it stays directly unit-testable like expand_cube_placement,
+// and so core/expansion.* never needs to know AstarSearchConfig::SceneCube exists. Produces
+// one zero-displacement child per satisfied cube (same foot/position/yaw as parent,
+// cube_state -> InHand, cube -> nullopt, that cube's bit set on the CHILD's own
+// cubes_picked_up -- parent's own vector is never mutated).
+std::vector<Node*> expand_cube_pickup(Node* parent,
+                                       const std::vector<AstarSearchConfig::SceneCube>& scene_cubes,
+                                       const std::vector<std::array<std::optional<Polyhedron>, 2>>& scene_cube_polyhedra,
+                                       NodePool& pool);
+
 class AstarSearch {
 public:
     AstarSearch(std::vector<Surface> surfaces, ReachabilityModel reachability, AstarSearchConfig config);
@@ -197,6 +255,10 @@ private:
     // Convex hull of foot_goals[i]'s polytope, built once at construction -- only populated for a
     // slot whose region actually holds a polytope (unused/nullopt for a point-shaped or empty slot).
     std::array<std::optional<Polyhedron>, 2> target_polyhedra_;
+
+    // One entry per config_.scene_cubes[i] (index-aligned), same "nullopt unless
+    // polytope-shaped" convention as target_polyhedra_ above, built once at construction.
+    std::vector<std::array<std::optional<Polyhedron>, 2>> scene_cube_polyhedra_;
 
     double heuristic(const Node* node) const;
     Point_3 goal_point() const; // the goal position, or the goal surface's centroid

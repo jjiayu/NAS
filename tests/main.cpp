@@ -32,6 +32,7 @@ int run_config_stl();
 int run_config_cube();
 int run_cube_geometry();
 int run_cube_expansion();
+int run_cube_pickup();
 
 int run_astar_search_golden();
 int run_astar_search_golden_threepaths();
@@ -48,6 +49,8 @@ int run_edge_costs();
 int run_goal_yaw();
 int run_foot_goals();
 int run_dual_target_all_scenes();
+int run_cube_pickup_search();
+int run_cube_pickup_and_placement();
 
 namespace {
 
@@ -70,6 +73,7 @@ const Suite kSuites[] = {
     {"config_cube", "unit", run_config_cube},
     {"cube_geometry", "unit", run_cube_geometry},
     {"cube_expansion", "unit", run_cube_expansion},
+    {"cube_pickup", "unit", run_cube_pickup},
 
     {"astar_search_golden", "golden", run_astar_search_golden},
     {"astar_search_golden_threepaths", "golden", run_astar_search_golden_threepaths},
@@ -86,6 +90,8 @@ const Suite kSuites[] = {
     {"goal_yaw", "golden", run_goal_yaw},
     {"foot_goals", "golden", run_foot_goals},
     {"dual_target_all_scenes", "golden", run_dual_target_all_scenes},
+    {"cube_pickup_search", "golden", run_cube_pickup_search},
+    {"cube_pickup_and_placement", "golden", run_cube_pickup_and_placement},
 };
 
 } // namespace

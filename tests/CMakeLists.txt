@@ -18,6 +18,7 @@ add_executable(nas_tests
     unit/cube_model_test.cpp
     unit/cube_geometry_test.cpp
     unit/cube_expansion_test.cpp
+    unit/cube_pickup_test.cpp
     golden/astar_search_golden_test.cpp
     golden/astar_search_golden_threepaths_test.cpp
     golden/grid_astar_search_test.cpp
@@ -33,6 +34,8 @@ add_executable(nas_tests
     golden/goal_yaw_test.cpp
     golden/foot_goals_test.cpp
     golden/dual_target_all_scenes_test.cpp
+    golden/cube_pickup_search_test.cpp
+    golden/cube_pickup_and_placement_test.cpp
 )
 target_link_libraries(nas_tests PRIVATE nas nas_fixtures nlohmann_json::nlohmann_json)
 target_compile_definitions(nas_tests PRIVATE

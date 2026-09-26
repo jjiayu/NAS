@@ -98,15 +98,17 @@ public:
 private:
     struct Cell {
         int surface, stance, yaw, x, y, z, cube_state;
+        std::vector<bool> cubes_picked_up;
         bool operator==(const Cell& o) const {
             return surface == o.surface && stance == o.stance && yaw == o.yaw && x == o.x && y == o.y && z == o.z &&
-                   cube_state == o.cube_state;
+                   cube_state == o.cube_state && cubes_picked_up == o.cubes_picked_up;
         }
     };
     struct CellHash {
         size_t operator()(const Cell& c) const {
             size_t seed = 0;
             for (int v : {c.surface, c.stance, c.yaw, c.x, c.y, c.z, c.cube_state}) boost::hash_combine(seed, v);
+            for (bool b : c.cubes_picked_up) boost::hash_combine(seed, b);
             return seed;
         }
     };
@@ -118,7 +120,7 @@ private:
                 static_cast<int>(std::floor(CGAL::to_double(n.centroid.x()) / CELL)),
                 static_cast<int>(std::floor(CGAL::to_double(n.centroid.y()) / CELL)),
                 static_cast<int>(std::floor(CGAL::to_double(n.centroid.z()) / CELL)),
-                static_cast<int>(n.cube_state)};
+                static_cast<int>(n.cube_state), n.cubes_picked_up};
     }
     bool similar(const Node& a, const Node& b) const {
         // Two nodes whose x-patch/surface/stance/yaw coincide are NOT the same state if
@@ -128,8 +130,12 @@ private:
         // option (docs/cube-implementation-plan.md Etape 5, spec §5.3). cube_state alone
         // (not also comparing the cube patch itself) is enough for v1's single-cube scope:
         // there is never more than one PlacedActive cube live at a time to distinguish
-        // further within that state.
+        // further within that state. cubes_picked_up is compared too (docs/cube-pickup-
+        // spec.md): with several scene cubes available, two nodes can share every field
+        // above yet not be interchangeable -- one may still have a pickup option the
+        // other has already used.
         if (a.cube_state != b.cube_state) return false;
+        if (a.cubes_picked_up != b.cubes_picked_up) return false;
         if (a.surface_id != b.surface_id || a.stance_foot != b.stance_foot) return false;
         if (rotation_enabled_ && static_cast<int>(a.foot_yaw / yaw_increment_) != static_cast<int>(b.foot_yaw / yaw_increment_)) return false;
         return patch_distance(a, b) < tol_;
@@ -140,6 +146,36 @@ private:
     double yaw_increment_;
     std::unordered_map<Cell, std::vector<Node*>, CellHash> cells_;
 };
+
+// Validates one FootGoal (>=3 vertices if a polytope, a well-formed yaw_range requiring
+// rotation) and returns its hull if polytope-shaped (nullopt for a point or unset slot) --
+// shared by foot_goals and scene_cubes[*].pickup_affordance, identical shape/contract.
+// `context` prefixes every thrown message so the two stay distinguishable.
+std::optional<Polyhedron> validate_and_hull_foot_goal(const std::string& context,
+                                                       const AstarSearchConfig::FootGoal& g,
+                                                       bool rotation_enabled) {
+    std::optional<Polyhedron> hull;
+    if (std::holds_alternative<std::vector<Point_3>>(g.region)) {
+        const auto& verts = std::get<std::vector<Point_3>>(g.region);
+        if (verts.size() < 3) {
+            throw std::invalid_argument(context + "'s polytope needs at least 3 vertices");
+        }
+        Polyhedron h;
+        CGAL::convex_hull_3(verts.begin(), verts.end(), h);
+        hull = std::move(h);
+    }
+    if (g.yaw_range) {
+        if (g.yaw_range->second < g.yaw_range->first) {
+            throw std::invalid_argument(context + "'s yaw_range max is below its min -- use an unwrapped range "
+                                         "(e.g. {170deg, 190deg}, not {170deg, -170deg}) if it crosses +/-pi");
+        }
+        if (!rotation_enabled) {
+            throw std::invalid_argument(context + " has a yaw_range but expansion_params.rotation_enabled is "
+                                         "false -- every node's foot_yaw stays at 0 then");
+        }
+    }
+    return hull;
+}
 
 } // namespace
 
@@ -174,29 +210,8 @@ AstarSearch::AstarSearch(std::vector<Surface> surfaces, ReachabilityModel reacha
     }
     for (size_t i = 0; i < 2; ++i) {
         if (!config_.foot_goals[i]) continue;
-        const AstarSearchConfig::FootGoal& g = *config_.foot_goals[i];
-        if (std::holds_alternative<std::vector<Point_3>>(g.region)) {
-            const auto& verts = std::get<std::vector<Point_3>>(g.region);
-            if (verts.size() < 3) {
-                throw std::invalid_argument("AstarSearch: foot_goals[" + std::to_string(i) +
-                                             "]'s polytope needs at least 3 vertices");
-            }
-            Polyhedron hull;
-            CGAL::convex_hull_3(verts.begin(), verts.end(), hull);
-            target_polyhedra_[i] = std::move(hull);
-        }
-        if (g.yaw_range) {
-            if (g.yaw_range->second < g.yaw_range->first) {
-                throw std::invalid_argument("AstarSearch: foot_goals[" + std::to_string(i) +
-                                             "]'s yaw_range max is below its min — use an unwrapped range "
-                                             "(e.g. {170deg, 190deg}, not {170deg, -170deg}) if it crosses +/-pi");
-            }
-            if (!config_.expansion_params.rotation_enabled) {
-                throw std::invalid_argument("AstarSearch: foot_goals[" + std::to_string(i) +
-                                             "] has a yaw_range but expansion_params.rotation_enabled is false — "
-                                             "every node's foot_yaw stays at 0 then");
-            }
-        }
+        target_polyhedra_[i] = validate_and_hull_foot_goal(
+            "AstarSearch: foot_goals[" + std::to_string(i) + "]", *config_.foot_goals[i], config_.expansion_params.rotation_enabled);
     }
     if (config_.cube_half_extent > 0.0 &&
         (!reachability_.has("Cube", "LF", ReachabilityDirection::Forward) || !reachability_.has("Cube", "RF", ReachabilityDirection::Forward))) {
@@ -204,13 +219,37 @@ AstarSearch::AstarSearch(std::vector<Surface> surfaces, ReachabilityModel reacha
                                      "entry for LF and/or RF support — load Cube_constraints_in_{LF,RF}.obj alongside "
                                      "the usual foot-in-foot entries to enable the cube extension");
     }
+    if (!config_.scene_cubes.empty() && config_.cube_half_extent <= 0.0) {
+        throw std::invalid_argument("AstarSearch: scene_cubes is set but cube_half_extent <= 0 -- a picked-up cube "
+                                     "could never be placed back down or stepped on");
+    }
+    scene_cube_polyhedra_.resize(config_.scene_cubes.size());
+    for (size_t i = 0; i < config_.scene_cubes.size(); ++i) {
+        const auto& aff = config_.scene_cubes[i].pickup_affordance;
+        if (!aff[0] && !aff[1]) {
+            throw std::invalid_argument("AstarSearch: scene_cubes[" + std::to_string(i) +
+                                         "].pickup_affordance has neither foot slot set -- this cube could never be "
+                                         "picked up");
+        }
+        for (size_t f = 0; f < 2; ++f) {
+            if (!aff[f]) continue;
+            scene_cube_polyhedra_[i][f] = validate_and_hull_foot_goal(
+                "AstarSearch: scene_cubes[" + std::to_string(i) + "].pickup_affordance[" + std::to_string(f) + "]",
+                *aff[f], config_.expansion_params.rotation_enabled);
+        }
+    }
     start_node_ = pool_.create();
     start_node_->patch_vertices = {config_.start_position};
     start_node_->stance_foot = config_.start_stance_foot;
     start_node_->centroid = config_.start_position;
     start_node_->foot_yaw = config_.expansion_params.rotation_enabled ? config_.start_foot_yaw : 0.0;
     start_node_->depth = 0;
-    start_node_->cube_state = config_.cube_half_extent > 0.0 ? CubeState::InHand : CubeState::None;
+    // scene_cubes non-empty: start empty-handed (must pick one up) rather than carrying
+    // one from the start -- with scene_cubes empty, this reduces exactly to the original
+    // expression, unchanged behavior for every caller that predates this extension.
+    start_node_->cube_state =
+        (config_.cube_half_extent > 0.0 && config_.scene_cubes.empty()) ? CubeState::InHand : CubeState::None;
+    start_node_->cubes_picked_up.assign(config_.scene_cubes.size(), false);
     // The start foot stands on some surface: give the start node that surface's frame (its normal
     // orients the reachability polytope of the first step). surface_id stays -1 (the start is not a
     // visited surface for the cycle detection). No surface within reach: flat.
@@ -300,11 +339,10 @@ double AstarSearch::weight_if_epa(double raw_distance) const {
     return config_.distance_metric == DistanceMetric::Epa ? config_.heuristic_weight * raw_distance : raw_distance;
 }
 
-double AstarSearch::distance_to_goal(const Node& node, StanceFoot which) const {
-    const AstarSearchConfig::FootGoal& goal = *config_.foot_goals[static_cast<size_t>(which)];
+double foot_goal_distance(const Node& node, const AstarSearchConfig::FootGoal& goal, DistanceMetric metric) {
     if (std::holds_alternative<Point_3>(goal.region)) {
         const Point_3& target = std::get<Point_3>(goal.region);
-        if (config_.distance_metric == DistanceMetric::Euclidean || node.patch_vertices.size() < 3) {
+        if (metric == DistanceMetric::Euclidean || node.patch_vertices.size() < 3) {
             // A single-point patch (only ever the start node) has no area for EPA — same fallback
             // as heuristic()'s own start-node special case, see the constructor.
             return compute_euclidean_distance(node.centroid, target);
@@ -312,8 +350,8 @@ double AstarSearch::distance_to_goal(const Node& node, StanceFoot which) const {
         return calculate_epa_distance_point_to_patch(node.patch_vertices, target);
     }
     // Polytope target: not necessarily flat or given in a fan-triangulable vertex order (unlike
-    // surfaces_[*].vertices_3d, which goal_surface_id's own EPA path above relies on) — the exact
-    // shape test lives in goal_satisfied() (a real plane slice against the cached hull); the
+    // surfaces_[*].vertices_3d, which goal_surface_id's own EPA path relies on) — the exact shape
+    // test lives in foot_goal_satisfied() (a real plane slice against the cached hull); the
     // heuristic only needs a reasonable estimate, and this codebase's own EPA helper already falls
     // back to centroid distance whenever it can't compute a true patch distance
     // (calculate_epa_distance_patch_to_patch's catch block, geometry.cpp) — using that same
@@ -322,10 +360,7 @@ double AstarSearch::distance_to_goal(const Node& node, StanceFoot which) const {
     return compute_euclidean_distance(node.centroid, target_centroid);
 }
 
-bool AstarSearch::goal_satisfied(const Node& node, StanceFoot which) const {
-    size_t idx = static_cast<size_t>(which);
-    const AstarSearchConfig::FootGoal& goal = *config_.foot_goals[idx];
-
+bool foot_goal_satisfied(const Node& node, const AstarSearchConfig::FootGoal& goal, const Polyhedron* cached_hull) {
     bool shape_ok;
     if (std::holds_alternative<Point_3>(goal.region)) {
         shape_ok = node.check_if_node_contains_point(std::get<Point_3>(goal.region));
@@ -358,14 +393,14 @@ bool AstarSearch::goal_satisfied(const Node& node, StanceFoot which) const {
             double pnorm = std::sqrt(pa * pa + pb * pb + pc * pc);
             std::vector<Point_3> hull_verts;
             bool coplanar = true;
-            for (auto v = target_polyhedra_[idx]->vertices_begin(); v != target_polyhedra_[idx]->vertices_end(); ++v) {
+            for (auto v = cached_hull->vertices_begin(); v != cached_hull->vertices_end(); ++v) {
                 hull_verts.push_back(v->point());
                 double sd = std::abs(pa * CGAL::to_double(v->point().x()) + pb * CGAL::to_double(v->point().y()) +
                                       pc * CGAL::to_double(v->point().z()) + pd) / pnorm;
                 if (sd > 1e-6) coplanar = false;
             }
             std::vector<Point_3> sliced_3d =
-                coplanar ? hull_verts : compute_polytope_plane_intersection(node_plane, *target_polyhedra_[idx]);
+                coplanar ? hull_verts : compute_polytope_plane_intersection(node_plane, *cached_hull);
             if (sliced_3d.size() <= 2) {
                 shape_ok = false;
             } else {
@@ -384,6 +419,76 @@ bool AstarSearch::goal_satisfied(const Node& node, StanceFoot which) const {
     double center = (goal.yaw_range->first + goal.yaw_range->second) / 2.0;
     double half_width = (goal.yaw_range->second - goal.yaw_range->first) / 2.0;
     return angdiff(node.foot_yaw, center) <= half_width;
+}
+
+double AstarSearch::distance_to_goal(const Node& node, StanceFoot which) const {
+    return foot_goal_distance(node, *config_.foot_goals[static_cast<size_t>(which)], config_.distance_metric);
+}
+
+bool AstarSearch::goal_satisfied(const Node& node, StanceFoot which) const {
+    size_t idx = static_cast<size_t>(which);
+    return foot_goal_satisfied(node, *config_.foot_goals[idx], target_polyhedra_[idx] ? &*target_polyhedra_[idx] : nullptr);
+}
+
+std::vector<Node*> expand_cube_pickup(Node* parent,
+                                       const std::vector<AstarSearchConfig::SceneCube>& scene_cubes,
+                                       const std::vector<std::array<std::optional<Polyhedron>, 2>>& scene_cube_polyhedra,
+                                       NodePool& pool) {
+    std::vector<Node*> children;
+    if (parent->cube_state != CubeState::None && parent->cube_state != CubeState::PlacedInactive) return children;
+
+    for (size_t i = 0; i < scene_cubes.size(); ++i) {
+        if (i < parent->cubes_picked_up.size() && parent->cubes_picked_up[i]) continue; // already taken on this path
+
+        const auto& aff = scene_cubes[i].pickup_affordance;
+        bool ready;
+        if (aff[0].has_value() != aff[1].has_value()) {
+            // Mode 1: only one foot's slot is filled -- this foot alone must satisfy it, same
+            // convention as foot_goals mode 1 (the other foot is irrelevant to this test).
+            StanceFoot which = aff[0] ? StanceFoot::Left : StanceFoot::Right;
+            size_t w = static_cast<size_t>(which);
+            const Polyhedron* hull = scene_cube_polyhedra[i][w] ? &*scene_cube_polyhedra[i][w] : nullptr;
+            ready = parent->stance_foot == which && foot_goal_satisfied(*parent, *aff[w], hull);
+        } else if (aff[0] && aff[1]) {
+            // Mode 2: both slots filled -- symmetric stance, tested on (parent, parent->parent)
+            // together, same pairing as foot_goals' own closing-stance termination test. No parent
+            // yet (the very start node): only one foot has ever been placed, no pair to test.
+            if (parent->parent == nullptr) continue;
+            size_t pw = static_cast<size_t>(parent->stance_foot), ow = static_cast<size_t>(other_foot(parent->stance_foot));
+            const Polyhedron* phull = scene_cube_polyhedra[i][pw] ? &*scene_cube_polyhedra[i][pw] : nullptr;
+            const Polyhedron* ohull = scene_cube_polyhedra[i][ow] ? &*scene_cube_polyhedra[i][ow] : nullptr;
+            ready = foot_goal_satisfied(*parent, *aff[pw], phull) && foot_goal_satisfied(*parent->parent, *aff[ow], ohull);
+        } else {
+            continue; // neither slot set -- rejected at AstarSearch construction, defensive here
+        }
+        if (!ready) continue;
+
+        // Zero-displacement pseudo-action, same shape as expand_cube_placement's own children:
+        // same foot/position/yaw/surface as parent, only the cube-related state differs.
+        Node* child = pool.create();
+        child->parent_ptrs.push_back(parent);
+        child->patch_vertices = parent->patch_vertices;
+        child->patch_polygon_2d = parent->patch_polygon_2d;
+        child->transformation_to_2d = parent->transformation_to_2d;
+        child->transformation_to_3d = parent->transformation_to_3d;
+        child->stance_foot = parent->stance_foot;
+        child->surface_id = parent->surface_id;
+        child->depth = parent->depth + 1;
+        child->centroid = parent->centroid;
+        child->foot_yaw = parent->foot_yaw;
+        child->pred_surface_ids = parent->pred_surface_ids; // no footstep was taken
+
+        child->cube_state = CubeState::InHand;
+        child->cube = std::nullopt;
+        // Copied from parent, then this cube's bit set on the COPY -- parent->cubes_picked_up
+        // itself is never mutated (each sibling child below gets its own independent copy).
+        child->cubes_picked_up = parent->cubes_picked_up;
+        if (child->cubes_picked_up.size() <= i) child->cubes_picked_up.resize(i + 1, false);
+        child->cubes_picked_up[i] = true;
+
+        children.push_back(child);
+    }
+    return children;
 }
 
 void AstarSearch::search() {
@@ -525,14 +630,26 @@ void AstarSearch::search() {
         }
 
         if (config_.cube_half_extent > 0.0) {
-            if (current_node->cube_state == CubeState::InHand) {
-                for (Node* child : expand_cube_placement(current_node, surfaces_, reachability_, config_.cube_half_extent, config_.expansion_params, pool_)) {
-                    process_child(child, config_.cube_place_cost);
-                }
-            } else if (current_node->cube_state == CubeState::PlacedActive) {
-                for (Node* child : expand_onto_cube(current_node, reachability_, config_.cube_height, config_.cube_half_extent, config_.expansion_params, pool_)) {
-                    process_child(child, config_.cube_step_cost);
-                }
+            switch (current_node->cube_state) {
+                case CubeState::None:
+                case CubeState::PlacedInactive:
+                    // Hands free: try picking up any scene cube not yet taken on this path (a no-op
+                    // when scene_cubes is empty, e.g. every caller of the "carried from the start"
+                    // cube mode that predates this extension).
+                    for (Node* child : expand_cube_pickup(current_node, config_.scene_cubes, scene_cube_polyhedra_, pool_)) {
+                        process_child(child, config_.cube_pickup_cost);
+                    }
+                    break;
+                case CubeState::InHand:
+                    for (Node* child : expand_cube_placement(current_node, surfaces_, reachability_, config_.cube_half_extent, config_.expansion_params, pool_)) {
+                        process_child(child, config_.cube_place_cost);
+                    }
+                    break;
+                case CubeState::PlacedActive:
+                    for (Node* child : expand_onto_cube(current_node, reachability_, config_.cube_height, config_.cube_half_extent, config_.expansion_params, pool_)) {
+                        process_child(child, config_.cube_step_cost);
+                    }
+                    break;
             }
         }
     }

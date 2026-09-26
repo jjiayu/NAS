@@ -252,6 +252,7 @@ std::vector<Node*> expand_node(Node* parent,
 
                 child->pred_surface_ids = parent->pred_surface_ids;
                 child->pred_surface_ids[static_cast<size_t>(parent->stance_foot)].push_back({parent->surface_id});
+                child->cubes_picked_up = parent->cubes_picked_up;
 
                 // Cube transported unchanged (§3.2: "c est simplement transporté sans
                 // etre modifie") -- same surface/frame/yaw it already had, only the
@@ -340,6 +341,7 @@ std::vector<Node*> expand_node(Node* parent,
 
             child->pred_surface_ids = parent->pred_surface_ids;
             child->pred_surface_ids[static_cast<size_t>(parent->stance_foot)].push_back({parent->surface_id});
+            child->cubes_picked_up = parent->cubes_picked_up;
 
             // Preserve InHand across an ordinary step (the cube isn't placed by this
             // action, so it doesn't get silently dropped while still being carried) --
@@ -463,6 +465,7 @@ std::vector<Node*> expand_cube_placement(Node* parent,
         child->centroid = get_centroid(origin_patch_3d); // heuristic stays on the x-projection (spec §5.4)
         child->foot_yaw = parent->foot_yaw;
         child->pred_surface_ids = parent->pred_surface_ids; // no footstep was taken
+        child->cubes_picked_up = parent->cubes_picked_up;
 
         child->cube_state = CubeState::PlacedActive;
         CubePlacement placement;
@@ -620,6 +623,7 @@ std::vector<Node*> expand_onto_cube(Node* parent,
 
         child->pred_surface_ids = parent->pred_surface_ids;
         child->pred_surface_ids[static_cast<size_t>(parent->stance_foot)].push_back({parent->surface_id});
+        child->cubes_picked_up = parent->cubes_picked_up;
 
         // v1 scope: the cube is single-use -- immediately inactive after being stepped
         // on, never a candidate for a second on-cube step (docs/cube-implementation-plan.md
