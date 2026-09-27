@@ -92,6 +92,18 @@ public:
 
     double foot_yaw = 0.0;
 
+    // Exact integer congruence class of foot_yaw, in yaw_angle_increment units, wrapped to
+    // [0, yaw_bins_per_revolution) -- NOT re-derived from foot_yaw by dividing/casting (that
+    // truncates asymmetrically around 0, see docs/patchindex-scalability-note.md). Tracked as
+    // its own integer instead: 0 for the start node (or a one-time std::llround of a
+    // non-grid-aligned start_foot_yaw), then parent's own value + the same integer offset used
+    // to build the child's foot_yaw, wrapped modulo core/expansion.hpp's
+    // yaw_bins_per_revolution() -- exact arithmetic the whole way, no floating error can ever
+    // put two nodes on the same physical yaw into different bins or vice versa. Always 0 when
+    // rotation is disabled (foot_yaw is always 0.0 then too). Used by planners/astar_search's
+    // PatchIndex to bucket/compare nodes by yaw without any float division at comparison time.
+    int foot_yaw_bin = 0;
+
     // Cube-extension state, unused (None/nullopt) unless the extension is active --
     // see CubeState/CubePlacement above.
     CubeState cube_state = CubeState::None;

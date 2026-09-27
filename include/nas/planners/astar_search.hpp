@@ -197,6 +197,20 @@ struct AstarSearchConfig {
     // else (docs/paper-deltas.md, "Audit de similarité").
     double node_similarity_threshold = 0.02;
 
+    // Side length of PatchIndex's spatial hash cell over the node centroid (x, y, z), in metres.
+    // Was a hardcoded 0.1 (10cm); made configurable per docs/patchindex-scalability-note.md, whose
+    // "Experience faite" section measured 0.05 (5cm, now the default) at -40 to -42% search time on
+    // the scenario that exposed PatchIndex's cost-grows-with-bucket-population issue (StairsGap+
+    // scene_cubes), with expansions/path identical to 0.1 on that scenario and on the standard
+    // 11-scenario suite -- also checked at 0.2 (worse: bigger cells, bigger buckets, +11%) and 0.02
+    // (still zero missed merges, measured with an independent check, but with node_similarity_threshold
+    // also at 0.02 there is no margin left, so 0.05 is kept as the default rather than pushing to the
+    // edge of that guarantee). Must stay well above node_similarity_threshold (same margin argument as
+    // that note's "position" section: a cell smaller than ~2.5x the similarity tolerance could let two
+    // centroids within tolerance fall more than 1 cell index apart, outside PatchIndex::find()'s
+    // 27-neighbour scan).
+    double patch_index_cell_size = 0.05;
+
     ExpansionParams expansion_params;
 
     // Test/diagnostic seams, unset in production. on_expand: right after a node

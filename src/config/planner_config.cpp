@@ -84,6 +84,7 @@ AstarSearchConfig parse_astar_config(const json& j, std::optional<Vector_3>& goa
     if (config.goal_yaw_tolerance < 0.0) throw std::runtime_error("load_planner_config: \"astar.goal_yaw_tolerance_deg\" must be >= 0");
     if (config.goal_yaw_weight < 0.0) throw std::runtime_error("load_planner_config: \"astar.goal_yaw_weight\" must be >= 0 (0 ignores the cost)");
     if (j.contains("node_similarity_threshold")) config.node_similarity_threshold = j.at("node_similarity_threshold").get<double>();
+    if (j.contains("patch_index_cell_size")) config.patch_index_cell_size = j.at("patch_index_cell_size").get<double>();
 
     if (j.contains("expansion")) {
         const json& e = j.at("expansion");

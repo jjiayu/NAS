@@ -1,4 +1,4 @@
-# Limite de scalabilité de `PatchIndex` (découverte, pas corrigée)
+# Limite de scalabilité de `PatchIndex` (découverte et corrigée — yaw + CELL, 2026-09-27)
 
 Contexte : trouvée en profilant le scénario StairsGap+`scene_cubes` (voir `docs/cube-pickup-spec.md`),
 dont la recherche prenait ~8.8s pour 1321 expansions (contre ~0.4s pour 218 expansions sans
@@ -86,15 +86,102 @@ Changement non conservé tel quel (juste testé puis annulé) : `CELL` est aujou
 `static constexpr` codé en dur dans `PatchIndex` — voir la tâche "CELL en paramètre" ci-dessous, qui
 rendrait cette valeur réglable plutôt que de fixer 0.05 en dur à la place de 0.1.
 
-## Prochaines étapes (dans l'ordre demandé, aucune commencée)
+## Étape 1 (yaw en entier) : FAITE et appliquée (2026-09-27, après investigation approfondie)
 
-1. **Yaw en entier + validation dure que l'incrément divise 360°** — élimine le bug de case doublée à
-   la racine (voir ci-dessus). Prioritaire : à vérifier si ça réduit lui-même une partie du problème de
-   bucket avant de toucher à `CELL`.
-2. **`CELL` doit devenir un paramètre**, pas une constante codée en dur dans `PatchIndex` — probablement
-   un nouveau champ sur `AstarSearchConfig`, transmis au constructeur de `PatchIndex` aux côtés de
-   `tol_`/`rotation_enabled_`/`yaw_increment_`. Une fois fait, la valeur 5cm mesurée ci-dessus (ou plus
-   fine) devient un choix de configuration à tester, pas un changement de code.
+Implémentée : `Node::foot_yaw_bin`, un entier suivi exactement (parent + même décalage entier que le
+yaw flottant, jamais re-dérivé par division), plus `yaw_bins_per_revolution()` qui valide dur que
+`360° / yaw_angle_increment` est entier. Élimine la troncature asymétrique décrite plus haut.
+
+**Effet mesuré** : sur la suite golden (11 scénarios), le nombre d'expansions augmente sur la
+plupart (attendu — la case yaw≈0° n'est plus en double largeur, donc fusionne moins), diminue sur
+deux (pas monotone : A* pondérée, l'ordre d'exploration peut aussi bien raccourcir qu'allonger).
+Sur 10 des 11 scénarios le chemin final reste identique (même longueur/surfaces/pieds que la
+référence legacy). **Sur `NarrowPassage` seul**, le chemin change : 30 nœuds (29 pas) → 34 nœuds
+(33 pas) — cassant le match exact avec la Table I du papier CASSR, longtemps cité comme sanity-check
+de ce projet (PROGRESS.md).
+
+**Investigation de la régression `NarrowPassage`, à la demande de l'utilisateur (qui doutait qu'elle
+soit justifiée)** — chaque théorie testée par la mesure, pas juste raisonnée :
+1. *Un `floor()` seul (sans champ `Node`, suggestion utilisateur) donne-t-il la même régression ?*
+   Oui, bit pour bit (98→115 expansions, 30→34 nœuds) — élimine l'hypothèse "bug de mon
+   implémentation bins" : n'importe quelle correction de la troncature casse `NarrowPassage` pareil.
+   (`floor()` seul diffère des bins entiers sur d'autres scénarios — Stairs 49 vs 50, etc. — parce
+   que les bins unifient aussi le repli ±180°, ce qu'un `floor()` seul ne fait pas ; sans effet sur
+   `NarrowPassage`, qui n'approche jamais ±180°.)
+2. *Le nœud partagé (identique dans les deux versions, mêmes 6 premiers pas, même `node_id`) a-t-il
+   une raison de produire un enfant différent ?* Tracé via `on_expand`/`on_child` : ses 7 candidats
+   de lacet sont des **égalités exactes** (même `g`, `h`, `f` à la dernière décimale — le patch ne
+   dépend que de la surface, pas du lacet choisi). Aucune fusion ne les départage à ce niveau. Piste
+   `SkippedClosed` (le code ne compare aucun coût sur un match contre le **closed**-set, contrairement
+   à l'open-set) testée par instrumentation : **zéro occurrence** sur ce scénario — piste fausse,
+   explicitement abandonnée. La vraie fusion apparaît un niveau plus bas (l'un des 7 enfants
+   d'égalité, en s'étendant, rencontre un enfant d'une **autre branche** et le bat/perd) — gouvernée
+   par la même règle de lacet en cours de correction.
+3. *La fusion peut-elle changer l'optimum ?* Testé directement : recherche relancée avec
+   `node_similarity_threshold` quasi nul (`1e-9`, fusion flitue désactivée, seuls des doublons
+   géométriques exacts peuvent encore fusionner) — **tableau 2×2 décisif** :
+
+   |                        | tolérance floue (0.02) | tolérance quasi nulle (1e-9) |
+   |------------------------|:-----------------------:|:-----------------------------:|
+   | code buggé (tronque)   | 98 exp / **30 nœuds**   | 103 exp / **34 nœuds**         |
+   | code corrigé (bins)    | 115 exp / **34 nœuds**  | 115 exp / **34 nœuds**         |
+
+   Les 30 nœuds n'apparaissent que dans une seule case (bug + flou) — retirer *l'un ou l'autre*
+   ingrédient (corriger le bug, OU juste resserrer la tolérance) donne 34. **Conclusion tranchée** :
+   30 n'était pas un optimum robuste protégé par du code correct — un artefact de l'interaction
+   bug-de-troncature × tolérance floue à 2cm. 34 est la réponse stable aux quatre coins du tableau
+   sauf un.
+
+**Décision finale (2026-09-27)** : fix appliqué (bins entiers, gardés plutôt que `floor()` seul pour
+traiter aussi le repli ±180°). Convergence revérifiée à froid sur les 11 scénarios (avant ≤ après
+partout, égal sur 10/11) et perf toujours du même ordre de grandeur (ratios 1.00x-1.45x). Tests mis à
+jour en conséquence : `merge_consistency_test.cpp` utilisait sa propre réplique périmée de l'ancien
+calcul de lacet pour sa vérification indépendante (corrigé pour lire `n.foot_yaw_bin`, le champ
+canonique, sinon il signalait des "fusions manquées" qui n'étaient qu'un désaccord de réplique, pas
+un vrai bug) ; `astar_search_golden_test.cpp`/`golden_all_scenes_test.cpp` documentent explicitement
+`NarrowPassage` comme exception acceptée (pas une comparaison stricte affaiblie partout, seulement
+ce scénario, avec la justification ci-dessus) ; `dual_target_all_scenes_test.cpp` : références de
+régression (`expected_*_expansions`) mises à jour aux nouvelles valeurs mesurées.
+
+## Étape 2 (CELL configurable) : FAITE et validée (2026-09-27)
+
+`AstarSearchConfig::patch_index_cell_size` (défaut 0.1, inchangé), transmis au constructeur de
+`PatchIndex` à côté de `tol_`/`rotation_enabled_`/`yaw_increment_`, lu depuis le JSON
+(`"patch_index_cell_size"`, `config/planner_config.cpp`). Testé à 0.1 (no-op : suite golden 100%
+identique à l'état d'avant, ~178s) puis à 0.05 sur les 11 scénarios standard (`nas_bench_perf` +
+`golden_all_scenes_test`, hook temporaire `NAS_CELL_SIZE`, retiré après coup) : **expansions
+strictement identiques sur les 11 scénarios**, chemins identiques (toujours conformes à la
+référence legacy), gain modeste sur ce lot (549.7ms → 530.2ms, -3.5% — bien moindre que les -42%
+mesurés sur StairsGap+`scene_cubes`, cohérent : le gain dépend de la population des cases, ce lot de
+11 scénarios n'a pas la pathologie qui a motivé cette note).
+
+**`StairsGap+scene_cubes` intégré en permanence à `nas_bench_perf`** (2026-09-27, plus besoin de
+hook ad hoc), avec `patch_index_cell_size` en second argument CLI (`nas_bench_perf [runs]
+[cell_size]`). Comparaison complète 0.05 / 0.1 / 0.2 sur les 11 scénarios + `StairsGap+cube` :
+expansions et chemins strictement identiques aux 3 tailles (golden 17/17 à 0.05 et à 0.2, comme à
+0.1). Résultat net :
+- **0.05 : seul gain réel**, -40% sur `StairsGap+cube` (9544ms → 5683ms), cohérent avec la mesure
+  d'origine (-42%). Sur les 11 scénarios standard, dans le bruit de mesure (±5%, pas de signal net —
+  leur population de case n'est jamais assez grande pour que `CELL` compte).
+- **0.2 : PIRE que 0.1**, +11% sur `StairsGap+cube` (9544ms → 10567ms) — des cases plus grosses
+  regroupent encore plus de nœuds par case, donc `similar()` est appelé encore plus souvent (le coût
+  croît avec la population de la case, exactement le mécanisme documenté plus haut, pas O(1)).
+- **0.02 (= `node_similarity_threshold`, marge nulle) testé aussi** : encore plus rapide (2030ms sur
+  `StairsGap+cube`, -64% vs 0.05) et zéro missed-merge mesuré (`merge_consistency_test`, qui recalcule
+  indépendamment si deux nœuds "pushed" auraient dû fusionner -- 0 sur tous ses cas, y compris les
+  explosions Euclidiennes à ~13500 enfants). Empiriquement sûr sur ce jeu de scènes, mais sans la
+  garantie mathématique de marge x2.5 que 0.05 a -- gardé en réserve, pas retenu comme défaut par
+  prudence plutôt que par une régression mesurée.
+
+**Décision (2026-09-27) : `patch_index_cell_size` par défaut passe à 0.05** (`include/nas/planners/
+astar_search.hpp`), sur la base des mesures ci-dessus. Suite complète revalidée à ce nouveau défaut :
+`nas_tests_fast`+`nas_tests_golden` 100% (129s, plus rapide qu'avant grâce aux tests cube qui en
+profitent aussi).
+
+## Prochaines étapes
+
+1. ~~Yaw en entier~~ — fait (voir ci-dessus).
+2. ~~`CELL` en paramètre~~ — fait (voir ci-dessus).
 3. **Une vraie structure spatiale (k-d tree, R-tree)** : seulement si 1 et 2 ne suffisent pas. N'aurait
    de sens que pour la partie continue (position, yaw traité comme dimension circulaire) à l'intérieur
    de chaque case déjà isolée par les champs discrets (surface/pied/cube_state/cubes_picked_up) — ce

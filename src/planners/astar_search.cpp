@@ -65,13 +65,20 @@ double patch_distance(const Node& a, const Node& b) {
 }
 
 // Set of nodes with a "find a similar node" query. Nodes are bucketed by
-// (surface, stance, yaw bin, 10 cm centroid cell) and a query scans the 27
+// (surface, stance, yaw bin, cell_size-wide centroid cell) and a query scans the 27
 // neighbouring cells, so similar nodes are found across cell boundaries and the
 // cost is independent of the set size. Used for both the open and closed sets.
+//
+// Yaw uses Node::foot_yaw_bin directly (an exact integer already wrapped to its congruence
+// class, see core/expansion.hpp's yaw_bins_per_revolution() and Node::foot_yaw_bin's own
+// comment) -- NOT re-derived here by dividing/casting the float foot_yaw, which is what
+// docs/patchindex-scalability-note.md found to truncate asymmetrically around 0 (int(-0.99)
+// == 0 but int(0.99) == 0 too, doubling that one bin's width). foot_yaw_bin is always 0 for
+// both parent and child when rotation is disabled, so comparing it needs no extra
+// rotation-enabled guard.
 class PatchIndex {
 public:
-    PatchIndex(double tol, bool rotation_enabled, double yaw_increment)
-        : tol_(tol), rotation_enabled_(rotation_enabled), yaw_increment_(yaw_increment) {}
+    PatchIndex(double tol, double cell_size) : tol_(tol), cell_size_(cell_size) {}
 
     Node* find(const Node* n) const {
         Cell c = cell_of(*n);
@@ -112,14 +119,11 @@ private:
             return seed;
         }
     };
-    static constexpr double CELL = 0.1;
-
     Cell cell_of(const Node& n) const {
-        return {n.surface_id, static_cast<int>(n.stance_foot),
-                rotation_enabled_ ? static_cast<int>(n.foot_yaw / yaw_increment_) : 0,
-                static_cast<int>(std::floor(CGAL::to_double(n.centroid.x()) / CELL)),
-                static_cast<int>(std::floor(CGAL::to_double(n.centroid.y()) / CELL)),
-                static_cast<int>(std::floor(CGAL::to_double(n.centroid.z()) / CELL)),
+        return {n.surface_id, static_cast<int>(n.stance_foot), n.foot_yaw_bin,
+                static_cast<int>(std::floor(CGAL::to_double(n.centroid.x()) / cell_size_)),
+                static_cast<int>(std::floor(CGAL::to_double(n.centroid.y()) / cell_size_)),
+                static_cast<int>(std::floor(CGAL::to_double(n.centroid.z()) / cell_size_)),
                 static_cast<int>(n.cube_state), n.cubes_picked_up};
     }
     bool similar(const Node& a, const Node& b) const {
@@ -137,13 +141,12 @@ private:
         if (a.cube_state != b.cube_state) return false;
         if (a.cubes_picked_up != b.cubes_picked_up) return false;
         if (a.surface_id != b.surface_id || a.stance_foot != b.stance_foot) return false;
-        if (rotation_enabled_ && static_cast<int>(a.foot_yaw / yaw_increment_) != static_cast<int>(b.foot_yaw / yaw_increment_)) return false;
+        if (a.foot_yaw_bin != b.foot_yaw_bin) return false;
         return patch_distance(a, b) < tol_;
     }
 
     double tol_;
-    bool rotation_enabled_;
-    double yaw_increment_;
+    double cell_size_;
     std::unordered_map<Cell, std::vector<Node*>, CellHash> cells_;
 };
 
@@ -184,6 +187,14 @@ AstarSearch::AstarSearch(std::vector<Surface> surfaces, ReachabilityModel reacha
 
     if (config_.goal_surface_id >= static_cast<int>(surfaces_.size())) {
         throw std::invalid_argument("AstarSearch: goal_surface_id " + std::to_string(config_.goal_surface_id) + " is not a surface of the scenario");
+    }
+    // Validated up front (not just relied upon inside expand_node's hot loop) so a
+    // misconfigured increment fails at construction, not partway through a search:
+    // PatchIndex dedups nodes by Node::foot_yaw_bin, an integer wrapped modulo
+    // yaw_bins_per_revolution(), and that wrap only lands on the same physical angle at
+    // +/-180 deg if the increment divides 360 deg exactly (docs/patchindex-scalability-note.md).
+    if (config_.expansion_params.rotation_enabled) {
+        yaw_bins_per_revolution(config_.expansion_params.yaw_angle_increment);
     }
     if (config_.goal_yaw_target && !config_.expansion_params.rotation_enabled) {
         throw std::invalid_argument("AstarSearch: goal_yaw_target is set but expansion_params.rotation_enabled is "
@@ -248,6 +259,18 @@ AstarSearch::AstarSearch(std::vector<Surface> surfaces, ReachabilityModel reacha
     start_node_->stance_foot = config_.start_stance_foot;
     start_node_->centroid = config_.start_position;
     start_node_->foot_yaw = config_.expansion_params.rotation_enabled ? config_.start_foot_yaw : 0.0;
+    // The only place a float is ever converted to a yaw bin by division: start_foot_yaw is an
+    // arbitrary config-provided angle, not itself produced by an integer number of expansion
+    // steps, so there is no exact integer to inherit here (unlike every descendant node, whose
+    // foot_yaw_bin is parent's own + the same integer offset used for its foot_yaw -- see
+    // core/expansion.cpp's candidate_yaws()). std::llround (nearest), not truncation, and
+    // wrapped into [0, bins) -- both deviations from the old cell_of()'s int(x / increment) that
+    // docs/patchindex-scalability-note.md flagged as the source of the doubled-width bin at 0.
+    if (config_.expansion_params.rotation_enabled) {
+        const int bins = yaw_bins_per_revolution(config_.expansion_params.yaw_angle_increment);
+        long long idx = std::llround(start_node_->foot_yaw / config_.expansion_params.yaw_angle_increment);
+        start_node_->foot_yaw_bin = static_cast<int>(((idx % bins) + bins) % bins);
+    }
     start_node_->depth = 0;
     // scene_cubes non-empty: start empty-handed (must pick one up) rather than carrying
     // one from the start -- with scene_cubes empty, this reduces exactly to the original
@@ -482,6 +505,7 @@ std::vector<Node*> expand_cube_pickup(Node* parent,
         child->depth = parent->depth + 1;
         child->centroid = parent->centroid;
         child->foot_yaw = parent->foot_yaw;
+        child->foot_yaw_bin = parent->foot_yaw_bin;
         child->pred_surface_ids = parent->pred_surface_ids; // no footstep was taken
 
         child->cube_state = CubeState::InHand;
@@ -500,9 +524,8 @@ void AstarSearch::search() {
     OpenSet open_set;
     // open_index answers "is an equivalent node already open?"; the heap handle
     // of an open node is looked up by the node itself.
-    const auto& ep = config_.expansion_params;
-    PatchIndex open_index(config_.node_similarity_threshold, ep.rotation_enabled, ep.yaw_angle_increment);
-    PatchIndex closed_index(config_.node_similarity_threshold, ep.rotation_enabled, ep.yaw_angle_increment);
+    PatchIndex open_index(config_.node_similarity_threshold, config_.patch_index_cell_size);
+    PatchIndex closed_index(config_.node_similarity_threshold, config_.patch_index_cell_size);
     std::unordered_map<Node*, OpenSet::handle_type> node_handles;
 
     node_handles[start_node_] = open_set.push(start_node_);

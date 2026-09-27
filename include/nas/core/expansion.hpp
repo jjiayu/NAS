@@ -39,6 +39,15 @@ namespace nas {
 // talosReachability assets in core/reachability's tests.
 std::string effector_name(StanceFoot foot);
 
+// round(2*pi / yaw_angle_increment) -- throws std::invalid_argument if the increment doesn't
+// divide a full revolution evenly (within float tolerance). Node::foot_yaw_bin is wrapped modulo
+// this count; if the increment didn't divide 360 degrees exactly, that wrap would land on the
+// wrong physical angle at +/-180 deg (the congruence class wouldn't close up), silently merging
+// or splitting nodes that shouldn't be (see docs/patchindex-scalability-note.md). Only meaningful
+// when rotation is enabled -- called by expand_node/expand_onto_cube (cheap: once per expansion,
+// not per node-similarity comparison) and by AstarSearch's constructor (validates once up front).
+int yaw_bins_per_revolution(double yaw_angle_increment);
+
 struct ExpansionParams {
     bool rotation_enabled = false;
     // Fan-out is 2*yaw_discretization_num + 1 candidate yaws per surface

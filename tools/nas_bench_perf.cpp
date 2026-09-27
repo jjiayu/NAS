@@ -1,7 +1,12 @@
 // Search + QP timing on every scenario, same configuration as nas_golden_all_scenes.
 // Written so the same source builds in a checkout of an older commit (e.g. the tag
 // legacy-replay-verified, whose defaults are the old behaviour): that gives a baseline
-// measured on the same machine with the same tool. Usage: nas_perf_all_scenes [runs]
+// measured on the same machine with the same tool. Usage: nas_perf_all_scenes [runs] [cell_size]
+//
+// Also includes StairsGap+scene_cubes, the scenario that originally exposed PatchIndex's
+// cost-grows-with-bucket-population issue (docs/patchindex-scalability-note.md) -- kept here
+// permanently rather than as an ad hoc one-off measurement, since it is the one scenario in this
+// benchmark where patch_index_cell_size actually matters.
 //
 // Each scene is now timed TWICE: once as before (single target, "1 cible" — the timed loop and its
 // config are byte-for-byte what they were before foot_goals existed, so this half of the table stays
@@ -77,6 +82,7 @@ double stddev_of(const std::vector<double>& v, double m) {
 
 int main(int argc, char** argv) {
     int runs = argc > 1 ? std::stoi(argv[1]) : 10;
+    double cell_size = argc > 2 ? std::stod(argv[2]) : 0.1;
     std::string dir = TALOS_REACHABILITY_DATA_DIR;
     ReachabilityModel reach = ReachabilityModel::load({
         {dir + "/RF_constraints_in_LF_quasi_flat_REDUCED.obj", "RF", "LF", ReachabilityDirection::Forward},
@@ -88,6 +94,7 @@ int main(int argc, char** argv) {
         config::Scenario sc = config::load_scenario(s.name);
         Point_3 goal = sc.surfaces.back().centroid + s.goal_offset;
         AstarSearchConfig c = base_config(s, goal);
+        c.patch_index_cell_size = cell_size;
 
         std::vector<double> t, q;
         int exp = 0;
@@ -123,6 +130,7 @@ int main(int argc, char** argv) {
         }
 
         AstarSearchConfig c2 = base_config(s, goal);
+        c2.patch_index_cell_size = cell_size;
         c2.max_expansions = 50000; // safety net only, see dual_target_all_scenes_test.cpp
         c2.foot_goals[static_cast<size_t>(last->stance_foot)] = target_around(last, 0.15, 40.0);
         c2.foot_goals[static_cast<size_t>(prev->stance_foot)] = target_around(prev, 0.15, 40.0);
@@ -146,6 +154,55 @@ int main(int argc, char** argv) {
         double m2 = mean_of(t2);
         std::printf("%-19s %5s %10.2f %8.2f %6d %10.2f\n", s.name, "2", m2, stddev_of(t2, m2), exp2, mean_of(q2));
     }
+
+    // StairsGap+scene_cubes: pick up a cube resting in the scene, place it, step onto it to cross
+    // an obstacle (see tests/golden/cube_pickup_and_placement_test.cpp, same scenario/config).
+    // Needs its own reachability model (extra Cube_constraints_in_{LF,RF}.obj entries).
+    {
+        ReachabilityModel cube_reach = ReachabilityModel::load({
+            {dir + "/RF_constraints_in_LF_quasi_flat_REDUCED_clamp_z18.obj", "RF", "LF", ReachabilityDirection::Forward},
+            {dir + "/LF_constraints_in_RF_quasi_flat_REDUCED_clamp_z18.obj", "LF", "RF", ReachabilityDirection::Forward},
+            {dir + "/Cube_constraints_in_LF.obj", "Cube", "LF", ReachabilityDirection::Forward},
+            {dir + "/Cube_constraints_in_RF.obj", "Cube", "RF", ReachabilityDirection::Forward},
+        });
+        config::Scenario sc = config::load_scenario("StairsGap");
+
+        AstarSearchConfig c;
+        c.start_position = Point_3(0.1, 0.0, 0.0);
+        c.start_stance_foot = StanceFoot::Right;
+        c.expansion_params.rotation_enabled = true;
+        c.expansion_params.yaw_discretization_num = 3;
+        c.expansion_params.yaw_angle_increment = 10.0 / 180.0 * M_PI;
+        c.expansion_params.cycle_detection_enabled = true;
+        c.node_similarity_threshold = 0.02;
+        c.patch_index_cell_size = cell_size;
+        c.cube_half_extent = 0.075;
+        c.cube_height = 0.15;
+        c.goal_location = sc.surfaces.back().centroid;
+        c.goal_stance_foot = StanceFoot::Left;
+        c.max_expansions = 5000;
+
+        AstarSearchConfig::FootGoal g;
+        g.region = std::vector<Point_3>{Point_3(0.15, -0.3, 0.0), Point_3(0.45, -0.3, 0.0), Point_3(0.45, 0.3, 0.0),
+                                         Point_3(0.15, 0.3, 0.0)};
+        AstarSearchConfig::SceneCube cube;
+        cube.pickup_affordance[static_cast<size_t>(StanceFoot::Left)] = g;
+        c.scene_cubes = {cube};
+
+        std::vector<double> t;
+        int exp = 0;
+        for (int r = 0; r < runs; ++r) {
+            AstarSearch search(sc.surfaces, cube_reach, c);
+            auto t0 = Clock::now();
+            search.search();
+            t.push_back(std::chrono::duration<double, std::milli>(Clock::now() - t0).count());
+            exp = search.expansion_count();
+        }
+        double m = mean_of(t);
+        total += m;
+        std::printf("%-19s %5s %10.2f %8.2f %6d %10s\n", "StairsGap+cube", "1", m, stddev_of(t, m), exp, "n/a");
+    }
+
     std::printf("TOTAL search (1 cible) %.1f ms\n", total);
     return 0;
 }

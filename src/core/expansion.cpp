@@ -14,7 +14,47 @@ std::string effector_name(StanceFoot foot) {
     return foot == StanceFoot::Left ? "LF" : "RF";
 }
 
+int yaw_bins_per_revolution(double yaw_angle_increment) {
+    if (yaw_angle_increment <= 0.0) {
+        throw std::invalid_argument("yaw_bins_per_revolution: yaw_angle_increment must be > 0");
+    }
+    double n = 2.0 * M_PI / yaw_angle_increment;
+    double rounded = std::round(n);
+    if (rounded < 1.0 || std::abs(n - rounded) > 1e-6 * rounded) {
+        throw std::invalid_argument(
+            "yaw_angle_increment must divide 360 degrees exactly (2*pi / yaw_angle_increment must "
+            "be a whole number), so a node's integer yaw bin wraps onto the same physical angle at "
+            "+/-180 deg -- got " + std::to_string(n) + " bins/revolution for an increment of " +
+            std::to_string(yaw_angle_increment) + " rad");
+    }
+    return static_cast<int>(rounded);
+}
+
 namespace {
+
+// Wraps into [0, bins) -- '%' alone is not enough since `raw` can be negative.
+int wrap_yaw_bin(int raw, int bins) { return ((raw % bins) + bins) % bins; }
+
+// The candidate yaws for one expansion step: a single (0.0, bin 0) entry with rotation disabled,
+// else 2*yaw_discretization_num+1 candidates around parent->foot_yaw. yaw_bin is tracked as its
+// own exact integer (parent's bin + the same offset `i` used for the float yaw), never re-derived
+// from the float afterwards -- see Node::foot_yaw_bin's own comment and
+// docs/patchindex-scalability-note.md for why that matters.
+struct YawCandidate { double yaw; int yaw_bin; };
+
+std::vector<YawCandidate> candidate_yaws(const Node* parent, const ExpansionParams& params) {
+    if (!params.rotation_enabled) return {{0.0, 0}};
+    const int bins = yaw_bins_per_revolution(params.yaw_angle_increment);
+    std::vector<YawCandidate> out;
+    out.reserve(static_cast<size_t>(2 * params.yaw_discretization_num + 1));
+    for (int i = -params.yaw_discretization_num; i <= params.yaw_discretization_num; ++i) {
+        double yaw = parent->foot_yaw + i * params.yaw_angle_increment;
+        while (yaw > M_PI) yaw -= 2.0 * M_PI;
+        while (yaw < -M_PI) yaw += 2.0 * M_PI;
+        out.push_back({yaw, wrap_yaw_bin(parent->foot_yaw_bin + i, bins)});
+    }
+    return out;
+}
 
 // Area centroid of a convex polygon given in the surface's 2D frame, mapped to
 // world. Adding a collinear point to the polygon does not change it. Falls back
@@ -221,15 +261,7 @@ std::vector<Node*> expand_node(Node* parent,
             Polygon_2 patch_polygon(patch_2d.begin(), patch_2d.end());
             Point_3 centroid = area_centroid(patch_2d, surface.transform_to_3d, patch_3d);
 
-            std::vector<double> yaw_angles;
-            if (params.rotation_enabled) {
-                for (int i = -params.yaw_discretization_num; i <= params.yaw_discretization_num; ++i)
-                    yaw_angles.push_back(parent->foot_yaw + i * params.yaw_angle_increment);
-            } else {
-                yaw_angles.push_back(0.0);
-            }
-
-            for (double yaw : yaw_angles) {
+            for (const YawCandidate& yc : candidate_yaws(parent, params)) {
                 Node* child = pool.create();
                 child->parent_ptrs.push_back(parent);
                 child->patch_vertices = patch_3d;
@@ -241,14 +273,8 @@ std::vector<Node*> expand_node(Node* parent,
                 child->transformation_to_3d = surface.transform_to_3d;
                 child->centroid = centroid;
 
-                if (params.rotation_enabled) {
-                    double normalized_yaw = yaw;
-                    while (normalized_yaw > M_PI) normalized_yaw -= 2.0 * M_PI;
-                    while (normalized_yaw < -M_PI) normalized_yaw += 2.0 * M_PI;
-                    child->foot_yaw = normalized_yaw;
-                } else {
-                    child->foot_yaw = 0.0;
-                }
+                child->foot_yaw = yc.yaw;
+                child->foot_yaw_bin = yc.yaw_bin;
 
                 child->pred_surface_ids = parent->pred_surface_ids;
                 child->pred_surface_ids[static_cast<size_t>(parent->stance_foot)].push_back({parent->surface_id});
@@ -309,16 +335,7 @@ std::vector<Node*> expand_node(Node* parent,
         Polygon_2 patch_polygon(patch_2d.begin(), patch_2d.end());
         Point_3 centroid = area_centroid(patch_2d, surface.transform_to_3d, patch_3d);
 
-        std::vector<double> yaw_angles;
-        if (params.rotation_enabled) {
-            for (int i = -params.yaw_discretization_num; i <= params.yaw_discretization_num; ++i) {
-                yaw_angles.push_back(parent->foot_yaw + i * params.yaw_angle_increment);
-            }
-        } else {
-            yaw_angles.push_back(0.0);
-        }
-
-        for (double yaw : yaw_angles) {
+        for (const YawCandidate& yc : candidate_yaws(parent, params)) {
             Node* child = pool.create();
             child->parent_ptrs.push_back(parent);
             child->patch_vertices = patch_3d;
@@ -330,14 +347,8 @@ std::vector<Node*> expand_node(Node* parent,
             child->transformation_to_3d = surface.transform_to_3d;
             child->centroid = centroid;
 
-            if (params.rotation_enabled) {
-                double normalized_yaw = yaw;
-                while (normalized_yaw > M_PI) normalized_yaw -= 2.0 * M_PI;
-                while (normalized_yaw < -M_PI) normalized_yaw += 2.0 * M_PI;
-                child->foot_yaw = normalized_yaw;
-            } else {
-                child->foot_yaw = 0.0;
-            }
+            child->foot_yaw = yc.yaw;
+            child->foot_yaw_bin = yc.yaw_bin;
 
             child->pred_surface_ids = parent->pred_surface_ids;
             child->pred_surface_ids[static_cast<size_t>(parent->stance_foot)].push_back({parent->surface_id});
@@ -464,6 +475,7 @@ std::vector<Node*> expand_cube_placement(Node* parent,
         child->depth = parent->depth + 1;
         child->centroid = get_centroid(origin_patch_3d); // heuristic stays on the x-projection (spec §5.4)
         child->foot_yaw = parent->foot_yaw;
+        child->foot_yaw_bin = parent->foot_yaw_bin;
         child->pred_surface_ids = parent->pred_surface_ids; // no footstep was taken
         child->cubes_picked_up = parent->cubes_picked_up;
 
@@ -592,15 +604,7 @@ std::vector<Node*> expand_onto_cube(Node* parent,
     // above were already correct; only this convenience field was wrong).
     Point_3 centroid = area_centroid(patch_2d, top_transform_to_3d, patch_3d);
 
-    std::vector<double> yaw_angles;
-    if (params.rotation_enabled) {
-        for (int i = -params.yaw_discretization_num; i <= params.yaw_discretization_num; ++i)
-            yaw_angles.push_back(parent->foot_yaw + i * params.yaw_angle_increment);
-    } else {
-        yaw_angles.push_back(0.0);
-    }
-
-    for (double yaw : yaw_angles) {
+    for (const YawCandidate& yc : candidate_yaws(parent, params)) {
         Node* child = pool.create();
         child->parent_ptrs.push_back(parent);
         child->patch_vertices = patch_3d;
@@ -612,14 +616,8 @@ std::vector<Node*> expand_onto_cube(Node* parent,
         child->depth = parent->depth + 1;
         child->centroid = centroid;
 
-        if (params.rotation_enabled) {
-            double normalized_yaw = yaw;
-            while (normalized_yaw > M_PI) normalized_yaw -= 2.0 * M_PI;
-            while (normalized_yaw < -M_PI) normalized_yaw += 2.0 * M_PI;
-            child->foot_yaw = normalized_yaw;
-        } else {
-            child->foot_yaw = 0.0;
-        }
+        child->foot_yaw = yc.yaw;
+        child->foot_yaw_bin = yc.yaw_bin;
 
         child->pred_surface_ids = parent->pred_surface_ids;
         child->pred_surface_ids[static_cast<size_t>(parent->stance_foot)].push_back({parent->surface_id});

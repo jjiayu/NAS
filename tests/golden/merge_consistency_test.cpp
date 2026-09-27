@@ -71,11 +71,14 @@ int run_merge_consistency() {
         cfg.expansion_params.rotation_enabled = true;
         long counts[4] = {0, 0, 0, 0};
         std::vector<Pushed> pushed;
-        const double inc = cfg.expansion_params.yaw_angle_increment;
         cfg.on_child = [&](int, const Node& n, ChildAction a) {
             ++counts[static_cast<int>(a)];
+            // n.foot_yaw_bin, not a re-derived static_cast<int>(n.foot_yaw / inc): must match the
+            // search's own dedup key exactly (PatchIndex, astar_search.cpp) or this independent
+            // check flags spurious "missed merges" that are really just a stale replica of the key,
+            // not a real dedup gap (see docs/patchindex-scalability-note.md).
             if (a == ChildAction::Pushed)
-                pushed.push_back({n.surface_id, static_cast<int>(n.stance_foot), static_cast<int>(n.foot_yaw / inc), n.depth,
+                pushed.push_back({n.surface_id, static_cast<int>(n.stance_foot), n.foot_yaw_bin, n.depth,
                                   std::vector<Point_2>(n.patch_polygon_2d.vertices_begin(), n.patch_polygon_2d.vertices_end())});
         };
         AstarSearch search(sc.surfaces, reach, cfg);

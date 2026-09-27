@@ -52,21 +52,29 @@ struct SceneSetup {
 // Same scenes/start/goal_offset as golden_all_scenes_test.cpp's kScenes (not its GOLDEN_DATA_DIR
 // comparison, which has no counterpart for a mode that didn't exist in the old code — see header
 // comment). expected_*_expansions recorded from an actual run when this test was written.
+//
+// Updated 2026-09-27 after fixing PatchIndex's yaw-bin dedup (int(foot_yaw / increment) truncated
+// instead of flooring, doubling the yaw~=0 bin's width — see docs/patchindex-scalability-note.md):
+// most scenes need more expansions with the bug fixed (less incorrect over-merging), a couple need
+// fewer (this is a weighted, non-admissible A*, so merge-order changes aren't required to move
+// monotonically) — re-measured directly, not guessed. Final paths are unaffected everywhere except
+// NarrowPassage (tracked separately, see astar_search_golden_test.cpp/golden_all_scenes_test.cpp's
+// own documented exception for that one scenario).
 const std::vector<SceneSetup> kScenes = {
-    {"NarrowPassage", Point_3(0.0, 0.0, 0.0), Vector_3(0.0, 0.0, 0.0), 98, 259},
-    {"Stairs", Point_3(0.1, 0.0, 0.0), Vector_3(0.0, 0.0, 0.0), 34, 25},
+    {"NarrowPassage", Point_3(0.0, 0.0, 0.0), Vector_3(0.0, 0.0, 0.0), 115, 104},
+    {"Stairs", Point_3(0.1, 0.0, 0.0), Vector_3(0.0, 0.0, 0.0), 50, 36},
     // Never had a path even in the old code for this exact start/goal (tests/golden_data/
     // TwoFlatSurfaces_astar.json: "success": false) — not this feature's regression to track, hence
     // no expected expansion counts; see the "size < 2" skip below.
     {"TwoFlatSurfaces", Point_3(2.2, 0.7, 0.0), Vector_3(0.0, 0.0, 0.0), 0, 0},
-    {"LongStairs", Point_3(0.0, 0.0, 0.0), Vector_3(0.0, 0.0, 0.0), 28, 16},
-    {"LongLongStairs", Point_3(0.0, 0.0, 0.0), Vector_3(0.0, 0.0, 0.0), 75, 144},
+    {"LongStairs", Point_3(0.0, 0.0, 0.0), Vector_3(0.0, 0.0, 0.0), 29, 16},
+    {"LongLongStairs", Point_3(0.0, 0.0, 0.0), Vector_3(0.0, 0.0, 0.0), 76, 153},
     {"Flat", Point_3(0.0, 0.0, 0.0), Vector_3(0.0, 0.0, 0.0), 11, 10},
-    {"LongStairsComplete", Point_3(0.0, 0.0, 0.0), Vector_3(0.0, 0.0, 0.0), 26, 50},
-    {"LongStairsExp", Point_3(0.0, 0.0, 0.0), Vector_3(0.0, 0.0, 0.0), 189, 10},
-    {"ThreePathsScene", Point_3(0.0, 0.0, 0.0), Vector_3(0.0, 0.0, 0.0), 323, 363},
-    {"Stairs_Up_Down", Point_3(0.0, 0.0, 0.0), Vector_3(0.0, 0.0, 0.0), 33, 73},
-    {"ThreePathsNAS", Point_3(0.0, 0.0, 0.0), Vector_3(0.0, 1.0, 0.0), 115, 33},
+    {"LongStairsComplete", Point_3(0.0, 0.0, 0.0), Vector_3(0.0, 0.0, 0.0), 29, 62},
+    {"LongStairsExp", Point_3(0.0, 0.0, 0.0), Vector_3(0.0, 0.0, 0.0), 236, 10},
+    {"ThreePathsScene", Point_3(0.0, 0.0, 0.0), Vector_3(0.0, 0.0, 0.0), 385, 391},
+    {"Stairs_Up_Down", Point_3(0.0, 0.0, 0.0), Vector_3(0.0, 0.0, 0.0), 35, 82},
+    {"ThreePathsNAS", Point_3(0.0, 0.0, 0.0), Vector_3(0.0, 1.0, 0.0), 113, 33},
 };
 
 ReachabilityModel make_forward_reachability() {
