@@ -98,7 +98,7 @@ public:
 private:
     struct Cell {
         int surface, stance, yaw, x, y, z, cube_state;
-        std::vector<bool> cubes_picked_up;
+        std::uint64_t cubes_picked_up;
         bool operator==(const Cell& o) const {
             return surface == o.surface && stance == o.stance && yaw == o.yaw && x == o.x && y == o.y && z == o.z &&
                    cube_state == o.cube_state && cubes_picked_up == o.cubes_picked_up;
@@ -108,7 +108,7 @@ private:
         size_t operator()(const Cell& c) const {
             size_t seed = 0;
             for (int v : {c.surface, c.stance, c.yaw, c.x, c.y, c.z, c.cube_state}) boost::hash_combine(seed, v);
-            for (bool b : c.cubes_picked_up) boost::hash_combine(seed, b);
+            boost::hash_combine(seed, c.cubes_picked_up);
             return seed;
         }
     };
@@ -223,6 +223,11 @@ AstarSearch::AstarSearch(std::vector<Surface> surfaces, ReachabilityModel reacha
         throw std::invalid_argument("AstarSearch: scene_cubes is set but cube_half_extent <= 0 -- a picked-up cube "
                                      "could never be placed back down or stepped on");
     }
+    if (config_.scene_cubes.size() > 64) {
+        throw std::invalid_argument("AstarSearch: scene_cubes has more than 64 entries -- Node::cubes_picked_up is "
+                                     "a 64-bit mask (chosen so it's cheap to copy/compare/hash in PatchIndex, "
+                                     "unlike std::vector<bool>), well beyond any scene this planner has ever seen");
+    }
     scene_cube_polyhedra_.resize(config_.scene_cubes.size());
     for (size_t i = 0; i < config_.scene_cubes.size(); ++i) {
         const auto& aff = config_.scene_cubes[i].pickup_affordance;
@@ -249,7 +254,7 @@ AstarSearch::AstarSearch(std::vector<Surface> surfaces, ReachabilityModel reacha
     // expression, unchanged behavior for every caller that predates this extension.
     start_node_->cube_state =
         (config_.cube_half_extent > 0.0 && config_.scene_cubes.empty()) ? CubeState::InHand : CubeState::None;
-    start_node_->cubes_picked_up.assign(config_.scene_cubes.size(), false);
+    start_node_->cubes_picked_up = 0;
     // The start foot stands on some surface: give the start node that surface's frame (its normal
     // orients the reachability polytope of the first step). surface_id stays -1 (the start is not a
     // visited surface for the cycle detection). No surface within reach: flat.
@@ -438,7 +443,7 @@ std::vector<Node*> expand_cube_pickup(Node* parent,
     if (parent->cube_state != CubeState::None && parent->cube_state != CubeState::PlacedInactive) return children;
 
     for (size_t i = 0; i < scene_cubes.size(); ++i) {
-        if (i < parent->cubes_picked_up.size() && parent->cubes_picked_up[i]) continue; // already taken on this path
+        if (parent->cubes_picked_up & (std::uint64_t(1) << i)) continue; // already taken on this path
 
         const auto& aff = scene_cubes[i].pickup_affordance;
         bool ready;
@@ -447,8 +452,9 @@ std::vector<Node*> expand_cube_pickup(Node* parent,
             // convention as foot_goals mode 1 (the other foot is irrelevant to this test).
             StanceFoot which = aff[0] ? StanceFoot::Left : StanceFoot::Right;
             size_t w = static_cast<size_t>(which);
+            if (parent->stance_foot != which) continue;
             const Polyhedron* hull = scene_cube_polyhedra[i][w] ? &*scene_cube_polyhedra[i][w] : nullptr;
-            ready = parent->stance_foot == which && foot_goal_satisfied(*parent, *aff[w], hull);
+            ready = foot_goal_satisfied(*parent, *aff[w], hull);
         } else if (aff[0] && aff[1]) {
             // Mode 2: both slots filled -- symmetric stance, tested on (parent, parent->parent)
             // together, same pairing as foot_goals' own closing-stance termination test. No parent
@@ -480,11 +486,9 @@ std::vector<Node*> expand_cube_pickup(Node* parent,
 
         child->cube_state = CubeState::InHand;
         child->cube = std::nullopt;
-        // Copied from parent, then this cube's bit set on the COPY -- parent->cubes_picked_up
-        // itself is never mutated (each sibling child below gets its own independent copy).
-        child->cubes_picked_up = parent->cubes_picked_up;
-        if (child->cubes_picked_up.size() <= i) child->cubes_picked_up.resize(i + 1, false);
-        child->cubes_picked_up[i] = true;
+        // parent->cubes_picked_up itself is never mutated (each sibling child below gets its own
+        // independent value with just its own bit added).
+        child->cubes_picked_up = parent->cubes_picked_up | (std::uint64_t(1) << i);
 
         children.push_back(child);
     }

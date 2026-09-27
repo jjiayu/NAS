@@ -107,7 +107,7 @@ int run_cube_pickup_and_placement() {
 
     check(path.back()->surface_id == sc.surfaces.back().surface_id,
           "the path ends on the goal surface (Step 4): the obstacle was actually crossed, not avoided");
-    check(!path.back()->cubes_picked_up.empty() && path.back()->cubes_picked_up[0],
+    check((path.back()->cubes_picked_up & 0x1) != 0,
           "the scene's only cube is marked picked-up by the end of the path");
 
     if (g_failures > 0) {

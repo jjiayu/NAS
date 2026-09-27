@@ -18,6 +18,7 @@
 #include "nas/core/types.hpp"
 
 #include <array>
+#include <cstdint>
 #include <deque>
 #include <optional>
 #include <vector>
@@ -96,14 +97,19 @@ public:
     CubeState cube_state = CubeState::None;
     std::optional<CubePlacement> cube;
 
-    // Which AstarSearchConfig::scene_cubes have already been picked up on THIS path
-    // (index-aligned with scene_cubes -- a planners/ concept Node itself knows nothing
-    // about, same relationship as pred_surface_ids above has with Surface ids). Empty by
-    // default: a Node from a search without scene_cubes never pays for this. Copied
-    // forward unchanged at every child-construction site in core/expansion.cpp (like
-    // pred_surface_ids), with exactly one site (expand_cube_pickup, planners/
-    // astar_search.cpp) also setting one new bit on the copy it hands to its own child.
-    std::vector<bool> cubes_picked_up;
+    // Which AstarSearchConfig::scene_cubes have already been picked up on THIS path: bit i set =
+    // scene cube i taken (index-aligned with scene_cubes -- a planners/ concept Node itself knows
+    // nothing about, same relationship as pred_surface_ids above has with Surface ids). A fixed-
+    // width bitmask (<=64 scene cubes, validated at AstarSearch construction), not a
+    // std::vector<bool>: this field is copied into a PatchIndex::Cell at every dedup lookup
+    // (astar_search.cpp), far more often than it's actually written to, and a non-empty
+    // std::vector<bool> copy heap-allocates -- measured to dominate the search's own added cost
+    // when scene_cubes is used, well beyond the geometry test that motivated it. 0 by default: a
+    // Node from a search without scene_cubes never sets a single bit. Copied forward unchanged at
+    // every child-construction site in core/expansion.cpp (like pred_surface_ids), with exactly one
+    // site (expand_cube_pickup, planners/astar_search.cpp) also setting one new bit on the copy it
+    // hands to its own child.
+    std::uint64_t cubes_picked_up = 0;
 
     // For CASSR/AstarSearch only: single parent + open-set bookkeeping.
     // Deliberately NOT initialized to any sentinel here (the old code's

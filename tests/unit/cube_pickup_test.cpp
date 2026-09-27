@@ -82,7 +82,7 @@ int run_cube_pickup() {
             Node* c = children[0];
             check(c->cube_state == CubeState::InHand, "(1) child cube_state is InHand");
             check(!c->cube.has_value(), "(1) child carries no CubePlacement yet");
-            check(c->cubes_picked_up.size() == 1 && c->cubes_picked_up[0], "(1) child marks cube 0 as picked up");
+            check(c->cubes_picked_up == 0x1, "(1) child marks cube 0 as picked up");
             check(c->stance_foot == parent->stance_foot, "(1) child keeps the parent's stance foot (no foot moved)");
             check(std::abs(CGAL::to_double(c->centroid.x() - parent->centroid.x())) < 1e-12 &&
                       std::abs(CGAL::to_double(c->centroid.y() - parent->centroid.y())) < 1e-12,
@@ -108,7 +108,7 @@ int run_cube_pickup() {
               "(2) node far outside the affordance region: no children");
 
         Node* already_taken = make_node(1.0, 0.0, StanceFoot::Right, 0.0, nullptr);
-        already_taken->cubes_picked_up = {true};
+        already_taken->cubes_picked_up = 0x1;
         check(expand_cube_pickup(already_taken, {cube}, no_hulls(1), pool).empty(),
               "(2) cube already picked up on this path: no children");
 
@@ -130,7 +130,7 @@ int run_cube_pickup() {
     {
         Node* parent = make_node(1.0, 0.0, StanceFoot::Right, 0.0, nullptr);
         parent->cube_state = CubeState::PlacedInactive;
-        parent->cubes_picked_up = {true, false}; // cube 0 already used earlier on this path
+        parent->cubes_picked_up = 0x1; // cube 0 already used earlier on this path
 
         AstarSearchConfig::SceneCube cube0, cube1;
         AstarSearchConfig::FootGoal g;
@@ -141,8 +141,8 @@ int run_cube_pickup() {
         auto children = expand_cube_pickup(parent, {cube0, cube1}, no_hulls(2), pool);
         check(children.size() == 1, "(3) PlacedInactive + sequential pickup: exactly one child (cube 1 only)");
         if (children.size() == 1) {
-            check(children[0]->cubes_picked_up.size() == 2 && children[0]->cubes_picked_up[0] && children[0]->cubes_picked_up[1],
-                  "(3) child's cubes_picked_up is {taken, taken}: cube 0 preserved, cube 1 newly set");
+            check(children[0]->cubes_picked_up == 0x3,
+                  "(3) child's cubes_picked_up has both bits set: cube 0 preserved, cube 1 newly set");
         }
     }
 
@@ -199,7 +199,7 @@ int run_cube_pickup() {
     // whole mechanism exists to satisfy -- each branch of the search must see its own copy). ---
     {
         Node* parent = make_node(1.0, 0.0, StanceFoot::Right, 0.0, nullptr);
-        parent->cubes_picked_up = {false, false};
+        parent->cubes_picked_up = 0;
 
         AstarSearchConfig::SceneCube cube0, cube1;
         AstarSearchConfig::FootGoal g;
@@ -210,10 +210,10 @@ int run_cube_pickup() {
         auto children = expand_cube_pickup(parent, {cube0, cube1}, no_hulls(2), pool);
         check(children.size() == 2, "(6) two independently-satisfied scene cubes: two children");
         if (children.size() == 2) {
-            check(children[0]->cubes_picked_up == std::vector<bool>{true, false}, "(6) first child took cube 0 only");
-            check(children[1]->cubes_picked_up == std::vector<bool>{false, true}, "(6) second child took cube 1 only");
+            check(children[0]->cubes_picked_up == 0x1, "(6) first child took cube 0 only");
+            check(children[1]->cubes_picked_up == 0x2, "(6) second child took cube 1 only");
         }
-        check(parent->cubes_picked_up == std::vector<bool>{false, false},
+        check(parent->cubes_picked_up == 0,
               "(6) parent's own cubes_picked_up is untouched after producing both children");
     }
 
