@@ -7,14 +7,22 @@ Python entrypoint for CASSR (see PLAN.md phase 12), built with [nanobind](https:
 ```python
 import nas_bindings
 
-nas_bindings.available_scenarios()  # -> list[str], same 11 names as config::available_scenarios()
+nas_bindings.available_scenarios()  # -> list[str], same names as config::available_scenarios()
 
 result = nas_bindings.plan(scenario_name, planner_config_path, talos_reachability_data_dir)
-result.success        # bool
-result.positions       # list[list[float]], one [x, y, z] per path node
-result.stance_feet     # list[int], 0=Left, 1=Right (matches StanceFoot's own values)
-result.foot_yaws       # list[float], radians
+result.success          # bool
+result.positions        # list[list[float]], one [x, y, z] per path node
+result.stance_feet      # list[int], 0=Left, 1=Right (matches StanceFoot's own values)
+result.foot_yaws        # list[float], radians
+result.expansion_count  # int, AstarSearch::expansion_count()
+result.search_ms        # float, wall time of the A* search
+result.qp_ms            # float, wall time of the footstep QP (0 if no path was found)
 ```
+
+`planner_config_path` is the same JSON schema the `astar_plan` CLI reads — see
+[`docs/tutorial-running-a-scenario.md`](../docs/tutorial-running-a-scenario.md) for the full schema
+(the goal is always `astar.foot_goals`). There is no separate Python-native way to build a goal —
+write it into the config file, same as any other `astar` option.
 
 **Couche 0 only** — every argument is an explicit path/name, nothing is discovered or guessed (same contract as `core/reachability`, `config/`, `talosReachability`). A convenience layer (building a planner from a package that extracts its own files) was explicitly descoped for now, see PLAN.md's "Différé".
 
