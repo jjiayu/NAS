@@ -96,13 +96,11 @@ de ce fichier (`docs/cube-extension-mechanism.md` d'abord si pas déjà lu).
   JSON cette session) : quelqu'un qui veut explorer un scénario cube sans écrire de C++ ne peut pas.
   Mécanique à ajouter (même style de schéma que `foot_goals`, avec potentiellement le même genre de
   sucre pour une position de cube au repos), pas commencé.
-- **Un piège subtil** : `expand_cube_placement` reçoit `cube_half_extent` mais ne l'utilise pas pour
-  éroder la surface de pose — elle réutilise l'érosion du PIED (déjà appliquée à
-  `surface.vertices_2d`), plus conservatrice tant que le cube reste plus petit que cette marge (voir
-  le commentaire `(void)cube_half_extent` dans `src/core/expansion.cpp`). Quelqu'un qui augmente
-  `cube_half_extent` en s'attendant à ce que la géométrie de pose en tienne compte directement sera
-  surpris — c'est documenté en commentaire, mais seulement là, pas dans la signature ni le nom du
-  paramètre.
+- ~~Un piège subtil : la pose du cube réutilisait l'érosion du pied et ignorait `cube_half_extent`~~
+  **Résolu** : le cube suit la même logique de marge que les surfaces (`docs/cube-extension-mechanism.md`,
+  « Marge et taille du cube »). La pose érode la surface brute de la demi-diagonale du cube, le
+  dessus praticable est érodé de `inner_margin`, et `cube_half_extent <= inner_margin` est refusé au
+  constructeur.
 - **v1 = un seul cube en jeu, usage unique**, assumé et bien documenté partout (spec §6, commentaires
   de `CubeState`) — pas une surprise si `docs/cube-extension-mechanism.md` est lu avant d'essayer
   d'enchaîner deux poses ou de reprendre un cube déjà posé.

@@ -45,7 +45,7 @@ std::vector<Surface> make_single_flat_surface() {
     std::vector<Point_3> square = {
         Point_3(-5, -5, 0), Point_3(5, -5, 0), Point_3(5, 5, 0), Point_3(-5, 5, 0)
     };
-    return make_surfaces({square}, /*inner_margin=*/0.1);
+    return erode_surfaces(make_surfaces({square}), /*margin=*/0.1);
 }
 
 Node* make_start_node(NodePool& pool) {

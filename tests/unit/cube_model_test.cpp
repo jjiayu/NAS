@@ -2,7 +2,7 @@
 // docs/cube-extension-spec.md / docs/cube-implementation-plan.md, Etape 1):
 // the hand-authored K_cube placement polytope loads through the existing
 // ReachabilityModel unchanged (moving_effector="Cube"), and CubeConfig's
-// defaults match the 15cm cube decided on 2026-09-23.
+// defaults match the 30cm-wide, 15cm-tall cube (side raised from 15cm so its top survives the surface inner margin).
 
 #include "nas/config/cube_model.hpp"
 #include "nas/core/reachability.hpp"
@@ -49,7 +49,7 @@ int run_config_cube() {
     // validating against StairsGap: a Y-centered box placed the cube inside that dead zone,
     // unreachable by either foot (see docs/cube-implementation-plan.md).
     struct Expected { const char* support; double y_min, y_max; };
-    for (const Expected& e : {Expected{"RF", 0.20, 0.35}, Expected{"LF", -0.35, -0.20}}) {
+    for (const Expected& e : {Expected{"RF", 0.245, 0.395}, Expected{"LF", -0.395, -0.245}}) {
         const Polyhedron& k_cube = model.query("Cube", e.support, ReachabilityDirection::Forward);
         long n_verts = std::distance(k_cube.vertices_begin(), k_cube.vertices_end());
         check(n_verts == 8, std::string("Cube-in-") + e.support + " loads as the 8-vertex hand-authored box");
@@ -76,7 +76,7 @@ int run_config_cube() {
     }
 
     config::CubeConfig cube_cfg;
-    check(std::abs(cube_cfg.half_extent - 0.075) < 1e-12, "CubeConfig default half_extent is 7.5cm (15cm cube)");
+    check(std::abs(cube_cfg.half_extent - 0.15) < 1e-12, "CubeConfig default half_extent is 15cm (30cm cube)");
     check(std::abs(cube_cfg.height - 0.15) < 1e-12, "CubeConfig default height is 15cm");
 
     if (g_failures > 0) {

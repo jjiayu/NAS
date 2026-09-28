@@ -162,13 +162,13 @@ std::string scenario_name_from_path(const std::string& stl_path) {
 
 } // namespace
 
-Scenario load_scenario_from_stl(const std::string& stl_path, double inner_margin) {
+Scenario load_scenario_from_stl(const std::string& stl_path) {
     std::vector<Triangle> triangles = parse_stl(stl_path);
     std::vector<std::vector<Point_3>> raw_surfaces = group_by_plane(triangles);
 
     Scenario scenario;
     scenario.name = scenario_name_from_path(stl_path);
-    scenario.surfaces = make_surfaces(raw_surfaces, inner_margin);
+    scenario.surfaces = make_surfaces(raw_surfaces);
     return scenario;
 }
 

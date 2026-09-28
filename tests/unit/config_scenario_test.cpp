@@ -74,22 +74,25 @@ double local_extent_y(const nas::Surface& s) {
     return hi - lo;
 }
 
-void test_inner_margin_erodes_the_footprint() {
-    // NarrowPassage's bridge (surface 1) is 0.24 m wide in y: 0.24 - 2*margin remains.
-    Scenario def = load_scenario("NarrowPassage"); // kDefaultInnerMargin = 0.11
-    Scenario thin = load_scenario("NarrowPassage", 0.05);
-    assert(near(local_extent_y(def.surfaces[1]), 0.24 - 2 * 0.11));
-    assert(near(local_extent_y(thin.surfaces[1]), 0.24 - 2 * 0.05));
-    std::cout << "test_inner_margin_erodes_the_footprint passed\n";
+void test_scenario_surfaces_are_raw_and_erosion_is_applied_on_request() {
+    // load_scenario returns the scene's true geometry: NarrowPassage's bridge (surface 1) is 0.24 m
+    // wide in y. The margin is applied by erode_by_id/erode_surfaces (and by AstarSearch itself).
+    Scenario s = load_scenario("NarrowPassage");
+    assert(near(local_extent_y(s.surfaces[1]), 0.24));
+    assert(near(local_extent_y(*nas::erode_by_id(s.surfaces, nas::kDefaultInnerMargin)[1]), 0.24 - 2 * 0.11));
+    assert(near(local_extent_y(*nas::erode_by_id(s.surfaces, 0.05)[1]), 0.24 - 2 * 0.05));
+    std::cout << "test_scenario_surfaces_are_raw_and_erosion_is_applied_on_request passed\n";
 }
 
-void test_surface_thinner_than_the_margin_is_dropped() {
-    // 0.13 > 0.24 / 2: the bridge collapses. It is dropped (not mirrored, as the old foot hack
-    // did), and ids stay equal to indices, so the search's surfaces[surface_id] indexing holds.
-    Scenario s = load_scenario("NarrowPassage", 0.13);
-    assert(s.surfaces.size() == 2);
-    for (size_t i = 0; i < s.surfaces.size(); ++i) assert(s.surfaces[i].surface_id == static_cast<int>(i));
-    std::cout << "test_surface_thinner_than_the_margin_is_dropped passed\n";
+void test_surface_thinner_than_the_margin_keeps_its_index() {
+    // 0.13 > 0.24 / 2: the bridge collapses. It is unusable (not mirrored, as the old foot hack did)
+    // but keeps its slot, so surface ids never shift.
+    Scenario s = load_scenario("NarrowPassage");
+    auto by_id = nas::erode_by_id(s.surfaces, 0.13);
+    assert(by_id.size() == s.surfaces.size() && !by_id[1] && by_id[0] && by_id[2]);
+    std::vector<nas::Surface> compact = nas::erode_surfaces(s.surfaces, 0.13);
+    assert(compact.size() == 2 && compact[0].surface_id == 0 && compact[1].surface_id == 2);
+    std::cout << "test_surface_thinner_than_the_margin_keeps_its_index passed\n";
 }
 
 } // namespace
@@ -100,8 +103,8 @@ int run_config_scenario() {
     test_unknown_scenario_throws();
     test_narrow_passage_matches_environments_hpp();
     test_three_paths_nas_matches_environments_hpp();
-    test_inner_margin_erodes_the_footprint();
-    test_surface_thinner_than_the_margin_is_dropped();
+    test_scenario_surfaces_are_raw_and_erosion_is_applied_on_request();
+    test_surface_thinner_than_the_margin_keeps_its_index();
     std::cout << "All config/scenario_library tests passed.\n";
     return 0;
 }

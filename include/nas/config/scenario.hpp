@@ -23,9 +23,9 @@ struct Scenario {
 // Names of every scene ported from the old code's environments.hpp.
 std::vector<std::string> available_scenarios();
 
-// Builds a Scenario's Surface objects from the named raw vertex list, each footprint eroded by
-// `inner_margin` metres (see make_surfaces in core/surface.hpp: a too-thin surface is dropped).
-// Throws std::out_of_range if `name` isn't in available_scenarios().
-Scenario load_scenario(const std::string& name, double inner_margin = kDefaultInnerMargin);
+// Builds a Scenario's RAW Surface objects (the scene's true geometry, no margin) from the named raw
+// vertex list. The margin is a planner parameter (AstarSearchConfig::inner_margin), applied by
+// AstarSearch itself. Throws std::out_of_range if `name` isn't in available_scenarios().
+Scenario load_scenario(const std::string& name);
 
 } // namespace nas::config

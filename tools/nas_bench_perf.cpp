@@ -177,7 +177,7 @@ int main(int argc, char** argv) {
         c.expansion_params.cycle_detection_enabled = true;
         c.node_similarity_threshold = 0.02;
         c.patch_index_cell_size = cell_size;
-        c.cube_half_extent = 0.075;
+        c.cube_half_extent = 0.15;
         c.cube_height = 0.15;
         c.foot_goals[static_cast<size_t>(StanceFoot::Left)] = AstarSearchConfig::FootGoal{sc.surfaces.back().centroid, std::nullopt};
         c.max_expansions = 5000;

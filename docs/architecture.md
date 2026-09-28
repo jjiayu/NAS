@@ -43,7 +43,7 @@ One target, `nas` (alias `nas::nas`), covering:
 - **`core/node`** — `Node` (biped-only, de-globalized) and `NodePool`, shared by CASSR and the grid
   baseline.
 - **`core/surface`** — one walkable surface: 3D/2D vertex loops, plane, centroid, world↔surface
-  transforms, eroded by `inner_margin` (default 0.11 m). `Surface` is `csp::Surface`, from the
+  transforms. `load_scenario` returns raw surfaces; `AstarSearch` erodes them itself by `AstarSearchConfig::inner_margin` (default 0.11 m). `Surface` is `csp::Surface`, from the
   external `cspplusplus` library (`find_package(csp)`), not a NAS class.
 - **`core/reachability`** — `ReachabilityModel`, a query keyed by `(moving_effector,
   support_effector, direction)` over loaded `.obj` polytopes; caches each polytope's H-rep the

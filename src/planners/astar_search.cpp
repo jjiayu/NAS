@@ -157,7 +157,7 @@ private:
 std::optional<Polyhedron> validate_and_hull_foot_goal(const std::string& context,
                                                        const AstarSearchConfig::FootGoal& g,
                                                        bool rotation_enabled,
-                                                       size_t num_surfaces) {
+                                                       const std::vector<std::optional<Surface>>& eroded_by_id) {
     std::optional<Polyhedron> hull;
     if (std::holds_alternative<std::vector<Point_3>>(g.region)) {
         const auto& verts = std::get<std::vector<Point_3>>(g.region);
@@ -169,8 +169,12 @@ std::optional<Polyhedron> validate_and_hull_foot_goal(const std::string& context
         hull = std::move(h);
     } else if (std::holds_alternative<int>(g.region)) {
         int id = std::get<int>(g.region);
-        if (id < 0 || static_cast<size_t>(id) >= num_surfaces) {
+        if (id < 0 || static_cast<size_t>(id) >= eroded_by_id.size()) {
             throw std::invalid_argument(context + "'s surface index " + std::to_string(id) + " is not a surface of the scenario");
+        }
+        if (!eroded_by_id[static_cast<size_t>(id)]) {
+            throw std::invalid_argument(context + "'s surface " + std::to_string(id) +
+                                         " is thinner than 2 x inner_margin: no foot can stand on it");
         }
     }
     if (g.yaw_range) {
@@ -189,7 +193,22 @@ std::optional<Polyhedron> validate_and_hull_foot_goal(const std::string& context
 } // namespace
 
 AstarSearch::AstarSearch(std::vector<Surface> surfaces, ReachabilityModel reachability, AstarSearchConfig config)
-    : surfaces_(std::move(surfaces)), reachability_(std::move(reachability)), config_(std::move(config)) {
+    : raw_surfaces_(std::move(surfaces)), reachability_(std::move(reachability)), config_(std::move(config)) {
+
+    // Everything below (foot_goals' surface indices, Node::surface_id, cycle detection) treats a
+    // surface_id as an index into the scene's surfaces.
+    for (size_t i = 0; i < raw_surfaces_.size(); ++i) {
+        if (raw_surfaces_[i].surface_id != static_cast<int>(i)) {
+            throw std::invalid_argument("AstarSearch: surfaces[" + std::to_string(i) + "].surface_id is " +
+                                         std::to_string(raw_surfaces_[i].surface_id) + ", expected its index");
+        }
+    }
+    // The raw scene, eroded once: eroded_by_id_ keeps a collapsed surface's slot (nullopt) so ids
+    // never shift, surfaces_ is what expand_node and the start-node lookup iterate over.
+    eroded_by_id_ = erode_by_id(raw_surfaces_, config_.inner_margin);
+    for (const std::optional<Surface>& s : eroded_by_id_) {
+        if (s) surfaces_.push_back(*s);
+    }
 
     // Validated up front (not just relied upon inside expand_node's hot loop) so a
     // misconfigured increment fails at construction, not partway through a search:
@@ -229,13 +248,28 @@ AstarSearch::AstarSearch(std::vector<Surface> surfaces, ReachabilityModel reacha
         if (!config_.foot_goals[i]) continue;
         target_polyhedra_[i] = validate_and_hull_foot_goal(
             "AstarSearch: foot_goals[" + std::to_string(i) + "]", *config_.foot_goals[i],
-            config_.expansion_params.rotation_enabled, surfaces_.size());
+            config_.expansion_params.rotation_enabled, eroded_by_id_);
     }
     if (config_.cube_half_extent > 0.0 &&
         (!reachability_.has("Cube", "LF", ReachabilityDirection::Forward) || !reachability_.has("Cube", "RF", ReachabilityDirection::Forward))) {
         throw std::invalid_argument("AstarSearch: cube_half_extent > 0 but the reachability model has no \"Cube\" "
                                      "entry for LF and/or RF support — load Cube_constraints_in_{LF,RF}.obj alongside "
                                      "the usual foot-in-foot entries to enable the cube extension");
+    }
+    if (config_.cube_half_extent > 0.0) {
+        if (config_.cube_half_extent <= config_.inner_margin) {
+            throw std::invalid_argument("AstarSearch: cube_half_extent (" + std::to_string(config_.cube_half_extent) +
+                                         ") must exceed inner_margin (" + std::to_string(config_.inner_margin) +
+                                         "): a foot stepping onto the cube needs the same margin as on any surface, "
+                                         "the cube top would be empty");
+        }
+        // Where the cube's center may go so that the whole cube rests on the real surface, any yaw.
+        // Quiet on purpose (unlike erode_by_id): most surfaces (stair treads) are legitimately too
+        // small to hold a cube.
+        const double half_diagonal = config_.cube_half_extent * std::sqrt(2.0);
+        for (const Surface& s : raw_surfaces_) {
+            if (std::optional<Surface> support = s.inner_margin(half_diagonal)) cube_support_.push_back(std::move(*support));
+        }
     }
     if (!config_.scene_cubes.empty() && config_.cube_half_extent <= 0.0) {
         throw std::invalid_argument("AstarSearch: scene_cubes is set but cube_half_extent <= 0 -- a picked-up cube "
@@ -258,7 +292,7 @@ AstarSearch::AstarSearch(std::vector<Surface> surfaces, ReachabilityModel reacha
             if (!aff[f]) continue;
             scene_cube_polyhedra_[i][f] = validate_and_hull_foot_goal(
                 "AstarSearch: scene_cubes[" + std::to_string(i) + "].pickup_affordance[" + std::to_string(f) + "]",
-                *aff[f], config_.expansion_params.rotation_enabled, surfaces_.size());
+                *aff[f], config_.expansion_params.rotation_enabled, eroded_by_id_);
         }
     }
     start_node_ = pool_.create();
@@ -333,9 +367,10 @@ AstarSearch::AstarSearch(std::vector<Surface> surfaces, ReachabilityModel reacha
 namespace {
 // A FootGoal's representative point, for goal_point()'s dual-target approximation below: the point
 // itself, a surface's centroid, or a polytope's centroid.
-Point_3 foot_goal_representative_point(const AstarSearchConfig::FootGoal& g, const std::vector<Surface>& surfaces) {
+Point_3 foot_goal_representative_point(const AstarSearchConfig::FootGoal& g,
+                                       const std::vector<std::optional<Surface>>& eroded_by_id) {
     if (std::holds_alternative<Point_3>(g.region)) return std::get<Point_3>(g.region);
-    if (std::holds_alternative<int>(g.region)) return surfaces[static_cast<size_t>(std::get<int>(g.region))].centroid;
+    if (std::holds_alternative<int>(g.region)) return eroded_by_id[static_cast<size_t>(std::get<int>(g.region))]->centroid;
     return get_centroid(std::get<std::vector<Point_3>>(g.region));
 }
 } // namespace
@@ -345,10 +380,10 @@ Point_3 AstarSearch::goal_point() const {
     if (config_.foot_goals[0] && config_.foot_goals[1]) {
         // Only consumed by heading_weight's edge cost when foot_goals is also in use — an
         // approximation (not tuned specifically for two targets), documented at heading_weight.
-        return CGAL::midpoint(foot_goal_representative_point(*config_.foot_goals[0], surfaces_),
-                               foot_goal_representative_point(*config_.foot_goals[1], surfaces_));
+        return CGAL::midpoint(foot_goal_representative_point(*config_.foot_goals[0], eroded_by_id_),
+                               foot_goal_representative_point(*config_.foot_goals[1], eroded_by_id_));
     }
-    return foot_goal_representative_point(config_.foot_goals[0] ? *config_.foot_goals[0] : *config_.foot_goals[1], surfaces_);
+    return foot_goal_representative_point(config_.foot_goals[0] ? *config_.foot_goals[0] : *config_.foot_goals[1], eroded_by_id_);
 }
 
 double AstarSearch::weight_if_epa(double raw_distance) const {
@@ -356,7 +391,7 @@ double AstarSearch::weight_if_epa(double raw_distance) const {
 }
 
 double foot_goal_distance(const Node& node, const AstarSearchConfig::FootGoal& goal, DistanceMetric metric,
-                           const std::vector<Surface>& surfaces) {
+                           const std::vector<std::optional<Surface>>& eroded_by_id) {
     if (std::holds_alternative<Point_3>(goal.region)) {
         const Point_3& target = std::get<Point_3>(goal.region);
         if (metric == DistanceMetric::Euclidean || node.patch_vertices.size() < 3) {
@@ -366,7 +401,8 @@ double foot_goal_distance(const Node& node, const AstarSearchConfig::FootGoal& g
         return calculate_epa_distance_point_to_patch(node.patch_vertices, target);
     }
     if (std::holds_alternative<int>(goal.region)) {
-        const Surface& target = surfaces[static_cast<size_t>(std::get<int>(goal.region))];
+        // Never nullopt: a goal on a collapsed surface is rejected at construction.
+        const Surface& target = *eroded_by_id[static_cast<size_t>(std::get<int>(goal.region))];
         if (metric == DistanceMetric::Euclidean || node.patch_vertices.size() < 3) {
             return compute_euclidean_distance(node.centroid, target.centroid);
         }
@@ -449,7 +485,7 @@ bool foot_goal_satisfied(const Node& node, const AstarSearchConfig::FootGoal& go
 }
 
 double AstarSearch::distance_to_goal(const Node& node, StanceFoot which) const {
-    return foot_goal_distance(node, *config_.foot_goals[static_cast<size_t>(which)], config_.distance_metric, surfaces_);
+    return foot_goal_distance(node, *config_.foot_goals[static_cast<size_t>(which)], config_.distance_metric, eroded_by_id_);
 }
 
 bool AstarSearch::goal_satisfied(const Node& node, StanceFoot which) const {
@@ -666,12 +702,12 @@ void AstarSearch::search() {
                     }
                     break;
                 case CubeState::InHand:
-                    for (Node* child : expand_cube_placement(current_node, surfaces_, reachability_, config_.cube_half_extent, config_.expansion_params, pool_)) {
+                    for (Node* child : expand_cube_placement(current_node, cube_support_, reachability_, config_.expansion_params, pool_)) {
                         process_child(child, config_.cube_place_cost);
                     }
                     break;
                 case CubeState::PlacedActive:
-                    for (Node* child : expand_onto_cube(current_node, reachability_, config_.cube_height, config_.cube_half_extent, config_.expansion_params, pool_)) {
+                    for (Node* child : expand_onto_cube(current_node, reachability_, config_.cube_height, config_.cube_half_extent - config_.inner_margin, config_.expansion_params, pool_)) {
                         process_child(child, config_.cube_step_cost);
                     }
                     break;

@@ -54,7 +54,7 @@ int run_cube_pickup_search() {
         cfg.start_stance_foot = StanceFoot::Right;
         cfg.foot_goals[static_cast<size_t>(StanceFoot::Left)] = AstarSearchConfig::FootGoal{Point_3(1.0, 0.0, 0.0), std::nullopt};
         cfg.expansion_params.rotation_enabled = true;
-        cfg.cube_half_extent = 0.075;
+        cfg.cube_half_extent = 0.15;
         cfg.cube_height = 0.15;
         cfg.max_expansions = 2000;
         return cfg;
@@ -133,6 +133,16 @@ int run_cube_pickup_search() {
         cube.pickup_affordance[static_cast<size_t>(StanceFoot::Left)] = g;
         cfg.scene_cubes = {cube};
         expect_throw(cfg, "scene_cubes set with cube_half_extent <= 0 leve une erreur claire");
+    }
+    for (double too_small : {0.10, kDefaultInnerMargin}) {
+        AstarSearchConfig cfg = base_config();
+        cfg.cube_half_extent = too_small; // top of the cube would vanish under the inner margin
+        AstarSearchConfig::SceneCube cube;
+        AstarSearchConfig::FootGoal g;
+        g.region = Point_3(0.3, 0.0, 0.0);
+        cube.pickup_affordance[static_cast<size_t>(StanceFoot::Left)] = g;
+        cfg.scene_cubes = {cube};
+        expect_throw(cfg, "cube_half_extent <= inner_margin (aucun dessus praticable) leve une erreur claire");
     }
     {
         AstarSearchConfig cfg = base_config();

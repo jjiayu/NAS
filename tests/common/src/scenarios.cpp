@@ -18,7 +18,7 @@ AstarSearchConfig make_default_config() {
 }
 
 std::vector<Surface> build_surfaces(const std::vector<std::vector<Point_3>>& raw) {
-    return make_surfaces(raw, kDefaultInnerMargin);
+    return make_surfaces(raw); // raw: AstarSearch applies AstarSearchConfig::inner_margin itself
 }
 
 } // namespace

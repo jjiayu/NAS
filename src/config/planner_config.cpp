@@ -137,6 +137,8 @@ AstarSearchConfig parse_astar_config(const json& j, std::array<std::optional<Pen
 
     if (j.contains("node_similarity_threshold")) config.node_similarity_threshold = j.at("node_similarity_threshold").get<double>();
     if (j.contains("patch_index_cell_size")) config.patch_index_cell_size = j.at("patch_index_cell_size").get<double>();
+    if (j.contains("inner_margin")) config.inner_margin = j.at("inner_margin").get<double>();
+    if (config.inner_margin < 0.0) throw std::runtime_error("load_planner_config: \"astar.inner_margin\" must be >= 0");
 
     if (j.contains("expansion")) {
         const json& e = j.at("expansion");

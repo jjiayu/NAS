@@ -371,9 +371,8 @@ std::vector<Node*> expand_node(Node* parent,
 }
 
 std::vector<Node*> expand_cube_placement(Node* parent,
-                                          const std::vector<Surface>& surfaces,
+                                          const std::vector<Surface>& cube_support_surfaces,
                                           const ReachabilityModel& reachability,
-                                          double cube_half_extent,
                                           const ExpansionParams& params,
                                           NodePool& pool) {
     std::vector<Node*> children;
@@ -402,7 +401,7 @@ std::vector<Node*> expand_cube_placement(Node* parent,
     // step that the naive approach (§2) gets wrong by using the untagged minkowski_sum.
     TaggedPolyhedron swept = minkowski_sum_tagged(parent->patch_vertices, parent->patch_vertices, *base_polytope);
 
-    for (const auto& surface : surfaces) {
+    for (const auto& surface : cube_support_surfaces) {
         std::vector<TaggedPoint3> plane_intersect_3d = compute_polytope_plane_intersection_tagged(surface.plane, swept);
         if (plane_intersect_3d.size() <= 2) continue;
 
@@ -424,17 +423,9 @@ std::vector<Node*> expand_cube_placement(Node* parent,
 
         std::vector<TaggedPoint2WithOrigin> plane_hull_2d = convex_hull_2_with_origin(tagged_2d);
 
-        // Placement-surface constraint (spec §3.1's S~_j, surface eroded by half the
-        // cube's footprint): reuses the surface's own (foot-eroded) boundary
-        // (surface.vertices_2d) rather than a cube-specific erosion. Deliberate v1
-        // simplification (docs/cube-implementation-plan.md Etape 3): the foot's own
-        // erosion margin (kDefaultInnerMargin = 0.11m) is larger than the
-        // 15cm cube's half-extent (0.075m), so this can only be MORE conservative than a
-        // true cube erosion, never less -- it never claims a placement is valid where the
-        // cube would actually overhang the surface.
-        (void)cube_half_extent; // not yet used beyond documenting the above -- kept as a
-                                 // parameter so a real cube-specific erosion can use it
-                                 // later without changing this function's signature.
+        // Placement-surface constraint (spec §3.1's S~_j): cube_support_surfaces are already eroded
+        // so that a cube centered anywhere in their footprint lies entirely on the real surface
+        // (see the header) -- not the foot-eroded footprints a step uses.
         std::vector<TaggedPoint2WithOrigin> polygon_intersect_2d =
             compute_2d_polygon_intersection_with_origin(plane_hull_2d, surface.vertices_2d);
         if (polygon_intersect_2d.size() <= 2) continue;
@@ -498,7 +489,7 @@ std::vector<Node*> expand_cube_placement(Node* parent,
 std::vector<Node*> expand_onto_cube(Node* parent,
                                      const ReachabilityModel& reachability,
                                      double cube_height,
-                                     double cube_half_extent,
+                                     double top_half_extent,
                                      const ExpansionParams& params,
                                      NodePool& pool) {
     std::vector<Node*> children;
@@ -563,8 +554,8 @@ std::vector<Node*> expand_onto_cube(Node* parent,
     // carre_cube: the cube's own footprint square, centered on c (spec §3.3). classify on
     // (point - payload) = (x' - c) in this shared 2D frame.
     std::vector<Point_2> carre_cube = {
-        Point_2(-cube_half_extent, -cube_half_extent), Point_2(cube_half_extent, -cube_half_extent),
-        Point_2(cube_half_extent, cube_half_extent), Point_2(-cube_half_extent, cube_half_extent)};
+        Point_2(-top_half_extent, -top_half_extent), Point_2(top_half_extent, -top_half_extent),
+        Point_2(top_half_extent, top_half_extent), Point_2(-top_half_extent, top_half_extent)};
     auto classify_x_minus_c = [](const TaggedPoint2& p) { return Point_2(p.point.x() - p.payload.x(), p.point.y() - p.payload.y()); };
     std::vector<TaggedPoint2> clipped = compute_2d_polygon_intersection_tagged(plane_hull_2d, carre_cube, classify_x_minus_c);
     if (clipped.size() <= 2) return children;

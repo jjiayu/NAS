@@ -33,7 +33,7 @@ const RawScenario kStairs = {
 // Same as kStairs but with Step 1 removed: floor -> (small gap) -> Step 2/3/4.
 // Cube-extension test scenario (see docs/cube-extension-spec.md /
 // docs/cube-implementation-plan.md): a normal footstep can't climb the
-// resulting 0.2m double riser directly, but a 15cm cube split into two
+// resulting 0.2m double riser directly, but a 15cm-tall cube split into two
 // smaller rises (0m->0.15m, then 0.15m->0.2m) can.
 //
 // REVISED 2026-09-24 (see docs/cube-implementation-plan.md): the original
@@ -340,14 +340,14 @@ std::vector<std::string> available_scenarios() {
     return names;
 }
 
-Scenario load_scenario(const std::string& name, double inner_margin) {
+Scenario load_scenario(const std::string& name) {
     auto it = registry().find(name);
     if (it == registry().end()) {
         throw std::out_of_range("load_scenario: unknown scenario '" + name + "'");
     }
     Scenario scenario;
     scenario.name = name;
-    scenario.surfaces = make_surfaces(*it->second, inner_margin);
+    scenario.surfaces = make_surfaces(*it->second);
     return scenario;
 }
 

@@ -33,7 +33,7 @@ explique la plupart des subtilités plus bas.
   `polygon_2d`/`vertices_2d` (l'empreinte **déjà érodée** de `inner_margin`, 0.11 m par défaut = la moitié du pied Talos — un
   pas placé sur le bord érodé a bien tout le pied posé sur la vraie surface). `Surface` est
   `csp::Surface` (lib `cspplusplus`), l'érosion est `Surface::inner_margin` (décalage parallèle aux
-  arêtes), appliquée au chargement par `make_surfaces()` (`include/nas/core/surface.hpp`).
+  arêtes), appliquée par `AstarSearch` lui-même à des surfaces brutes (`load_scenario` ne les érode plus ; marge = `AstarSearchConfig::inner_margin`, JSON `astar.inner_margin` ; helpers `erode_by_id`/`erode_surfaces` dans `include/nas/core/surface.hpp` pour qui utilise des surfaces hors `AstarSearch`). Une surface qui s'effondre sous la marge garde son indice mais devient inutilisable.
 - **`Node`** (`include/nas/core/node.hpp`) : un pas candidat. Champs clés hors-cube :
   `patch_vertices`/`patch_polygon_2d` (la région atteignable, PAS un point — voir plus bas),
   `centroid`, `stance_foot`, `surface_id` (-1 = nœud de départ), `foot_yaw`/`foot_yaw_bin`, `parent`,

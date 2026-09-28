@@ -20,6 +20,6 @@ namespace nas::config {
 
 // Throws std::runtime_error if the file can't be opened, doesn't parse as
 // a recognized ASCII/binary STL, or has fewer than 3 triangles.
-Scenario load_scenario_from_stl(const std::string& stl_path, double inner_margin = kDefaultInnerMargin);
+Scenario load_scenario_from_stl(const std::string& stl_path);
 
 } // namespace nas::config

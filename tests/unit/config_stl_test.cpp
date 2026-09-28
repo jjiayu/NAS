@@ -67,10 +67,12 @@ void test_nonexistent_file_throws() {
     std::cout << "test_nonexistent_file_throws passed\n";
 }
 
-void test_custom_inner_margin_is_applied() {
-    Scenario s = load_scenario_from_stl(data_path("cube_ascii.stl"), 0.005);
+void test_stl_surfaces_are_raw() {
+    // The margin is a planner parameter now: the importer returns the mesh's true faces.
+    Scenario s = load_scenario_from_stl(data_path("cube_ascii.stl"));
     assert(s.surfaces.size() == 6);
-    std::cout << "test_custom_inner_margin_is_applied passed\n";
+    for (size_t i = 0; i < s.surfaces.size(); ++i) assert(s.surfaces[i].surface_id == static_cast<int>(i));
+    std::cout << "test_stl_surfaces_are_raw passed\n";
 }
 
 } // namespace
@@ -81,7 +83,7 @@ int run_config_stl() {
     test_scenario_name_from_filename();
     test_too_small_file_throws();
     test_nonexistent_file_throws();
-    test_custom_inner_margin_is_applied();
+    test_stl_surfaces_are_raw();
     std::cout << "All config/stl_import tests passed.\n";
     return 0;
 }

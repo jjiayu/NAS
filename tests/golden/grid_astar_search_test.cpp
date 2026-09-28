@@ -21,8 +21,15 @@ ReachabilityModel make_forward_reachability() {
     return ReachabilityModel::load(entries);
 }
 
+// The grid baseline rasterizes footprints directly: hand it the eroded ones (AstarSearch erodes its raw scene itself).
+config::Scenario load_eroded(const std::string& name) {
+    config::Scenario scenario = config::load_scenario(name);
+    scenario.surfaces = erode_surfaces(scenario.surfaces, kDefaultInnerMargin);
+    return scenario;
+}
+
 void test_grid_environment_rasterizes_a_flat_surface() {
-    config::Scenario scenario = config::load_scenario("Flat"); // single 7.45x2 rectangle
+    config::Scenario scenario = load_eroded("Flat"); // single 7.45x2 rectangle
     GridEnvironment grid(0.1);
     grid.initialize_from_surfaces(scenario.surfaces);
 
@@ -58,7 +65,7 @@ GridAstarSearchConfig make_default_config(const Point_3& start, const Point_3& g
 }
 
 void test_flat_scene_finds_a_path() {
-    config::Scenario scenario = config::load_scenario("Flat");
+    config::Scenario scenario = load_eroded("Flat");
     ReachabilityModel reachability = make_forward_reachability();
 
     Point_3 goal(3.0, 0.0, 0.0);
@@ -85,7 +92,7 @@ void test_flat_scene_finds_a_path() {
 }
 
 void test_unreachable_goal_yields_no_path() {
-    config::Scenario scenario = config::load_scenario("Flat"); // no surface anywhere near this goal
+    config::Scenario scenario = load_eroded("Flat"); // no surface anywhere near this goal
     ReachabilityModel reachability = make_forward_reachability();
 
     GridAstarSearchConfig config = make_default_config(Point_3(0.0, 0.0, 0.0), Point_3(1000.0, 1000.0, 0.0));
@@ -110,7 +117,7 @@ void test_unreachable_goal_yields_no_path() {
 // passage, whereas the paper discretises the reachable set around the
 // current foothold. See this module's README, "Open question vs. the paper".
 void test_narrow_passage_is_not_crossable_at_five_cm_cells() {
-    config::Scenario scenario = config::load_scenario("NarrowPassage");
+    config::Scenario scenario = load_eroded("NarrowPassage");
     ReachabilityModel reachability = make_forward_reachability();
 
     GridAstarSearchConfig config = make_default_config(Point_3(0.0, 0.0, 0.0), scenario.surfaces.back().centroid);

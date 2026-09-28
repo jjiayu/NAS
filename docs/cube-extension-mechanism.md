@@ -40,6 +40,24 @@ stateDiagram-v2
 cube à la fois en jeu, utilisé une seule fois (`PlacedActive → PlacedInactive` est définitif — spec
 §6, "second usage" explicitement hors scope v1).
 
+## Marge et taille du cube
+
+Le cube suit la même logique de marge que les surfaces (`AstarSearchConfig::inner_margin`, JSON
+`astar.inner_margin`, 0.11 m par défaut = demi-pied) :
+
+- **Monter dessus** : on ne peut poser le centre du pied que sur le dessus érodé de `inner_margin`,
+  donc un carré de demi-côté `cube_half_extent − inner_margin`. Un cube de 15 cm ne laisse rien
+  (0.15 − 2×0.11 < 0) : les cubes font **30 cm de côté** (`cube_half_extent = 0.15`), toujours
+  15 cm de haut (`cube_height = 0.15`), soit 8 cm de côté pour le centre du pied. Le constructeur
+  d'`AstarSearch` refuse `cube_half_extent <= inner_margin`.
+- **Le poser** : le cube doit reposer en entier sur la surface (voir `expand_cube_placement`).
+- **Où le poser** : les polytopes d'affordance `Cube_constraints_in_{LF,RF}.obj` sont supposés
+  encoder les positions acceptables (ils ne sont pas dérivés de la cinématique) et sont écrits pour
+  cette taille : x ∈ [0, 0.15], |y| ∈ [0.245, 0.395], z ∈ [−0.05, 0.10], calibrés sur StairsGap. Le
+  bord proche est limité par la portée latérale du pied libre (|y| ≤ 0.30 ± 4 cm de dessus praticable) ;
+  à 0.245 le cube de 30 cm empiète d'environ 1.5 cm sur l'empreinte érodée du pied d'appui
+  (accepté). Changer `cube_half_extent` demande de réécrire ces boîtes.
+
 ## Les trois actions cube, comme sources d'expansion supplémentaires
 
 `AstarSearch::search()` (`src/planners/astar_search.cpp`, boucle principale) appelle `expand_node`
@@ -61,9 +79,11 @@ les seuls leviers pour préférer/éviter le cube quand un plan existe des deux 
 Somme de Minkowski **taguée** (`minkowski_sum_tagged`, pas la somme "aveugle" du §2) du patch parent
 avec le polytope d'atteignabilité `("Cube", pied_appui, Forward)` — chaque candidat de pose `c` garde
 la trace du `x` (`z` dans la notation du spec) qui l'a produit. Découpé par la surface support
-**érodée de `inner_margin` (la marge du PIED, pas celle du cube)** (pas une érosion cube-spécifique — approximation v1 délibérément
-plus conservatrice, jamais moins, tant que le cube est plus petit que cette marge — voir le
-commentaire en tête de la fonction). Le nœud enfant garde `x` (recalculé comme le sous-ensemble du
+**la surface BRUTE érodée de la demi-diagonale du cube** (`cube_half_extent × √2`, calculée une
+fois par `AstarSearch`, `cube_support_`) : le centre du cube ne peut être posé que là où le cube
+entier repose sur la surface, quel que soit son lacet (l'érosion exacte selon le lacet est
+volontairement écartée : csp n'offre pas de décalage par arête). Ce n'est PAS l'empreinte érodée du
+pied. Le nœud enfant garde `x` (recalculé comme le sous-ensemble du
 patch parent réellement couplé à une pose survivante — pas le patch parent recopié tel quel) ET porte
 le nouveau `CubePlacement` (`cube.vertices_3d`, sa propre surface virtuelle 2D, `placement_yaw` figé).
 
@@ -72,7 +92,8 @@ le nouveau `CubePlacement` (`cube.vertices_3d`, sa propre surface virtuelle 2D, 
 Même somme de Minkowski taguée que `expand_node`, mais découpée par le **plan du dessus du cube**
 (`cube_height` au-dessus de la base, spec §3.3) plutôt qu'une vraie `Surface`, PLUS la coupe
 supplémentaire qui fait toute la différence avec l'approche naïve : classifie chaque candidat sur
-`x' − c` (pas sur `x'` seul) contre le carré du cube (`carre_cube`, centré, côté `2×cube_half_extent`)
+`x' − c` (pas sur `x'` seul) contre le dessus praticable du cube (`carre_cube`, centré, demi-côté
+`cube_half_extent − inner_margin` : même marge que pour toute surface)
 — exactement la coupe du spec §3.3 qui élimine le faux positif du contre-exemple. `kOnCubeSurfaceId`
 (=-2) marque `surface_id` pour distinguer "sur un cube" de "aucune surface" (-1) dans la détection de
 cycle.

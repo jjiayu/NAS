@@ -83,7 +83,8 @@ Deux clés obligatoires sous `astar` : `start_position` et `foot_goals` (au moin
 `"right"`, ou les deux). Tout le reste a une valeur par défaut raisonnable (voir
 `AstarSearchConfig`/`ExpansionParams` dans `include/nas/planners/astar_search.hpp` pour la liste
 complète et leur signification — `heuristic_weight`, `node_similarity_threshold`,
-`patch_index_cell_size`, `expansion.rotation_enabled`, etc.).
+`patch_index_cell_size`, `inner_margin` (marge des surfaces, défaut 0.11 m), `expansion.rotation_enabled`,
+etc.).
 
 ### La forme du but : `foot_goals.left`/`foot_goals.right`
 
@@ -170,8 +171,9 @@ sortie du QP : une position concrète par pas). Les bindings Python renvoient l'
 - **Un chemin non trouvé, `path_found: false`** — le but est peut-être hors d'atteinte depuis
   `start_position` avec le modèle d'atteignabilité chargé ; augmenter `expansion.yaw_discretization_num`
   ou vérifier que le but est bien à l'intérieur d'une surface (pensez à l'empreinte **érodée** de
-  `inner_margin` (0.11 m par défaut, `load_scenario(name, inner_margin)`), pas les sommets bruts de
-  la surface).
+  `inner_margin` (0.11 m par défaut, réglable via `astar.inner_margin` dans le JSON), pas les sommets
+  bruts de la surface : `load_scenario(name)` renvoie les surfaces brutes, `AstarSearch` les érode
+  lui-même).
 
 ---
 
@@ -179,7 +181,7 @@ sortie du QP : une position concrète par pas). Les bindings Python renvoient l'
 
 Voir `docs/cube-extension-mechanism.md` pour le mécanisme (ramassage, pose, enjambement). Pour le
 lancer : mêmes commandes CLI/Python ci-dessus, avec `astar.cube_half_extent`/`cube_height` (cube
-porté dès le départ) ou `astar.scene_cubes` (cube au repos dans la scène, à ramasser) en plus dans le
+porté dès le départ ; le cube doit être plus grand que `inner_margin` : 30 cm de côté par défaut) ou `astar.scene_cubes` (cube au repos dans la scène, à ramasser) en plus dans le
 JSON — pas encore de clé JSON pour `scene_cubes`/`pickup_affordance` aujourd'hui (JSON/CLI non câblé,
 voir `docs/cube-extension-mechanism.md`, section "Ce qui manque") : cette partie se configure en C++
 direct, voir `tests/golden/cube_pickup_and_placement_test.cpp` pour un exemple complet.

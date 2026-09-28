@@ -2,7 +2,7 @@
 // cross an obstacle a normal footstep can't reach directly -- like g1motion's boxcube.py (walk to
 // a box, grasp it, place it at the foot of a raised staircase, step onto it). Reuses NAS's own
 // StairsGap scenario/reachability combination, already proven (without a pickup step -- the cube
-// there starts carried from the very beginning) to converge in 218 expansions (see
+// there starts carried from the very beginning) to converge in 218 expansions with the former 15 cm-wide cube (now 30 cm wide, see docs/cube-extension-mechanism.md; see
 // docs/cube-session-2026-09-23-handoff.md and scenario_library.cpp's own header comment on
 // StairsGap): same geometry, same reachability, only now the robot starts empty-handed and must
 // first walk to the cube's own resting position before the previously-proven place-and-step
@@ -53,7 +53,7 @@ int run_cube_pickup_and_placement() {
     cfg.expansion_params.rotation_enabled = true;
     cfg.expansion_params.yaw_discretization_num = 3;
     cfg.expansion_params.yaw_angle_increment = 10.0 / 180.0 * M_PI;
-    cfg.cube_half_extent = 0.075;
+    cfg.cube_half_extent = 0.15;
     cfg.cube_height = 0.15;
     cfg.foot_goals[static_cast<size_t>(StanceFoot::Left)] = AstarSearchConfig::FootGoal{sc.surfaces.back().centroid, std::nullopt}; // Step 4
     // Generous margin over the 218-expansion proven baseline (which starts the cube InHand, no

@@ -253,6 +253,31 @@ int run_foot_goals() {
         expect_throw(cfg, "un indice de surface hors limites leve une erreur claire");
     }
     {
+        // NarrowPassage's bridge (surface 1) is 0.24 m wide: inner_margin 0.13 collapses it. It
+        // keeps its index but no foot can stand on it, so a goal on it is refused up front.
+        config::Scenario np = config::load_scenario("NarrowPassage");
+        AstarSearchConfig cfg = base_config();
+        cfg.inner_margin = 0.13;
+        AstarSearchConfig::FootGoal g;
+        g.region = 1;
+        cfg.foot_goals[static_cast<size_t>(StanceFoot::Left)] = g;
+        bool threw = false;
+        try {
+            AstarSearch bad(np.surfaces, reach, cfg);
+        } catch (const std::invalid_argument&) {
+            threw = true;
+        }
+        check(threw, "un but sur une surface plus fine que 2 x inner_margin leve une erreur claire");
+        cfg.inner_margin = 0.05; // same goal, bridge survives
+        bool threw_again = false;
+        try {
+            AstarSearch ok(np.surfaces, reach, cfg);
+        } catch (const std::invalid_argument&) {
+            threw_again = true;
+        }
+        check(!threw_again, "le meme but avec inner_margin = 0.05 est accepte");
+    }
+    {
         // goal_yaw_weight > 0 is only meaningful with exactly one slot filled.
         AstarSearchConfig cfg = base_config();
         AstarSearchConfig::FootGoal left_g, right_g;
@@ -302,7 +327,7 @@ int run_foot_goals() {
         // parent (placing a cube doesn't move a foot), breaking the alternation invariant the
         // closing-stance mode's node+parent test relies on -- rejected outright at construction.
         AstarSearchConfig cfg = base_config();
-        cfg.cube_half_extent = 0.075;
+        cfg.cube_half_extent = 0.15;
         cfg.cube_height = 0.15;
         AstarSearchConfig::FootGoal left_g, right_g;
         left_g.region = Point_3(0.3, 0.15, 0.0);
@@ -316,7 +341,7 @@ int run_foot_goals() {
         // problem above: this combination is now legal (narrower exclusion than before this
         // refactor, when foot_goals-at-all + cube was rejected regardless of slot count).
         AstarSearchConfig cfg = base_config();
-        cfg.cube_half_extent = 0.075;
+        cfg.cube_half_extent = 0.15;
         cfg.cube_height = 0.15;
         AstarSearchConfig::FootGoal g;
         g.region = Point_3(0.3, 0.15, 0.0);

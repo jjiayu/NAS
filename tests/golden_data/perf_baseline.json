@@ -12,6 +12,6 @@
     "ThreePathsScene": { "expansions": 385, "search_ms": 194.49 },
     "Stairs_Up_Down": { "expansions": 35, "search_ms": 16.42 },
     "ThreePathsNAS": { "expansions": 113, "search_ms": 80.08 },
-    "StairsGap+cube": { "expansions": 2291, "search_ms": 16485.78 }
+    "StairsGap+cube": { "expansions": 2967, "search_ms": 22840.80 }
   }
 }

@@ -125,6 +125,7 @@ struct PyPlannerConfig {
     double goal_yaw_weight = 0.0;
     double node_similarity_threshold = 0.02;
     double patch_index_cell_size = 0.05;
+    double inner_margin = kDefaultInnerMargin;
     bool rotation_enabled = false;
     int yaw_discretization_num = 3;
     double yaw_angle_increment_deg = 10.0;
@@ -199,6 +200,7 @@ config::PlannerConfig planner_config_from_py(const PyPlannerConfig& py) {
     out.astar.goal_yaw_weight = py.goal_yaw_weight;
     out.astar.node_similarity_threshold = py.node_similarity_threshold;
     out.astar.patch_index_cell_size = py.patch_index_cell_size;
+    out.astar.inner_margin = py.inner_margin;
     out.astar.expansion_params.rotation_enabled = py.rotation_enabled;
     out.astar.expansion_params.yaw_discretization_num = py.yaw_discretization_num;
     out.astar.expansion_params.yaw_angle_increment = py.yaw_angle_increment_deg / 180.0 * M_PI;
@@ -347,6 +349,7 @@ NB_MODULE(nas_bindings, m) {
         .def_rw("goal_yaw_weight", &PyPlannerConfig::goal_yaw_weight)
         .def_rw("node_similarity_threshold", &PyPlannerConfig::node_similarity_threshold)
         .def_rw("patch_index_cell_size", &PyPlannerConfig::patch_index_cell_size)
+        .def_rw("inner_margin", &PyPlannerConfig::inner_margin)
         .def_rw("rotation_enabled", &PyPlannerConfig::rotation_enabled)
         .def_rw("yaw_discretization_num", &PyPlannerConfig::yaw_discretization_num)
         .def_rw("yaw_angle_increment_deg", &PyPlannerConfig::yaw_angle_increment_deg)

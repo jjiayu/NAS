@@ -75,15 +75,14 @@ std::vector<Node*> expand_node(Node* parent,
 // parent's patch_vertices/stance_foot/foot_yaw/surface_id unchanged, only cube_state
 // (-> PlacedActive) and cube (the new CubePlacement) differ. Queries reachability for
 // ("Cube", effector_name(parent->stance_foot), Forward), rotated the same way by
-// yaw/surface tilt as expand_node's own query. cube_half_extent is used only to pick a
-// conservative placement-surface constraint (see the .cpp for why the existing
-// foot-eroded surface.vertices_2d is reused rather than a cube-specific erosion --
-// deliberate v1 simplification, always at least as conservative as a true cube erosion
-// for a cube smaller than half the foot's own margin).
+// yaw/surface tilt as expand_node's own query. `cube_support_surfaces` are the scene's surfaces
+// already eroded so that a cube whose CENTER lies in their footprint rests entirely on the real
+// surface (AstarSearch builds them from the raw scene, eroded by the cube's half-diagonal: valid
+// for any cube yaw) -- NOT the foot-eroded footprints expand_node uses. The cube's reachable
+// region K_cube is the affordance: it alone says where a cube may go relative to the foot.
 std::vector<Node*> expand_cube_placement(Node* parent,
-                                          const std::vector<Surface>& surfaces,
+                                          const std::vector<Surface>& cube_support_surfaces,
                                           const ReachabilityModel& reachability,
-                                          double cube_half_extent,
                                           const ExpansionParams& params,
                                           NodePool& pool);
 
@@ -98,9 +97,12 @@ constexpr int kOnCubeSurfaceId = -2;
 // reachability query/rotation as an ordinary step (expand_node), but landing on the
 // cube's own top plane (parent->cube's placement surface, offset by cube_height along its
 // normal) instead of any registered Surface, with the extra coupling cut x' - c in
-// carre_cube (cube_half_extent square, centered on c) that keeps the landing point tied
-// to where the cube this specific joint-state vertex is coupled to actually is -- not
-// just "some point above the cube's placement area from ANY of its candidate positions".
+// carre_cube (a square of half side `top_half_extent`, centered on c) that keeps the landing point
+// tied to where the cube this specific joint-state vertex is coupled to actually is -- not just
+// "some point above the cube's placement area from ANY of its candidate positions".
+// `top_half_extent` is the USABLE half side of the cube top: cube_half_extent minus the same
+// inner_margin every surface is eroded by (AstarSearch passes it), so a foot stepping onto the cube
+// keeps its whole footprint on it, exactly like on any other surface.
 // Per docs/cube-implementation-plan.md's v1 scope (single cube, no reuse): the resulting
 // child always drops to CubeState::PlacedInactive (cube reset to nullopt) immediately --
 // spec §3.3's "second step on the same cube" (keeping it PlacedActive so the OTHER foot
@@ -108,7 +110,7 @@ constexpr int kOnCubeSurfaceId = -2;
 std::vector<Node*> expand_onto_cube(Node* parent,
                                      const ReachabilityModel& reachability,
                                      double cube_height,
-                                     double cube_half_extent,
+                                     double top_half_extent,
                                      const ExpansionParams& params,
                                      NodePool& pool);
 

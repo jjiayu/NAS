@@ -135,6 +135,8 @@ int run_expansion_oracle() {
 
     for (const auto& s : kScenes) {
         config::Scenario sc = config::load_scenario(s.name);
+        // expand_node takes the eroded footprints (AstarSearch erodes its raw scene itself)
+        const std::vector<Surface> foot_surfaces = erode_surfaces(sc.surfaces, kDefaultInnerMargin);
         AstarSearchConfig cfg;
         cfg.start_position = s.start;
         cfg.start_stance_foot = StanceFoot::Right;
@@ -160,7 +162,7 @@ int run_expansion_oracle() {
             parent->pred_surface_ids = node.pred_surface_ids;
             parent->transformation_to_3d = node.transformation_to_3d; // the surface frame: its normal orients the polytope
             parent->transformation_to_2d = node.transformation_to_2d;
-            std::vector<Node*> kids = expand_node(parent, sc.surfaces, reach, ReachabilityDirection::Forward, cfg.expansion_params, pool);
+            std::vector<Node*> kids = expand_node(parent, foot_surfaces, reach, ReachabilityDirection::Forward, cfg.expansion_params, pool);
             std::map<int, std::vector<const Node*>> by_surface;
             for (const Node* k : kids) by_surface[k->surface_id].push_back(k);
 
@@ -172,7 +174,7 @@ int run_expansion_oracle() {
                 reach.query(effector_name(child_stance), effector_name(parent->stance_foot), ReachabilityDirection::Forward),
                 nas::test::frame_Q(support_normal, parent->foot_yaw));
             Polyhedron P = minkowski_sum(parent->patch_vertices, base);
-            for (const Surface& surf : sc.surfaces) {
+            for (const Surface& surf : foot_surfaces) {
                 ++t.cuts;
                 std::vector<Point_3> oracle = oracle::patch_from_cut_exact_clip(compute_polytope_plane_intersection(surf.plane, P), surf);
                 bool blocked = cycle_path_detection(parent, child_stance, surf.surface_id);

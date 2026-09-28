@@ -43,6 +43,15 @@ struct AstarSearchConfig {
     StanceFoot start_stance_foot = StanceFoot::Right;
     double start_foot_yaw = 0.0;
 
+    // Footprint erosion, in metres (JSON astar.inner_margin). The surfaces given to AstarSearch are
+    // RAW (the scene's true geometry): it erodes each by this margin (csp Surface::inner_margin,
+    // parallel to every edge) before any foot is placed, so a footstep on the eroded boundary keeps
+    // the whole foot on the real surface. Default = half of Talos's 0.22 m foot. A surface thinner
+    // than 2 x inner_margin keeps its index but cannot hold a foot (a goal on it is rejected at
+    // construction). The same margin erodes the top of the cube a foot steps onto (see
+    // cube_half_extent, which must exceed it).
+    double inner_margin = kDefaultInnerMargin;
+
     DistanceMetric distance_metric = DistanceMetric::Epa;
 
     // Weight of the constant cost of a step (the paper's edge cost 1). 0 ignores it: only the optional costs
@@ -110,6 +119,15 @@ struct AstarSearchConfig {
     // entry for each stance foot (validated at construction, same style as a foot_goals yaw_range's
     // own rotation_enabled check). v1 scope: at most one cube, used once (docs/cube-implementation-plan.md
     // §4) -- expand_onto_cube always deactivates it immediately after a single on-cube step.
+    //
+    // cube_half_extent is half the side of the (square, in plan) cube. Same margin logic as any
+    // surface: a foot stepping onto the cube keeps its whole footprint on the cube top, i.e. the
+    // usable top is eroded by inner_margin (usable half side = cube_half_extent - inner_margin, so
+    // cube_half_extent must exceed inner_margin: validated at construction). The cube itself must
+    // be placed entirely on a surface: its center is restricted to the RAW surface footprint eroded
+    // by the cube's half-diagonal (cube_half_extent x sqrt(2), any yaw). Where the cube may go
+    // relative to the foot is the affordance polytope's job (the "Cube" reachability entries), which
+    // must be authored for this size. Talos: 0.15 (a 30 cm cube), cube_height 0.15.
     double cube_half_extent = 0.0;
     double cube_height = 0.0;
 
@@ -209,11 +227,12 @@ struct AstarSearchConfig {
 // foot_goal_distance below, so expand_cube_pickup can call it without knowing about surfaces at
 // all.
 bool foot_goal_satisfied(const Node& node, const AstarSearchConfig::FootGoal& goal, const Polyhedron* cached_hull);
-// `surfaces` is only consulted for a surface_id-shaped region (patch-to-patch EPA, or centroid
-// distance for the Euclidean metric / a single-point patch) -- see foot_goal_satisfied above for why
-// it isn't needed there.
+// `eroded_by_id` (eroded footprints indexed by surface id, nullopt for a collapsed surface) is only
+// consulted for a surface_id-shaped region (patch-to-patch EPA, or centroid distance for the
+// Euclidean metric / a single-point patch) -- see foot_goal_satisfied above for why it isn't needed
+// there. AstarSearch rejects, at construction, a goal on a collapsed surface.
 double foot_goal_distance(const Node& node, const AstarSearchConfig::FootGoal& goal, DistanceMetric metric,
-                           const std::vector<Surface>& surfaces);
+                           const std::vector<std::optional<Surface>>& eroded_by_id);
 
 // Cube-pickup trigger (docs/cube-pickup-spec.md): for every config-level scene cube not yet
 // marked picked-up on `parent`'s own path (parent->cubes_picked_up), tests its
@@ -233,6 +252,7 @@ std::vector<Node*> expand_cube_pickup(Node* parent,
 
 class AstarSearch {
 public:
+    // `surfaces`: the scene's RAW surfaces, surface_id == index (config::Scenario::surfaces).
     AstarSearch(std::vector<Surface> surfaces, ReachabilityModel reachability, AstarSearchConfig config);
 
     void search();
@@ -241,7 +261,13 @@ public:
     int expansion_count() const { return expansion_count_; }
 
 private:
-    std::vector<Surface> surfaces_;
+    std::vector<Surface> raw_surfaces_;                       // as given, surface_id == index
+    std::vector<std::optional<Surface>> eroded_by_id_;        // config_.inner_margin applied, nullopt if collapsed
+    std::vector<Surface> surfaces_;                           // eroded_by_id_ compacted: what expand_node iterates
+    // Raw surfaces eroded by the cube's half-diagonal (cube_half_extent x sqrt(2)): a cube centered
+    // in one of these footprints lies entirely on the real surface whatever its yaw. Only built when
+    // cube_half_extent > 0; ids kept, a surface too small to hold a cube is simply absent.
+    std::vector<Surface> cube_support_;
     ReachabilityModel reachability_;
     AstarSearchConfig config_;
     NodePool pool_;
