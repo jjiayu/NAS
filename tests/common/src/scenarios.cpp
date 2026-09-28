@@ -18,11 +18,7 @@ AstarSearchConfig make_default_config() {
 }
 
 std::vector<Surface> build_surfaces(const std::vector<std::vector<Point_3>>& raw) {
-    std::vector<Surface> surfaces;
-    for (size_t i = 0; i < raw.size(); ++i) {
-        surfaces.emplace_back(raw[i], static_cast<int>(i), /*foot_length=*/0.22, /*foot_width=*/0.22);
-    }
-    return surfaces;
+    return make_surfaces(raw, kDefaultInnerMargin);
 }
 
 } // namespace

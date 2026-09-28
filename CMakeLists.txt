@@ -31,6 +31,7 @@ find_package(Boost REQUIRED)
 find_package(coal REQUIRED)
 find_package(eiquadprog REQUIRED)
 find_package(nlohmann_json REQUIRED)
+find_package(csp 0.1 CONFIG REQUIRED)  # convex surface processing (Surface, margins) -- github.com/ipab-rwa/cspplusplus
 
 add_library(nas
     src/core/geometry.cpp
@@ -60,6 +61,7 @@ target_link_libraries(nas PUBLIC
     coal::coal
     eiquadprog::eiquadprog
     nlohmann_json::nlohmann_json
+    csp::csp
 )
 
 # --- Install (find_package(nas) support for external consumers) ---

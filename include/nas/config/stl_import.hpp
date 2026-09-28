@@ -12,7 +12,6 @@
 // with a consistent per-face normal (true of any STL exporter), not an
 // arbitrary triangle soup that happens to be locally coplanar.
 
-#include "nas/config/robot_model.hpp"
 #include "nas/config/scenario.hpp"
 
 #include <string>
@@ -21,6 +20,6 @@ namespace nas::config {
 
 // Throws std::runtime_error if the file can't be opened, doesn't parse as
 // a recognized ASCII/binary STL, or has fewer than 3 triangles.
-Scenario load_scenario_from_stl(const std::string& stl_path, const RobotModel& robot_model = RobotModel{});
+Scenario load_scenario_from_stl(const std::string& stl_path, double inner_margin = kDefaultInnerMargin);
 
 } // namespace nas::config

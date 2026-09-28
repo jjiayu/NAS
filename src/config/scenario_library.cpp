@@ -340,17 +340,14 @@ std::vector<std::string> available_scenarios() {
     return names;
 }
 
-Scenario load_scenario(const std::string& name, const RobotModel& robot_model) {
+Scenario load_scenario(const std::string& name, double inner_margin) {
     auto it = registry().find(name);
     if (it == registry().end()) {
         throw std::out_of_range("load_scenario: unknown scenario '" + name + "'");
     }
     Scenario scenario;
     scenario.name = name;
-    const RawScenario& raw = *it->second;
-    for (size_t i = 0; i < raw.size(); ++i) {
-        scenario.surfaces.emplace_back(raw[i], static_cast<int>(i), robot_model.foot_length, robot_model.foot_width);
-    }
+    scenario.surfaces = make_surfaces(*it->second, inner_margin);
     return scenario;
 }
 

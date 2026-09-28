@@ -162,15 +162,13 @@ std::string scenario_name_from_path(const std::string& stl_path) {
 
 } // namespace
 
-Scenario load_scenario_from_stl(const std::string& stl_path, const RobotModel& robot_model) {
+Scenario load_scenario_from_stl(const std::string& stl_path, double inner_margin) {
     std::vector<Triangle> triangles = parse_stl(stl_path);
     std::vector<std::vector<Point_3>> raw_surfaces = group_by_plane(triangles);
 
     Scenario scenario;
     scenario.name = scenario_name_from_path(stl_path);
-    for (size_t i = 0; i < raw_surfaces.size(); ++i) {
-        scenario.surfaces.emplace_back(raw_surfaces[i], static_cast<int>(i), robot_model.foot_length, robot_model.foot_width);
-    }
+    scenario.surfaces = make_surfaces(raw_surfaces, inner_margin);
     return scenario;
 }
 

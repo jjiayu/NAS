@@ -1,5 +1,6 @@
 #include "nas/config/scenario.hpp"
 
+#include <algorithm>
 #include <cassert>
 #include <cmath>
 #include <iostream>
@@ -64,17 +65,31 @@ void test_three_paths_nas_matches_environments_hpp() {
     std::cout << "test_three_paths_nas_matches_environments_hpp passed\n";
 }
 
-void test_custom_robot_model_changes_shrink() {
-    nas::config::RobotModel narrow_feet;
-    narrow_feet.foot_length = 0.05;
-    narrow_feet.foot_width = 0.05;
-    Scenario wide = load_scenario("NarrowPassage"); // default 0.22/0.22
-    Scenario narrow = load_scenario("NarrowPassage", narrow_feet);
-    // A larger foot shrinks the passage surface's patch more, so its extent
-    // should be strictly smaller than with a smaller foot.
-    assert(wide.surfaces[1].vertices_3d.size() >= 3);
-    assert(narrow.surfaces[1].vertices_3d.size() >= 3);
-    std::cout << "test_custom_robot_model_changes_shrink passed\n";
+double local_extent_y(const nas::Surface& s) {
+    double lo = 1e9, hi = -1e9;
+    for (const auto& v : s.vertices_2d) {
+        lo = std::min(lo, CGAL::to_double(v.y()));
+        hi = std::max(hi, CGAL::to_double(v.y()));
+    }
+    return hi - lo;
+}
+
+void test_inner_margin_erodes_the_footprint() {
+    // NarrowPassage's bridge (surface 1) is 0.24 m wide in y: 0.24 - 2*margin remains.
+    Scenario def = load_scenario("NarrowPassage"); // kDefaultInnerMargin = 0.11
+    Scenario thin = load_scenario("NarrowPassage", 0.05);
+    assert(near(local_extent_y(def.surfaces[1]), 0.24 - 2 * 0.11));
+    assert(near(local_extent_y(thin.surfaces[1]), 0.24 - 2 * 0.05));
+    std::cout << "test_inner_margin_erodes_the_footprint passed\n";
+}
+
+void test_surface_thinner_than_the_margin_is_dropped() {
+    // 0.13 > 0.24 / 2: the bridge collapses. It is dropped (not mirrored, as the old foot hack
+    // did), and ids stay equal to indices, so the search's surfaces[surface_id] indexing holds.
+    Scenario s = load_scenario("NarrowPassage", 0.13);
+    assert(s.surfaces.size() == 2);
+    for (size_t i = 0; i < s.surfaces.size(); ++i) assert(s.surfaces[i].surface_id == static_cast<int>(i));
+    std::cout << "test_surface_thinner_than_the_margin_is_dropped passed\n";
 }
 
 } // namespace
@@ -85,7 +100,8 @@ int run_config_scenario() {
     test_unknown_scenario_throws();
     test_narrow_passage_matches_environments_hpp();
     test_three_paths_nas_matches_environments_hpp();
-    test_custom_robot_model_changes_shrink();
+    test_inner_margin_erodes_the_footprint();
+    test_surface_thinner_than_the_margin_is_dropped();
     std::cout << "All config/scenario_library tests passed.\n";
     return 0;
 }

@@ -89,7 +89,7 @@ int run_cycle_detection() {
         const bool reachable = variant == 0, detection = variant != 2;
         const double z = reachable ? 0.1 : 2.0;
         std::vector<Point_3> far = {Point_3(1.6, -1, z), Point_3(3.0, -1, z), Point_3(3.0, 1, z), Point_3(1.6, 1, z)};
-        std::vector<Surface> surfaces = {Surface(ground, 0, 0.22, 0.22), Surface(ground_again, 1, 0.22, 0.22), Surface(far, 2, 0.22, 0.22)};
+        std::vector<Surface> surfaces = make_surfaces({ground, ground_again, far}, kDefaultInnerMargin);
         AstarSearchConfig cfg;
         cfg.start_position = Point_3(-1.2, 0, 0); cfg.start_stance_foot = StanceFoot::Right;
         cfg.foot_goals[static_cast<size_t>(StanceFoot::Left)] = AstarSearchConfig::FootGoal{surfaces.back().centroid, std::nullopt};

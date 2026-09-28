@@ -45,9 +45,7 @@ std::vector<Surface> make_single_flat_surface() {
     std::vector<Point_3> square = {
         Point_3(-5, -5, 0), Point_3(5, -5, 0), Point_3(5, 5, 0), Point_3(-5, 5, 0)
     };
-    std::vector<Surface> surfaces;
-    surfaces.emplace_back(square, /*surface_idx=*/0, /*foot_length=*/0.2, /*foot_width=*/0.12);
-    return surfaces;
+    return make_surfaces({square}, /*inner_margin=*/0.1);
 }
 
 Node* make_start_node(NodePool& pool) {

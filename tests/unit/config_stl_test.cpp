@@ -67,13 +67,10 @@ void test_nonexistent_file_throws() {
     std::cout << "test_nonexistent_file_throws passed\n";
 }
 
-void test_custom_robot_model_is_applied() {
-    RobotModel narrow;
-    narrow.foot_length = 0.01;
-    narrow.foot_width = 0.01;
-    Scenario s = load_scenario_from_stl(data_path("cube_ascii.stl"), narrow);
+void test_custom_inner_margin_is_applied() {
+    Scenario s = load_scenario_from_stl(data_path("cube_ascii.stl"), 0.005);
     assert(s.surfaces.size() == 6);
-    std::cout << "test_custom_robot_model_is_applied passed\n";
+    std::cout << "test_custom_inner_margin_is_applied passed\n";
 }
 
 } // namespace
@@ -84,7 +81,7 @@ int run_config_stl() {
     test_scenario_name_from_filename();
     test_too_small_file_throws();
     test_nonexistent_file_throws();
-    test_custom_robot_model_is_applied();
+    test_custom_inner_margin_is_applied();
     std::cout << "All config/stl_import tests passed.\n";
     return 0;
 }

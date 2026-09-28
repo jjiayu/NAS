@@ -428,7 +428,7 @@ std::vector<Node*> expand_cube_placement(Node* parent,
         // cube's footprint): reuses the surface's own (foot-eroded) boundary
         // (surface.vertices_2d) rather than a cube-specific erosion. Deliberate v1
         // simplification (docs/cube-implementation-plan.md Etape 3): the foot's own
-        // erosion margin (RobotModel foot_width/2 = 0.11m by default) is larger than the
+        // erosion margin (kDefaultInnerMargin = 0.11m) is larger than the
         // 15cm cube's half-extent (0.075m), so this can only be MORE conservative than a
         // true cube erosion, never less -- it never claims a placement is valid where the
         // cube would actually overhang the surface.

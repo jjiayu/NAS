@@ -33,9 +33,12 @@ int run_core_surface() {
         Point_3(1.0, 1.0, 0.0), Point_3(-1.0, 1.0, 0.0)
     };
 
-    Surface surf(square, /*surface_idx=*/7, /*foot_length=*/0.2, /*foot_width=*/0.1);
+    // Surface itself is csp::Surface (tested in cspplusplus); what NAS adds is make_surfaces.
+    std::vector<Surface> surfaces = make_surfaces({square, square}, /*inner_margin=*/0.1);
+    check(surfaces.size() == 2, "one Surface per raw list");
+    const Surface& surf = surfaces[1];
 
-    check(surf.surface_id == 7, "surface_id is set from the constructor parameter (passed by value)");
+    check(surf.surface_id == 1, "surface_id is the index in the returned vector");
 
     check(close(CGAL::to_double(surf.centroid.x()), 0.0) &&
           close(CGAL::to_double(surf.centroid.y()), 0.0) &&
@@ -45,9 +48,8 @@ int run_core_surface() {
     check(close(std::abs(CGAL::to_double(surf.norm.z())), 1.0),
           "normal of a flat ground-plane square points along +/-Z");
 
-    // Footprint shrunk by foot_length/2 on x, foot_width/2 on y on each
-    // side -> a (2 - 0.2) x (2 - 0.1) rectangle.
-    check(surf.vertices_2d.size() == 4, "shrunk footprint of a square patch has 4 vertices");
+    // Footprint eroded by 0.1 on every side -> a (2 - 0.2) x (2 - 0.2) square.
+    check(surf.vertices_2d.size() == 4, "eroded footprint of a square patch has 4 vertices");
 
     double min_x = 1e9, max_x = -1e9, min_y = 1e9, max_y = -1e9;
     for (const auto& v : surf.vertices_2d) {
@@ -56,9 +58,13 @@ int run_core_surface() {
         min_y = std::min(min_y, CGAL::to_double(v.y()));
         max_y = std::max(max_y, CGAL::to_double(v.y()));
     }
-    check(close(max_x - min_x, 1.8, 1e-6), "footprint shrunk by foot_length on the x extent (2.0 -> 1.8)");
-    check(close(max_y - min_y, 1.9, 1e-6), "footprint shrunk by foot_width on the y extent (2.0 -> 1.9)");
+    check(close(max_x - min_x, 1.8, 1e-6), "footprint eroded by the margin on each side of x (2.0 -> 1.8)");
+    check(close(max_y - min_y, 1.8, 1e-6), "footprint eroded by the margin on each side of y (2.0 -> 1.8)");
 
+    // A list thinner than 2*margin is dropped, later ids shift down (surface_id == index).
+    std::vector<Point_3> sliver = {Point_3(0, 0, 0), Point_3(3, 0, 0), Point_3(3, 0.1, 0), Point_3(0, 0.1, 0)};
+    std::vector<Surface> kept = make_surfaces({sliver, square}, 0.1);
+    check(kept.size() == 1 && kept[0].surface_id == 0, "a surface thinner than 2*margin is dropped and ids are re-numbered");
 
     if (g_failures > 0) {
         std::cerr << g_failures << " test(s) FAILED\n";
