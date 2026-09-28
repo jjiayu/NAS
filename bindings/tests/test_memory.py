@@ -7,6 +7,8 @@ the remaining calls. (Measured: 0.3 MB over 300 plans of Stairs, nothing visible
 Run with: python3 test_memory.py <build_dir_containing_nas_bindings.so>
 """
 import ctypes
+import glob
+import importlib.util
 import os
 import sys
 
@@ -14,8 +16,22 @@ if len(sys.argv) != 2:
     print(f"Usage: {sys.argv[0]} <build_dir_containing_nas_bindings.so>", file=sys.stderr)
     sys.exit(1)
 
-sys.path.insert(0, sys.argv[1])
-import nas_bindings as nb
+# Load the .so from the given build dir by explicit file path, NOT `sys.path.insert` + plain
+# `import nas_bindings` — see test_bindings.py's own comment on this same helper: an editable
+# `pip install -e .` shadows this build dir via a sys.meta_path finder that sys.path.insert cannot
+# override.
+def _load_nas_bindings(build_dir):
+    candidates = glob.glob(os.path.join(build_dir, "nas_bindings*"))
+    if not candidates:
+        raise RuntimeError(f"no nas_bindings module found in {build_dir}")
+    spec = importlib.util.spec_from_file_location("nas_bindings", candidates[0])
+    module = importlib.util.module_from_spec(spec)
+    sys.modules["nas_bindings"] = module
+    spec.loader.exec_module(module)
+    return module
+
+
+nb = _load_nas_bindings(sys.argv[1])
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 REPO_ROOT = os.path.dirname(os.path.dirname(THIS_DIR))

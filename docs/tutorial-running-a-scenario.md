@@ -42,9 +42,27 @@ if result.success:
 ```
 
 Nécessite les bindings compilés (`NAS_BUILD_BINDINGS=ON`, ou `pip install --no-build-isolation -e .`
-— voir le `README.md` racine). Même fichier de config JSON que le CLI ; il n'y a pas d'API Python
-séparée pour construire un but sans passer par un fichier (voir `docs/api-review.md` pour pourquoi
-ce choix a été gardé tel quel).
+— voir le `README.md` racine).
+
+`plan()` prend un fichier de config JSON, comme le CLI. Pour construire le but (et le reste de la
+config) directement en Python, sans fichier — pratique pour itérer depuis un REPL/notebook —
+`plan_with_config()` :
+
+```python
+config = nas_bindings.PlannerConfig(start_position=(0.0, 0.0, 0.0))
+config.foot_goals.left = nas_bindings.FootGoal.point((8.0, 0.0, 0.0))
+config.rotation_enabled = True          # astar.expansion.rotation_enabled
+config.qp_rotation_enabled = True       # qp.rotation_enabled -- séparé, penser aux deux
+
+result = nas_bindings.plan_with_config("NarrowPassage", config,
+                                        "talosReachability/data/reachability_constraints")
+```
+
+`nas_bindings.FootGoal` a une usine statique par forme de région (`.point()`, `.surface()`,
+`.polytope()`, `.offset()`, `.polygon_2d()`), même 5 formes que le JSON (section suivante) —
+`goal.yaw_range_deg = (min, max)` optionnel sur chacune. `PlannerConfig` couvre les mêmes champs que
+les sections JSON `"astar"`/`"qp"`, avec les mêmes valeurs par défaut. Détails complets :
+`bindings/README.md`.
 
 ## Écrire un fichier de config
 

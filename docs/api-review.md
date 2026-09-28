@@ -36,6 +36,22 @@ de ce fichier (`docs/cube-extension-mechanism.md` d'abord si pas déjà lu).
   sien (satisfaire les contraintes de la manière la moins coûteuse) — ajouter une incitation
   artificielle à se déplacer changerait ce que le QP optimise réellement pour tout appelant
   `goal_surface`/`polytope` existant, pas juste ce cas limite.
+- **Construction directe en Python, sans fichier JSON** (`nas_bindings.PlannerConfig`/`FootGoal`,
+  `plan_with_config()`) — point de friction de la session précédente, résolu à la demande de
+  l'utilisateur. Même astuce que côté C++/JSON : les deux façades (fichier, Python) convergent sur
+  le même `nas::config::PlannerConfig` interne (`planner_config_from_py()` dans
+  `bindings/src/module.cpp`), aucune 2ᵉ logique de résolution de but écrite à part. `FootGoal` va
+  plus loin que le JSON sur un point : ses 5 usines statiques rendent une région invalide
+  **non représentable** (pas de champ "region" brut à valider), alors que le parseur JSON doit se
+  défendre activement contre du texte non typé (`parse_foot_goal_slot`, "exactement une clé").
+  Trouvaille en marge, sans rapport avec `foot_goals` : ce travail a révélé que `ctest -R
+  nas_bindings` testait silencieusement une installation pip `-e .` obsolète au lieu du build local
+  fraîchement compilé (un `sys.meta_path` d'installation éditable prend le pas sur `sys.path.insert`,
+  sans erreur ni avertissement) — corrigé dans `bindings/tests/test_bindings.py`/`test_memory.py`
+  (chargement par chemin de fichier explicite). Deux assertions de `test_bindings.py` étaient déjà
+  fausses avant même ce correctif (15 scénarios au lieu de 17, `NarrowPassage` à 30 nœuds au lieu de
+  34 depuis le fix PatchIndex du 2026-09-27) — jamais détecté car `NAS_BUILD_BINDINGS` est `OFF` par
+  défaut et personne n'avait relancé `ctest -R nas_bindings` depuis.
 
 ## Points de friction
 
@@ -57,19 +73,12 @@ de ce fichier (`docs/cube-extension-mechanism.md` d'abord si pas déjà lu).
   (planners distincts, décision explicite). Quelqu'un qui connaît `foot_goals` et passe au baseline
   grid retrouvera l'ancien style à deux champs séparés, sans prévenance particulière au-delà de ce
   document.
-- **Bindings Python : aucune construction de but sans fichier.** Décision confirmée cette session
-  (voir `bindings/src/module.cpp`, "couche 0 only") : `plan()` ne prend qu'un chemin vers un JSON, pas
-  de builder Python pour `foot_goals`. Cohérent avec le reste de la couche 0 (rien n'est deviné/
-  construit dynamiquement), mais ça veut dire qu'itérer sur un but depuis un REPL Python demande
-  d'écrire un fichier à chaque essai. Pas changé cette session car explicitement pas demandé — à
-  reconsidérer si ce genre d'itération devient un vrai usage.
-
 ## À trancher si on itère encore
 
-- Exposer `scene_cubes`/`pickup_affordance`/`cube_half_extent` en JSON (voir
-  `docs/cube-extension-mechanism.md`, section "Ce qui manque") — mécanique mais un vrai morceau de
-  travail (même style de schéma que `foot_goals`, avec le même genre de sucre potentiel pour la
-  position du cube).
+- Exposer `scene_cubes`/`pickup_affordance`/`cube_half_extent` en JSON **et** en Python direct (voir
+  `docs/cube-extension-mechanism.md`, section "Ce qui manque", et le point suivant) — mécanique mais
+  un vrai morceau de travail (même style que `foot_goals`/`PlannerConfig`, avec le même genre de
+  sucre potentiel pour la position du cube). Explicitement reporté par l'utilisateur.
 - Généraliser `goal_yaw_weight` par slot, seulement si un vrai cas d'usage à 2 pieds + biais
   d'orientation indépendant se présente — pas avant, pour ne pas ajouter une capacité jamais exercée.
 
