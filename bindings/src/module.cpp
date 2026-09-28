@@ -25,6 +25,7 @@
 #include <nanobind/stl/vector.h>
 
 #include <array>
+#include <chrono>
 
 namespace nb = nanobind;
 using namespace nas;
@@ -38,6 +39,11 @@ struct FootstepResult {
     std::vector<std::array<double, 3>> positions;
     std::vector<int> stance_feet;
     std::vector<double> foot_yaws;
+    // Timing/search stats, same fields as apps/astar_plan's own JSON output -- Python callers had no
+    // way to see these before (only the CLI did).
+    int expansion_count = 0;
+    double search_ms = 0.0;
+    double qp_ms = 0.0;
 };
 
 ReachabilityModel load_forward_reachability(const std::string& talos_data_dir) {
@@ -68,19 +74,25 @@ FootstepResult plan(const std::string& scenario_name, const std::string& planner
         // GIL for — no Python object is touched until this block exits.
         nb::gil_scoped_release release;
 
+        using Clock = std::chrono::steady_clock;
         AstarSearch search(scenario.surfaces, reachability, planner_config.astar);
+        auto t0 = Clock::now();
         search.search();
+        result.search_ms = std::chrono::duration<double, std::milli>(Clock::now() - t0).count();
+        result.expansion_count = search.expansion_count();
         path = search.result_path();
 
         if (!path.empty()) {
             QuadprogBackend backend;
+            auto q0 = Clock::now();
             plan_result = solve_footstep_qp(path, planner_config.astar.start_position, config::qp_goal(planner_config),
                                              reachability, planner_config.qp, backend);
+            result.qp_ms = std::chrono::duration<double, std::milli>(Clock::now() - q0).count();
         }
     }
 
     if (path.empty() || !plan_result.success) {
-        return result; // success = false, empty vectors
+        return result; // success = false, empty vectors, timing fields still populated
     }
 
     result.success = true;
@@ -105,7 +117,10 @@ NB_MODULE(nas_bindings, m) {
         .def_ro("success", &FootstepResult::success)
         .def_ro("positions", &FootstepResult::positions)
         .def_ro("stance_feet", &FootstepResult::stance_feet)
-        .def_ro("foot_yaws", &FootstepResult::foot_yaws);
+        .def_ro("foot_yaws", &FootstepResult::foot_yaws)
+        .def_ro("expansion_count", &FootstepResult::expansion_count)
+        .def_ro("search_ms", &FootstepResult::search_ms)
+        .def_ro("qp_ms", &FootstepResult::qp_ms);
 
     m.def("plan", &plan, nb::arg("scenario_name"), nb::arg("planner_config_path"), nb::arg("talos_reachability_data_dir"),
           "Run CASSR (AstarSearch + footstep QP) on a named config::available_scenarios() scenario.");

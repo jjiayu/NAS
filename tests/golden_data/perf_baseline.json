@@ -1,0 +1,17 @@
+{
+  "_comment": "Reference for tests/perf/perf_regression_test.cpp (--suite=perf). Measured on this dev machine, 5 runs each, at patch_index_cell_size=0.05 (the current default). Update deliberately, only when a real perf change is measured and accepted (see docs/patchindex-scalability-note.md) -- same discipline as expected_*_expansions elsewhere in this codebase, not touched to silently paper over a regression.",
+  "scenarios": {
+    "NarrowPassage": { "expansions": 115, "search_ms": 105.91 },
+    "Stairs": { "expansions": 50, "search_ms": 19.26 },
+    "TwoFlatSurfaces": { "expansions": 1, "search_ms": 0.06 },
+    "LongStairs": { "expansions": 29, "search_ms": 14.01 },
+    "LongLongStairs": { "expansions": 76, "search_ms": 45.32 },
+    "Flat": { "expansions": 11, "search_ms": 20.97 },
+    "LongStairsComplete": { "expansions": 29, "search_ms": 11.85 },
+    "LongStairsExp": { "expansions": 236, "search_ms": 86.89 },
+    "ThreePathsScene": { "expansions": 385, "search_ms": 194.49 },
+    "Stairs_Up_Down": { "expansions": 35, "search_ms": 16.42 },
+    "ThreePathsNAS": { "expansions": 113, "search_ms": 80.08 },
+    "StairsGap+cube": { "expansions": 2291, "search_ms": 16485.78 }
+  }
+}

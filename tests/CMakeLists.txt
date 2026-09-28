@@ -36,6 +36,7 @@ add_executable(nas_tests
     golden/dual_target_all_scenes_test.cpp
     golden/cube_pickup_search_test.cpp
     golden/cube_pickup_and_placement_test.cpp
+    perf/perf_regression_test.cpp
 )
 target_link_libraries(nas_tests PRIVATE nas nas_fixtures nlohmann_json::nlohmann_json)
 target_compile_definitions(nas_tests PRIVATE
@@ -46,3 +47,4 @@ target_compile_definitions(nas_tests PRIVATE
 
 add_test(NAME nas_tests_fast COMMAND nas_tests --suite=unit)
 add_test(NAME nas_tests_golden COMMAND nas_tests --suite=golden)
+add_test(NAME nas_tests_perf COMMAND nas_tests --suite=perf)

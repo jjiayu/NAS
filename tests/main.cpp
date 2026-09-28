@@ -6,9 +6,11 @@
 // below and dispatched from this file.
 //
 // `--suite=unit` runs only the fast (<1s) directed tests; `--suite=golden` runs the slower
-// regression suite against golden/scenario data (some take tens of seconds); no argument runs both
-// — see tests/CMakeLists.txt for how ctest registers these as two separate entries from this one
-// binary.
+// regression suite against golden/scenario data (some take tens of seconds); `--suite=perf` times
+// the standard scenarios and checks them against tests/golden_data/perf_baseline.json (expansions
+// exact, timing within a generous factor — see tests/perf/perf_regression_test.cpp); no argument
+// runs all three — see tests/CMakeLists.txt for how ctest registers these as separate entries from
+// this one binary.
 //
 // Known trade-off: tests/unit/config_*_test.cpp use assert() internally (ported as-is from when
 // they were their own binaries) rather than the check()/g_failures idiom the others use — an
@@ -51,6 +53,7 @@ int run_foot_goals();
 int run_dual_target_all_scenes();
 int run_cube_pickup_search();
 int run_cube_pickup_and_placement();
+int run_perf_regression();
 
 namespace {
 
@@ -92,6 +95,8 @@ const Suite kSuites[] = {
     {"dual_target_all_scenes", "golden", run_dual_target_all_scenes},
     {"cube_pickup_search", "golden", run_cube_pickup_search},
     {"cube_pickup_and_placement", "golden", run_cube_pickup_and_placement},
+
+    {"perf_regression", "perf", run_perf_regression},
 };
 
 } // namespace
