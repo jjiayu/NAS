@@ -169,8 +169,9 @@ sortie du QP : une position concrète par pas). Les bindings Python renvoient l'
   données pour le même slot.
 - **Un chemin non trouvé, `path_found: false`** — le but est peut-être hors d'atteinte depuis
   `start_position` avec le modèle d'atteignabilité chargé ; augmenter `expansion.yaw_discretization_num`
-  ou vérifier que le but est bien à l'intérieur d'une surface (pensez à l'empreinte **rétrécie** par
-  la moitié des dimensions du pied, pas les sommets bruts de la surface).
+  ou vérifier que le but est bien à l'intérieur d'une surface (pensez à l'empreinte **érodée** de
+  `inner_margin` (0.11 m par défaut, `load_scenario(name, inner_margin)`), pas les sommets bruts de
+  la surface).
 
 ---
 

@@ -61,7 +61,7 @@ les seuls leviers pour préférer/éviter le cube quand un plan existe des deux 
 Somme de Minkowski **taguée** (`minkowski_sum_tagged`, pas la somme "aveugle" du §2) du patch parent
 avec le polytope d'atteignabilité `("Cube", pied_appui, Forward)` — chaque candidat de pose `c` garde
 la trace du `x` (`z` dans la notation du spec) qui l'a produit. Découpé par la surface support
-**rétrécie de la marge du PIED** (pas une érosion cube-spécifique — approximation v1 délibérément
+**érodée de `inner_margin` (la marge du PIED, pas celle du cube)** (pas une érosion cube-spécifique — approximation v1 délibérément
 plus conservatrice, jamais moins, tant que le cube est plus petit que cette marge — voir le
 commentaire en tête de la fonction). Le nœud enfant garde `x` (recalculé comme le sous-ensemble du
 patch parent réellement couplé à une pose survivante — pas le patch parent recopié tel quel) ET porte

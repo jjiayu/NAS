@@ -11,6 +11,7 @@ See [`docs/architecture.md`](docs/architecture.md) for the module layout, and [`
 - C++20 compiler (GCC 10+ or Clang 13+), CMake 3.15+
 - Eigen3, CGAL, Boost, nlohmann-json — via system packages or conda
 - coal, eiquadprog — via conda-forge only (not packaged for apt/Homebrew)
+- [csp](https://github.com/ipab-rwa/cspplusplus) (Convex Surface Processing — `Surface`, margins) — hard dependency, found with `find_package(csp CONFIG REQUIRED)`; not packaged anywhere, install it once (see below)
 
 ```bash
 # Ubuntu
@@ -21,7 +22,31 @@ brew install cgal boost eigen nlohmann-json
 conda install -c conda-forge coal eiquadprog
 ```
 
-If using conda, activate the environment before building — the build picks up `$CONDA_PREFIX` automatically to find `coal`/`eiquadprog`.
+### Where CMake looks for coal, eiquadprog and csp
+
+Nothing here needs conda itself: these three are found with `find_package(... CONFIG)`, so CMake
+only has to *see* the prefix they are installed in. It does when one of these is true:
+
+- you pass it: `cmake -S . -B build -DCMAKE_PREFIX_PATH=/some/prefix` (works with no conda at all);
+- the conda environment is activated (`$CONDA_PREFIX` is added to `CMAKE_PREFIX_PATH` by this
+  project's `CMakeLists.txt`);
+- the prefix's `bin/` is on your `PATH` (CMake derives search prefixes from it, which is why it can
+  work even when `$CONDA_PREFIX` is empty).
+
+A configure that sees none of these stops at `Could not find a package configuration file provided
+by "coal"`. Remember the prefix in the build directory (CMake caches `coal_DIR` etc.), so a build
+tree configured once keeps working even from a shell that no longer has it.
+
+Without conda, build `coal` and `eiquadprog` from source into a prefix of your choice (`~/.local`,
+`/opt/nas-deps`, ...) and install `csp` in the same one:
+
+```bash
+git clone https://github.com/ipab-rwa/cspplusplus.git && cd cspplusplus
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCSP_BUILD_TESTS=OFF -DCMAKE_INSTALL_PREFIX=/some/prefix
+cmake --build build -j2 && cmake --install build      # CMAKE_INSTALL_PREFIX=$CONDA_PREFIX in a conda env
+```
+
+(`csp` is installed from source for now; see its README, "Installing", which also covers `pip install` for its Python bindings.)
 
 ## Build (C++)
 

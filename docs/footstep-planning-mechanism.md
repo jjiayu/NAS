@@ -30,8 +30,10 @@ explique la plupart des subtilités plus bas.
 
 - **`Surface`** (`include/nas/core/surface.hpp`) : une zone marchable — sommets 3D/2D, plan, normale,
   centroïde, transforms monde↔surface (`transform_to_3d`/`transform_to_surface`), et
-  `polygon_2d`/`vertices_2d` (l'empreinte **déjà rétrécie** de la moitié des dimensions du pied — un
-  pas placé sur le bord rétréci a bien tout le pied posé sur la vraie surface).
+  `polygon_2d`/`vertices_2d` (l'empreinte **déjà érodée** de `inner_margin`, 0.11 m par défaut = la moitié du pied Talos — un
+  pas placé sur le bord érodé a bien tout le pied posé sur la vraie surface). `Surface` est
+  `csp::Surface` (lib `cspplusplus`), l'érosion est `Surface::inner_margin` (décalage parallèle aux
+  arêtes), appliquée au chargement par `make_surfaces()` (`include/nas/core/surface.hpp`).
 - **`Node`** (`include/nas/core/node.hpp`) : un pas candidat. Champs clés hors-cube :
   `patch_vertices`/`patch_polygon_2d` (la région atteignable, PAS un point — voir plus bas),
   `centroid`, `stance_foot`, `surface_id` (-1 = nœud de départ), `foot_yaw`/`foot_yaw_bin`, `parent`,
@@ -56,7 +58,7 @@ nœud exploré. Ce qui se passe, dans l'ordre :
    seul !) avec ce polytope tourné (`minkowski_sum`) → une région 3D `P_union`, "partout où le
    nouveau pied pourrait être, depuis n'importe quel point déjà atteignable par le parent".
 3. **Pour chaque surface de la scène** : découpe `P_union` par le plan de la surface
-   (`compute_polytope_plane_intersection`), projette en 2D, découpe par l'empreinte rétrécie de la
+   (`compute_polytope_plane_intersection`), projette en 2D, découpe par l'empreinte érodée de la
    surface (`compute_2d_polygon_intersection`), reconvertit en enveloppe convexe nettoyée
    (`clean_polygon` — supprime les sommets quasi-colinéaires, démarre à un sommet canonique : sans
    ça, le bruit flottant du tas changerait le résultat d'une exécution à l'autre).
@@ -124,7 +126,7 @@ une **séquence de patchs** ; le QP choisit un **point concret** dans chacun. Va
 contraintes d'atteignabilité (H-rep mis en cache de `ReachabilityModel`) — maximiser `alpha` pousse la
 solution loin du bord des polytopes, pas juste faisable de justesse.
 
-**Contraintes**, par pas : rester dans le patch (surface + polygone rétréci), rester dans le polytope
+**Contraintes**, par pas : rester dans le patch (surface + polygone érodé), rester dans le polytope
 d'atteignabilité tourné (par rapport au pas précédent), position de départ fixée. Le **but** :
 - Un point (`goal_position` a une valeur) : dernier pas fixé à ce point (égalité).
 - Rien (`std::nullopt` — cas surface/polytope/2-slots) : dernier pas libre sur son propre patch, même

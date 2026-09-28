@@ -16,7 +16,7 @@ NAS/
 │   ├── core/                geometry, node, surface, reachability, expansion
 │   ├── planners/             astar_search (CASSR), grid_astar_search (grid baseline)
 │   ├── footstep_qp/          the QP formulation + backend(s)
-│   └── config/                RobotModel, Scenario, PlannerConfig, STL import
+│   └── config/                Scenario, PlannerConfig, STL import
 ├── src/                    # mirrors include/nas/ — all compiled into the single `nas` library
 ├── apps/astar_plan/        # CLI: one scenario + one config in, one JSON result out
 ├── bindings/                Python extension (nanobind), `import nas_bindings`
@@ -43,7 +43,8 @@ One target, `nas` (alias `nas::nas`), covering:
 - **`core/node`** — `Node` (biped-only, de-globalized) and `NodePool`, shared by CASSR and the grid
   baseline.
 - **`core/surface`** — one walkable surface: 3D/2D vertex loops, plane, centroid, world↔surface
-  transforms, shrunk by half the foot dimensions.
+  transforms, eroded by `inner_margin` (default 0.11 m). `Surface` is `csp::Surface`, from the
+  external `cspplusplus` library (`find_package(csp)`), not a NAS class.
 - **`core/reachability`** — `ReachabilityModel`, a query keyed by `(moving_effector,
   support_effector, direction)` over loaded `.obj` polytopes; caches each polytope's H-rep the
   first time it's asked for (see `ReachabilityModel::half_space_constraint`).
@@ -57,7 +58,7 @@ One target, `nas` (alias `nas::nas`), covering:
 - **`footstep_qp`** — builds a backend-agnostic `QPProblem` from a CASSR result path, solved with
   `QuadprogBackend` (eiquadprog; the only backend kept — see `docs/paper-deltas.md` for why ProxQP
   was tried and dropped).
-- **`config`** — `RobotModel`, the 15-scenario `Scenario` registry, `PlannerConfig` (JSON-loaded
+- **`config`** — the `Scenario` registry, `PlannerConfig` (JSON-loaded
   planner configuration), STL scene import.
 
 ## `apps/`, `bindings/`, `tools/`
