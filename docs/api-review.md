@@ -26,23 +26,19 @@ de ce fichier (`docs/cube-extension-mechanism.md` d'abord si pas déjà lu).
 - **`FootGoal` réutilisé tel quel par le ramassage de cube** (`SceneCube::pickup_affordance`, même
   forme région+yaw_range) — le nouveau variant `surface` (indice) et le mécanisme de résolution
   `offset`/`polygon_2d` en bénéficient gratuitement, sans code cube-spécifique à écrire.
+- **Le QP ne force jamais le dernier pas vers un point pour un but `surface`/`polytope`** — quand
+  `qp_goal()` renvoie `nullopt`, le dernier pas reste libre sur son patch, avec la même contrainte que
+  les pas intermédiaires (voir `docs/footstep-planning-mechanism.md`, section QP). Sur un terrain très
+  ouvert (`Flat`, patchs qui restent grands tout le long), ça peut faire choisir au QP de ne quasiment
+  pas bouger (son objectif ne minimise que la longueur des foulées — "ne pas bouger" est optimal dès
+  que c'est faisable). **Confirmé comme le comportement voulu, pas un gap à combler** : la recherche
+  A* a fait son travail (trouver une séquence de patchs valide vers la région demandée), le QP fait le
+  sien (satisfaire les contraintes de la manière la moins coûteuse) — ajouter une incitation
+  artificielle à se déplacer changerait ce que le QP optimise réellement pour tout appelant
+  `goal_surface`/`polytope` existant, pas juste ce cas limite.
 
 ## Points de friction
 
-- **Trouvaille de cette session, pas un bug — un vrai piège d'usage** : avec un but `surface` ou
-  `polytope` (`qp_goal()` renvoie alors `nullopt`), le QP n'a **aucune incitation** à se déplacer vers
-  la région trouvée par la recherche A* — son objectif minimise seulement la longueur des foulées
-  (`solve_footstep_qp`, `Σ‖stride_i‖²`), donc "ne pas bouger" est la solution optimale dès que c'est
-  faisable (patch de départ inclus dans tous les patchs du chemin — arrive facilement sur un sol
-  ouvert, où les patchs restent grands tout le long, voir `docs/footstep-planning-mechanism.md`). La
-  recherche réussit, le QP réussit ("feasible"), mais le résultat final ne va nulle part. Repéré en
-  testant `Flat_polygon_2d.json` (patchs énormes sur `Flat`, aucune contrainte de terrain pour
-  "forcer" le QP à avancer) — pas visible avant parce qu'aucun scénario précédent n'utilisait
-  `goal_surface_id` sur un terrain aussi ouvert avec un chemin de plusieurs pas. **Recommandation** :
-  si les buts surface/polytope doivent rester utilisables sur du terrain ouvert, il faudrait un terme
-  d'objectif supplémentaire dans le QP qui tire (même faiblement) vers le représentant du but
-  (`goal_point()` existe déjà côté recherche pour `heading_weight` — la même idée s'appliquerait ici),
-  pas juste laisser le dernier pas "libre sur son patch".
 - **Deux niveaux pour la forme de région, pas évident au premier abord.** `FootGoal::region` n'a que
   3 variants runtime (`Point_3`/`vector<Point_3>`/`int`) ; `offset` et `surface`+`polygon_2d` sont un
   4ᵉ et 5ᵉ cas qui n'existent **qu'en JSON**, résolus en un des 3 variants réels par
@@ -70,10 +66,6 @@ de ce fichier (`docs/cube-extension-mechanism.md` d'abord si pas déjà lu).
 
 ## À trancher si on itère encore
 
-- Ajouter un terme d'objectif "tirer vers `goal_point()`" au QP pour les buts non-ponctuels (voir le
-  point de friction ci-dessus) — change le comportement de tout appelant `goal_surface`/`polytope`
-  existant (`goal_surface_test.cpp` s'appuie aujourd'hui sur "dernier pas libre"), donc pas un choix
-  neutre, à valider scénario par scénario avant de changer le défaut.
 - Exposer `scene_cubes`/`pickup_affordance`/`cube_half_extent` en JSON (voir
   `docs/cube-extension-mechanism.md`, section "Ce qui manque") — mécanique mais un vrai morceau de
   travail (même style de schéma que `foot_goals`, avec le même genre de sucre potentiel pour la
