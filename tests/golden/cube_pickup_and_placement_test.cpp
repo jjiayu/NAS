@@ -55,8 +55,7 @@ int run_cube_pickup_and_placement() {
     cfg.expansion_params.yaw_angle_increment = 10.0 / 180.0 * M_PI;
     cfg.cube_half_extent = 0.075;
     cfg.cube_height = 0.15;
-    cfg.goal_location = sc.surfaces.back().centroid; // Step 4
-    cfg.goal_stance_foot = StanceFoot::Left;
+    cfg.foot_goals[static_cast<size_t>(StanceFoot::Left)] = AstarSearchConfig::FootGoal{sc.surfaces.back().centroid, std::nullopt}; // Step 4
     // Generous margin over the 218-expansion proven baseline (which starts the cube InHand, no
     // pickup detour) -- this scenario adds a mandatory walk-to-the-cube-then-pick-it-up prefix, an
     // unmeasured but modest addition to the same otherwise-unchanged funnel. Measured below, not

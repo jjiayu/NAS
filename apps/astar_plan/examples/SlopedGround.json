@@ -6,12 +6,15 @@
       -0.26449047106269746
     ],
     "start_stance_foot": "Right",
-    "goal_offset": [
-      0,
-      0,
-      0
-    ],
-    "goal_stance_foot": "Left",
+    "foot_goals": {
+      "left": {
+        "offset": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
     "heuristic_weight": 10.0,
     "node_similarity_threshold": 0.02,
     "expansion": {

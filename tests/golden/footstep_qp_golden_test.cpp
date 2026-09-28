@@ -67,8 +67,9 @@ int run_footstep_qp_golden() {
     qp_config.rotation_enabled = true;
 
     QuadprogBackend backend;
+    Point_3 goal = std::get<Point_3>(scenario.astar_config.foot_goals[0]->region);
     FootstepPlan plan = solve_footstep_qp(path, scenario.astar_config.start_position,
-                                           scenario.astar_config.goal_location, reachability, qp_config, backend);
+                                           goal, reachability, qp_config, backend);
 
     check(plan.success, "footstep QP (quadprog) succeeds on ThreePathsNAS");
 

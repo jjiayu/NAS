@@ -1,5 +1,7 @@
 {
   "astar": {
-    "goal_location": [4.0, 5.0, 6.0]
+    "foot_goals": {
+      "left": { "point": [4.0, 5.0, 6.0] }
+    }
   }
 }

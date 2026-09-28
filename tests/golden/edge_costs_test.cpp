@@ -74,10 +74,11 @@ int run_edge_costs() {
         double heading_err[4] = {0, 0, 0, 0};
         bool found0 = false;
         char cells[4][64] = {"", "", "", ""};
+        Point_3 goal = sc.surfaces.back().centroid + s.goal_offset;
         for (size_t k = 0; k < settings.size(); ++k) {
             AstarSearchConfig cfg;
-            cfg.start_position = s.start; cfg.start_stance_foot = StanceFoot::Right; cfg.goal_stance_foot = StanceFoot::Left;
-            cfg.goal_location = sc.surfaces.back().centroid + s.goal_offset;
+            cfg.start_position = s.start; cfg.start_stance_foot = StanceFoot::Right;
+            cfg.foot_goals[static_cast<size_t>(StanceFoot::Left)] = AstarSearchConfig::FootGoal{goal, std::nullopt};
             cfg.expansion_params.rotation_enabled = true;
             cfg.yaw_change_weight = settings[k].yaw_change;
             cfg.heading_weight = settings[k].heading;
@@ -87,8 +88,9 @@ int run_edge_costs() {
             if (k == 0) {
                 found0 = found;
                 AstarSearchConfig def;  // everything default
-                def.start_position = s.start; def.start_stance_foot = StanceFoot::Right; def.goal_stance_foot = StanceFoot::Left;
-                def.goal_location = cfg.goal_location; def.expansion_params.rotation_enabled = true;
+                def.start_position = s.start; def.start_stance_foot = StanceFoot::Right;
+                def.foot_goals[static_cast<size_t>(StanceFoot::Left)] = AstarSearchConfig::FootGoal{goal, std::nullopt};
+                def.expansion_params.rotation_enabled = true;
                 AstarSearch d(sc.surfaces, reach, def); d.search();
                 if (d.expansion_count() != a.expansion_count() || d.result_path().size() != a.result_path().size()) { std::printf("FAIL: weights 0 differ from the default\n"); ++failures; }
             }
@@ -97,9 +99,9 @@ int run_edge_costs() {
             if (found) {
                 FootstepQPConfig qc; qc.alpha_weight = 10.0; qc.rotation_enabled = true;
                 QuadprogBackend backend;
-                qp_ok = solve_footstep_qp(a.result_path(), s.start, cfg.goal_location, reach, qc, backend).success;
+                qp_ok = solve_footstep_qp(a.result_path(), s.start, goal, reach, qc, backend).success;
             }
-            heading_err[k] = found ? heading_error_deg(a.result_path(), cfg.goal_location) : 0.0;
+            heading_err[k] = found ? heading_error_deg(a.result_path(), goal) : 0.0;
             std::snprintf(cells[k], sizeof cells[k], "%d / %zu / %.0f / %.0f%s", a.expansion_count(), a.result_path().size(),
                           found ? total_rotation_deg(a.result_path()) : 0.0, heading_err[k], (found && qp_ok && det) || (!found && !found0) ? "" : "  <-- PROBLEM");
             if ((found0 && !found) || (found && !qp_ok) || !det) ++failures;

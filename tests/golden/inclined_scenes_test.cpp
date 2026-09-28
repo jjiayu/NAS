@@ -107,8 +107,8 @@ int run_inclined_scenes() {
         AstarSearchConfig cfg;
         cfg.start_position = s.start;
         cfg.start_stance_foot = StanceFoot::Right;
-        cfg.goal_location = sc.surfaces.back().centroid;
-        cfg.goal_stance_foot = StanceFoot::Left;
+        Point_3 goal = sc.surfaces.back().centroid;
+        cfg.foot_goals[static_cast<size_t>(StanceFoot::Left)] = AstarSearchConfig::FootGoal{goal, std::nullopt};
         cfg.expansion_params.rotation_enabled = true;
 
         AstarSearch a(sc.surfaces, reach, cfg), b(sc.surfaces, reach, cfg);
@@ -116,13 +116,13 @@ int run_inclined_scenes() {
         const auto& path = a.result_path();
         bool found = !path.empty();
         bool det = a.expansion_count() == b.expansion_count() && a.result_path().size() == b.result_path().size();
-        bool on_goal = found && path.back()->check_if_node_contains_point(cfg.goal_location);
+        bool on_goal = found && path.back()->check_if_node_contains_point(goal);
         FootstepQPConfig qc; qc.alpha_weight = 10.0; qc.rotation_enabled = true;
         QuadprogBackend backend;
         FootstepPlan plan;
-        if (found) plan = solve_footstep_qp(path, cfg.start_position, cfg.goal_location, reach, qc, backend);
-        double v_ok = plan.success ? violation(path, plan.footsteps, hulls, s.start_normal, cfg.start_position, cfg.goal_location, true) : 1e9;
-        double v_flat = plan.success ? violation(path, plan.footsteps, hulls, s.start_normal, cfg.start_position, cfg.goal_location, false) : 0.0;
+        if (found) plan = solve_footstep_qp(path, cfg.start_position, goal, reach, qc, backend);
+        double v_ok = plan.success ? violation(path, plan.footsteps, hulls, s.start_normal, cfg.start_position, goal, true) : 1e9;
+        double v_flat = plan.success ? violation(path, plan.footsteps, hulls, s.start_normal, cfg.start_position, goal, false) : 0.0;
         bool ok = found && on_goal && det && plan.success && v_ok <= 1e-6;
         failures += ok ? 0 : 1;
         control = std::max(control, v_flat);

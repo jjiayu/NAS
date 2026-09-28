@@ -48,7 +48,8 @@ const std::vector<SceneSetup> kScenes = {
 
 AstarSearchConfig base_config(const SceneSetup& s, const Point_3& goal) {
     AstarSearchConfig c;
-    c.start_position = s.start; c.start_stance_foot = StanceFoot::Right; c.goal_location = goal; c.goal_stance_foot = StanceFoot::Left;
+    c.start_position = s.start; c.start_stance_foot = StanceFoot::Right;
+    c.foot_goals[static_cast<size_t>(StanceFoot::Left)] = AstarSearchConfig::FootGoal{goal, std::nullopt};
     c.heuristic_weight = 10.0; c.node_similarity_threshold = 0.02;
     c.expansion_params.rotation_enabled = true; c.expansion_params.yaw_discretization_num = 3;
     c.expansion_params.yaw_angle_increment = 10.0 / 180.0 * M_PI; c.expansion_params.cycle_detection_enabled = true;
@@ -178,8 +179,7 @@ int main(int argc, char** argv) {
         c.patch_index_cell_size = cell_size;
         c.cube_half_extent = 0.075;
         c.cube_height = 0.15;
-        c.goal_location = sc.surfaces.back().centroid;
-        c.goal_stance_foot = StanceFoot::Left;
+        c.foot_goals[static_cast<size_t>(StanceFoot::Left)] = AstarSearchConfig::FootGoal{sc.surfaces.back().centroid, std::nullopt};
         c.max_expansions = 5000;
 
         AstarSearchConfig::FootGoal g;

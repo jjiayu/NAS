@@ -138,8 +138,8 @@ int run_expansion_oracle() {
         AstarSearchConfig cfg;
         cfg.start_position = s.start;
         cfg.start_stance_foot = StanceFoot::Right;
-        cfg.goal_location = sc.surfaces.back().centroid + s.goal_offset;
-        cfg.goal_stance_foot = StanceFoot::Left;
+        cfg.foot_goals[static_cast<size_t>(StanceFoot::Left)] =
+            AstarSearchConfig::FootGoal{sc.surfaces.back().centroid + s.goal_offset, std::nullopt};
         cfg.expansion_params.rotation_enabled = true;
         cfg.expansion_params.yaw_discretization_num = 3;
         cfg.expansion_params.yaw_angle_increment = 10.0 / 180.0 * M_PI;

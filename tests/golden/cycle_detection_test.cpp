@@ -61,8 +61,8 @@ int run_cycle_detection() {
     for (const Case& c : cases) {
         config::Scenario sc = config::load_scenario(c.scene);
         AstarSearchConfig cfg;
-        cfg.start_position = c.start; cfg.start_stance_foot = StanceFoot::Right; cfg.goal_stance_foot = StanceFoot::Left;
-        cfg.goal_location = sc.surfaces.back().centroid;
+        cfg.start_position = c.start; cfg.start_stance_foot = StanceFoot::Right;
+        cfg.foot_goals[static_cast<size_t>(StanceFoot::Left)] = AstarSearchConfig::FootGoal{sc.surfaces.back().centroid, std::nullopt};
         cfg.distance_metric = c.metric; cfg.max_expansions = c.cap;
         cfg.expansion_params.rotation_enabled = true;
         long nodes = 0, cycles = 0;
@@ -91,8 +91,8 @@ int run_cycle_detection() {
         std::vector<Point_3> far = {Point_3(1.6, -1, z), Point_3(3.0, -1, z), Point_3(3.0, 1, z), Point_3(1.6, 1, z)};
         std::vector<Surface> surfaces = {Surface(ground, 0, 0.22, 0.22), Surface(ground_again, 1, 0.22, 0.22), Surface(far, 2, 0.22, 0.22)};
         AstarSearchConfig cfg;
-        cfg.start_position = Point_3(-1.2, 0, 0); cfg.start_stance_foot = StanceFoot::Right; cfg.goal_stance_foot = StanceFoot::Left;
-        cfg.goal_location = surfaces.back().centroid;
+        cfg.start_position = Point_3(-1.2, 0, 0); cfg.start_stance_foot = StanceFoot::Right;
+        cfg.foot_goals[static_cast<size_t>(StanceFoot::Left)] = AstarSearchConfig::FootGoal{surfaces.back().centroid, std::nullopt};
         cfg.expansion_params.rotation_enabled = true;
         cfg.expansion_params.cycle_detection_enabled = detection;
         cfg.max_expansions = 3000;

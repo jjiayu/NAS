@@ -31,8 +31,8 @@ int run_euclidean_metric() {
         AstarSearchConfig cfg;
         cfg.start_position = s.start;
         cfg.start_stance_foot = StanceFoot::Right;
-        cfg.goal_location = sc.surfaces.back().centroid;
-        cfg.goal_stance_foot = StanceFoot::Left;
+        Point_3 goal_point = sc.surfaces.back().centroid;
+        cfg.foot_goals[static_cast<size_t>(StanceFoot::Left)] = AstarSearchConfig::FootGoal{goal_point, std::nullopt};
         cfg.expansion_params.rotation_enabled = true;
         AstarSearchConfig euclid = cfg;
         euclid.distance_metric = DistanceMetric::Euclidean;
@@ -41,7 +41,7 @@ int run_euclidean_metric() {
         AstarSearch a(sc.surfaces, reach, euclid), b(sc.surfaces, reach, euclid), epa(sc.surfaces, reach, cfg);
         a.search(); b.search(); epa.search();
         bool found = !a.result_path().empty();
-        bool goal = found && a.result_path().back()->check_if_node_contains_point(euclid.goal_location);
+        bool goal = found && a.result_path().back()->check_if_node_contains_point(goal_point);
         bool det = a.expansion_count() == b.expansion_count() && a.result_path().size() == b.result_path().size();
         std::cout << (found && goal && det ? "ok: " : "FAIL: ") << s.name << ": Euclidean " << a.expansion_count() << " expansions / "
                   << a.result_path().size() << " nodes (path found " << found << ", ends on the goal " << goal << ", deterministic " << det

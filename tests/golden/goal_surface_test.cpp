@@ -1,4 +1,5 @@
-// The goal as a SURFACE instead of a position (AstarSearchConfig::goal_surface_id, and the footstep QP called with no
+// The goal as a whole SURFACE instead of a position (AstarSearchConfig::FootGoal::region holding an
+// int -- see astar_search.hpp's own doc comment on FootGoal -- and the footstep QP called with no
 // goal position). On each scene, with the last surface as the goal:
 //   - the search finds a path that ends on that surface, with the goal stance foot, deterministically;
 //   - the QP succeeds, the last footstep lies on the last patch (plane and polygon, tolerance 1e-6 m) and is NOT
@@ -56,11 +57,11 @@ int run_goal_surface() {
         config::Scenario sc = config::load_scenario(s.name);
         const int last = static_cast<int>(sc.surfaces.size()) - 1;
         AstarSearchConfig pos;
-        pos.start_position = s.start; pos.start_stance_foot = StanceFoot::Right; pos.goal_stance_foot = StanceFoot::Left;
-        pos.goal_location = sc.surfaces.back().centroid;
+        pos.start_position = s.start; pos.start_stance_foot = StanceFoot::Right;
+        pos.foot_goals[static_cast<size_t>(StanceFoot::Left)] = AstarSearchConfig::FootGoal{sc.surfaces.back().centroid, std::nullopt};
         pos.expansion_params.rotation_enabled = true;
         AstarSearchConfig surf = pos;
-        surf.goal_surface_id = last;
+        surf.foot_goals[static_cast<size_t>(StanceFoot::Left)] = AstarSearchConfig::FootGoal{last, std::nullopt};
 
         AstarSearch a(sc.surfaces, reach, surf), b(sc.surfaces, reach, surf), p(sc.surfaces, reach, pos);
         a.search(); b.search(); p.search();

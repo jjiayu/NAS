@@ -94,8 +94,7 @@ AstarSearchConfig baseline_config(const SceneSetup& setup, const Point_3& goal) 
     AstarSearchConfig c;
     c.start_position = setup.start;
     c.start_stance_foot = StanceFoot::Right;
-    c.goal_location = goal;
-    c.goal_stance_foot = StanceFoot::Left;
+    c.foot_goals[static_cast<size_t>(StanceFoot::Left)] = AstarSearchConfig::FootGoal{goal, std::nullopt};
     c.heuristic_weight = 10.0;
     c.node_similarity_threshold = 0.02;
     c.expansion_params.rotation_enabled = true;

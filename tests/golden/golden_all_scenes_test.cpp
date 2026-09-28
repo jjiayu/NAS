@@ -87,8 +87,7 @@ AstarSearchConfig old_constants_config(const SceneSetup& setup, const Point_3& g
     c.start_position = setup.start;
     c.start_stance_foot = StanceFoot::Right;
     c.start_foot_yaw = 0.0;
-    c.goal_location = goal;
-    c.goal_stance_foot = StanceFoot::Left;
+    c.foot_goals[static_cast<size_t>(StanceFoot::Left)] = AstarSearchConfig::FootGoal{goal, std::nullopt};
     c.heuristic_weight = 10.0;
     c.node_similarity_threshold = 0.02;
     c.expansion_params.rotation_enabled = true;
@@ -245,10 +244,10 @@ int run_golden_all_scenes() {
         qp_config.alpha_weight = 10.0;
         qp_config.rotation_enabled = true;
         QuadprogBackend backend;
-        FootstepPlan plan = solve_footstep_qp(path, cfg.start_position, cfg.goal_location, reachability, qp_config, backend);
+        FootstepPlan plan = solve_footstep_qp(path, cfg.start_position, goal, reachability, qp_config, backend);
 
         if (plan.success) {
-            double viol = max_violation(path, plan.footsteps, reachability, cfg.start_position, cfg.goal_location);
+            double viol = max_violation(path, plan.footsteps, reachability, cfg.start_position, goal);
             bool feasible = viol <= 1e-6;
             std::cout << (feasible ? "ok" : "FAIL") << ": independent feasibility check of the QP result: worst constraint violation " << viol << " m\n";
             out.feasible = feasible;

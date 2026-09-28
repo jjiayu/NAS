@@ -43,15 +43,6 @@ struct AstarSearchConfig {
     StanceFoot start_stance_foot = StanceFoot::Right;
     double start_foot_yaw = 0.0;
 
-    // The goal is EITHER a position (goal_location, the default) OR a surface (goal_surface_id >= 0).
-    // Position: the search ends on a node of the goal stance foot whose patch contains goal_location; the
-    // heuristic measures the distance to that point. Surface: it ends on a node of the goal stance foot standing
-    // on that surface (an index into the surfaces the search was given); the heuristic measures the distance to
-    // the surface's patch (EPA between two polytopes) or, for the Euclidean metric, to its centroid.
-    Point_3 goal_location;
-    int goal_surface_id = -1;
-    StanceFoot goal_stance_foot = StanceFoot::Left;
-
     DistanceMetric distance_metric = DistanceMetric::Epa;
 
     // Weight of the constant cost of a step (the paper's edge cost 1). 0 ignores it: only the optional costs
@@ -65,64 +56,50 @@ struct AstarSearchConfig {
     double yaw_change_weight = 0.0;
 
     // Optional edge cost on the heading: + heading_weight * |yaw of the child - direction from the parent's patch centroid
-    // to the goal| (wrapped to [0, pi], in the horizontal plane; the goal is the goal position or the goal surface's
-    // centroid). It favours feet aligned with the rough direction of travel, unlike yaw_change_weight, which penalises
+    // to the goal| (wrapped to [0, pi], in the horizontal plane; the goal is goal_point() -- see its own doc comment).
+    // It favours feet aligned with the rough direction of travel, unlike yaw_change_weight, which penalises
     // rotating from one step to the next whatever the direction. 0 (default) = off. Only with rotation enabled.
     double heading_weight = 0.0;
 
-    // Optional constraint + optional edge cost on the FINAL foot yaw (as opposed to yaw_change_weight/heading_weight,
-    // which shape the whole path). Unset (default) = no constraint at all, nothing below is evaluated: the goal
-    // stance foot's yaw at termination can be anything, exactly like before this option existed.
-    //
-    // Set goal_yaw_target: the search now only terminates on a node whose foot_yaw is within goal_yaw_tolerance
-    // (wrapped, radians) of the target — same position/surface + stance-foot condition as before, plus this one.
-    // A too-tight, unreachable combination (e.g. a target the yaw discretization can never actually land in) fails
-    // like today's "no path" (see max_expansions), not a crash or a hang.
-    //
-    // goal_yaw_weight (0 by default, like the other optional costs) additionally biases the search toward that
-    // target throughout the path — same mechanism as heading_weight (edge cost, wrapped angular distance) but
-    // against the fixed target instead of the dynamic direction-to-goal, and with a dead zone of goal_yaw_tolerance
-    // (no cost once already within the accepted range). At 0, only the hard constraint above applies (no bias, the
-    // search may need more expansions to happen upon a node that satisfies it). Requires expansion_params.rotation_enabled
-    // — AstarSearch's constructor throws if goal_yaw_target is set without it (foot_yaw is always 0 otherwise, so any
-    // target other than 0 would be silently unreachable).
-    std::optional<double> goal_yaw_target;
-    double goal_yaw_tolerance = 0.0;
-    double goal_yaw_weight = 0.0;
-
-    // A goal for ONE foot: either a precise point (like goal_location above) or an arbitrary
-    // polytope (>= 3 vertices, world frame, validated at construction) -- the two shapes
-    // goal_location/goal_surface_id already use separately, unified into one representation.
-    // Independent of the shape, an optional accepted yaw range narrows the target further (unset =
-    // no yaw constraint, generalizing goal_yaw_target's own "unset = free" convention). Unwrap the
-    // range if it would otherwise cross +/-pi (e.g. {170deg, 190deg}, not {170deg, -170deg}).
+    // A goal for ONE foot: a precise point, a whole surface (index into the surfaces the search was
+    // given -- the search ends on a node of that foot standing anywhere on it, an index-equality
+    // test, not a geometric containment one) or an arbitrary polytope (>= 3 vertices, world frame,
+    // validated at construction). Independent of the shape, an optional accepted yaw range narrows
+    // the target further (unset = no yaw constraint). Unwrap the range if it would otherwise cross
+    // +/-pi (e.g. {170deg, 190deg}, not {170deg, -170deg}).
     struct FootGoal {
-        std::variant<Point_3, std::vector<Point_3>> region;
+        std::variant<Point_3, std::vector<Point_3>, int> region;
         std::optional<std::pair<double, double>> yaw_range;
     };
 
-    // Indexed by StanceFoot, each slot INDEPENDENTLY optional (not an array that must be filled in
-    // full):
-    //   - neither slot set (default): this mechanism is off, goal_location/goal_surface_id/
-    //     goal_stance_foot/goal_yaw_target above govern exactly as before this option existed;
-    //   - exactly one slot set: direct generalization of today's behaviour -- that foot must satisfy
-    //     its own slot (shape + optional yaw), the other foot stays as free as it is today;
+    // Indexed by StanceFoot, each slot INDEPENDENTLY optional, but at least one must be set
+    // (validated at construction -- the search always needs a goal):
+    //   - exactly one slot set: that foot must satisfy its own slot (shape + optional yaw), the
+    //     other foot stays entirely free;
     //   - both slots set: "closing stance" -- terminates only when the last two consecutive
     //     footsteps (one per foot, whichever arrives last) each satisfy their own slot at once. The
     //     naive approach (aim for one target, then the other) does not work here: the heuristic must
     //     track both feet's remaining distance at every node, not just the one currently being
     //     placed, or the search can converge one foot onto its target while never pulling the
     //     trailing foot toward its own (see astar_search.cpp for the corrected heuristic).
-    // Mutually exclusive with goal_surface_id/goal_yaw_target and with the cube extension below
-    // (cube_half_extent > 0), all validated at construction: expand_cube_placement gives its child
-    // the SAME stance foot as its parent (placing a cube doesn't move a foot), breaking the
-    // foot-alternation invariant the closing-stance mode (both slots filled) relies on for its
-    // node+parent termination test and heuristic. A single-slot goal never reads the parent's own
-    // foot, so it doesn't actually have this problem, but the exclusion applies to foot_goals as a
-    // whole for simplicity -- relax later if single-slot + cube together proves useful.
-    // goal_location/goal_stance_foot have no "unset" sentinel to validate against (already the case
-    // today for goal_location whenever goal_surface_id is used) and are simply ignored.
+    // Both slots set is mutually exclusive with the cube extension below (cube_half_extent > 0),
+    // validated at construction: expand_cube_placement gives its child the SAME stance foot as its
+    // parent (placing a cube doesn't move a foot), breaking the foot-alternation invariant the
+    // closing-stance mode relies on for its node+parent termination test and heuristic. A single-slot
+    // goal never reads the parent's own foot, so it doesn't have this problem -- only "both slots"
+    // is rejected, not foot_goals as a whole.
     std::array<std::optional<FootGoal>, 2> foot_goals;
+
+    // Optional edge cost biasing the search toward a fixed heading throughout the path (as opposed
+    // to yaw_change_weight/heading_weight, which don't target a specific angle) -- same mechanism as
+    // heading_weight (wrapped angular distance) but against a fixed target instead of the dynamic
+    // direction-to-goal, with a dead zone equal to the targeted slot's own yaw_range half-width (no
+    // cost once already within the accepted range). 0 (default) = off. Only meaningful with exactly
+    // one foot_goals slot filled, and that slot must have a yaw_range (its center is the target,
+    // both validated at construction) -- no per-slot generalization to the "both slots" mode, never
+    // asked for or exercised. Requires expansion_params.rotation_enabled, same as any yaw_range
+    // (AstarSearch's constructor throws otherwise via validate_and_hull_foot_goal).
+    double goal_yaw_weight = 0.0;
 
     // Cube-extension config (see docs/cube-extension-spec.md, docs/cube-implementation-plan.md).
     // 0 (default) = extension entirely off: no cube actions are ever candidates, the search
@@ -130,8 +107,8 @@ struct AstarSearchConfig {
     // the cube "in hand" (CubeState::InHand on the start node) and considers
     // expand_cube_placement/expand_onto_cube as extra candidate actions alongside expand_node.
     // Requires the reachability model passed to AstarSearch's constructor to also have a "Cube"
-    // entry for each stance foot (validated at construction, same style as goal_yaw_target's
-    // rotation_enabled check). v1 scope: at most one cube, used once (docs/cube-implementation-plan.md
+    // entry for each stance foot (validated at construction, same style as a foot_goals yaw_range's
+    // own rotation_enabled check). v1 scope: at most one cube, used once (docs/cube-implementation-plan.md
     // §4) -- expand_onto_cube always deactivates it immediately after a single on-cube step.
     double cube_half_extent = 0.0;
     double cube_height = 0.0;
@@ -221,15 +198,22 @@ struct AstarSearchConfig {
     std::function<void(int parent_expansion_index, const Node& child, ChildAction action)> on_child;
 };
 
-// Shared shape+yaw test (point containment, or polytope plane-slice + 2D clip against the
-// node's own patch): the geometric core of AstarSearch::goal_satisfied/distance_to_goal,
+// Shared shape+yaw test (point containment, surface_id equality, or polytope plane-slice + 2D clip
+// against the node's own patch): the geometric core of AstarSearch::goal_satisfied/distance_to_goal,
 // generalized to take their FootGoal and pre-built hull explicitly instead of reading them
 // off `config_`/a cached member, so the same logic backs both AstarSearchConfig::foot_goals
 // and the cube-pickup trigger below without duplicating it. `cached_hull` must be non-null
 // whenever goal.region holds a polytope (built once, see AstarSearch's target_polyhedra_/
-// scene_cube_polyhedra_) -- ignored for a point-shaped region.
+// scene_cube_polyhedra_) -- ignored for a point- or surface_id-shaped region. Never needs
+// `surfaces` (a surface_id region is a plain index compare against Node::surface_id), unlike
+// foot_goal_distance below, so expand_cube_pickup can call it without knowing about surfaces at
+// all.
 bool foot_goal_satisfied(const Node& node, const AstarSearchConfig::FootGoal& goal, const Polyhedron* cached_hull);
-double foot_goal_distance(const Node& node, const AstarSearchConfig::FootGoal& goal, DistanceMetric metric);
+// `surfaces` is only consulted for a surface_id-shaped region (patch-to-patch EPA, or centroid
+// distance for the Euclidean metric / a single-point patch) -- see foot_goal_satisfied above for why
+// it isn't needed there.
+double foot_goal_distance(const Node& node, const AstarSearchConfig::FootGoal& goal, DistanceMetric metric,
+                           const std::vector<Surface>& surfaces);
 
 // Cube-pickup trigger (docs/cube-pickup-spec.md): for every config-level scene cube not yet
 // marked picked-up on `parent`'s own path (parent->cubes_picked_up), tests its
@@ -274,8 +258,10 @@ private:
     // polytope-shaped" convention as target_polyhedra_ above, built once at construction.
     std::vector<std::array<std::optional<Polyhedron>, 2>> scene_cube_polyhedra_;
 
-    double heuristic(const Node* node) const;
-    Point_3 goal_point() const; // the goal position, or the goal surface's centroid
+    // The targeted foot_goals slot's own representative point (region's point/surface-centroid/
+    // polytope-centroid), or the midpoint of both slots' when two are targeted -- an approximation
+    // consumed only by heading_weight's edge cost, not tuned specifically for two targets.
+    Point_3 goal_point() const;
 
     // foot_goals support (see AstarSearchConfig::foot_goals). `which` selects config_.foot_goals[which]
     // (must be set). distance_to_goal is unweighted (see weight_if_epa); goal_satisfied tests shape

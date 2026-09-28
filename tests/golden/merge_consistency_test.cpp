@@ -65,8 +65,8 @@ int run_merge_consistency() {
     for (const Case& c : cases) {
         config::Scenario sc = config::load_scenario(c.scene);
         AstarSearchConfig cfg;
-        cfg.start_position = c.start; cfg.start_stance_foot = StanceFoot::Right; cfg.goal_stance_foot = StanceFoot::Left;
-        cfg.goal_location = sc.surfaces.back().centroid;
+        cfg.start_position = c.start; cfg.start_stance_foot = StanceFoot::Right;
+        cfg.foot_goals[static_cast<size_t>(StanceFoot::Left)] = AstarSearchConfig::FootGoal{sc.surfaces.back().centroid, std::nullopt};
         cfg.distance_metric = c.metric; cfg.max_expansions = c.cap;
         cfg.expansion_params.rotation_enabled = true;
         long counts[4] = {0, 0, 0, 0};

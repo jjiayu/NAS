@@ -8,10 +8,12 @@
     "start_stance_foot": "Right",
     "foot_goals": {
       "left": {
-        "offset": [
-          0,
-          0,
-          0
+        "surface": 0,
+        "polygon_2d": [
+          [1.775, -0.3],
+          [2.275, -0.3],
+          [2.275, 0.3],
+          [1.775, 0.3]
         ]
       }
     },

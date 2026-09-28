@@ -1,5 +1,6 @@
-// Optional final-yaw constraint/cost on the goal (AstarSearchConfig::goal_yaw_target/tolerance/weight,
-// added on request — see docs/paper-deltas.md).
+// Optional final-yaw constraint/cost on the goal: the hard constraint lives in the targeted
+// foot_goals slot's own yaw_range (AstarSearchConfig::FootGoal::yaw_range), the optional guiding
+// edge cost is AstarSearchConfig::goal_yaw_weight (added on request — see docs/paper-deltas.md).
 //
 // Scenario: Flat, a straight corridor (start (0,0,0), goal along +x). Left alone, the search arrives
 // facing roughly the direction of travel (~0 deg) — never intentionally, just whatever the tie-break
@@ -81,8 +82,7 @@ int run_goal_yaw() {
         AstarSearchConfig cfg;
         cfg.start_position = start;
         cfg.start_stance_foot = StanceFoot::Right;
-        cfg.goal_location = goal;
-        cfg.goal_stance_foot = StanceFoot::Left;
+        cfg.foot_goals[static_cast<size_t>(StanceFoot::Left)] = AstarSearchConfig::FootGoal{goal, std::nullopt};
         cfg.expansion_params.rotation_enabled = true;
         cfg.max_expansions = 1000; // safety cap — see the tolerance comment above on why this can grow fast
         return cfg;
@@ -90,11 +90,9 @@ int run_goal_yaw() {
 
     AstarSearchConfig cfg_a = base_config(); // (a) no constraint at all — today's behaviour
     AstarSearchConfig cfg_b = base_config(); // (b) hard constraint, no guiding cost
-    cfg_b.goal_yaw_target = target;
-    cfg_b.goal_yaw_tolerance = tolerance;
+    cfg_b.foot_goals[static_cast<size_t>(StanceFoot::Left)]->yaw_range = std::make_pair(target - tolerance, target + tolerance);
     AstarSearchConfig cfg_c = base_config(); // (c) constraint + guiding cost
-    cfg_c.goal_yaw_target = target;
-    cfg_c.goal_yaw_tolerance = tolerance;
+    cfg_c.foot_goals[static_cast<size_t>(StanceFoot::Left)]->yaw_range = std::make_pair(target - tolerance, target + tolerance);
     cfg_c.goal_yaw_weight = 0.5; // 0.1 measured too weak to change anything at this tolerance (see diagnosis above)
     AstarSearchConfig cfg_d = cfg_c; // (d) + heading_weight (aligns with direction of travel) at the same time
     cfg_d.heading_weight = 0.1; // measured: >=0.2 here fights goal_yaw_weight hard enough to blow the expansion budget
@@ -171,20 +169,20 @@ int run_goal_yaw() {
         check(!same_path, "(d) le compromis avec heading_weight donne un plan different de (c)");
     }
 
-    // Negative control: goal_yaw_target set without rotation enabled must throw at construction, not
+    // Negative control: a yaw_range set without rotation enabled must throw at construction, not
     // silently search a state space where foot_yaw is always 0 (any target other than 0 would be
     // unreachable without any indication why).
     {
         bool threw = false;
         AstarSearchConfig cfg_bad = base_config();
         cfg_bad.expansion_params.rotation_enabled = false;
-        cfg_bad.goal_yaw_target = target;
+        cfg_bad.foot_goals[static_cast<size_t>(StanceFoot::Left)]->yaw_range = std::make_pair(target - tolerance, target + tolerance);
         try {
             AstarSearch bad(sc.surfaces, reach, cfg_bad);
         } catch (const std::invalid_argument&) {
             threw = true;
         }
-        check(threw, "goal_yaw_target sans rotation_enabled leve une erreur claire");
+        check(threw, "yaw_range sans rotation_enabled leve une erreur claire");
     }
 
     // Negative control: a target/tolerance window the 10-degree discretization can never land in (175
@@ -192,8 +190,9 @@ int run_goal_yaw() {
     // path" within the expansion cap, not a hang.
     {
         AstarSearchConfig cfg_unreach = base_config();
-        cfg_unreach.goal_yaw_target = 175.0 / 180.0 * M_PI;
-        cfg_unreach.goal_yaw_tolerance = 1.0 / 180.0 * M_PI;
+        double unreach_target = 175.0 / 180.0 * M_PI, unreach_tol = 1.0 / 180.0 * M_PI;
+        cfg_unreach.foot_goals[static_cast<size_t>(StanceFoot::Left)]->yaw_range =
+            std::make_pair(unreach_target - unreach_tol, unreach_target + unreach_tol);
         // Small cap on purpose: an unreachable target/tolerance never terminates on its own — the point
         // here is only that the search gives up cleanly within budget, not that it's fast; (b)/(c)/(d)
         // above needed up to ~3300 expansions to satisfy a REACHABLE constraint, so this one (which by

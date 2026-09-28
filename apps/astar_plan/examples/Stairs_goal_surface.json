@@ -6,7 +6,11 @@
       0
     ],
     "start_stance_foot": "Right",
-    "goal_stance_foot": "Left",
+    "foot_goals": {
+      "left": {
+        "surface": 4
+      }
+    },
     "heuristic_weight": 10.0,
     "node_similarity_threshold": 0.02,
     "expansion": {
@@ -14,8 +18,7 @@
       "yaw_discretization_num": 3,
       "yaw_angle_increment_deg": 10.0,
       "cycle_detection_enabled": true
-    },
-    "goal_surface": 4
+    }
   },
   "qp": {
     "alpha_weight": 10.0,

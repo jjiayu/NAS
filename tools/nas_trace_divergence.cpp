@@ -68,8 +68,8 @@ std::vector<Event> run(const std::string& scene, int& expansions) {
     AstarSearchConfig c;
     c.start_position = start;
     c.start_stance_foot = StanceFoot::Right;
-    c.goal_location = sc.surfaces.back().centroid + goal_offset;
-    c.goal_stance_foot = StanceFoot::Left;
+    c.foot_goals[static_cast<size_t>(StanceFoot::Left)] =
+        AstarSearchConfig::FootGoal{sc.surfaces.back().centroid + goal_offset, std::nullopt};
     c.heuristic_weight = 10.0;
     c.node_similarity_threshold = THR;
     c.expansion_params.rotation_enabled = true;

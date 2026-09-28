@@ -1,9 +1,20 @@
 {
   "astar": {
-    "start_position": [0.0, 0.0, 0.0],
+    "start_position": [
+      0.0,
+      0.0,
+      0.0
+    ],
     "start_stance_foot": "Right",
-    "goal_location": [8.0, 0.0, 0.0],
-    "goal_stance_foot": "Left",
+    "foot_goals": {
+      "left": {
+        "point": [
+          8.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
     "heuristic_weight": 10.0,
     "node_similarity_threshold": 0.02,
     "expansion": {
@@ -16,6 +27,6 @@
   "qp": {
     "alpha_weight": 10.0,
     "rotation_enabled": true,
-    "hessian_regularization": 1e-8
+    "hessian_regularization": 1e-08
   }
 }

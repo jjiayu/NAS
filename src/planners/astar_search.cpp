@@ -150,13 +150,14 @@ private:
     std::unordered_map<Cell, std::vector<Node*>, CellHash> cells_;
 };
 
-// Validates one FootGoal (>=3 vertices if a polytope, a well-formed yaw_range requiring
-// rotation) and returns its hull if polytope-shaped (nullopt for a point or unset slot) --
-// shared by foot_goals and scene_cubes[*].pickup_affordance, identical shape/contract.
-// `context` prefixes every thrown message so the two stay distinguishable.
+// Validates one FootGoal (>=3 vertices if a polytope, a valid index if a surface_id, a well-formed
+// yaw_range requiring rotation) and returns its hull if polytope-shaped (nullopt for a point,
+// surface_id or unset slot) -- shared by foot_goals and scene_cubes[*].pickup_affordance, identical
+// shape/contract. `context` prefixes every thrown message so the two stay distinguishable.
 std::optional<Polyhedron> validate_and_hull_foot_goal(const std::string& context,
                                                        const AstarSearchConfig::FootGoal& g,
-                                                       bool rotation_enabled) {
+                                                       bool rotation_enabled,
+                                                       size_t num_surfaces) {
     std::optional<Polyhedron> hull;
     if (std::holds_alternative<std::vector<Point_3>>(g.region)) {
         const auto& verts = std::get<std::vector<Point_3>>(g.region);
@@ -166,6 +167,11 @@ std::optional<Polyhedron> validate_and_hull_foot_goal(const std::string& context
         Polyhedron h;
         CGAL::convex_hull_3(verts.begin(), verts.end(), h);
         hull = std::move(h);
+    } else if (std::holds_alternative<int>(g.region)) {
+        int id = std::get<int>(g.region);
+        if (id < 0 || static_cast<size_t>(id) >= num_surfaces) {
+            throw std::invalid_argument(context + "'s surface index " + std::to_string(id) + " is not a surface of the scenario");
+        }
     }
     if (g.yaw_range) {
         if (g.yaw_range->second < g.yaw_range->first) {
@@ -185,9 +191,6 @@ std::optional<Polyhedron> validate_and_hull_foot_goal(const std::string& context
 AstarSearch::AstarSearch(std::vector<Surface> surfaces, ReachabilityModel reachability, AstarSearchConfig config)
     : surfaces_(std::move(surfaces)), reachability_(std::move(reachability)), config_(std::move(config)) {
 
-    if (config_.goal_surface_id >= static_cast<int>(surfaces_.size())) {
-        throw std::invalid_argument("AstarSearch: goal_surface_id " + std::to_string(config_.goal_surface_id) + " is not a surface of the scenario");
-    }
     // Validated up front (not just relied upon inside expand_node's hot loop) so a
     // misconfigured increment fails at construction, not partway through a search:
     // PatchIndex dedups nodes by Node::foot_yaw_bin, an integer wrapped modulo
@@ -196,33 +199,37 @@ AstarSearch::AstarSearch(std::vector<Surface> surfaces, ReachabilityModel reacha
     if (config_.expansion_params.rotation_enabled) {
         yaw_bins_per_revolution(config_.expansion_params.yaw_angle_increment);
     }
-    if (config_.goal_yaw_target && !config_.expansion_params.rotation_enabled) {
-        throw std::invalid_argument("AstarSearch: goal_yaw_target is set but expansion_params.rotation_enabled is "
-                                     "false — every node's foot_yaw stays at 0 then, so any target other than 0 "
-                                     "would be silently unreachable");
+    const bool has_left_goal = config_.foot_goals[0].has_value();
+    const bool has_right_goal = config_.foot_goals[1].has_value();
+    if (!has_left_goal && !has_right_goal) {
+        throw std::invalid_argument("AstarSearch: foot_goals has neither slot set — the search needs a goal");
     }
-    const bool has_foot_goal = config_.foot_goals[0].has_value() || config_.foot_goals[1].has_value();
-    if (has_foot_goal && config_.goal_surface_id >= 0) {
-        throw std::invalid_argument("AstarSearch: foot_goals is set together with goal_surface_id — mutually "
-                                     "exclusive goal mechanisms");
-    }
-    if (has_foot_goal && config_.goal_yaw_target) {
-        throw std::invalid_argument("AstarSearch: foot_goals is set together with goal_yaw_target — mutually "
-                                     "exclusive goal mechanisms");
-    }
-    if (has_foot_goal && config_.cube_half_extent > 0.0) {
+    if (has_left_goal && has_right_goal && config_.cube_half_extent > 0.0) {
         // See astar_search.hpp's own comment on foot_goals: expand_cube_placement gives its child the
         // same stance foot as its parent, breaking the alternation invariant the closing-stance mode
         // relies on for its node+parent termination test — rejected outright rather than silently
-        // computed wrong.
-        throw std::invalid_argument("AstarSearch: foot_goals is set together with cube_half_extent > 0 — "
+        // computed wrong. A single slot never reads the parent's own foot, so only "both slots" is
+        // rejected here.
+        throw std::invalid_argument("AstarSearch: foot_goals has both slots set together with cube_half_extent > 0 — "
                                      "the cube extension breaks the foot-alternation invariant the closing-stance "
-                                     "mode (both foot_goals slots filled) relies on");
+                                     "mode relies on");
+    }
+    if (config_.goal_yaw_weight > 0.0) {
+        if (has_left_goal == has_right_goal) {
+            throw std::invalid_argument("AstarSearch: goal_yaw_weight is only meaningful with exactly one "
+                                         "foot_goals slot filled");
+        }
+        const AstarSearchConfig::FootGoal& targeted = has_left_goal ? *config_.foot_goals[0] : *config_.foot_goals[1];
+        if (!targeted.yaw_range) {
+            throw std::invalid_argument("AstarSearch: goal_yaw_weight is set but the targeted foot_goals slot has "
+                                         "no yaw_range — it would be silently ignored");
+        }
     }
     for (size_t i = 0; i < 2; ++i) {
         if (!config_.foot_goals[i]) continue;
         target_polyhedra_[i] = validate_and_hull_foot_goal(
-            "AstarSearch: foot_goals[" + std::to_string(i) + "]", *config_.foot_goals[i], config_.expansion_params.rotation_enabled);
+            "AstarSearch: foot_goals[" + std::to_string(i) + "]", *config_.foot_goals[i],
+            config_.expansion_params.rotation_enabled, surfaces_.size());
     }
     if (config_.cube_half_extent > 0.0 &&
         (!reachability_.has("Cube", "LF", ReachabilityDirection::Forward) || !reachability_.has("Cube", "RF", ReachabilityDirection::Forward))) {
@@ -251,7 +258,7 @@ AstarSearch::AstarSearch(std::vector<Surface> surfaces, ReachabilityModel reacha
             if (!aff[f]) continue;
             scene_cube_polyhedra_[i][f] = validate_and_hull_foot_goal(
                 "AstarSearch: scene_cubes[" + std::to_string(i) + "].pickup_affordance[" + std::to_string(f) + "]",
-                *aff[f], config_.expansion_params.rotation_enabled);
+                *aff[f], config_.expansion_params.rotation_enabled, surfaces_.size());
         }
     }
     start_node_ = pool_.create();
@@ -307,20 +314,17 @@ AstarSearch::AstarSearch(std::vector<Surface> surfaces, ReachabilityModel reacha
         }
     }
     start_node_->g_score = 0.0;
-    if (config_.foot_goals[0] && config_.foot_goals[1]) {
+    if (has_left_goal && has_right_goal) {
         // Both feet targeted: sum both remaining distances, exactly like process_child does for
-        // every later node (see search()) — the start node is not a special case for this mode,
-        // only for the legacy single-goal metric below (a single-point patch has no area for EPA).
+        // every later node (see search()) — the start node is not a special case for this mode.
         start_node_->h_score = weight_if_epa(distance_to_goal(*start_node_, StanceFoot::Left) +
                                               distance_to_goal(*start_node_, StanceFoot::Right));
-    } else if (config_.foot_goals[0] || config_.foot_goals[1]) {
-        StanceFoot targeted = config_.foot_goals[0] ? StanceFoot::Left : StanceFoot::Right;
-        start_node_->h_score = weight_if_epa(distance_to_goal(*start_node_, targeted));
     } else {
-        // A single-point patch has no area for EPA (it needs >=3 points), so the
-        // start node's heuristic is the plain Euclidean distance — matches the old
-        // code exactly (see docs/paper-deltas.md).
-        start_node_->h_score = compute_euclidean_distance(config_.start_position, goal_point());
+        // A single-point patch has no area for EPA (it needs >=3 points): foot_goal_distance's own
+        // point/surface_id branches already fall back to a plain Euclidean distance in that case
+        // (see below), so the start node needs no special case here.
+        StanceFoot targeted = has_left_goal ? StanceFoot::Left : StanceFoot::Right;
+        start_node_->h_score = weight_if_epa(distance_to_goal(*start_node_, targeted));
     }
     start_node_->f_score = start_node_->g_score + start_node_->h_score;
     start_node_->parent = nullptr;
@@ -328,57 +332,48 @@ AstarSearch::AstarSearch(std::vector<Surface> surfaces, ReachabilityModel reacha
 
 namespace {
 // A FootGoal's representative point, for goal_point()'s dual-target approximation below: the point
-// itself, or a polytope's centroid.
-Point_3 foot_goal_representative_point(const AstarSearchConfig::FootGoal& g) {
+// itself, a surface's centroid, or a polytope's centroid.
+Point_3 foot_goal_representative_point(const AstarSearchConfig::FootGoal& g, const std::vector<Surface>& surfaces) {
     if (std::holds_alternative<Point_3>(g.region)) return std::get<Point_3>(g.region);
+    if (std::holds_alternative<int>(g.region)) return surfaces[static_cast<size_t>(std::get<int>(g.region))].centroid;
     return get_centroid(std::get<std::vector<Point_3>>(g.region));
 }
 } // namespace
 
 Point_3 AstarSearch::goal_point() const {
+    // At least one slot is always set (validated at construction).
     if (config_.foot_goals[0] && config_.foot_goals[1]) {
         // Only consumed by heading_weight's edge cost when foot_goals is also in use — an
         // approximation (not tuned specifically for two targets), documented at heading_weight.
-        return CGAL::midpoint(foot_goal_representative_point(*config_.foot_goals[0]),
-                               foot_goal_representative_point(*config_.foot_goals[1]));
+        return CGAL::midpoint(foot_goal_representative_point(*config_.foot_goals[0], surfaces_),
+                               foot_goal_representative_point(*config_.foot_goals[1], surfaces_));
     }
-    if (config_.foot_goals[0] || config_.foot_goals[1]) {
-        return foot_goal_representative_point(config_.foot_goals[0] ? *config_.foot_goals[0] : *config_.foot_goals[1]);
-    }
-    return config_.goal_surface_id >= 0 ? surfaces_[static_cast<size_t>(config_.goal_surface_id)].centroid : config_.goal_location;
-}
-
-double AstarSearch::heuristic(const Node* node) const {
-    const bool surface_goal = config_.goal_surface_id >= 0;
-    switch (config_.distance_metric) {
-        case DistanceMetric::Euclidean:
-            return compute_euclidean_distance(node->centroid, goal_point());
-        case DistanceMetric::Epa:
-        default:
-            if (surface_goal) {
-                return config_.heuristic_weight *
-                       calculate_epa_distance_patch_to_patch(node->patch_vertices, surfaces_[static_cast<size_t>(config_.goal_surface_id)].vertices_3d);
-            }
-            return config_.heuristic_weight * calculate_epa_distance_point_to_patch(node->patch_vertices, config_.goal_location);
-    }
+    return foot_goal_representative_point(config_.foot_goals[0] ? *config_.foot_goals[0] : *config_.foot_goals[1], surfaces_);
 }
 
 double AstarSearch::weight_if_epa(double raw_distance) const {
     return config_.distance_metric == DistanceMetric::Epa ? config_.heuristic_weight * raw_distance : raw_distance;
 }
 
-double foot_goal_distance(const Node& node, const AstarSearchConfig::FootGoal& goal, DistanceMetric metric) {
+double foot_goal_distance(const Node& node, const AstarSearchConfig::FootGoal& goal, DistanceMetric metric,
+                           const std::vector<Surface>& surfaces) {
     if (std::holds_alternative<Point_3>(goal.region)) {
         const Point_3& target = std::get<Point_3>(goal.region);
         if (metric == DistanceMetric::Euclidean || node.patch_vertices.size() < 3) {
-            // A single-point patch (only ever the start node) has no area for EPA — same fallback
-            // as heuristic()'s own start-node special case, see the constructor.
+            // A single-point patch (only ever the start node) has no area for EPA.
             return compute_euclidean_distance(node.centroid, target);
         }
         return calculate_epa_distance_point_to_patch(node.patch_vertices, target);
     }
+    if (std::holds_alternative<int>(goal.region)) {
+        const Surface& target = surfaces[static_cast<size_t>(std::get<int>(goal.region))];
+        if (metric == DistanceMetric::Euclidean || node.patch_vertices.size() < 3) {
+            return compute_euclidean_distance(node.centroid, target.centroid);
+        }
+        return calculate_epa_distance_patch_to_patch(node.patch_vertices, target.vertices_3d);
+    }
     // Polytope target: not necessarily flat or given in a fan-triangulable vertex order (unlike
-    // surfaces_[*].vertices_3d, which goal_surface_id's own EPA path relies on) — the exact shape
+    // surfaces_[*].vertices_3d, which the surface_id branch above relies on) — the exact shape
     // test lives in foot_goal_satisfied() (a real plane slice against the cached hull); the
     // heuristic only needs a reasonable estimate, and this codebase's own EPA helper already falls
     // back to centroid distance whenever it can't compute a true patch distance
@@ -392,6 +387,10 @@ bool foot_goal_satisfied(const Node& node, const AstarSearchConfig::FootGoal& go
     bool shape_ok;
     if (std::holds_alternative<Point_3>(goal.region)) {
         shape_ok = node.check_if_node_contains_point(std::get<Point_3>(goal.region));
+    } else if (std::holds_alternative<int>(goal.region)) {
+        // Index equality, not geometric containment: "standing anywhere on this surface" -- the
+        // same test goal_surface_id used before foot_goals absorbed it. Needs no cached_hull.
+        shape_ok = node.surface_id == std::get<int>(goal.region);
     } else {
         const auto& polytope_verts = std::get<std::vector<Point_3>>(goal.region);
         if (node.patch_vertices.size() < 3) {
@@ -450,7 +449,7 @@ bool foot_goal_satisfied(const Node& node, const AstarSearchConfig::FootGoal& go
 }
 
 double AstarSearch::distance_to_goal(const Node& node, StanceFoot which) const {
-    return foot_goal_distance(node, *config_.foot_goals[static_cast<size_t>(which)], config_.distance_metric);
+    return foot_goal_distance(node, *config_.foot_goals[static_cast<size_t>(which)], config_.distance_metric, surfaces_);
 }
 
 bool AstarSearch::goal_satisfied(const Node& node, StanceFoot which) const {
@@ -543,23 +542,17 @@ void AstarSearch::search() {
         const bool has_left_goal = config_.foot_goals[0].has_value();
         const bool has_right_goal = config_.foot_goals[1].has_value();
         bool at_closing_stance = false;
-        if (!has_left_goal && !has_right_goal) {
-            // Mode 0 (legacy): single goal, one foot, unchanged.
-            const bool at_goal = config_.goal_surface_id >= 0 ? current_node->surface_id == config_.goal_surface_id
-                                                               : current_node->check_if_node_contains_point(config_.goal_location);
-            const bool at_goal_yaw = !config_.goal_yaw_target ||
-                                      angdiff(current_node->foot_yaw, *config_.goal_yaw_target) <= config_.goal_yaw_tolerance;
-            at_closing_stance = current_node->stance_foot == config_.goal_stance_foot && at_goal && at_goal_yaw;
-        } else if (has_left_goal != has_right_goal) {
-            // Mode 1 (one foot_goals slot filled): direct generalization of mode 0 — this foot must
-            // satisfy its own slot, the other foot stays free, exactly like goal_stance_foot today.
+        if (has_left_goal != has_right_goal) {
+            // One foot_goals slot filled: this foot must satisfy its own slot, the other foot stays free.
             StanceFoot targeted = has_left_goal ? StanceFoot::Left : StanceFoot::Right;
             at_closing_stance = current_node->stance_foot == targeted && goal_satisfied(*current_node, targeted);
         } else if (current_node->parent != nullptr) {
-            // Mode 2 (both slots filled): closing stance — the last two consecutive footsteps (node +
-            // its immediate predecessor, always the other foot on this non-cube expansion path) must
-            // each satisfy their own slot at once. current_node->parent == nullptr (the start node)
-            // can never close here: only one foot is placed yet, there is no pair to test.
+            // Both slots filled (the only way has_left_goal == has_right_goal can be true here --
+            // "neither" is rejected at construction): closing stance -- the last two consecutive
+            // footsteps (node + its immediate predecessor, always the other foot on this non-cube
+            // expansion path) must each satisfy their own slot at once. current_node->parent ==
+            // nullptr (the start node) can never close here: only one foot is placed yet, there is
+            // no pair to test.
             at_closing_stance = goal_satisfied(*current_node, current_node->stance_foot) &&
                                  goal_satisfied(*current_node->parent, current_node->parent->stance_foot);
         }
@@ -605,22 +598,27 @@ void AstarSearch::search() {
                     edge_cost += config_.heading_weight * angdiff(child->foot_yaw, std::atan2(gy, gx));
                 }
             }
-            if (config_.goal_yaw_target && config_.goal_yaw_weight > 0.0) {
-                double d = angdiff(child->foot_yaw, *config_.goal_yaw_target);
-                edge_cost += config_.goal_yaw_weight * std::max(0.0, d - config_.goal_yaw_tolerance);
+            if (config_.goal_yaw_weight > 0.0) {
+                // Validated at construction: exactly one slot filled, and it has a yaw_range -- its
+                // center is the target, its half-width the dead zone (same convention as
+                // foot_goal_satisfied's own yaw_range check above).
+                const AstarSearchConfig::FootGoal& targeted = has_left_goal ? *config_.foot_goals[0] : *config_.foot_goals[1];
+                double center = (targeted.yaw_range->first + targeted.yaw_range->second) / 2.0;
+                double half_width = (targeted.yaw_range->second - targeted.yaw_range->first) / 2.0;
+                double d = angdiff(child->foot_yaw, center);
+                edge_cost += config_.goal_yaw_weight * std::max(0.0, d - half_width);
             }
             double tentative_g_score = current_node->g_score + edge_cost;
             double tentative_h_score;
-            if (!has_left_goal && !has_right_goal) {
-                tentative_h_score = heuristic(child);
-            } else if (has_left_goal != has_right_goal) {
+            if (has_left_goal != has_right_goal) {
                 tentative_h_score = weight_if_epa(distance_to_goal(*child, has_left_goal ? StanceFoot::Left : StanceFoot::Right));
             } else {
-                // Sum both feet's remaining distance (this child's own + the trailing foot's, cached
-                // above) rather than just the foot being placed right now: the search must be pulled
-                // toward closing the pair, not just toward whichever foot happens to move next — a
-                // per-foot-only estimate could converge one foot onto its target while never pulling
-                // the other, since nothing else pushes the trailing foot toward its own slot.
+                // Both slots filled ("neither" rejected at construction): sum both feet's remaining
+                // distance (this child's own + the trailing foot's, cached above) rather than just the
+                // foot being placed right now: the search must be pulled toward closing the pair, not
+                // just toward whichever foot happens to move next — a per-foot-only estimate could
+                // converge one foot onto its target while never pulling the other, since nothing else
+                // pushes the trailing foot toward its own slot.
                 tentative_h_score = weight_if_epa(distance_to_goal(*child, child->stance_foot) + current_own_term);
             }
             double tentative_f_score = tentative_g_score + tentative_h_score;

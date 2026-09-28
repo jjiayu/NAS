@@ -8,7 +8,6 @@ AstarSearchConfig make_default_config() {
     AstarSearchConfig config;
     config.start_position = Point_3(0.0, 0.0, 0.0);
     config.start_stance_foot = StanceFoot::Right;
-    config.goal_stance_foot = StanceFoot::Left;
     config.heuristic_weight = 10.0;
     config.node_similarity_threshold = 0.02;
     config.expansion_params.rotation_enabled = true;
@@ -37,7 +36,8 @@ Scenario make_narrow_passage() {
         {Point_3(6.0, -2.0, 0.0), Point_3(10.0, -2.0, 0.0), Point_3(10.0, 2.0, 0.0), Point_3(6.0, 2.0, 0.0)},
     });
     s.astar_config = make_default_config();
-    s.astar_config.goal_location = s.surfaces.back().centroid; // goal_offset = (0,0,0)
+    // Left slot targeted (matches the old goal_stance_foot = Left default).
+    s.astar_config.foot_goals[static_cast<size_t>(StanceFoot::Left)] = AstarSearchConfig::FootGoal{s.surfaces.back().centroid, std::nullopt};
     return s;
 }
 
@@ -63,7 +63,8 @@ Scenario make_three_paths_nas() {
     // goal_offset = (0.0, 1.0, 0.0) for this scenario specifically, per the
     // old constants.hpp comment ("for 3path NAS goal offset...").
     Point_3 c = s.surfaces.back().centroid;
-    s.astar_config.goal_location = Point_3(CGAL::to_double(c.x()), CGAL::to_double(c.y()) + 1.0, CGAL::to_double(c.z()));
+    Point_3 goal(CGAL::to_double(c.x()), CGAL::to_double(c.y()) + 1.0, CGAL::to_double(c.z()));
+    s.astar_config.foot_goals[static_cast<size_t>(StanceFoot::Left)] = AstarSearchConfig::FootGoal{goal, std::nullopt};
     return s;
 }
 

@@ -1,10 +1,8 @@
 {
   "astar": {
-    "start_position": [
-      0,
-      0,
-      0
-    ],
-    "goal_surface": 2
+    "start_position": [0, 0, 0],
+    "foot_goals": {
+      "left": { "surface": 2 }
+    }
   }
 }

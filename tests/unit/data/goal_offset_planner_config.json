@@ -1,14 +1,8 @@
 {
   "astar": {
-    "start_position": [
-      0.0,
-      0.0,
-      0.0
-    ],
-    "goal_offset": [
-      0.0,
-      1.0,
-      0.0
-    ]
+    "start_position": [0.0, 0.0, 0.0],
+    "foot_goals": {
+      "left": { "offset": [0.0, 1.0, 0.0] }
+    }
   }
 }

@@ -68,8 +68,11 @@ int main(int argc, char** argv) {
     qp_config.alpha_weight = 10.0;
     qp_config.rotation_enabled = true;
     QuadprogBackend backend;
+    // Both fixture scenarios (make_narrow_passage/make_three_paths_nas) target foot_goals[0] (Left)
+    // with a plain point.
+    Point_3 goal = std::get<Point_3>(scenario.astar_config.foot_goals[0]->region);
     FootstepPlan plan = solve_footstep_qp(path, scenario.astar_config.start_position,
-                                           scenario.astar_config.goal_location, reachability, qp_config, backend);
+                                           goal, reachability, qp_config, backend);
 
     json out;
     out["scenario"] = scenario_name;

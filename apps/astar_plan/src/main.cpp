@@ -17,6 +17,7 @@
 #include <chrono>
 #include <nlohmann/json.hpp>
 
+#include <cmath>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -28,6 +29,23 @@ namespace {
 
 json point_json(const Point_3& p) {
     return json::array({CGAL::to_double(p.x()), CGAL::to_double(p.y()), CGAL::to_double(p.z())});
+}
+
+// Reports whichever region shape a foot_goals slot resolved to (see config::resolve_goal — call
+// after it, so "offset"/"polygon_2d" have already become a plain point/polytope).
+json foot_goal_json(const AstarSearchConfig::FootGoal& g) {
+    json j;
+    if (std::holds_alternative<Point_3>(g.region)) {
+        j["point"] = point_json(std::get<Point_3>(g.region));
+    } else if (std::holds_alternative<int>(g.region)) {
+        j["surface"] = std::get<int>(g.region);
+    } else {
+        json verts = json::array();
+        for (const auto& v : std::get<std::vector<Point_3>>(g.region)) verts.push_back(point_json(v));
+        j["polytope"] = verts;
+    }
+    if (g.yaw_range) j["yaw_range_deg"] = json::array({g.yaw_range->first * 180.0 / M_PI, g.yaw_range->second * 180.0 / M_PI});
+    return j;
 }
 
 // Talos's own forward polytopes — the only ones AstarSearch/footstep_qp
@@ -90,8 +108,10 @@ int main(int argc, char** argv) {
     out["qp_success"] = plan.success;
     out["qp_max_violation"] = plan.max_violation;
     out["start"] = point_json(planner_config.astar.start_position);
-    out["goal"] = point_json(planner_config.astar.goal_location);
-    out["goal_surface"] = planner_config.astar.goal_surface_id >= 0 ? json(planner_config.astar.goal_surface_id) : json(nullptr);
+    json foot_goals_json = json::object();
+    if (planner_config.astar.foot_goals[0]) foot_goals_json["left"] = foot_goal_json(*planner_config.astar.foot_goals[0]);
+    if (planner_config.astar.foot_goals[1]) foot_goals_json["right"] = foot_goal_json(*planner_config.astar.foot_goals[1]);
+    out["foot_goals"] = foot_goals_json;
     out["expansions"] = search.expansion_count();
     out["search_ms"] = search_ms;
     out["qp_ms"] = qp_ms;

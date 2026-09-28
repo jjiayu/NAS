@@ -52,8 +52,7 @@ int run_cube_pickup_search() {
         AstarSearchConfig cfg;
         cfg.start_position = Point_3(0, 0, 0);
         cfg.start_stance_foot = StanceFoot::Right;
-        cfg.goal_location = Point_3(1.0, 0.0, 0.0);
-        cfg.goal_stance_foot = StanceFoot::Left;
+        cfg.foot_goals[static_cast<size_t>(StanceFoot::Left)] = AstarSearchConfig::FootGoal{Point_3(1.0, 0.0, 0.0), std::nullopt};
         cfg.expansion_params.rotation_enabled = true;
         cfg.cube_half_extent = 0.075;
         cfg.cube_height = 0.15;

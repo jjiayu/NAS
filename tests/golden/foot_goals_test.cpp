@@ -1,12 +1,13 @@
-// Per-foot goal generalization (AstarSearchConfig::FootGoal / foot_goals): a goal for one foot is
-// now a point OR an arbitrary polytope, each independently with or without an accepted yaw range: 4
-// shape/yaw combinations, covered across variants (b)-(d) below. Filling zero, one, or both of the
-// two (Left/Right-indexed) slots selects mode 0 (legacy, untouched), mode 1 (single foot, direct
-// generalization of goal_location/goal_stance_foot: the other foot stays free) or mode 2 ("closing
-// stance": terminates only when the last two consecutive footsteps each satisfy their own slot at
-// once) — see astar_search.hpp's own doc comment on foot_goals for the full contract, and
-// astar_search.cpp for why the closing-stance heuristic must sum both feet's remaining distance
-// rather than track only the foot currently being placed.
+// Per-foot goal generalization (AstarSearchConfig::FootGoal / foot_goals) — the ONLY goal mechanism
+// now (goal_location/goal_surface_id/goal_stance_foot/goal_yaw_target were folded into it). A goal
+// for one foot is a point, a whole surface (index equality, "standing anywhere on it") or an
+// arbitrary polytope, each independently with or without an accepted yaw range. Filling one slot
+// (mode 1, direct generalization of the old single-goal behaviour: the other foot stays free) or
+// both (mode 2, "closing stance": terminates only when the last two consecutive footsteps each
+// satisfy their own slot at once) — see astar_search.hpp's own doc comment on foot_goals for the
+// full contract, and astar_search.cpp for why the closing-stance heuristic must sum both feet's
+// remaining distance rather than track only the foot currently being placed. At least one slot must
+// always be filled (validated at construction) — there is no more "neither" (legacy) case.
 //
 // Scenario: Flat, start (0,0,0) facing +x, right stance (same setup as goal_yaw_test/goal_surface_test).
 // Every target region and expected path below was found empirically first (a throwaway probe, not
@@ -21,13 +22,12 @@
 // at all, because its edge-crossing search never finds a crossing when every vertex already lies
 // exactly on the cutting plane. Variant (c) below (and (d)'s left slot) exercise exactly this case.
 //
-// One negative control (foot_goals + cube_half_extent) was added when this feature was merged with
-// the cube extension: expand_cube_placement gives its child the same stance foot as its parent
-// (placing a cube doesn't move a foot), breaking the alternation invariant the closing-stance mode's
-// node+parent termination test and heuristic both rely on — rejected at construction rather than
-// silently computed wrong. A single foot_goals slot never reads the parent's own foot at all, so it
-// doesn't actually have this problem, but the exclusion applies to foot_goals as a whole for
-// simplicity (see astar_search.hpp's own comment on foot_goals).
+// Negative control (foot_goals with BOTH slots + cube_half_extent): expand_cube_placement gives its
+// child the same stance foot as its parent (placing a cube doesn't move a foot), breaking the
+// alternation invariant the closing-stance mode's node+parent termination test and heuristic both
+// rely on — rejected at construction rather than silently computed wrong. A SINGLE foot_goals slot
+// never reads the parent's own foot at all, so it doesn't have this problem and is allowed together
+// with the cube extension (see the positive control right after that negative one).
 #include "nas/config/scenario.hpp"
 #include "nas/core/reachability.hpp"
 #include "nas/planners/astar_search.hpp"
@@ -70,6 +70,14 @@ int run_foot_goals() {
         {dir + "/RF_constraints_in_LF_quasi_flat_REDUCED.obj", "RF", "LF", ReachabilityDirection::Forward},
         {dir + "/LF_constraints_in_RF_quasi_flat_REDUCED.obj", "LF", "RF", ReachabilityDirection::Forward},
     });
+    // For the foot_goals(1 slot) + cube_half_extent positive control near the end: needs a "Cube"
+    // entry per stance foot, same files as cube_pickup_search_test.cpp.
+    ReachabilityModel cube_reach = ReachabilityModel::load({
+        {dir + "/RF_constraints_in_LF_quasi_flat_REDUCED.obj", "RF", "LF", ReachabilityDirection::Forward},
+        {dir + "/LF_constraints_in_RF_quasi_flat_REDUCED.obj", "LF", "RF", ReachabilityDirection::Forward},
+        {dir + "/Cube_constraints_in_LF.obj", "Cube", "LF", ReachabilityDirection::Forward},
+        {dir + "/Cube_constraints_in_RF.obj", "Cube", "RF", ReachabilityDirection::Forward},
+    });
     config::Scenario sc = config::load_scenario("Flat");
 
     auto base_config = [&]() {
@@ -81,16 +89,23 @@ int run_foot_goals() {
         return cfg;
     };
 
-    // (a) foot_goals entirely empty: mode 0, the legacy single point-or-surface goal — must behave
-    // exactly like before this feature existed (the code path itself is untouched; this is a smoke
-    // test that adding the feature didn't perturb the default-off case).
+    // (a) mode 1, SURFACE shape (whole surface, index equality -- NOT geometric containment): the
+    // search must accept an int region and terminate on a node standing on that surface, driven
+    // through this same mode 1 dispatch, not a separate code path (goal_surface_test.cpp covers the
+    // geometry/QP side across 5 multi-surface scenarios; this is just the foot_goals shape itself).
     {
         AstarSearchConfig cfg = base_config();
-        cfg.goal_location = Point_3(0.35, 0.0, 0.0);
-        cfg.goal_stance_foot = StanceFoot::Left;
+        AstarSearchConfig::FootGoal g;
+        g.region = 0; // Flat has exactly one surface
+        cfg.foot_goals[static_cast<size_t>(StanceFoot::Left)] = g;
         AstarSearch search(sc.surfaces, reach, cfg);
         search.search();
-        check(!search.result_path().empty(), "(a) sans foot_goals : comportement historique inchange, un chemin est trouve");
+        check(!search.result_path().empty(), "(a) mode 1 surface (indice de surface entiere) : un chemin est trouve");
+        if (!search.result_path().empty()) {
+            Node* last = search.result_path().back();
+            check(last->stance_foot == StanceFoot::Left, "(a) le dernier pas est bien celui du pied cible (gauche)");
+            check(last->surface_id == 0, "(a) le dernier pas est bien sur la surface ciblee");
+        }
     }
 
     // (b) mode 1, POINT shape, no yaw range, left foot only — the right foot stays completely free.
@@ -213,22 +228,50 @@ int run_foot_goals() {
         }
         check(threw, what);
     };
+    auto expect_no_throw = [&](const AstarSearchConfig& cfg, const ReachabilityModel& r, const std::string& what) {
+        bool threw = false;
+        try {
+            AstarSearch ok(sc.surfaces, r, cfg);
+            (void)ok;
+        } catch (const std::invalid_argument&) {
+            threw = true;
+        }
+        check(!threw, what);
+    };
 
     {
         AstarSearchConfig cfg = base_config();
-        cfg.goal_surface_id = 0;
-        AstarSearchConfig::FootGoal g;
-        g.region = Point_3(0.3, 0.15, 0.0);
-        cfg.foot_goals[static_cast<size_t>(StanceFoot::Left)] = g;
-        expect_throw(cfg, "foot_goals + goal_surface_id leve une erreur claire (mecanismes mutuellement exclusifs)");
+        // Neither slot filled: the search always needs a goal now (no more implicit "defaults to
+        // the origin" -- that was never an intentional default, just goal_location's own zero value).
+        expect_throw(cfg, "foot_goals sans aucun slot rempli leve une erreur claire");
     }
     {
         AstarSearchConfig cfg = base_config();
-        cfg.goal_yaw_target = 0.0;
         AstarSearchConfig::FootGoal g;
-        g.region = Point_3(0.3, 0.15, 0.0);
+        g.region = 999; // not a surface of the Flat scenario (1 surface, index 0)
         cfg.foot_goals[static_cast<size_t>(StanceFoot::Left)] = g;
-        expect_throw(cfg, "foot_goals + goal_yaw_target leve une erreur claire (mecanismes mutuellement exclusifs)");
+        expect_throw(cfg, "un indice de surface hors limites leve une erreur claire");
+    }
+    {
+        // goal_yaw_weight > 0 is only meaningful with exactly one slot filled.
+        AstarSearchConfig cfg = base_config();
+        AstarSearchConfig::FootGoal left_g, right_g;
+        left_g.region = Point_3(0.3, 0.15, 0.0);
+        left_g.yaw_range = std::make_pair(0.0, 0.1);
+        right_g.region = Point_3(-0.2, 0.1, 0.0);
+        cfg.foot_goals[static_cast<size_t>(StanceFoot::Left)] = left_g;
+        cfg.foot_goals[static_cast<size_t>(StanceFoot::Right)] = right_g;
+        cfg.goal_yaw_weight = 0.5;
+        expect_throw(cfg, "goal_yaw_weight avec les 2 slots remplis leve une erreur claire");
+    }
+    {
+        // goal_yaw_weight > 0 requires the targeted (single) slot to have a yaw_range.
+        AstarSearchConfig cfg = base_config();
+        AstarSearchConfig::FootGoal g;
+        g.region = Point_3(0.3, 0.15, 0.0); // no yaw_range
+        cfg.foot_goals[static_cast<size_t>(StanceFoot::Left)] = g;
+        cfg.goal_yaw_weight = 0.5;
+        expect_throw(cfg, "goal_yaw_weight sans yaw_range sur le slot cible leve une erreur claire");
     }
     {
         AstarSearchConfig cfg = base_config();
@@ -255,16 +298,30 @@ int run_foot_goals() {
         expect_throw(cfg, "un yaw_range sans rotation_enabled leve une erreur claire");
     }
     {
-        // Merged from the cube branch: expand_cube_placement gives its child the same stance foot as
-        // its parent (placing a cube doesn't move a foot), breaking the alternation invariant the
+        // BOTH slots + cube: expand_cube_placement gives its child the same stance foot as its
+        // parent (placing a cube doesn't move a foot), breaking the alternation invariant the
         // closing-stance mode's node+parent test relies on -- rejected outright at construction.
+        AstarSearchConfig cfg = base_config();
+        cfg.cube_half_extent = 0.075;
+        cfg.cube_height = 0.15;
+        AstarSearchConfig::FootGoal left_g, right_g;
+        left_g.region = Point_3(0.3, 0.15, 0.0);
+        right_g.region = Point_3(-0.2, 0.1, 0.0);
+        cfg.foot_goals[static_cast<size_t>(StanceFoot::Left)] = left_g;
+        cfg.foot_goals[static_cast<size_t>(StanceFoot::Right)] = right_g;
+        expect_throw(cfg, "foot_goals (2 slots) + cube_half_extent > 0 leve une erreur claire");
+    }
+    {
+        // A SINGLE slot never reads the parent's own foot, so it doesn't have the alternation
+        // problem above: this combination is now legal (narrower exclusion than before this
+        // refactor, when foot_goals-at-all + cube was rejected regardless of slot count).
         AstarSearchConfig cfg = base_config();
         cfg.cube_half_extent = 0.075;
         cfg.cube_height = 0.15;
         AstarSearchConfig::FootGoal g;
         g.region = Point_3(0.3, 0.15, 0.0);
         cfg.foot_goals[static_cast<size_t>(StanceFoot::Left)] = g;
-        expect_throw(cfg, "foot_goals + cube_half_extent > 0 leve une erreur claire (mecanismes mutuellement exclusifs)");
+        expect_no_throw(cfg, cube_reach, "(nouveau) foot_goals (1 slot) + cube_half_extent > 0 : autorise");
     }
 
     if (g_failures > 0) {
