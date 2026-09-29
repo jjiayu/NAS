@@ -68,6 +68,50 @@ struct FootstepQPConfig {
         std::variant<Point_3, std::vector<Point_3>> region;
     };
     std::vector<GoalConstraint> goal_constraints;
+
+    // Couples a cube's placement into the SAME QP, instead of leaving it to a caller-side LP run
+    // afterward on the already-fixed footsteps (g1motion's cube_plan.py::place_box - see its own
+    // updated doc comment). The box's base center becomes 3 more QP variables (excluded from the
+    // stride objective, like alpha), constrained by: (a) the "Cube_in_<support foot>" reachability
+    // polytope (reachability.half_space_constraint, the SAME mechanism an ordinary footstep's own
+    // reachability constraint already uses just above, with "Cube" as the moving effector - see
+    // NAS's docs/cube-extension-mechanism.md), (b) the search's own placement_patch (the same
+    // mechanism an intermediate footstep's own patch gets), and (c) the coupling constraint
+    // itself: onto_index's footstep must land within the box's own half_extent x half_extent top
+    // face, oriented like the support footstep - LINEAR jointly in (x_onto, c) since the
+    // footstep's yaw is fixed by the search (not a QP unknown), with the SAME alpha robustness
+    // margin as every other boundary constraint (no separate margin variable, unlike place_box's
+    // own maximized t).
+    //
+    // Why this exists: place_box takes the onto footstep's position as already fixed (this QP,
+    // upstream, chose it purely to minimize stride length - genuinely unaware a cube is even
+    // involved) and only then tries to fit a box under it. The search's own continuous patches
+    // guarantee SOME mutually consistent (box, onto-foot) pair exists, but that guarantee is lost
+    // once two separate, uncoupled steps (this QP, then place_box) each independently pick one
+    // specific discrete value from those patches. It usually still works out (plenty of slack),
+    // until it doesn't (g1motion's boxcube_discover_two.py, a two-cube scenario: the first cube's
+    // spacious patch left enough slack, the second's tight one didn't - place_box's LP came back
+    // infeasible even though the search had already found a fully valid path). Solving both in the
+    // same QP guarantees compatibility by construction instead of hoping for it.
+    struct CubePlacement {
+        // Indices into path_nodes (this function's own indexing, matching plan.footsteps): the
+        // footstep supporting the placement (the foot on the ground when the box was set down -
+        // the search's own "place" pseudo-node shares its position, so this is that pseudo-node's
+        // PARENT, since the pseudo-node itself is never passed to this function - see
+        // cube_plan.cpp's zero_displacement filtering), and the footstep landing on top of the
+        // box (the first "step onto the cube" event after the placement - not necessarily
+        // support_index + 1, the search can take ordinary steps in between before actually
+        // stepping onto the cube).
+        std::size_t support_index;
+        std::size_t onto_index;
+        // The search's own candidate region for the box's base center (world frame, flat/coplanar
+        // - a placement node's own cube_vertices).
+        std::vector<Point_3> placement_patch;
+    };
+    // Empty (default): today's exact behavior, the box is not a QP variable at all - every
+    // existing caller (including every prior test) is unaffected.
+    std::vector<CubePlacement> cube_placements;
+    double cube_half_extent = 0.0;  // required (and validated) when cube_placements is non-empty
 };
 
 struct FootstepPlan {
@@ -76,6 +120,7 @@ struct FootstepPlan {
     double alpha = 0.0;
     double max_violation = 0.0;     // largest constraint residual of the returned solution (<= feasibility_tolerance when success)
     double objective = 0.0;         // 0.5*x'*H*x + g'*x at the solution, H unregularized (paper Eq. 6) — lets backends be compared on the value they actually optimize, not just feasibility
+    std::vector<Point_3> cube_centers; // one per config.cube_placements entry, same order, only when success
 };
 
 // `path_nodes` is a full CASSR result path (path_nodes[0] is the start

@@ -36,6 +36,7 @@ add_executable(nas_tests
     golden/dual_target_all_scenes_test.cpp
     golden/cube_pickup_search_test.cpp
     golden/cube_pickup_and_placement_test.cpp
+    golden/footstep_qp_cube_coupling_test.cpp
     perf/perf_regression_test.cpp
 )
 target_link_libraries(nas_tests PRIVATE nas nas_fixtures nlohmann_json::nlohmann_json)

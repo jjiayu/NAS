@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <cmath>
 #include <limits>
+#include <stdexcept>
 
 namespace nas {
 
@@ -46,8 +47,19 @@ FootstepPlan solve_footstep_qp(const std::vector<Node*>& path_nodes,
                                 const FootstepQPConfig& config,
                                 QPBackend& backend) {
     const int n = static_cast<int>(path_nodes.size());
+    const int num_cubes = static_cast<int>(config.cube_placements.size());
+    if (num_cubes > 0 && config.cube_half_extent <= 0.0) {
+        throw std::invalid_argument("solve_footstep_qp: cube_placements given without a positive cube_half_extent");
+    }
+    for (const auto& cp : config.cube_placements) {
+        if (cp.support_index >= static_cast<std::size_t>(n) || cp.onto_index >= static_cast<std::size_t>(n)) {
+            throw std::invalid_argument("solve_footstep_qp: a CubePlacement index is out of range");
+        }
+    }
     const int alpha_idx = 3 * n;
-    const int dim = 3 * n + 1;
+    const int cube_col0 = 3 * n + 1;  // first cube's own 3 columns start here, one cube after another
+    const int dim = cube_col0 + 3 * num_cubes;
+    auto cube_col = [&](int k) { return cube_col0 + 3 * k; };
 
     QPProblem qp;
     qp.H = Eigen::MatrixXd::Zero(dim, dim);
@@ -103,8 +115,10 @@ FootstepPlan solve_footstep_qp(const std::vector<Node*>& path_nodes,
 
     // Row 0 of generate_surface_constraint is the plane equality, the rest are boundary
     // inequalities with the alpha robustness margin - shared by an intermediate footstep's own
-    // patch below and a config.goal_constraints polytope slot further down.
-    auto add_region_constraint = [&](int i, const std::vector<Point_3>& vertices) {
+    // patch, a config.goal_constraints polytope slot, and a config.cube_placements patch further
+    // down (col: the 3-column block the constraint applies to - a footstep's own idx(i, 0), or a
+    // cube's cube_col(k)).
+    auto add_region_constraint_at = [&](int col, const std::vector<Point_3>& vertices) {
         SurfaceConstraint sc = generate_surface_constraint(vertices);
         for (int r = 0; r < sc.A.rows(); ++r) {
             double row_norm = sc.A.row(r).norm();
@@ -112,7 +126,7 @@ FootstepPlan solve_footstep_qp(const std::vector<Node*>& path_nodes,
             double b_normalized = (row_norm > 1e-12) ? sc.b(r) / row_norm : sc.b(r);
 
             Eigen::RowVectorXd row = Eigen::RowVectorXd::Zero(dim);
-            row.segment<3>(idx(i, 0)) = a_normalized;
+            row.segment<3>(col) = a_normalized;
 
             if (r == 0) {
                 add_eq(row, b_normalized);
@@ -121,6 +135,9 @@ FootstepPlan solve_footstep_qp(const std::vector<Node*>& path_nodes,
                 add_ineq(row, b_normalized);
             }
         }
+    };
+    auto add_region_constraint = [&](int i, const std::vector<Point_3>& vertices) {
+        add_region_constraint_at(idx(i, 0), vertices);
     };
 
     // A node claimed by goal_position (path_nodes.back(), when set) or by a config.goal_constraints
@@ -167,6 +184,49 @@ FootstepPlan solve_footstep_qp(const std::vector<Node*>& path_nodes,
             }
         } else {
             add_region_constraint(i, std::get<std::vector<Point_3>>(gc.region));
+        }
+    }
+
+    // --- config.cube_placements: couples each cube's base center into this same QP (see the
+    // struct's own doc comment in footstep_qp.hpp for why) ---
+    for (int k = 0; k < num_cubes; ++k) {
+        const auto& cp = config.cube_placements[static_cast<std::size_t>(k)];
+        int support_i = static_cast<int>(cp.support_index);
+        int onto_i = static_cast<int>(cp.onto_index);
+        int col = cube_col(k);
+
+        // (a) placement polytope, in the support footstep's own frame - same mechanism as the
+        // ordinary reachability constraint above, just "Cube" as the moving effector instead of a
+        // StanceFoot, and the child variable is this cube's column block instead of idx(i, 0).
+        StanceFoot support_foot = path_nodes[support_i]->stance_foot;
+        const HalfSpacePolytopeConstraint& cube_hrep =
+            reachability.half_space_constraint("Cube", effector_name(support_foot), ReachabilityDirection::Forward);
+        Eigen::Matrix3d R_support = support_frame_rotation(*path_nodes[support_i], config.rotation_enabled);
+        for (int r = 0; r < cube_hrep.A.rows(); ++r) {
+            Eigen::RowVector3d a_rotated = cube_hrep.A.row(r) * R_support.transpose();
+            Eigen::RowVectorXd row = Eigen::RowVectorXd::Zero(dim);
+            row.segment<3>(col) = a_rotated;
+            row.segment<3>(idx(support_i, 0)) = -a_rotated;
+            add_ineq(row, cube_hrep.b(r));
+        }
+
+        // (b) the search's own placement patch (same mechanism as an intermediate footstep's own
+        // patch: a plane equality pinning this cube's z, plus alpha-margined boundary inequalities).
+        add_region_constraint_at(col, cp.placement_patch);
+
+        // (c) the coupling itself: onto_i's footstep must land within the box's own
+        // half_extent x half_extent top face, oriented like the support footstep -
+        // |R_support^T (x_onto - c)| <= half_extent - alpha, axis by axis (place_box's own
+        // formula, generalized to a QP variable c instead of an LP-fixed x_onto).
+        for (int axis = 0; axis < 2; ++axis) {
+            for (double sign : {1.0, -1.0}) {
+                Eigen::RowVector3d row_dir = sign * R_support.col(axis).transpose();
+                Eigen::RowVectorXd row = Eigen::RowVectorXd::Zero(dim);
+                row.segment<3>(idx(onto_i, 0)) = row_dir;
+                row.segment<3>(col) = -row_dir;
+                row(alpha_idx) = 1.0;
+                add_ineq(row, config.cube_half_extent);
+            }
         }
     }
 
@@ -222,6 +282,11 @@ FootstepPlan solve_footstep_qp(const std::vector<Node*>& path_nodes,
         plan.footsteps.reserve(n);
         for (int i = 0; i < n; ++i) {
             plan.footsteps.emplace_back(solution.x(idx(i, 0)), solution.x(idx(i, 1)), solution.x(idx(i, 2)));
+        }
+        plan.cube_centers.reserve(static_cast<std::size_t>(num_cubes));
+        for (int k = 0; k < num_cubes; ++k) {
+            int col = cube_col(k);
+            plan.cube_centers.emplace_back(solution.x(col), solution.x(col + 1), solution.x(col + 2));
         }
     }
     return plan;

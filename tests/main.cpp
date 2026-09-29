@@ -53,6 +53,7 @@ int run_foot_goals();
 int run_dual_target_all_scenes();
 int run_cube_pickup_search();
 int run_cube_pickup_and_placement();
+int run_footstep_qp_cube_coupling();
 int run_perf_regression();
 
 namespace {
@@ -95,6 +96,7 @@ const Suite kSuites[] = {
     {"dual_target_all_scenes", "golden", run_dual_target_all_scenes},
     {"cube_pickup_search", "golden", run_cube_pickup_search},
     {"cube_pickup_and_placement", "golden", run_cube_pickup_and_placement},
+    {"footstep_qp_cube_coupling", "golden", run_footstep_qp_cube_coupling},
 
     {"perf_regression", "perf", run_perf_regression},
 };
