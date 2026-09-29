@@ -30,6 +30,7 @@
 #include "nas/footstep_qp/qp_backend.hpp"
 
 #include <optional>
+#include <variant>
 #include <vector>
 
 namespace nas {
@@ -48,6 +49,25 @@ struct FootstepQPConfig {
     // ~5e-5 on the ill-conditioned problems the regularization creates; such a result is
     // re-solved with a 100x stronger regularization (up to 4 attempts), then declared a failure.
     double feasibility_tolerance = 1e-6;
+
+    // Additional, purely opt-in per-node goal constraints - for a path whose foot_goals had more
+    // than one slot filled (AstarSearchConfig's "closing stance" mode: the last TWO path nodes,
+    // one per foot, each satisfy their own slot - "which foot closes last" isn't fixed, so either
+    // could be path_nodes.size()-1 or -2). goal_position below only ever pins path_nodes.back() to
+    // an exact point; this generalizes to an arbitrary node index, and to a REGION rather than
+    // always a point: a Point_3 constrains that node the same way goal_position does (equality); a
+    // polytope constrains it to stay inside that region (same alpha-coupled boundary inequalities
+    // as an intermediate footstep's own patch, generate_surface_constraint on the region's own
+    // vertices instead of the node's patch_vertices - the node's actual patch is only ever a
+    // superset of a foot_goals polytope slot, since that's what let the search terminate there).
+    // Empty by default: every existing caller is unaffected. A node_index covered here is excluded
+    // from the default "free on its own patch" handling of the last node (see goal_position) and
+    // from the ordinary intermediate-patch loop, so it is constrained exactly once, not twice.
+    struct GoalConstraint {
+        std::size_t node_index;
+        std::variant<Point_3, std::vector<Point_3>> region;
+    };
+    std::vector<GoalConstraint> goal_constraints;
 };
 
 struct FootstepPlan {

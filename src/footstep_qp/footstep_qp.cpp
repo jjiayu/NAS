@@ -101,14 +101,11 @@ FootstepPlan solve_footstep_qp(const std::vector<Node*>& path_nodes,
         }
     }
 
-    // --- Surface constraints for intermediate steps (1..n-2), and for the last step too when the goal is a
-    // surface (no goal position to fix it to) ---
-    // Row 0 of generate_surface_constraint is the plane equality, the rest
-    // are boundary inequalities with the alpha robustness margin.
-    const int last_surface_step = goal_position ? n - 2 : n - 1;
-    for (int i = 1; i <= last_surface_step; ++i) {
-        SurfaceConstraint sc = generate_surface_constraint(path_nodes[i]->patch_vertices);
-
+    // Row 0 of generate_surface_constraint is the plane equality, the rest are boundary
+    // inequalities with the alpha robustness margin - shared by an intermediate footstep's own
+    // patch below and a config.goal_constraints polytope slot further down.
+    auto add_region_constraint = [&](int i, const std::vector<Point_3>& vertices) {
+        SurfaceConstraint sc = generate_surface_constraint(vertices);
         for (int r = 0; r < sc.A.rows(); ++r) {
             double row_norm = sc.A.row(r).norm();
             Eigen::RowVector3d a_normalized = (row_norm > 1e-12) ? (sc.A.row(r) / row_norm).eval() : sc.A.row(r).eval();
@@ -124,6 +121,20 @@ FootstepPlan solve_footstep_qp(const std::vector<Node*>& path_nodes,
                 add_ineq(row, b_normalized);
             }
         }
+    };
+
+    // A node claimed by goal_position (path_nodes.back(), when set) or by a config.goal_constraints
+    // entry is constrained exactly once, by that mechanism - not also by its own raw search patch
+    // here (a strict superset of any foot_goals polytope slot, or an unrelated conflicting plane fit
+    // for an exact-point slot).
+    std::vector<bool> claimed(static_cast<size_t>(n), false);
+    if (goal_position) claimed[static_cast<size_t>(n - 1)] = true;
+    for (const auto& gc : config.goal_constraints) claimed[gc.node_index] = true;
+
+    // --- Surface constraints for every intermediate step not claimed above ---
+    for (int i = 1; i < n; ++i) {
+        if (claimed[static_cast<size_t>(i)]) continue;
+        add_region_constraint(i, path_nodes[i]->patch_vertices);
     }
 
     // --- Initial/final footstep equality constraints ---
@@ -139,6 +150,23 @@ FootstepPlan solve_footstep_qp(const std::vector<Node*>& path_nodes,
             Eigen::RowVectorXd rowN = Eigen::RowVectorXd::Zero(dim);
             rowN(idx(n - 1, c)) = 1.0;
             add_eq(rowN, goal_eigen(c));
+        }
+    }
+
+    // --- config.goal_constraints: a point (equality, same as goal_position but at an arbitrary
+    // node index) or a polytope (region membership, same mechanism as an intermediate patch above,
+    // just on the goal polytope's own vertices instead of that node's full search patch) ---
+    for (const auto& gc : config.goal_constraints) {
+        int i = static_cast<int>(gc.node_index);
+        if (std::holds_alternative<Point_3>(gc.region)) {
+            Eigen::Vector3d p = to_eigen(std::get<Point_3>(gc.region));
+            for (int c = 0; c < 3; ++c) {
+                Eigen::RowVectorXd row = Eigen::RowVectorXd::Zero(dim);
+                row(idx(i, c)) = 1.0;
+                add_eq(row, p(c));
+            }
+        } else {
+            add_region_constraint(i, std::get<std::vector<Point_3>>(gc.region));
         }
     }
 
