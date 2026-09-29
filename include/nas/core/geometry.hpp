@@ -32,6 +32,13 @@ std::vector<Point_3> transform_2d_points_to_world(const std::vector<Point_2>& po
 
 Point_3 get_centroid(const std::vector<Point_3>& points);
 
+// Area-weighted centroid of a convex polygon given in a surface's own 2D frame, mapped to world via
+// to_3d. Adding a collinear point to the polygon does not change it (unlike get_centroid's plain
+// vertex average). Falls back to get_centroid(vertices_3d) when the polygon has (near) zero area.
+// vertices_3d must be polygon's own points already mapped to 3D (to_3d(polygon[i])), passed in
+// rather than recomputed here since every caller already has them.
+Point_3 area_centroid(const std::vector<Point_2>& polygon, const Transformation& to_3d, const std::vector<Point_3>& vertices_3d);
+
 Polyhedron minkowski_sum(const std::vector<Point_3>& patch_vertices, const Polyhedron& polytope);
 
 // Points where the plane crosses the polytope's edges (CGAL::intersection on

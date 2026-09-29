@@ -48,6 +48,23 @@ Point_3 get_centroid(const std::vector<Point_3>& points) {
     return CGAL::ORIGIN + (sum / static_cast<double>(points.size()));
 }
 
+Point_3 area_centroid(const std::vector<Point_2>& polygon, const Transformation& to_3d, const std::vector<Point_3>& vertices_3d) {
+    const size_t n = polygon.size();
+    double area2 = 0.0, cx = 0.0, cy = 0.0;
+    for (size_t i = 0; i < n; ++i) {
+        const Point_2& p = polygon[i];
+        const Point_2& q = polygon[(i + 1) % n];
+        double px = CGAL::to_double(p.x()), py = CGAL::to_double(p.y());
+        double qx = CGAL::to_double(q.x()), qy = CGAL::to_double(q.y());
+        double cross = px * qy - qx * py;
+        area2 += cross;
+        cx += (px + qx) * cross;
+        cy += (py + qy) * cross;
+    }
+    if (std::abs(area2) > 1e-12) return to_3d(Point_3(cx / (3.0 * area2), cy / (3.0 * area2), 0.0));
+    return get_centroid(vertices_3d);
+}
+
 Polyhedron minkowski_sum(const std::vector<Point_3>& patch_vertices,
                          const Polyhedron& polytope) {
     std::vector<Point_3> all_vertices;

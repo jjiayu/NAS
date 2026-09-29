@@ -104,6 +104,40 @@ Nœud de départ : `scene_cubes` non vide ⇒ démarre `cube_state = None` (main
 au lieu de `InHand` — avec `scene_cubes` vide, l'expression se réduit exactement au comportement
 d'avant cette extension.
 
+## 5bis. Le patch de l'enfant "ramassage" (mode 1) doit être rétréci, pas copié
+
+`foot_goal_satisfied` (§1, réutilisée telle quelle ici) ne teste que l'EXISTENCE d'un recouvrement
+entre le patch du nœud et l'affordance — elle découpe (`clip`) le patch contre le polytope cible
+pour le savoir, puis jette le résultat, ne gardant qu'un booléen. C'est correct pour un but
+terminal `foot_goals` (rien ne suit un nœud but) mais c'était faux pour le mode 1 du ramassage : le
+nœud "pickup" (enfant à déplacement nul de `expand_cube_pickup`) copiait tel quel le patch COMPLET
+du parent (`child->patch_vertices = parent->patch_vertices`), pas l'intersection déjà calculée par
+le test. La recherche continue pourtant à explorer DEPUIS ce nœud, et chaque patch d'un nœud
+ultérieur se construit par somme de Minkowski à partir de celui-ci — un patch parent trop large fait
+donc croire à la recherche qu'une zone plus vaste que la vraie région d'affordance reste atteignable
+plus loin sur le chemin, sans aucune garantie que le point réellement choisi (par le QP de pas, en
+aval) respecte la contrainte étroite.
+
+Concrètement, observé sur `BoxRoomStairs` (g1motion) : la recherche validait le ramassage sur un
+nœud dont le patch complet chevauchait la région d'affordance (patch ∩ région ≠ ∅), mais le QP de
+pas, libre de choisir n'importe quel point du patch NON rétréci, plaçait le pied de ramassage à
+plusieurs centimètres hors de la région réellement praticable pour la saisie.
+
+Fixé : `expand_cube_pickup` calcule maintenant le VRAI patch rétréci (`clip_patch_to_hull`,
+`astar_search.cpp`, la même géométrie que `foot_goal_satisfied` factorisée pour garder le résultat
+au lieu de le jeter) et le donne à l'enfant — le parent, lui, garde son patch complet intact (ses
+AUTRES enfants, un pas ordinaire ou le ramassage d'un cube différent, en ont besoin). Uniquement
+pour le mode 1 et une affordance polytope : un point n'a pas besoin d'être rétréci (le QP l'épingle
+déjà exactement par égalité), et le mode 2 symétrique n'est **pas** corrigé par ce même mécanisme —
+voir ci-dessous.
+
+**Lacune connue, non corrigée : le mode 2 (fermeture symétrique).** Le second pied testé
+(`parent->parent`) est un nœud DÉJÀ développé, potentiellement partagé par d'autres branches de la
+recherche qui n'effectuent pas ce ramassage — le rétrécir en place corromprait ces branches sœurs.
+Rétrécir seulement l'enfant de CETTE action laisserait la position réelle de l'AUTRE pied
+sous-contrainte en aval. Une correction propre demanderait son propre nœud à déplacement nul pour le
+pied arrière aussi, ce qui n'a pas été tenté ici.
+
 ## 6. Hors scope
 
 - **Reprendre un cube que la recherche elle-même a posé plus tôt sur ce chemin**

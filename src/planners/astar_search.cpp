@@ -419,6 +419,69 @@ double foot_goal_distance(const Node& node, const AstarSearchConfig::FootGoal& g
     return compute_euclidean_distance(node.centroid, target_centroid);
 }
 
+namespace {
+
+// The node's own patch, clipped against cached_hull's polytope (a FootGoal region's precomputed
+// convex hull), in the node's own surface frame. nullopt when the node has no plane to clip
+// against (a bare-point node) or the intersection is empty/degenerate (<=2 vertices).
+//
+// Factored out of foot_goal_satisfied's own polytope branch, which used to compute exactly this
+// and throw it away, keeping only a boolean. That was fine for a TERMINAL goal (nothing happens
+// after it) and for foot_goals' own use here, but wrong for expand_cube_pickup's single-slot
+// case (below): the search still has to keep exploring FROM the pickup node afterward, and a
+// child that inherits the parent's whole, un-narrowed patch lets every later node's own patch
+// (built via Minkowski sum from this one) overstate what's really reachable - the true, tight
+// requirement lives only in this discarded intersection. See docs/cube-pickup-spec.md's own note
+// on this, added alongside this fix, for the concrete case that surfaced it.
+struct ClippedPatch {
+    std::vector<Point_3> vertices_3d;
+    Polygon_2 polygon_2d;
+    Point_3 centroid;
+};
+
+std::optional<ClippedPatch> clip_patch_to_hull(const Node& node, const Polyhedron& cached_hull) {
+    if (node.patch_vertices.size() < 3) return std::nullopt;
+    Plane_3 node_plane(node.patch_vertices[0], node.up_normal());
+
+    // compute_polytope_plane_intersection finds edges that CROSS the plane (some endpoint above,
+    // some below) — a target that is flat and exactly coincident with the node's own plane (e.g. a
+    // copy of some surface's own vertices, sitting on the same floor the foot is on: the common
+    // case, not a rare one) has every vertex exactly ON the plane, no crossing edge at all, and the
+    // slicer returns nothing even though this is precisely the well-defined "target flush with this
+    // surface" case — found empirically (a hand test on a flat Flat-scenario target always failed
+    // before this check was added). Detected by testing the hull's own vertices against the plane
+    // equation directly, not relied on as an exact predicate (a genuinely 3D target that merely
+    // grazes the plane along one face should still take this branch, not just a bit-exact match).
+    double pa = CGAL::to_double(node_plane.a()), pb = CGAL::to_double(node_plane.b());
+    double pc = CGAL::to_double(node_plane.c()), pd = CGAL::to_double(node_plane.d());
+    double pnorm = std::sqrt(pa * pa + pb * pb + pc * pc);
+    std::vector<Point_3> hull_verts;
+    bool coplanar = true;
+    for (auto v = cached_hull.vertices_begin(); v != cached_hull.vertices_end(); ++v) {
+        hull_verts.push_back(v->point());
+        double sd = std::abs(pa * CGAL::to_double(v->point().x()) + pb * CGAL::to_double(v->point().y()) +
+                              pc * CGAL::to_double(v->point().z()) + pd) / pnorm;
+        if (sd > 1e-6) coplanar = false;
+    }
+    std::vector<Point_3> sliced_3d = coplanar ? hull_verts : compute_polytope_plane_intersection(node_plane, cached_hull);
+    if (sliced_3d.size() <= 2) return std::nullopt;
+
+    std::vector<Point_2> sliced_2d = transform_3d_points_to_surface_plane(sliced_3d, node.transformation_to_2d);
+    Polygon_2 sliced_hull;
+    CGAL::convex_hull_2(sliced_2d.begin(), sliced_2d.end(), std::back_inserter(sliced_hull));
+    std::vector<Point_2> sliced_hull_pts(sliced_hull.vertices_begin(), sliced_hull.vertices_end());
+    std::vector<Point_2> node_patch_pts(node.patch_polygon_2d.vertices_begin(), node.patch_polygon_2d.vertices_end());
+    std::vector<Point_2> clipped_2d = compute_2d_polygon_intersection(sliced_hull_pts, node_patch_pts);
+    if (clipped_2d.size() <= 2) return std::nullopt;
+
+    Polygon_2 clipped_polygon(clipped_2d.begin(), clipped_2d.end());
+    std::vector<Point_3> clipped_3d = transform_2d_points_to_world(clipped_2d, node.transformation_to_3d);
+    Point_3 centroid = area_centroid(clipped_2d, node.transformation_to_3d, clipped_3d);
+    return ClippedPatch{clipped_3d, clipped_polygon, centroid};
+}
+
+} // namespace
+
 bool foot_goal_satisfied(const Node& node, const AstarSearchConfig::FootGoal& goal, const Polyhedron* cached_hull) {
     bool shape_ok;
     if (std::holds_alternative<Point_3>(goal.region)) {
@@ -439,42 +502,7 @@ bool foot_goal_satisfied(const Node& node, const AstarSearchConfig::FootGoal& go
             // Same pipeline expand_node already runs against real scene surfaces (slice the
             // candidate region by the node's own contact plane, clip against the node's patch) —
             // reused here against an arbitrary target polytope instead of a registered Surface.
-            Plane_3 node_plane(node.patch_vertices[0], node.up_normal());
-
-            // compute_polytope_plane_intersection finds edges that CROSS the plane (some endpoint
-            // above, some below) — a target that is flat and exactly coincident with the node's own
-            // plane (e.g. a copy of some surface's own vertices, sitting on the same floor the foot
-            // is on: the common case, not a rare one) has every vertex exactly ON the plane, no
-            // crossing edge at all, and the slicer returns nothing even though this is precisely the
-            // well-defined "target flush with this surface" case — found empirically (a hand test on
-            // a flat Flat-scenario target always failed before this check was added). Detected by
-            // testing the hull's own vertices against the plane equation directly, not relied on as
-            // an exact predicate (a genuinely 3D target that merely grazes the plane along one face
-            // should still take this branch, not just a bit-exact match).
-            double pa = CGAL::to_double(node_plane.a()), pb = CGAL::to_double(node_plane.b());
-            double pc = CGAL::to_double(node_plane.c()), pd = CGAL::to_double(node_plane.d());
-            double pnorm = std::sqrt(pa * pa + pb * pb + pc * pc);
-            std::vector<Point_3> hull_verts;
-            bool coplanar = true;
-            for (auto v = cached_hull->vertices_begin(); v != cached_hull->vertices_end(); ++v) {
-                hull_verts.push_back(v->point());
-                double sd = std::abs(pa * CGAL::to_double(v->point().x()) + pb * CGAL::to_double(v->point().y()) +
-                                      pc * CGAL::to_double(v->point().z()) + pd) / pnorm;
-                if (sd > 1e-6) coplanar = false;
-            }
-            std::vector<Point_3> sliced_3d =
-                coplanar ? hull_verts : compute_polytope_plane_intersection(node_plane, *cached_hull);
-            if (sliced_3d.size() <= 2) {
-                shape_ok = false;
-            } else {
-                std::vector<Point_2> sliced_2d = transform_3d_points_to_surface_plane(sliced_3d, node.transformation_to_2d);
-                Polygon_2 sliced_hull;
-                CGAL::convex_hull_2(sliced_2d.begin(), sliced_2d.end(), std::back_inserter(sliced_hull));
-                std::vector<Point_2> sliced_hull_pts(sliced_hull.vertices_begin(), sliced_hull.vertices_end());
-                std::vector<Point_2> node_patch_pts(node.patch_polygon_2d.vertices_begin(), node.patch_polygon_2d.vertices_end());
-                std::vector<Point_2> clipped = compute_2d_polygon_intersection(sliced_hull_pts, node_patch_pts);
-                shape_ok = clipped.size() > 2;
-            }
+            shape_ok = clip_patch_to_hull(node, *cached_hull).has_value();
         }
     }
     if (!shape_ok || !goal.yaw_range) return shape_ok;
@@ -505,6 +533,12 @@ std::vector<Node*> expand_cube_pickup(Node* parent,
 
         const auto& aff = scene_cubes[i].pickup_affordance;
         bool ready;
+        // Mode 1 only: the child's patch gets narrowed to parent's patch (cap) affordance region
+        // (see clip_patch_to_hull's own doc comment for why) -- nullopt when the affordance isn't
+        // polytope-shaped (point/surface_id: no narrowing needed there, see below) or mode 2 is
+        // used (retroactively narrowing parent->parent, a node shared with sibling branches that
+        // don't take this pickup, isn't done here -- see the comment at its use below).
+        std::optional<ClippedPatch> narrowed;
         if (aff[0].has_value() != aff[1].has_value()) {
             // Mode 1: only one foot's slot is filled -- this foot alone must satisfy it, same
             // convention as foot_goals mode 1 (the other foot is irrelevant to this test).
@@ -513,10 +547,26 @@ std::vector<Node*> expand_cube_pickup(Node* parent,
             if (parent->stance_foot != which) continue;
             const Polyhedron* hull = scene_cube_polyhedra[i][w] ? &*scene_cube_polyhedra[i][w] : nullptr;
             ready = foot_goal_satisfied(*parent, *aff[w], hull);
+            if (ready && hull && std::holds_alternative<std::vector<Point_3>>(aff[w]->region)) {
+                // foot_goal_satisfied already confirmed this clip is non-empty (same computation,
+                // recomputed here since it discards its own result) -- a point-shaped affordance
+                // needs no narrowing: the QP already pins that node to it exactly (an equality, not
+                // a region), same as any other point-shaped foot_goals slot, so nothing downstream
+                // needs a tighter patch than the parent's own to make that guarantee hold.
+                narrowed = clip_patch_to_hull(*parent, *hull);
+            }
         } else if (aff[0] && aff[1]) {
             // Mode 2: both slots filled -- symmetric stance, tested on (parent, parent->parent)
             // together, same pairing as foot_goals' own closing-stance termination test. No parent
             // yet (the very start node): only one foot has ever been placed, no pair to test.
+            //
+            // Not narrowed (both here and via parent->parent, unlike mode 1 above): parent->parent
+            // is an already-expanded node other branches of the search may still be exploring from
+            // (siblings that don't pick up this cube need its own, un-narrowed patch) -- narrowing
+            // it in place would corrupt those; narrowing only this action's own child would still
+            // leave the OTHER foot's true position under-constrained downstream. Properly fixing
+            // this needs its own zero-displacement pseudo-node for the trailing foot too, not
+            // attempted here. Left as a known gap -- see this function's own doc comment.
             if (parent->parent == nullptr) continue;
             size_t pw = static_cast<size_t>(parent->stance_foot), ow = static_cast<size_t>(other_foot(parent->stance_foot));
             const Polyhedron* phull = scene_cube_polyhedra[i][pw] ? &*scene_cube_polyhedra[i][pw] : nullptr;
@@ -528,17 +578,20 @@ std::vector<Node*> expand_cube_pickup(Node* parent,
         if (!ready) continue;
 
         // Zero-displacement pseudo-action, same shape as expand_cube_placement's own children:
-        // same foot/position/yaw/surface as parent, only the cube-related state differs.
+        // same foot/position/yaw/surface as parent, only the cube-related state differs. The patch
+        // is parent's own UNLESS mode 1 narrowed it above -- deliberately not written back onto
+        // parent itself, which keeps its own full patch for its other children (ordinary steps that
+        // don't pick up this cube, or a different scene cube's own pickup).
         Node* child = pool.create();
         child->parent_ptrs.push_back(parent);
-        child->patch_vertices = parent->patch_vertices;
-        child->patch_polygon_2d = parent->patch_polygon_2d;
+        child->patch_vertices = narrowed ? narrowed->vertices_3d : parent->patch_vertices;
+        child->patch_polygon_2d = narrowed ? narrowed->polygon_2d : parent->patch_polygon_2d;
         child->transformation_to_2d = parent->transformation_to_2d;
         child->transformation_to_3d = parent->transformation_to_3d;
         child->stance_foot = parent->stance_foot;
         child->surface_id = parent->surface_id;
         child->depth = parent->depth + 1;
-        child->centroid = parent->centroid;
+        child->centroid = narrowed ? narrowed->centroid : parent->centroid;
         child->foot_yaw = parent->foot_yaw;
         child->foot_yaw_bin = parent->foot_yaw_bin;
         child->pred_surface_ids = parent->pred_surface_ids; // no footstep was taken

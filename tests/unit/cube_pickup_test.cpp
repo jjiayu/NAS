@@ -217,6 +217,63 @@ int run_cube_pickup() {
               "(6) parent's own cubes_picked_up is untouched after producing both children");
     }
 
+    // --- (7) polytope affordance narrows the CHILD's own patch, not just gates its existence:
+    // clip_patch_to_hull's own doc comment explains why this matters for anything expanded FROM the
+    // pickup node afterward (the actual bug this fixes: a pickup validated only as "some point in my
+    // patch satisfies the affordance" let downstream reachability overstate what's truly achievable
+    // once the foot is really pinned into the much smaller true region). make_node's own fixed 10cm
+    // patch (used everywhere else in this file) is too small to tell "narrowed" from "unchanged" --
+    // this section builds its own larger one, with real room for a genuinely smaller, off-center
+    // affordance sub-region. ---
+    {
+        Node* parent = pool.create();
+        parent->patch_vertices = square(1.0, 0.0, 0.0, 1.0); // a 2m-square patch
+        std::vector<Point_2> p2d = transform_3d_points_to_surface_plane(parent->patch_vertices, flat.transform_to_surface);
+        parent->patch_polygon_2d = Polygon_2(p2d.begin(), p2d.end());
+        parent->transformation_to_2d = flat.transform_to_surface;
+        parent->transformation_to_3d = flat.transform_to_3d;
+        parent->stance_foot = StanceFoot::Right;
+        parent->surface_id = flat.surface_id;
+        parent->centroid = Point_3(1.0, 0.0, 0.0);
+        parent->foot_yaw = 0.0;
+        parent->cube_state = CubeState::None;
+        parent->parent = nullptr;
+
+        std::vector<Point_3> region = square(1.3, 0.2, 0.0, 0.1); // well inside the patch, off-center
+        Polyhedron hull;
+        CGAL::convex_hull_3(region.begin(), region.end(), hull);
+
+        AstarSearchConfig::SceneCube cube;
+        AstarSearchConfig::FootGoal g;
+        g.region = region;
+        cube.pickup_affordance[static_cast<size_t>(StanceFoot::Right)] = g;
+
+        std::vector<std::array<std::optional<Polyhedron>, 2>> hulls(1);
+        hulls[0][static_cast<size_t>(StanceFoot::Right)] = hull;
+
+        auto children = expand_cube_pickup(parent, {cube}, hulls, pool);
+        check(children.size() == 1, "(7) polytope affordance, node's patch overlaps it: satisfied");
+        if (children.size() == 1) {
+            Node* child = children[0];
+            double min_x = 1e9, max_x = -1e9, min_y = 1e9, max_y = -1e9;
+            for (const auto& v : child->patch_vertices) {
+                min_x = std::min(min_x, CGAL::to_double(v.x()));
+                max_x = std::max(max_x, CGAL::to_double(v.x()));
+                min_y = std::min(min_y, CGAL::to_double(v.y()));
+                max_y = std::max(max_y, CGAL::to_double(v.y()));
+            }
+            check(max_x - min_x < 0.3 && max_y - min_y < 0.3,
+                  "(7) child's patch is narrowed to the affordance region's own extent, not the parent's 2m one");
+            check(min_x >= 1.19 && max_x <= 1.41 && min_y >= -0.01 && max_y <= 0.41,
+                  "(7) child's patch bounding box matches the affordance region's own footprint");
+            check(std::abs(CGAL::to_double(child->centroid.x()) - 1.3) < 0.05 &&
+                       std::abs(CGAL::to_double(child->centroid.y()) - 0.2) < 0.05,
+                  "(7) child's centroid moved into the affordance region, not left at the parent's");
+        }
+        check(parent->patch_vertices.size() == 4 && std::abs(CGAL::to_double(parent->patch_vertices[2].x()) - 2.0) < 1e-9,
+              "(7) parent's own patch is untouched (still the full 2m square) for its other children");
+    }
+
     if (g_failures > 0) {
         std::cerr << g_failures << " test(s) FAILED\n";
         return 1;

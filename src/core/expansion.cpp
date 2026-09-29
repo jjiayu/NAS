@@ -56,26 +56,6 @@ std::vector<YawCandidate> candidate_yaws(const Node* parent, const ExpansionPara
     return out;
 }
 
-// Area centroid of a convex polygon given in the surface's 2D frame, mapped to
-// world. Adding a collinear point to the polygon does not change it. Falls back
-// to the vertex average when the polygon has (near) zero area.
-Point_3 area_centroid(const std::vector<Point_2>& polygon, const Transformation& to_3d, const std::vector<Point_3>& vertices_3d) {
-    const size_t n = polygon.size();
-    double area2 = 0.0, cx = 0.0, cy = 0.0;
-    for (size_t i = 0; i < n; ++i) {
-        const Point_2& p = polygon[i];
-        const Point_2& q = polygon[(i + 1) % n];
-        double px = CGAL::to_double(p.x()), py = CGAL::to_double(p.y());
-        double qx = CGAL::to_double(q.x()), qy = CGAL::to_double(q.y());
-        double cross = px * qy - qx * py;
-        area2 += cross;
-        cx += (px + qx) * cross;
-        cy += (py + qy) * cross;
-    }
-    if (std::abs(area2) > 1e-12) return to_3d(Point_3(cx / (3.0 * area2), cy / (3.0 * area2), 0.0));
-    return get_centroid(vertices_3d);
-}
-
 // Removes vertices within 1 nm of the line through their neighbours, then
 // rotates the list to start at the vertex minimal after rounding to 1 nm.
 // The exact convex hull keeps a vertex that is collinear only up to 1e-16
